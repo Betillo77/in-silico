@@ -8,8 +8,7 @@ package derivador;
 import java.util.Hashtable;
 
 /**
- *
- * @author sebastian
+ * @autores daniela, juan david y german
  */
 public class Suma implements Funcion{
     Funcion izq,der;
@@ -19,12 +18,22 @@ public class Suma implements Funcion{
          this.der=der;
      }
 
-    public double evaluar(Hashtable<String, Integer> Table) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public double evaluar(Hashtable<String, Double> Table) {
+        
+        double evalArg1 = izq.evaluar(Table);
+        double evalArg2 = der.evaluar(Table);
+        return evalArg1 + evalArg2;
     }
 
     public Funcion derivar(String var) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        Funcion derivada = new Suma(izq.derivar(var), der.derivar(var));
+        return derivada;
+    }
+    
+     @Override
+    public String toString() {
+        return  "(" + izq.toString() + ")" + "+" + "(" + der.toString() + ")";
     }
 
 }

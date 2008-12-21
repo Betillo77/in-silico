@@ -7,7 +7,7 @@ package derivador;
 
 /**
  *
- * @author sebastian
+ * @author Shiroi Tori
  */
 public class Main {
 

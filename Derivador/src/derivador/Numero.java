@@ -11,18 +11,26 @@ import java.util.Hashtable;
  *
  * @author sebastian
  */
-public class Ln implements Funcion{
-    Funcion v;
-    public Ln(Funcion v){
-        this.v=v;
+public class Numero implements Funcion {
+    //atributos
+    double num;
+    
+    public Numero(double num) {
+        this.num=num;
     }
 
     public double evaluar(Hashtable<String, Double> Table) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return num;
     }
 
     public Funcion derivar(String var) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new Numero(0);
+    }
+    
+    @Override
+    public String toString() {
+        return num+"";
     }
 
 }
+

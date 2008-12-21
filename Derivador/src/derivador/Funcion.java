@@ -20,7 +20,7 @@ public interface Funcion {
      * @param Table Pares Nombre de variable, Valor de la variable
      * @return Un valor real resultado de el reemplazamiento
      */
-    double evaluar(Hashtable<String,Integer> Table);
+    double evaluar(Hashtable<String,Double> Table);
     
     
     Funcion derivar(String var);
