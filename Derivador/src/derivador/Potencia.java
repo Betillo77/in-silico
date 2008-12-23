@@ -26,7 +26,8 @@ import java.util.Hashtable;
         double ln=new Ln(izq).evaluar(Table);
         for(int i=0;i<20;i++){
             double p1 = Math.pow(ln, i);
-            double p2 = new Potencia(der, new Numero(i)).evaluar(Table);
+            double x = der.evaluar(Table);
+            double p2 = Math.pow(x, i);
             double fac=Factorial(i);
             double aux=(p1*p2)/fac;
             r=r+aux; 

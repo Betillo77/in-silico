@@ -5,9 +5,10 @@
 
 package derivador;
 
+import java.util.*;
 /**
  *
- * @author Shiroi Tori
+ * @author JUAN DAVID
  */
 public class Main {
 
@@ -16,6 +17,12 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Potencia a=new Potencia(new Variable("x"), new Numero(8));
+        
+        Hashtable<String,Double> p=new Hashtable<String, Double>();
+        p.put("x", 3.0);
+        System.out.print(a.evaluar(p));
+        
     }
 
 }

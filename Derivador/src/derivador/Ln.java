@@ -9,20 +9,29 @@ import java.util.Hashtable;
 
 /**
  *
- * @author sebastian
+ * @author JUAN DAVID
  */
 public class Ln implements Funcion{
-    Funcion v;
-    public Ln(Funcion v){
-        this.v=v;
+    Funcion arg;
+    public Ln(Funcion arg){
+        this.arg=arg;
     }
 
     public double evaluar(Hashtable<String, Double> Table) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        double evaluado = arg.evaluar(Table);
+        return Math.log(evaluado);          // Ln(evaluado)
     }
 
     public Funcion derivar(String var) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Funcion derArgumento = arg.derivar(var);  //derivada de var
+        Funcion dln = new Potencia(arg, new Numero(-1)); //  1/var
+        Funcion derivada = new Mult(dln, derArgumento); 
+        return derivada;  
+    }
+    
+    @Override
+      public String toString() {
+        return "Ln(" + arg.toString() + ")";
     }
 
 }
