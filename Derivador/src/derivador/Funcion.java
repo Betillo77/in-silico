@@ -24,5 +24,7 @@ public interface Funcion {
     
     
     Funcion derivar(String var);
+
+    Funcion simplificar();
     
 }
