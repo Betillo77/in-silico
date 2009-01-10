@@ -35,7 +35,13 @@ public class Ln implements Funcion{
     }
 
     public Funcion simplificar() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        arg=arg.simplificar();
+        if(arg instanceof Numero){
+            Numero a=(Numero)arg;
+            if(a.num == 1)
+                return new Numero(0.0);
+        }
+        return this;
     }
 
 }
