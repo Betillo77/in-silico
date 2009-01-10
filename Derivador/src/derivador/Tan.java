@@ -38,4 +38,8 @@ public class Tan implements Funcion {
         return "Tan(" + arg.toString() + ")";
     }
 
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

@@ -65,6 +65,10 @@ import java.util.Hashtable;
         return  "(" + izq.toString() + ")" + "^" + "(" + der.toString() + ")";
     }
 
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
 
  

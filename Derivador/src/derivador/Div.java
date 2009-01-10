@@ -41,4 +41,8 @@ public class Div implements Funcion{
         return  "(" + Num.toString() + ")" + "/" + "(" + Den.toString() + ")";
     }
 
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

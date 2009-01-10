@@ -38,4 +38,8 @@ public class Cos implements Funcion {
         return "Cos(" + arg.toString() + ")";
     }
 
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

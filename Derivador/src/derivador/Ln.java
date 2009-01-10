@@ -34,4 +34,8 @@ public class Ln implements Funcion{
         return "Ln(" + arg.toString() + ")";
     }
 
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

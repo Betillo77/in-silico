@@ -34,6 +34,10 @@ public class Variable implements Funcion {
     public String toString() {
         return nameVar;
     }
+
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
     
 }

@@ -32,5 +32,9 @@ public class Numero implements Funcion {
         return num+"";
     }
 
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }
 

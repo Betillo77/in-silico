@@ -38,5 +38,9 @@ public class Seno implements Funcion {
         return "Sen(" + arg.toString() + ")";
     }
 
+    public Funcion simplificar() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }
    
