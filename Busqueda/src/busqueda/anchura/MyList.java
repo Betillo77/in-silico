@@ -16,6 +16,11 @@ public class MyList {
     LinkedList<Estado> lista;
     TreeMap<Object, Estado> arbol;
     
+    public MyList() {
+        lista = new LinkedList<Estado>();
+        arbol = new TreeMap<Object, Estado>();
+    }
+    
     /**
      * Adicona al final de la lista
      * @param key Identificador unico del estado a agregar
@@ -41,8 +46,8 @@ public class MyList {
         return arbol.get(key);
     }
     
-    public boolean contains(Object key) {
-        return arbol.containsKey(key);
+    public boolean contains(Estado e) {
+        return arbol.containsKey(e.getKey());
     }
     
     public boolean isEmpty() {

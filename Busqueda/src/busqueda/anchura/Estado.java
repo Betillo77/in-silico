@@ -11,7 +11,7 @@ import java.util.*;
  * Interfaz que define que debe características mínimas debe tener un estado
  * para ser resuelto por el algoritmo de primero anchura
  */
-public interface Estado extends Comparable {
+public interface Estado {
 
     /**
      * Retorna una lista con los estado siguientes al estado actual
