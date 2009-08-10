@@ -9,10 +9,10 @@ import pee.intermedio.Intermedio;
 import java.util.LinkedList;
 
 /**
- * Cualquier cosa que retorne un valor, no tiene control de flujo
+ * Cualquier cosa que retorne un valor
  * @author sebas
  */
-public interface Operacion {
+public interface Operacion extends Statment {
 
     public void genCod(int sp, LinkedList<Intermedio> cod);
 

@@ -10,5 +10,6 @@ package pee.intermedio;
  * @author sebas
  */
 public enum Tipo {
-    Temporal, Var, Param, Retorno, OtroReg
+    Temporal, LocalVar, GlobalVar, Param, Retorno, OtroReg,
+    Inmediato
 }
