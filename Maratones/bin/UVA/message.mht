@@ -1,0 +1,431 @@
+From: "Guardado por Windows Internet Explorer 8"
+Subject: Message in the Enemy Territory
+Date: Thu, 10 Sep 2009 23:00:47 -0500
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01CA326A.88F68560"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7100.0
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01CA326A.88F68560
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://uva.onlinejudge.org/contests/232-b5f9a162/11656.html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--Converted with LaTeX2HTML 2008 (1.71)=0A=
+original version by:  Nikos Drakos, CBLU, University of Leeds=0A=
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan=0A=
+* with significant contributions from:=0A=
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others =
+--><HTML><HEAD><TITLE>Message in the Enemy Territory</TITLE>
+<META content=3D"text/html; charset=3Dwindows-1252" =
+http-equiv=3DContent-Type>
+<META name=3Ddescription content=3D"Message in the Enemy Territory">
+<META name=3Dkeywords content=3Dhtmlatex>
+<META name=3Dresource-type content=3Ddocument>
+<META name=3Ddistribution content=3Dglobal>
+<META name=3DGENERATOR content=3D"MSHTML 8.00.7100.4129">
+<META content=3Dtext/css http-equiv=3DContent-Style-Type><LINK =
+rel=3DSTYLESHEET=20
+href=3D"htmlatex.css"></HEAD>
+<BODY lang=3DEN bgColor=3D#ffffff>
+<H1><BR clear=3Dall>
+<CENTER>
+<TABLE bgColor=3D#0000ff>
+  <TBODY>
+  <TR>
+    <TD><B><FONT color=3D#ffff00 size=3D5>&nbsp;<A=20
+      name=3DSECTION0001000000000000000000> Message in the Enemy=20
+      Territory</A>&nbsp;</FONT></B></TR></TBODY></TABLE></CENTER></H1>
+<P>A group of commandos has been caught and sent to a maximum-security =
+prison in=20
+enemy territory. In order to escape from the prison, a soldier needs to =
+give a=20
+message to the squadron leader.=20
+<P>
+<P><BR>The boundary of the prison is protected by electronic alarms: for =
+his=20
+security, the soldier needs to keep a distance greater than <SPAN=20
+class=3DMATH><I>m</I></SPAN> from the boundary. An additional =
+restriction is that=20
+the soldier can only stand on those positions with integer coordinates. =
+In each=20
+step, the soldier can move, from a given position <SPAN =
+class=3DMATH>(<I>x</I>,=20
+<I>y</I>)</SPAN>, only to the nearby positions: <SPAN =
+class=3DMATH>(<I>x</I> - 1,=20
+<I>y</I> - 1)</SPAN>, <SPAN class=3DMATH>(<I>x</I> - 1, =
+<I>y</I>)</SPAN>, <!-- MATH=0A=
+ $(x-1,y+ 1)$=0A=
+ --><SPAN class=3DMATH>(<I>x</I> - 1, <I>y</I> +=20
+1)</SPAN>, <SPAN class=3DMATH>(<I>x</I>, <I>y</I> - 1)</SPAN>, <SPAN=20
+class=3DMATH>(<I>x</I>, <I>y</I> + 1)</SPAN>, <!-- MATH=0A=
+ $(x + 1,y - 1)$=0A=
+ --><SPAN=20
+class=3DMATH>(<I>x</I> + 1, <I>y</I> - 1)</SPAN>, <SPAN =
+class=3DMATH>(<I>x</I> + 1,=20
+<I>y</I>)</SPAN> and <!-- MATH=0A=
+ $(x + 1,y + 1)$=0A=
+ --><SPAN class=3DMATH>(<I>x</I> +=20
+1, <I>y</I> + 1)</SPAN>, without going out of the interior of the =
+prison. The=20
+walls of the prison form a simple polygon (no repeated vertices and no=20
+intersections between edges) and all of them are parallel to either the =
+<SPAN=20
+class=3DMATH><I>x</I></SPAN>-axis or the <SPAN =
+class=3DMATH><I>y</I></SPAN>-axis of=20
+a hypothetical coordinate system. The following figure shows a typical =
+prison's=20
+plan:=20
+<P>
+<DIV align=3Dcenter><!-- MATH=0A=
+ $\epsfbox{p11656.eps}$=0A=
+ --><IMG border=3D0=20
+alt=3D\epsfbox{p11656.eps} align=3Dbottom=20
+src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/p11656.png" =
+width=3D938=20
+height=3D650> </DIV>
+<P><!-- MATH=0A=
+ $(x_{s},y_{s})$=0A=
+ --><SPAN class=3DMATH>(<I>x</I><SUB>s</SUB>,=20
+<I>y</I><SUB>s</SUB>)</SPAN> and <!-- MATH=0A=
+ $(x_{l},y_{l})$=0A=
+ --><SPAN=20
+class=3DMATH>(<I>x</I><SUB>l</SUB>, <I>y</I><SUB>l</SUB>)</SPAN> =
+corresponds to=20
+the position of the soldier and the squadron leader respectively. The =
+gray area=20
+indicates those positions that are at distance less than or equal to =
+<SPAN=20
+class=3DMATH><I>m</I></SPAN> from the prison's boundary, i.e., the zone =
+that the=20
+soldier cannot stand on.=20
+<P>A <SPAN class=3Dtextit>safe</SPAN> path is a sequence of pairs of =
+integer=20
+coordinates, each one at a distance greater than <SPAN=20
+class=3DMATH><I>m</I></SPAN> from the boundary of the prison, so that =
+consecutive=20
+pairs are different and do not differ in more than one in each =
+coordinate. In=20
+the depicted example, there is not a safe path from the soldier to the =
+squadron=20
+leader.=20
+<P>Your task is to determine, for a given prison's plan, if there exists =
+a safe=20
+path from the soldier position to the squadron leader position.=20
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A=20
+name=3DSECTION0001001000000000000000>Input</A>&nbsp;</FONT> </H2>
+<P>The problem input consists of several test cases. Each test case =
+consists of=20
+three lines:=20
+<P>
+<UL>
+  <LI>The first line contains two integer numbers separated by blanks, =
+<SPAN=20
+  class=3DMATH><I>n</I></SPAN> and <SPAN class=3DMATH><I>m</I></SPAN>, =
+with <!-- MATH=0A=
+ $4\le n \le 1000$=0A=
+ --><SPAN class=3DMATH>4<IMG border=3D0 alt=3D"$ \le$"=20
+  align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31><I>n</I><IMG border=3D0 alt=3D"$ \le$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31>1000</SPAN> and <!-- MATH=0A=
+ $1 \le m \le 30$=0A=
+ --><SPAN=20
+  class=3DMATH>1<IMG border=3D0 alt=3D"$ \le$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31><I>m</I><IMG border=3D0 alt=3D"$ \le$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31>30</SPAN>, indicating the number of the prison's boundary =
+vertices=20
+  and the alarm range respectively.=20
+  <LI>The second line contains a list of <SPAN class=3DMATH>2<SUP> .=20
+  </SUP><I>n</I></SPAN> integer numbers, <!-- MATH=0A=
+ $x_{1},y_{1},\dots,x_{n},y_{n}$=0A=
+ --><SPAN=20
+  class=3DMATH><I>x</I><SUB>1</SUB>, <I>y</I><SUB>1</SUB>,...,=20
+  <I>x</I><SUB>n</SUB>, <I>y</I><SUB>n</SUB></SPAN>, separated by =
+blanks: the=20
+  list of vertices of a simple <SPAN =
+class=3DMATH><I>n</I></SPAN>-polygon that=20
+  describes the boundary of the prison. <!-- MATH=0A=
+ $0 \le x_{i},y_{i} \le 1000$=0A=
+ --><SPAN class=3DMATH>0<IMG border=3D0=20
+  alt=3D"$ \le$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31><I>x</I><SUB>i</SUB>, <I>y</I><SUB>i</SUB><IMG border=3D0 =
+alt=3D"$ \le$"=20
+  align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31>1000</SPAN>.=20
+  <LI>The last line contains four integer numbers separated by blanks, =
+<SPAN=20
+  class=3DMATH><I>x</I><SUB>s</SUB></SPAN>, <SPAN=20
+  class=3DMATH><I>y</I><SUB>s</SUB></SPAN>, <SPAN=20
+  class=3DMATH><I>x</I><SUB>l</SUB></SPAN>, and <SPAN=20
+  class=3DMATH><I>y</I><SUB>l</SUB></SPAN>, indicating the position of =
+the soldier=20
+  and the position of the squadron leader (<!-- MATH=0A=
+ $0 \le x_{s},y_{s} \le 1000$=0A=
+ --> <SPAN class=3DMATH>0<IMG border=3D0=20
+  alt=3D"$ \le$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31><I>x</I><SUB>s</SUB>, <I>y</I><SUB>s</SUB><IMG border=3D0 =
+alt=3D"$ \le$"=20
+  align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31>1000</SPAN>, <!-- MATH=0A=
+ $0 \le x_{l},y_{l} \le 1000$=0A=
+ --><SPAN=20
+  class=3DMATH>0<IMG border=3D0 alt=3D"$ \le$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31><I>x</I><SUB>l</SUB>, <I>y</I><SUB>l</SUB><IMG border=3D0 =
+alt=3D"$ \le$"=20
+  align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png" =
+width=3D18=20
+  height=3D31>1000</SPAN>). </LI></UL>
+<P>The end of the input is indicated by a line with ``<TT>0 0</TT>''.=20
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A=20
+name=3DSECTION0001002000000000000000>Output</A>&nbsp;</FONT> </H2>
+<P>For each test case the output includes a line with the word =
+``<TT>Yes</TT>''=20
+if there exists a path from the soldier to the squadron leader. =
+Otherwise the=20
+word ``<TT>No</TT>'' must be printed.=20
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A =
+name=3DSECTION0001003000000000000000>Sample=20
+Input</A>&nbsp;</FONT> </H2>
+<P><PRE>4 1
+0 0 0 5 5 5 5 0
+2 2 3 3
+8 3
+0 16 0 6 4 6 4 0 12 0 12 10 8 10 8 16=20
+4 12 8 4 =20
+0 0
+</PRE>
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A =
+name=3DSECTION0001004000000000000000>Sample=20
+Output</A>&nbsp;</FONT> </H2>
+<P><PRE>=20
+Yes
+No
+</PRE>
+<P>
+<P><BR>
+<HR>
+</BODY></HTML>
+
+------=_NextPart_000_0000_01CA326A.88F68560
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: http://uva.onlinejudge.org/contests/232-b5f9a162/p11656.png
+
+iVBORw0KGgoAAAANSUhEUgAAAk0AAAGZCAIAAAAb35KrAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA
+B3RJTUUH2QkEAQQIEOI1YAAAAB10RVh0Q29tbWVudABDcmVhdGVkIHdpdGggVGhlIEdJTVDvZCVu
+AAAgAElEQVR42u2dX2gb57qvXxddTCALJEhAggY60EJkEohEDNti+yLa5KIKKdSihdik0KWuwq7d
+BY29CqfVyUWO2wWtvQpp1ELXUhckyIUWu3BCVdgB5SIHKeAwE0jxBBI6gQRkSECCGjoXgpyLcRXF
+f2Vbtr4ZP8/F2t92ZUV5o3m/95mfZtTz9OlTAViNnp4eiqAmHLYA7fMCJQAAAB8ToASwPsacQRHU
+Id4XpwgA+Bx0GC2gNYci1t1dA8Bm6eFEP6z55ujpwefU9DkOWwB8DjoKRqXOGgDwOcDn8DkAwOdg
+E2BR5HMA+Bzgc4DPAeBz4FEwKvI5AHwO8DnA5wDwOfAkWBT5HAA+B/gc4HMA+Bx4FIyKfA4AnwN8
+DvA5AHwOPAkWRT4HgM8BPgf4HAA+Bx4FoyKfA8DnAJ8DfA4AnwNPgkWRzwHgc4DPAT4HgM+BR8Go
+yOcA8DnA5wCfA8DnwJNgUeRzAPgc4HOAzwHgc+BRMCryOQB8DvA5wOcA8DnwJFgU+RwAPgf4HOBz
+APgceBSMinwOAJ8DfA7wOQB8DjwJFkU+B4DPAT4H+BwAPgceBaMinwPA5wCfA3wOAJ8DT4JFkc8B
+4HOAzwE+B4DPgUfBqMjnAPA5wOcAnwPA58CTYFHkcwD4HOBzgM8B4HPgUTAq8jkAfA7wOcDnAPA5
+8CRYFPkcAD4H+BzgcwD4HHgUjIp8DgCfA3xu54gdj3X9NZi3THwOAJ8Df0IuRR0A2OfAzzgNR0Sk
+0c01dVCnDgDsc+A7yKWoAwD7HPiZrhrM0po6qFMHAPY58BnkUtQBgH0O/Ay5FHUAYJ8DX0MuRR0A
+2OfAz5BLUQcA9jnwMeRS1AGAfQ78DLkUdQBgnwNfQy5FHQDY58DPkEtRBwD2OfAx5FLUAYB9DvwM
+uRR1AGCfA19DLkUdANjnwM+QS1EHAPY58DHkUtQBgH0O/Ay5FHUAYJ8DX0MuRR0A2OfAz5BLUQcA
+9jnwMeRS1AGAfQ78DLkUdQBgnwNfQy5FHQDY58DPkEtRBwD2OfAx5FLUAYB9DvwMuRR1AGCfA19D
+LkUdANjnwM+QS1EHAPY58DHkUtQBgH0O/Ay5FHUAYJ8DX0MuRR0A2OfAz5BLUQcA9jnwMeRS1AGA
+fQ78DLkUdQBgnwNfQy5FHQDY58DPkEtRBwD2OfAx5FLUAYB9DvwMuRR1AGCfA19DLkUdANjnwM+Q
+S1EHAPY58DHkUtQBgH0O/Ay5FHUAYJ8DX0MuRR0AvNvAenp6qAJsALkUdYC1oYsqy9OnT/E52Jh4
+X5xcyoU6AHhyEHH/jzFnUAtYdZNrrrf8JnF+c+bvz1uWVV+sj7w74jScme9nzNtm5mwmejQqIqXr
+peK1Yv/x/vRgetVniB2Pdb0U5i1TnX8Rd0oFpXyOLqpg71rhcypkD6wVW8+b863vm3hffAvPY9w1
+ileLU19MiSOO40x+Olmv10vXS/kreS2g5b/JW5Y1b85PfT4lDfI58jkPQ99QZ43PwRaVbsvvlvzl
+fO7L3KWvLpUr5eEzwyEtlEgmht4YirwYiR+NR49Gh88OVx9VS9dL+Bw+h8/BTvkcUwDr1W1sxdG7
+JHabeR5jztA0zb5np0+nI5FI+VZZRPZp+yIHI9GjUec3x7prxfvjQj4n5HNehr6hzrqFZ/ucCtcG
+sVZzvda41Bvrbed5HMep3KoE9wdDoZCu69KQcqXsPknyZFJE3G0vdiwmXD8nXD/nZegb6qxX3eeY
+AlivaWOmsR3LMUxDGhI6EEqdTrk/L8+VNU0bPDPYtD0RSQ4k25zO9vS0DgpDryCfAz+c726lzbfN
+5MXJ6SvTk59OuvZWfVg9NXgq9Wpq4sKE+4D0G+nfG78Xfyyu9Qzkc6umDqAI5HPK9ivyOdbbNYk2
+f7dSqQT3BxMDCffn5bmyiKROptzH1B7X7Ad2oi/hmt/K51Fhk1PnGAGloVeQz7H29HrluNpOPmdX
+bfu+nRhIaJrm/rxys6IFtPixuPsY87YpIom+RP7bfCgYUvkOIORzsAH0CvI51v6Ykow5o3ld3YZ3
+S3FP9zXtTUQM04gei2ohrfU5c9/kEn0JXdeVNhjyOVDe+FmTz0Hnz4Bv//1jWZau65q2eh9X5Lwl
++RysBfmcst2JfI71dtftW93669jRmKZpqz5GnXBOyOfAE8bPesWZD3wOVLE6lWUOnwN8zg8+xxTA
+urtW5wGDIZ8D5Y2fNfkceMzq8Dl8Dp+DjvkcUwBr1axOqXBOyOfAE8bPmnwOPGR1Su1z+Bzgc573
+OaYA1kpZnWoyp+CUCqpBHyCfA6zOqzKHzwE+5wefYwpgrY7VqShz5HPgCeNnTT4HnrA6Bfc5fA7w
+Oc/7HFMA612wunYMT02ZU3BKBYyfNfkcqGV17nrDN5ua+xw+B/ic532OKYD1Tltd68Ir18ypNq2D
+0nDsk88BVtdk1becypscPgf4nOd9jimA9Q6tV25ybU5hTOvkc96C4518DjC59ZROZZnD5wCf84PP
+MQWw3qF8br3jX+W7nyg5rQPGz5p8Drwkdu4bzxObHD4H+JznfY4pgPWOro05wzCNlYbkiU1OoWME
+MH7W5HPgLbfziprgc4DPed7nmAJY79ramDOa19W5PYJpXcjnfADHOPkcQBP3dKW7yXnCTvA5wOc8
+73NMAax3bd3M5J4+feqllk0+B8obP2vyOVDF5DwHPgf4nOd9jimA9W6aHNM6+ZwP4RgnnwM0zrvg
+c4DPed7nmAJY79za65ucQscIYPysyecAjcPnAJ/D54R8jvVOr2PHY77Z5NQ5RgDjZ00+BzgcPgf4
+HD5HPsd6x3I4X25yCh0jgPGzJp8D7A2fA3wOnxPyOdbbz958bm9KTuuA8bP2cD63pzom4HP4HD7n
+yy6q4JGiWD4HwLTOMYLxe9z4VatDyz7XEBFxGk431wAqwzEC69Ll90aDOqxeB7XyOQCmdY4RjN/z
+xq9YHV5gEgFgWgeM38d1IJ8DYFoHjN/PdSCfA2BaB4zfz3UgnwNgWgeM3891IJ8DYFoHjN/PdSCf
+A2BaB4zfz3UgnwNgWgeM3891IJ8DYFoHjN/PdSCfA2BaB4zfz3UgnwNgWgeM3891IJ8DYFoHjN/P
+dSCfA2BaB4zfz3UgnwNgWgeM3891IJ8DYFoHjN/PdSCf6wDT30138U+f/W6W/sK0Dhg/+Rz53E4x
++t5o7Gg3v6veuGPUF+q0GKZ1wPipg5DP7cgm1xeLHol28TUkBhKTX03SYZjWAeOnDkI+11nyX+eN
+O0bm7Ux3X0b8aHz2B05dMq0Dxk8dVq9Dz9K5rzmj66WJHY956A1t3bV6j/aW/6fcf6K/6y+mp6fn
+13u/6i/rNJqdw7xlqvAy4n1xEXn69Cn/IurQ09NDF1X5SGkvn2tI9WG1eK2Yu5izLEsCYt2zJi5M
+TF5cOl1Wq9UmL05mz2erj6t7JHsYfW80+nL0uU2uIcWrxXf+/M6p1Ck3MHMWnfG/jg8PDbej+aVr
+pU/+/snwm8Pm7aV3ibPopAfT01c2/pBLcH+wUqnQbpjWAeOnDlvM52q/1cpmefLTyfyVvP6iXrpW
+mvluxn5oT1+Ztu5Z9kP7k88/cepO8edi8cfiXsgeKjcrpeulwTcGW39Yr9ej0WgsFiv+XMxfyUtD
+Rt8brS/Wbdtu52+nv6Jrok3/MJ27mFv6F3Gc0o3SxKcTG/6uI459z6bJ7DTkc7DhwCrkc+LNfC4U
+CqVfSzvixI7F5h/M1x7Xsuez0WjUfczMDzOTn04mBhIiogW1vZA9FC4XRCT9Wvo5qToQ1F/WM29n
+tIBWrpSnPp/6+MLH//r2X+VKeeNJPCD6S/rY/xqLHYvN/DDTfELLtPRDbZyNdKT6pEqTYVoHjJ86
+bP36OeOO4Sw60Wi0Uqmk30yLSKVSiR6OzlydGX1vVEQM0xCRRCyxF64NKl0vaZoWO7bKqXBtvxY9
+Ei1dLwUPBPWXNh2YDQ8N1xfrpWsl9/+tLdZSr6fW/5X6kzpXVjGtA8bP9XPbvX7OrJgisvBwIfNW
+RgJSfVy1H9i1xVr6dFrTNC2gVeYq4QNh/RV9L2QP9n07diS21mtODiTr9Xr69fQWnnnw9KCINPe5
+2R9mM2czG74YEQnuD9JlmNYB46cOW79+rlQpiUhqMKVpmjSWPlGT7E/qui4i1cdV+77tfr7F99mD
+U3echtN7tHf9WcYV3M2iH9bD4XDxWtEVNS2gafs3eO+6f5D+Ch+2ZFoHjJ86bDWfq/1Ws+/a+kt6
+8kTS/Xm5UhaR4TPDS7Z32xSRRH/CD5NIe80u/GJ41f9auV7RNE1EKje2+AHI5EDSumuJSO7r3Mj7
+Ixs+3h1BlooPTOuA8VOHNfe5tXdI85bpNJzU6VTz58acob+sRw5F3Me4217seMy+Z9dqNfF19hAM
+BkUkFAqt/E/1en3mx5nJf0zqL+k/Xf9JRJxFZ+HRwlpPVX9SX1hY/l8TJxKO4xSvFoMHghvKnHuS
+M3o42t17sjCtC/kcYPyq1qGtfM7dxlInUu7PbdteeLKQHEg2H2OapvuZi9L1UiQU8fQk0s5Qr7+o
+L9uucl/m7Af2xIWJiQsTIpI8kTRvmtZda+KziXA4vNYzRaNR/ZDuBmzP9rm+hIhMfTE18t8by5x5
+01xYWMh+mKXFMK0Dxk8dZMv5XHmuvNLe+vv6W3fO6qNq4Uoh8+fMXsgeokejzuKz4dowjdG/jib6
+Epl3M1pQE5GhM0NOwzl18pT7sZ216D3a6zScytxzZzhdM5v8R1u3rJz8ajJ2LDZ0dogOw7QOGD91
+kC3nc8Ufiz/98FPz55m3MsacEe+PNx/zr6/+Vfi+kP0wK4E9kT2kXk1Vq8+uV0ueTP5q/Wrfs6OH
+o60/mb83v/69uGa+n9ECWurEc1cO2HftiQsTq160sIyFRwvFq8XClQKTPtM6YPzkc2vVIdCRHTh0
+MBSS0N7JHtKvpwe/f+5mKPrh5fuZfli3frGmLk7ph3QJSDgYTgwklqVoua9zhcuFYLjlkgBH8pfz
+k59Nbvi7IjLy15HcxRzJHNM6YPxKGT/fP6f6JNIO4RfDekRvPXW5kvqTeqI/kRxIfvy/Px56fWj0
+3Ggo+NxHV4pXi8kTycEzgyJi/WK5z5Y9nx3/cLxe3+B3RST/dT45kOSMJdM6YPzkc3z/3I6QPZ91
+r3Jbi9L1Un2x7tZdP6wPvzG87FKE1OlU/38uZZy9sd6IHkm/mc68mwmHwxv+rn3XloCMfDBCY2Fa
+B4yffI7vn9sRokeig68PrveAo1ERmbgwIY6IyMcXPl5n9il8W5j4aKLwbcHN8zb8Xf2wnvlLhq7C
+tA4Yv5DPSYfub0n2sOmN8HB08I1B6641/uG4iKx/r8uhs0MjH4w0r5bb1O8C0zpg/EoZP/mc6pNI
+B8lfzAcPBKe+nKr8v8pu/i4wrQPGTx1W2eeYRDpIvV4XkWA46H6Z3Njfxnbnd4FpHTB+6rDmPrfW
+rhjvi8f74tvZXd1n8MQk0tPT09PTs+12KM0vRx06MxQ9HG1+RfjO/i4wrQPGTx3avH4uHot3cJJ1
+aX1OY85QbRJp3d56enqePn265aey7lvFH4uTn042S9/ORd/b/11gWgeMnzqsl8+51rXkXp2dZFfQ
++mepmT1sx+qqD6v2I/udP79TuVmZ+vuUiMx+N7sLvwtM64DxU4eVdehR5x2yHYXaiV1ty69n4dFC
++MWw/cC279mhg6FNCdl2fhd2FPc7F7vO6mMoKIB7mqq7xI7HOFJajxS3jb+gyFtk3pz3zdvdvaZb
+f0lPnkxudqPazu8C0zpg/NRhZR16lk0ia02L2xlV2nzO7k4iK5Wui34J+JzXcY96FRRnT4HPbeBz
+7k5omIYxZ8yb88vfoB2aQJ97fpUmkWW7GpscqDmlemWtkAHvtTVnPtbK5zizDIDPdXaUVqe34HP4
+nKI7MIByYAxbO5apCfmcUvkcPgeA0uFz+Jw/fY5JBED9KdWLVkFNyOfI5/A5wOf8KXMoHT6nls8x
+iQB4YEr1Yj5EfXZlrY4qkM/hc4DP4XPg2xZKPkc+Bx4GY9jaWRlqsuf6J/kcPgcoHT4H+FwXfI58
+DgCr2/669W5Ka935qLmu/VYzTKMwXch/m3d/pTBdGP9o3LhjuI8p3yiPfzhe/L9Farv+WilP8Mb3
+z/HdWgBrocJ3a3lg3V6t7Lv27NXZ4s/FobNDjuNMfDYRCUdK10rSkPjReP6bfM2pzVvzpeulVCpF
+/b3SP9X9/jnOLwO0dWoIe+jc/S3jffHo4aiIJPuTl765NPb+2NCZIREJHgjOfD8T649lz2VD+0PB
+YFAC1JZ8botnB19QdgcGUBTsof1juY3Hl26UNE2zLCt9Oh0Khdx0J7Q/tO9P++JH49XHVeu+FY/F
+qa2X+qdidks+B7A5sIf2j+UNH+84jvWLFdwfDB0M6bquBbRypSwB+b3x++DpQRExb5si0v8f/dR2
+nbVqH+JTzW5fUHYHBlCT6LEo9iAdyueMO4bjOKEDodSrKffn5pwpIsNnht3HlOfK0vwMJ7X1yJkw
+8jmPnF8GwOp2Pp8rV8oiMvzWsPvzarVqP7IHXx2MHIy4jzHnzHA4rOs6tV1rvU2Zm/1utvOHR9uv
+v3SttAtnB8nnADZN7HgMk+hIPmdWTG2/ljyRXLK3SllEEgMJ9zG1Ws1+YCf6E9IQwzSobcfPhI2+
+N6pH9c4fIW2/fsMyao9r5HMASoJJbDufq9Vq1n0rdSKlBbQle7tlSkAS/Qn3MZVbFfekZWG6EAqG
+qG1n72k5+t5orC8WO9b5bK/915+IJaZ/nCafA1BS6Y7FMIkNj+UNP2nZam8iUqqU+o/1a5rmPkYT
+TUTy3+SjR6O6rlPbDvbM/Nd5446ReTuzE0dH+68/8lKk9HOJfA4Aq/NnPjc8OGzMGcmTyebPyzfK
+ua9zzcckTyYLlwuFKwX3ugJqu2y9ZZmz79qjfx2d+vtU148L/ZBuP7KrD6vC/S0B1ITbXa6F+wlJ
+7mypZs/8r+R/VavVeWu+RcGkeK04++NsdaGa/zYfDoedRWf8o/Hak1phurCRvknpRqlyq2KYRvaj
+7JJa/eaMnR87deJU6rXU+r+dGEiM/W0s/Vp6J96B3N8SYLtgFdu8fo71ltdb3uQqNyul66XhoeHW
+H9YX69FoNBaLFX8uFq4UpCGj7406i45t2xt/SDAg+iu6FtBmf5jNXcy5r/P3xu/WL1b+Sn7jv0tA
+6gv1HT07iM8BoHT43F4xOREZfW8093XOmDNWPolTd/Yd3Dd4ejDRlxh8Y1B/eXMfxYzH4tZ9q3yt
+7O401Wp14sJE7uvcBr/VHx88PZj9KLsbPkc+B7C1joNhbPn6Oda7f/ardL2kaatfdacFtdiRWOl6
+KRgObnaTE5HhoWFn0SmbS/uc4ziJE4n1/y61Wk0aXD8HoDx86m8797dkvdn10h15tkZD7Pt29Mia
+z5AYSNTr9fTpraRlqdMpcS+CbIiIFK8V06+m1/+72I9sEWl+wraTtVp1nyOfA9jOSSQMg3xO/buf
+OI7jNJz40fg6G6GIGOZWTjhHD0fD4bA5Z2oBrVaraZqm/Ulb/+9lW7aI6C/qO3p2kOvnADqz1WEb
+W7i/JevdM7k/9jkRCYfD65zSFJHStdLU51PvvPVOb7R36dZc7ZEYSNgP7LpTn/5hOnUyVbhcGP9o
+PH0mXb5RXvXvZf5iikjv0d4dPTtIPgeA1ZHP+d/kXILBoIhEDkZW2QLrTvFqcfIfk/pLeqVSGfvb
+2Lw9b9+3ly7kX0H9SX3pc5Ktpy5PpBzHMSpGMBjUD+nDbw3XHtfsB7Z7BeTKv5cxZ+gv6dFoVMjn
+ALA68jnWHSAg4XDYEad1u8p9kbMf2NkL2ez5rIgkTyTLN8vWXcu6bcWOx1zDW+UsZTQaOhSy79ut
+P3Q/5Zi/nB8eXPrGCeuBFTvyx5Ms+7YK01h4sjB0Zoj7WwJgdV5ax/viS1+j01xjY129j+Uy4rF4
+yzYnhmmMnhtN9Ccy72Zc2xs6M+Q0nOSJZH2xfip1aq3n6Y31SkNM87nramJHYiIyfm7cvTDOtu36
+k/pa74HZq7PRl6OnXjvF/S0BsDoPmpxgdR3L5Dp7bXHqZMq2n0lY8mRy3pq3LCt6ONr6k/Fz467b
+rfU8M5dnJCDLzmqad83MXzLueUhpLH19YH9f/yqftHxol66XsuezWkDj/pYAWJ23r+vCxrqbyS0j
+/UbasqznzkAejrom1/qTcqWs7df6/7N/refJ/TM3Mz3z3EdaGlK4XBj580jz9bvfu9R7tHfl33Hq
+i6nsh9nY0dguvA+5HwrATrE3b5XSPGn57MwYd0VRrCWm30wXvi1o+9dLi/b9aV9yIPlT8adV/2vx
+x2LoYMjdBa1fLP1FXduvZT/Kjp4brT6quo9xGk7yZDJ2JJb7cvktUWa+n3EazrJ7j+3E+5D7WwLs
+eJ/ag3dLWQXMTA2TazJ5YbJ4rbjOAyo3K86i436VxOonP19PLaleQ+KxeOSVyPDQcObdjKt3zWvj
+nEXH/TbB566Zs20JSOatzK69D/E5AMRuB5UOmfNiJ/zk/3ySPZ+dvzO/zp1TmuT/na/X6yN/GXEF
+sfluz32Ty/8zX7hcWIrruvEm5P6WALsqdnvW6rC0XfgWgs5S+p9S+EC4nU1ORDJvZ8Y+GHvuLOgf
+18YFg8EduTaOfA4AscPn0Lgt4yw6oVAo9Xpq5vuZLb/J3Zs4p06kJj6d6OKbkHwOoEtit9c+dYmx
+bXRtnFJTfrlSdhpO+tWtf/GpFtCMOUMa3fw2D3wOALfbjWkamdvNptfT09M0mO0wfm586oupX+1f
+Iwci5m1znUsL1nljT/5jcvq76Z9mf9KCmn3/j/t+dd3nyOcAdt/t/JrbYXIb5nAd3OR6enrcTa65
+223T58LhsP6iPvXF1GY3uea/u3nHDB8IhyKh2e9mV71+jnwOAMPD57C3zZlcK9uxulOpU6VrpdTr
+qfxX+eCB4NbexiPvj1RuVlInUyMfjKx62+jd9LmWfS4g0pClW7Cw/mMdO8buC93Y826bnj523C4z
+b87v8R6yC+P7qgK3rbOXjph3zS23PvOWqQW0eq1uL9hRPapp3an/Gvsc4J2A1YH3ZU46kdJ5/Q2s
+bj7nibV5y7RuWzQj6Ky9PXtfcazRNzZDF7e0NVHsE7/4HIYH2Bt4vm+0Wl13dz6lfY7Ja5uTGsct
+bKoXYG/0jQ72jactdP3trdqn9/E53A4QOKBv7A2fY8LqyNq8ZZq3aWSw+vHvvjc4Xlj7vG+QzzGj
+ARoH4Ne+QT63586/c9ACORzrvdY3yOeYzgCNA/Bt3yCf41NVsLdMjvc/673YN8jnGNAAkwPwa98g
+n9vTa6xu7+xwmBzrvdw3yOeYzrA6NA7At32DfI41VufzTY73OWv6BvkcYHXIHIBv+wb5HGuszreQ
+ybGmb6hzdhCfYzoDTA7oG3vP55iYujtxACbHmrVP+gb5HKB0mByAX/sG+Rxr7oHpR3g/s6ZvtEA+
+BygdMgfg275BPsd6lTXfV+fhTY73MGv6hppnOPA5pjNA5oC+sed8jilJnekDPLDJ8c3grOkba9DO
+6689rpVvlPPf5IvXilpAq9VquYu57PlsrVZzn6QwXch+lDVMg3yO0QyQOaBveO/QKP5cLEwXrLvW
+pYuXIuFI/p950aR4tTj2wVh6MD3x2YT7w9jxWP7rfMd8jsmI6QzaP5J5r7Kmb6xJG685dToVPBDU
+NE1/SZ+5OpO9kE2dSIlIJBK59NWlsffHhs4MSUBCfwqRzzGaATIH9I2Y544Op+EkTyajh6PxaDzz
+bkbTtInPJoo/FoffHk6dTOm6XrpRGj83Pva3seE3hzvmc0xG3OkAOjuxsma9N/tGO695/s68s+jU
+n9RTp1PB/UERMedMbb+mH9J1XZeAGBVDRBJ9CfI55jJA5oC+4T2fy13M5a/kh84MjZ8bF5Hq4+qp
+1Knoy9HClYK7UaXPpGv1Wunn0tZeBvmcumuupcPkWLP2fN9o4zWX58oikjmbcX9erpRFZPDMoGgi
+IrVazb5vJ/uT0onM8oXWs6UiIg3W3V+D0jLHe5U1fWN9NnrNtVrNumv1/0d/6GDI/blrgckTSfcx
+lZsV18lqv9VMy9xKTVbd55iM+PQUtAPvT9b0jW0eI5VbFRFJnkw2s7RypRw7Fmt+unL+zryI9B/v
+n/73tH5Il+3lcy+0vwOz3p018Y/i8F5lTd/Y5jHifsYkObBkb9Y9q16vu4ma+xj3f7MXskNnhzRN
+26bdks+puAbyOdasPdw3NnrN2fNZwzRCoSV7i0ajxpwx9t5Y8zHj58YLlwu5L3PNx3D9nN/gU5fq
+hnMA9A0vHCZcP8d5dsDkWNM3dgq+fw7wOXwOAJ/rhs8xDamztm5bHLQKwvuTNX3DM2c+8DlGM8Dn
+gL6x53yOaYhPT4EHplTWrJXvG+RzgM8hcwD4XDd8jmmIT0+B+lMqa9Ye6Bvrvs54XzzeF9/O39F9
+BvI55jLA54C+ocqR4tpVK9vZdNp5NvI5zrND56dU1qzpG61nPlzrWrK3jp4dWXXne/ZnrZXPQacG
+DXwOn9tRVm0ZQN9Qp2/09Ci0razwOVBtcgfFYFoH+oYn9vvl/yzudgfLJxEV7kQOiqHOd4xx2NI3
+VO4brVvdWmcgOpvPrf/n4nNM7sC0DvSNnarDvDlvzBmGaSzb2Dr1d2x9/jWvn2MwXDmXcZ4dVqLg
+VUFA31Cwb6h9PxRgcgemdaBv+K4O7HNrwHl2WIE6+RzQN5TuG4rVgX2OyR2Y1oG+4ec6sM8xuQPT
+OtA3/FwH9jkmd2BaB/qGn+vAPsfkDkzrQN/wcx3Y55jcgWkd6Bt+rgP7HJM7MK0DfcPPdWCfY3IH
+pnWgb/i5DuxzTO7AtA70DT/XgX2OyR2Y1oG+4ec6sM8xuQPTOtA3/FwH9jkmd2BaB+qSYYEAAAbj
+SURBVPqGn+vAPsfkDkzrQN/wcx3Y55jcgWkd6Bt+rgP7HJM7MK0DfcPPdWCfY3IHpnWgb/i5Duxz
+TO7AtA70DT/XgX2OyR2Y1oG+4ec6sM8xuQPTOtA3/FwH9jkmd2BaB/qGn+vAPsfkDkzrQN/wcx3Y
+55jcgWkd6Bt+rgP7HJM7MK0DfcPPdWCfY3IHpnWgb/i5DuxzTO7AtA70DT/XgX2OyR2Y1oG+4ec6
+sM8xuQPTOtA3/FwH9jkmd2BaB/qGn+vAPsfkDkzrQN/wcx3Y55jcgWkd6Bt+rgP7HJM7MK0DfcPP
+dWCfY3IHpnWgb/i5DuxzTO7AtA70DT/XgX2OyR2Y1oG+4ec6sM8xuQPTOtA3/FwH9jkmd2BaB/qG
+n+vAPsfkDkzrQN/wcx3Y55jcgWkd6Bt+rgP7HJM7MK0DfcPPdUAc1p7cG6IFNKfhdGVt3jK7/hp6
+Y72GaXT3NSi0FiVeD9A31llTh2frFnqePn3Km/NZOXp6RMSYMyiFiMT74lRDzX8UDlv6xqrEjse6
+/hrMW6ZqRwrnLVdHhfPLCp3jDlATZdZA3yCf22Qd8Dl8br1piGrgc4DP4XM+BZPDbpX/dwH6BtfP
+tVMHfA6f28DnKAg+B/gcPudDsAfslnwOvNg3qAP5HD63aZmjIPgc4HP4nB8hB8JuyefAi32DOpDP
+4XNb8Dlqgs8BPofP+Q3sgZqQz4EX+wZ1IJ/D57Yic9QEnwN8Dp/zHRgDNSGfAy/2DepAPofPbXYg
+2rAa1cdV+75t3jGjejR5Mlmr1fL/ztfr9ZH3RyIHI07Dmfl+xrxtDp0ZisfiVBWfo2/gc/icEmAP
+7d/f0rpt5b7K5f+Z1zSt+rA69fmUs+gUfy6Wr5cdx5n8dLJer5dvlHNf5agn+Rx9g3yO759TBRW+
+P0mh73Ba9zHJk8nIgYgERD+sF34oTFyYSAwkRGRfaN+lry5l/jszdHbIaTihUIh68v1z9A2+f273
+68A+twbYQ4s9bPCYhpRvlfuP989+Nzv63qgExDANCUj1YTX9elqP6O55jNjxGPUkn6NvkM/tfh3Y
+59YAe2ixh/UfUzbLjuMsLCykTqc0TRORyo1KMBgMHgjquu40HMM0RCTRl6CefMs8fWNPGL9idWCf
+U/f8slfyOXPOFJHkQFLXdS2gVatV+5EdCobSr6Xdx1QqlXA4rOs69SSfo2+Qz5HPcX7Ze/lcuVKW
+gAy+Mej+3N32Mmcy7q9Wq1X7gb10TR5mRj5H3yCfI5/j/LJ4Kp+r1WrWfav/eL9+SHd/Xr5Z1gJa
+/0B/89OYIpLsT9Z+q9n3bGor5HP0DfI5IZ/j/LJ38jnzlikNOXXylPtzx3HKZlk/rDc/XVmeK4tI
+9Eh0+t/TkUMRaivkc/QN8jkhn+P8snfyuVKl1GpvVbtaf1JPDiSbj3H/d+qzqaGzQ9p+jdr6YVoH
+hfsGdeD+lhvA/VBaafN+KOtT+622sLDgfkSFknbqH4XDlr6xKtwPZdUjBZ9bA+yh/evn1l1HQpHo
+K1H3egPqST5H3yCf4/6WzGV+8znA5+gb+Bw+pyLYQ/vXz7EmnwN1+gZ1IJ/D5/A5fA7wOXwOsIfO
+5XOsyefoG+Rz5HPMZfgc4HP0DXwOn9tdsAfyOfI58GLfoA7kc/gcPofPAT6HzwH2QD4n5HPgzb5B
+Hcjn8Lk256BlYHX4HOBz+JyvwBioCfkceLFvUAfyOXxui0pHTfA5wOfwOX9BDkRNyOfAi32DOpDP
+4XNb8DkKgs8BPofP+Q3sAZMjnwMv9g3qQD6Hz21F6SgIPgf4HD7nO8iBsFvyOfBi36AO5HP43GZ9
+jmrgc4DP4XM+BHvAbsnnwIt9gzqQz+Fzmx6IqAY+B/gcPudHsAfub0k+B17sG9SBfK6duQxAcThs
+8TnA5wAAdhvOOqh55gOfAwDA5/A5AADYEIxKyU8m43MAAPgcPgcAABuBRZHPAQDgc4DPAQB4FIyK
+fA4AAJ8DfA4AwJNgUeRzAAD4HOBzAAAeBaMinwMAwOcAnwMA8CRYFPkcAAA+B/gcAIBHwajI5wAA
+8DnA5wAAPAkWRT4HAIDPAT4HAOBRMCryOQAAfA7wOQAAT4JFkc8BAOBzgM8BAHgUjIp8DgAAnwN8
+DgDAk2BR5HMAAPgc4HMAAB4FoyKfAwDA5wCfAwDwJFgU+RwAAD4H+BwAgEfBqMjnAADwOcDnAAA8
+CRZFPgcAgM8BPgcA4FEwKvI5AAB8DvA5AABPgkWRzwEA4HOAzwEAeBSMinwOAACfA3wOAMCTYFHk
+cwAA+BzgcwAAHgWjIp8DAMDnYJd9jn0OAKAD+xwoCOctAQBgDwwi+BwAAPgYfA4AAPzM/weRANir
+eYTgWQAAAABJRU5ErkJggg==
+
+------=_NextPart_000_0000_01CA326A.88F68560
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: http://uva.onlinejudge.org/contests/232-b5f9a162/11656img2.png
+
+iVBORw0KGgoAAAANSUhEUgAAABIAAAAfBAMAAAFvebAsAAAAHlBMVEXd3d1VVVXu7u7MzMyqqqpm
+Zmb///9ERER3d3e7u7tk4eSkAAAAAXRSTlMAQObYZgAAAGFJREFUGJVjSEtgQCAGNyAGwiQgOxGI
+02AYyGVIBZJsYDYCQWQZQWRmGJidRjzZBiIjQewCsEg6G1g8dRqJ5qCQYIDOYpWEsKYHQMUcAxCy
+ppEIHRpiqHrby4GgDMM8UlgA40FyklQWbiwAAAAASUVORK5CYII=
+
+------=_NextPart_000_0000_01CA326A.88F68560--

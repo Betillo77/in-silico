@@ -1,0 +1,53 @@
+From: "Guardado por Windows Internet Explorer 8"
+Subject: Problem F: Weights and Measures
+Date: Sun, 6 Sep 2009 19:59:55 -0500
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://uva.onlinejudge.org/external/101/10154.html
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7100.0
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Problem F: Weights and Measures</TITLE>
+<META content=3D"text/html; charset=3Dwindows-1252" =
+http-equiv=3DContent-Type>
+<META name=3DGENERATOR content=3D"MSHTML 8.00.7100.4129"></HEAD>
+<BODY>
+<H2>Problem F: Weights and Measures</H2><EM>I know, up on top you are =
+seeing=20
+great sights, <BR>But down at the bottom, we, too, should have rights. =
+<BR>We=20
+turtles can't stand it. Our shells will all crack! <BR>Besides, we need =
+food. We=20
+are starving!" groaned Mack. </EM>
+<H3>The Problem</H3>
+<P>Mack, in an effort to avoid being cracked, has enlisted your advice =
+as to the=20
+order in which turtles should be dispatched to form Yertle's throne. =
+Each of the=20
+five thousand, six hundred and seven turtles ordered by Yertle has a =
+different=20
+weight and strength. Your task is to build the largest stack of turtles=20
+possible. </P>
+<P>Standard input consists of several lines, each containing a pair of =
+integers=20
+separated by one or more space characters, specifying the weight and =
+strength of=20
+a turtle. The weight of the turtle is in grams. The strength, also in =
+grams, is=20
+the turtle's overall carrying capacity, including its own weight. That =
+is, a=20
+turtle weighing 300g with a strength of 1000g could carry 700g of =
+turtles on its=20
+back. There are at most 5,607 turtles. </P>
+<P>Your output is a single integer indicating the maximum number of =
+turtles that=20
+can be stacked without exceeding the strength of any one. </P>
+<H3>Sample Input </H3><PRE>300 1000
+1000 1200
+200 600
+100 101
+</PRE>
+<H3>Sample Output</H3><PRE>3
+</PRE></BODY></HTML>

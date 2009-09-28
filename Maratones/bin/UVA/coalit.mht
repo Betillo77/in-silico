@@ -1,0 +1,225 @@
+From: "Guardado por Windows Internet Explorer 8"
+Subject: Best Coalitions
+Date: Tue, 8 Sep 2009 00:15:16 -0500
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01CA3019.70F8A720"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7100.0
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01CA3019.70F8A720
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://uva.onlinejudge.org/contests/232-b5f9a162/11658.html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--Converted with LaTeX2HTML 2008 (1.71)=0A=
+original version by:  Nikos Drakos, CBLU, University of Leeds=0A=
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan=0A=
+* with significant contributions from:=0A=
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others =
+--><HTML><HEAD><TITLE>Best Coalitions</TITLE>
+<META content=3D"text/html; charset=3Dwindows-1252" =
+http-equiv=3DContent-Type>
+<META name=3Ddescription content=3D"Best Coalitions">
+<META name=3Dkeywords content=3Dhtmlatex>
+<META name=3Dresource-type content=3Ddocument>
+<META name=3Ddistribution content=3Dglobal>
+<META name=3DGENERATOR content=3D"MSHTML 8.00.7100.4129">
+<META content=3Dtext/css http-equiv=3DContent-Style-Type><LINK =
+rel=3DSTYLESHEET=20
+href=3D"htmlatex.css"></HEAD>
+<BODY lang=3DEN bgColor=3D#ffffff>
+<H1><BR clear=3Dall>
+<CENTER>
+<TABLE bgColor=3D#0000ff>
+  <TBODY>
+  <TR>
+    <TD><B><FONT color=3D#ffff00 size=3D5>&nbsp;<A=20
+      name=3DSECTION0001000000000000000000> Best=20
+  Coalitions</A>&nbsp;</FONT></B></TR></TBODY></TABLE></CENTER></H1>Envy =
+Inc. is a=20
+joint stock company, that is, a company in which every stockholder =
+legally owns=20
+shares of stock that account for some percentage of the total shares of =
+stock of=20
+the company. Due to the global economic crisis, the management rules of =
+Envy=20
+Inc. define a particular way for distributing last year's profit: if a=20
+stockholder owns more than half of the shares of stock, he/she wins the =
+total=20
+profit. Nothing fancy so far in this wild world!=20
+<P>Nevertheless, there are situations in which no stockholder owns more =
+than 50%=20
+of the shares of stock of the company. So, in order to gain some profit, =
+
+stockholders are allowed to form <EM>coalitions</EM>, i.e., groups of=20
+stockholders. The participation of the coalition, share-wise, is =
+equivalent to=20
+the sum of its stockholders' percentile participation. Hence, if a =
+coalition has=20
+more than half of the shares of stock, its members win the totality of =
+last=20
+years profit. Then, the members of the coalition receive a part of the =
+profit=20
+proportional to their individual participation in the coalition.=20
+<P>For instance, let us assume there are 5 stockholders: <SPAN=20
+class=3DMATH><I>A</I></SPAN>, <SPAN class=3DMATH><I>B</I></SPAN>, <SPAN=20
+class=3DMATH><I>C</I></SPAN>, <SPAN class=3DMATH><I>D</I></SPAN> and =
+<SPAN=20
+class=3DMATH><I>E</I></SPAN>, owning <SPAN class=3DMATH>20%</SPAN>, =
+<SPAN=20
+class=3DMATH>12%</SPAN>, <SPAN class=3DMATH>14%</SPAN>, <SPAN =
+class=3DMATH>29%</SPAN>=20
+and <SPAN class=3DMATH>25%</SPAN> of the stock of the company, =
+respectively. The=20
+stockholder <SPAN class=3DMATH><I>E</I></SPAN> could form several =
+winning=20
+coalitions. For example, if <SPAN class=3DMATH><I>E</I></SPAN> were to =
+form a=20
+coalition with <SPAN class=3DMATH><I>A</I></SPAN> and <SPAN=20
+class=3DMATH><I>B</I></SPAN>, he/she would get <SPAN =
+class=3DMATH>43.86%</SPAN> of=20
+last year's profit. If <SPAN class=3DMATH><I>E</I></SPAN> were to form a =
+coalition=20
+with <SPAN class=3DMATH><I>B</I></SPAN> and <SPAN =
+class=3DMATH><I>C</I></SPAN>=20
+instead, he/she would get <SPAN class=3DMATH>49.02%</SPAN> of last =
+year's profit.=20
+On the other hand, <SPAN class=3DMATH><I>E</I></SPAN> could not form a =
+winning=20
+coalition with only <SPAN class=3DMATH><I>A</I></SPAN>.=20
+<P>Your problem is, given a distribution of shares of stock of Envy =
+Inc., and a=20
+stockholder, to determine the maximum percentage of the last year's =
+profit that=20
+the given stockholder may win.=20
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A=20
+name=3DSECTION0001001000000000000000>Input</A>&nbsp;</FONT> </H2>
+<P>The input consists of several test cases, each one defining a =
+percentile=20
+distribution of shares of stock, and the index of a stockholder to =
+determine=20
+his/her optimal participation. More precisely, each test case is defined =
+by=20
+several input lines:=20
+<P>
+<UL>
+  <LI>the first line contains two integer values <SPAN=20
+  class=3DMATH><I>n</I></SPAN> (<!-- MATH=0A=
+ $1 \leq n \leq 100$=0A=
+ --> <SPAN=20
+  class=3DMATH>1 <IMG border=3D0 alt=3D"$ \leq$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11658img1.png" =
+width=3D18=20
+  height=3D31> <I>n</I> <IMG border=3D0 alt=3D"$ \leq$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11658img1.png" =
+width=3D18=20
+  height=3D31> 100</SPAN>) and <SPAN class=3DMATH><I>x</I></SPAN> (<!-- =
+MATH=0A=
+ $1 \leq x \leq n$=0A=
+ --> <SPAN class=3DMATH>1 <IMG border=3D0=20
+  alt=3D"$ \leq$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11658img1.png" =
+width=3D18=20
+  height=3D31> <I>x</I> <IMG border=3D0 alt=3D"$ \leq$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11658img1.png" =
+width=3D18=20
+  height=3D31> <I>n</I></SPAN>), separated by a blank, representing the =
+number of=20
+  stockholders in Envy Inc. and the index of a stockholder to determine =
+his/her=20
+  optimal participation, respectively;=20
+  <LI>each one of the following <SPAN class=3DMATH><I>n</I></SPAN> lines =
+has a=20
+  single floating point value <SPAN =
+class=3DMATH><I>p</I><SUB>i</SUB></SPAN>,=20
+  rounded to 2 decimal places, which represents the percentage of stock=20
+  ownership of stockholder <SPAN class=3DMATH><I>i</I></SPAN> (<!-- MATH=0A=
+ $1 \leq i \leq n$=0A=
+ --> <SPAN class=3DMATH>1 <IMG border=3D0=20
+  alt=3D"$ \leq$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11658img1.png" =
+width=3D18=20
+  height=3D31> <I>i</I> <IMG border=3D0 alt=3D"$ \leq$" align=3Dmiddle=20
+  src=3D"http://uva.onlinejudge.org/contests/232-b5f9a162/11658img1.png" =
+width=3D18=20
+  height=3D31> <I>n</I></SPAN>). The floating point delimiter is =
+`<TT>.</TT>'=20
+  (i.e. the dot). You can assume that=20
+  <!-- MATH=0A=
+ $p_1 + \ldots + p_n =3D 100$=0A=
+ --><SPAN=20
+  class=3DMATH><I>p</I><SUB>1</SUB> +...+ <I>p</I><SUB>n</SUB> =3D =
+100</SPAN>.=20
+</LI></UL>
+<P>The end of the input is indicated by <SPAN class=3DMATH><I>n</I> =3D =
+<I>x</I> =3D=20
+0</SPAN>, an artificial case that must be ignored.=20
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A=20
+name=3DSECTION0001002000000000000000>Output</A>&nbsp;</FONT> </H2>
+<P>For each given case, output a single line with the corresponding =
+answer. The=20
+answer should be formatted and approximated to two decimal places. The =
+floating=20
+point delimiter must be `<TT>.</TT>' (i.e. the dot). The rounding =
+applies=20
+towards the <SPAN class=3Dtextit>nearest neighbor</SPAN> unless both =
+neighbors are=20
+equidistant, in which case the result is rounded up (e.g. <SPAN=20
+class=3DMATH>78.312</SPAN> is rounded to <SPAN =
+class=3DMATH>78.31</SPAN>; <SPAN=20
+class=3DMATH>78.566</SPAN> is rounded to <SPAN =
+class=3DMATH>78.57</SPAN>; <SPAN=20
+class=3DMATH>78.345</SPAN> is rounded to <SPAN =
+class=3DMATH>78.35</SPAN>, etc.).=20
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A =
+name=3DSECTION0001003000000000000000>Sample=20
+Input</A>&nbsp;</FONT> </H2><PRE>5 5
+20.00
+12.00
+29.00
+14.00
+25.00
+2 1
+56.87
+43.13
+2 2
+56.87
+43.13
+3 1
+10.00
+45.00
+45.00
+0 0
+</PRE>
+<P>
+<H2><FONT color=3D#ff0000 size=3D4><A =
+name=3DSECTION0001004000000000000000>Sample=20
+Output</A>&nbsp;</FONT> </H2><PRE>49.02
+100.00
+43.13
+18.18
+</PRE>
+<P>
+<P><BR>
+<HR>
+</BODY></HTML>
+
+------=_NextPart_000_0000_01CA3019.70F8A720
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: http://uva.onlinejudge.org/contests/232-b5f9a162/11658img1.png
+
+iVBORw0KGgoAAAANSUhEUgAAABIAAAAfBAMAAAFvebAsAAAAHlBMVEXd3d1VVVXu7u7MzMyqqqpm
+Zmb///9ERER3d3e7u7tk4eSkAAAAAXRSTlMAQObYZgAAAGFJREFUGJVjSEtgQCAGNyAGwiQgOxGI
+02AYyGXIAJJsYDYCQWRZQWRmG5idRjzZBiIDQGwhsEgiG1g8dRqJ5qCQYIDOYpWEsCY2QMVcmxCy
+pgEIHRpiqHrby4GgDMM8UlgA599ys/rPH80AAAAASUVORK5CYII=
+
+------=_NextPart_000_0000_01CA3019.70F8A720--
