@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.Scanner;
 
 
-public class tresN
+public class tres
 {
 
 	public static int [] iteraciones = new int [1000000];

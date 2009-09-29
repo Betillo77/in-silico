@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
-public class pokerHands 
+public class poker
 {
 	static class Carta implements Comparable <Carta>
 	{
