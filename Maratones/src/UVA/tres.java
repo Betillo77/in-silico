@@ -11,7 +11,7 @@ public class tres
 	public static long maximo = ((Long.MAX_VALUE - 1) / 3);
 	public static BigInteger maximoBig = new BigInteger(maximo + "");
 	
-	public static int resolver(Object numero)
+	public static int resolver(Number numero)
 	{
 		if(numero instanceof Long)
 		{
