@@ -1,4 +1,4 @@
-package UVA;
+package UVA_Pendientes;
 
 import java.util.Hashtable;
 import java.util.Scanner;
