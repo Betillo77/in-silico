@@ -1,0 +1,112 @@
+From: "Guardado por Windows Internet Explorer 8"
+Subject: Minesweeper
+Date: Mon, 28 Sep 2009 20:00:42 -0500
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://uva.onlinejudge.org/external/101/10189.html
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7100.0
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos =
+(nikos@cbl.leeds.ac.uk), CBLU, University of Leeds =
+--><HTML><HEAD><TITLE>Minesweeper</TITLE>
+<META content=3D"text/html; charset=3Dwindows-1252" =
+http-equiv=3DContent-Type>
+<META name=3DGENERATOR content=3D"MSHTML 8.00.7100.4129"></HEAD>
+<BODY lang=3DEN bgColor=3D#ffffff>
+<H1><BR clear=3Dall>
+<CENTER>
+<TABLE bgColor=3D#0060f0>
+  <TBODY>
+  <TR>
+    <TD><B><FONT color=3D#c0ffff size=3D5>&nbsp;<A=20
+      name=3DSECTION0001000000000000000000>Problem B:=20
+      =
+Minesweeper</A></FONT>&nbsp;</B></TR></TBODY></TABLE></CENTER></H1>
+<P>
+<H2><FONT color=3D#0070e8><A name=3DSECTION0001002000000000000000>The=20
+Problem</A></FONT></H2>
+<P>Have you ever played Minesweeper? It's a cute little game which comes =
+within=20
+a certain Operating System which name we can't really remember. Well, =
+the goal=20
+of the game is to find where are all the mines within a MxN field. To =
+help you,=20
+the game shows a number in a square which tells you how many mines there =
+are=20
+adjacent to that square. For instance, supose the following 4x4 field =
+with 2=20
+mines (which are represented by an * character): <PRE>*...
+....
+.*..
+....
+</PRE>If we would represent the same field placing the hint numbers =
+described=20
+above, we would end up with: <PRE>*100
+2210
+1*10
+1110
+</PRE>As you may have already noticed, each square may have at most 8 =
+adjacent=20
+squares. </U></U>
+<H2><FONT color=3D#0070e8><A name=3DSECTION0001003000000000000000>The=20
+Input</A></FONT></H2>
+<P>The input will consist of an arbitrary number of fields. The first =
+line of=20
+each field contains two integers n and m (0 &lt; n,m &lt;=3D 100) which =
+stands for=20
+the number of lines and columns of the field respectively. The next n =
+lines=20
+contains exactly m characters and represent the field. Each safe square =
+is=20
+represented by an "." character (without the quotes) and each mine =
+square is=20
+represented by an "*" character (also without the quotes). The first =
+field line=20
+where n =3D m =3D 0 represents the end of input and should not be =
+processed.=20
+<H2><FONT color=3D#0070e8><A name=3DSECTION0001004000000000000000>The=20
+Output</A></FONT></H2>
+<P>For each field, you must print the following message in a line alone: =
+<PRE>Field #x:</PRE>Where x stands for the number of the field (starting =
+from=20
+1). The next n lines should contain the field with the "." characters =
+replaced=20
+by the number of adjacent mines to that square. There must be an empty =
+line=20
+between field outputs.=20
+<H2><FONT color=3D#0070e8><A name=3DSECTION0001005000000000000000>Sample =
+
+Input</A></FONT></H2>
+<P><PRE>4 4
+*...
+....
+.*..
+....
+3 5
+**...
+.....
+.*...
+0 0
+</PRE>
+<P>
+<H2><FONT color=3D#0070e8><A name=3DSECTION0001006000000000000000>Sample =
+
+Output</A></FONT></H2>
+<P><PRE>Field #1:
+*100
+2210
+1*10
+1110
+
+Field #2:
+**100
+33200
+1*100
+</PRE>
+<HR>
+<B>=A9 2001 Universidade do Brasil (UFRJ). Internal Contest Warmup 2001. =
+
+</B></BODY></HTML>
