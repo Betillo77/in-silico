@@ -1,10 +1,10 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		editor.o
+OBJS =		check.o
 
 LIBS =
 
-TARGET =	editor.exe
+TARGET =	check.exe
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
