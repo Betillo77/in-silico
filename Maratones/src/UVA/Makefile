@@ -1,10 +1,10 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		hartals.o
+OBJS =		crypt.o
 
 LIBS =
 
-TARGET =	hartals.exe
+TARGET =	crypt.exe
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
