@@ -1,10 +1,10 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		ballots.o
+OBJS =		hartals.o
 
 LIBS =
 
-TARGET =	ballots.exe
+TARGET =	hartals.exe
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
