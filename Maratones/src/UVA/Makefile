@@ -1,10 +1,10 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		crypt.o
+OBJS =		stackem.o
 
 LIBS =
 
-TARGET =	crypt.exe
+TARGET =	stackem.exe
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
