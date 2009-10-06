@@ -100,6 +100,7 @@ string reemplazar(string linea, char* resultado)
 	}
 	return nueva;
 }
+
 int main()
 {
 	int n;
@@ -126,9 +127,7 @@ int main()
 		}
 		istringstream tokens(linea);
 		string *actual = palabras;
-		while(tokens >> *actual++)
-		{
-		}
+		while(tokens >> *actual++);
 		char *resultado = buscar(palabras, desconocido());
 		cout << reemplazar(linea, resultado) << endl;
 	}

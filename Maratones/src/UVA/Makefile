@@ -1,10 +1,10 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		stackem.o
+OBJS =		scoreboard.o
 
 LIBS =
 
-TARGET =	stackem.exe
+TARGET =	scoreboard.exe
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
