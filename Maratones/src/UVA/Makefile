@@ -1,10 +1,10 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		scoreboard.o
+OBJS =		crypt2.o
 
 LIBS =
 
-TARGET =	scoreboard.exe
+TARGET =	crypt2.exe
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
