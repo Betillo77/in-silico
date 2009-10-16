@@ -1,10 +1,10 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		flapjacks.o
+OBJS =		lottery.o
 
 LIBS =
 
-TARGET =	flapjacks.exe
+TARGET =	lottery.exe
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
