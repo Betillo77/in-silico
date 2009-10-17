@@ -3,7 +3,6 @@ package GoogleCode;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.Stack;
@@ -112,7 +111,6 @@ public class sokoban
 		@Override
 		public int hashCode()
 		{
-			int hash = 0;
 			String t = "";
 			for(int i = 0; i < tablero.length; i++)
 			{
@@ -174,7 +172,6 @@ public class sokoban
 				if(visitados.containsKey(actual))
 					continue;
 				visitados.put(actual, actual.hashCode());
-				int a = visitados.size();
 				if(actual.equals(estadoFinal))
 				{
 					numerofinal = actual.pasos;

@@ -24,6 +24,7 @@ public class roads
 	 * Note that all "matching" is based on the compareTo method.
 	 * @author Mark Allen Weiss
 	 */
+    @SuppressWarnings("unchecked")
 	static class BinaryHeap implements PriorityQueue {
 	    /**
 	     * Construct the binary heap.
@@ -63,7 +64,7 @@ public class roads
 	     * @throws UnsupportedOperationException because no Positions are returned
 	     * by the insert method for BinaryHeap.
 	     */
-	    public void decreaseKey( PriorityQueue.Position p, Comparable newVal ) {
+		public void decreaseKey( PriorityQueue.Position p, Comparable newVal ) {
 	        throw new UnsupportedOperationException( "Cannot use decreaseKey for binary heap" );
 	    }
 	    
@@ -114,7 +115,6 @@ public class roads
 	        currentSize = 0;
 	    }
 	    
-	    private static final int DEFAULT_CAPACITY = 100;
 	    
 	    private int currentSize;      // Number of elements in heap
 	    private Comparable [ ] array; // The heap array
@@ -206,6 +206,7 @@ public class roads
 	 * Note that all "matching" is based on the compareTo method.
 	 * @author Mark Allen Weiss
 	 */
+	@SuppressWarnings("unchecked")
 	interface PriorityQueue {
 	    /**
 	     * The Position interface represents a type that can
@@ -216,7 +217,7 @@ public class roads
 	         * Returns the value stored at this position.
 	         * @return the value stored at this position.
 	         */
-	        Comparable getValue( );
+			Comparable getValue( );
 	    }
 	    
 	    /**
@@ -279,6 +280,7 @@ public class roads
 	 * such as stacks, queues, and priority queues.
 	 * @author Mark Allen Weiss
 	 */
+	@SuppressWarnings("serial")
 	static class UnderflowException extends RuntimeException {
 	    /**
 	     * Construct this exception object.

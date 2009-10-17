@@ -34,9 +34,7 @@ public class football
 						{
 							if(otro.juegos == juegos)
 							{
-								if(otro.nombre.toLowerCase().compareTo(nombre.toLowerCase()) == 0)
-									throw(new RuntimeException());
-								return otro.nombre.toLowerCase().compareTo(nombre.toLowerCase());
+								return toLowerCase(otro.nombre).compareTo(toLowerCase(nombre));
 							}
 							return otro.juegos - juegos;
 						}
@@ -48,6 +46,19 @@ public class football
 			}
 			return puntos - otro.puntos;
 		}
+
+		private String toLowerCase(String nombre) 
+		{
+			String otro = "";
+			for(char a : nombre.toCharArray())
+			{
+				a %= 256;
+				if(a >= 'A' && a <= 'Z')
+					a = (char) (a - 'A' + 'a');
+				otro += a;
+			}
+			return otro;
+		}
 	}
 	
 	public static void main(String [] args) throws IOException
@@ -58,7 +69,7 @@ public class football
 		{
 			String nombre = br.readLine();
 			int numeroE = Integer.parseInt(br.readLine());
-			Hashtable <String, equipo> equipos = new Hashtable <String, equipo> ();
+			Hashtable <String, equipo> equipos = new Hashtable <String, equipo> (30);
 			for(int j = 0; j < numeroE; j++)
 			{
 				String nombreE = br.readLine();
@@ -111,6 +122,14 @@ public class football
 			for(; q > -1; q--)
 			{
 				equipo a = equiposO.get(q);
+				String nt = a.nombre;
+				String otro = "";
+				for(char sd : nt.toCharArray())
+				{
+					sd %= 128;
+					otro += sd;
+				}
+				a.nombre = otro;
 				System.out.print((j++) + ") " + a.nombre + " " + a.puntos + "p, " + a.juegos + "g (" + a.ganados + "-" + a.empatados + "-" + a.perdidos + "), " + (a.favor - a.contra) + "gd (" + a.favor + "-" + a.contra + ")" + '\n');
 			}
 			if(i != ncasos - 1)
