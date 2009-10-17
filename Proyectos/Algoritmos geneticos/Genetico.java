@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 
 public class Genetico
@@ -8,6 +9,7 @@ public class Genetico
 	int peso [] = {20, 10, 15, 50, 30, 25, 35, 40};
 	int utilidad [] = {10, 4, 8, 22, 16, 13, 17, 20};
 	int pesoMaximo = 500;
+	Random generator = new Random();
 	static final double FACTORMUTACION = 0.1; // factor de mutacion dado en porcentaje
 	
 	static Genetico g = new Genetico();
@@ -29,7 +31,7 @@ public class Genetico
 	
 	public int azar(int a, int b)
 	{
-		return (int) (a + Math.round((Math.random() * (double)(b - a))));
+		return generator.nextInt(b - a + 1) + a;
 	}
 	
 	public int [][] inicializar()
@@ -40,7 +42,7 @@ public class Genetico
 			int posible = 0;
 			do
 			{
-				posible = azar(0, Integer.MAX_VALUE);
+				posible = azar(0, Integer.MAX_VALUE - 1);
 			}
 			while(!validar(posible));
 			resultado[i][0] = posible;
