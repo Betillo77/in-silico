@@ -8,6 +8,8 @@ import java.util.Stack;
 public class almost 
 {
 	static InputStreamReader is;
+	static char [] numero = new char[10];
+	
 	public static void main(String [] args) throws IOException
 	{
 		is = new InputStreamReader(System.in);
@@ -134,12 +136,11 @@ public class almost
 	{
 		char actual;
 		while((actual = (char) is.read()) < '0' || actual > '9');
-		char [] numero = new char[1000];
 		int digitos = 1;
 		numero[0] = actual;
 		while((actual = (char) is.read()) >= '0' && actual <= '9')
 		{
-			numero[++digitos - 1] = actual;
+			numero[digitos++] = actual;
 		}
 		return Integer.parseInt(new String(numero, 0, digitos));
 	}
