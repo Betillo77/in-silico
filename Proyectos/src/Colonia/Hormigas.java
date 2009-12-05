@@ -1,4 +1,6 @@
+package Colonia;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -222,7 +224,15 @@ public class Hormigas
 	}
 	
 	public static double [][] leer(String nombreArchivo){
-		Scanner scanner = new Scanner(new File(nombreArchivo));
+		
+		Scanner scanner;
+		try {
+			scanner = new Scanner(new File(nombreArchivo));
+		} catch (FileNotFoundException e) {
+			scanner = new Scanner("");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String linea = new String();
 		double [][] datosPrueba = new double[scanner.nextInt()][scanner.nextInt()];
 		int cont = 0;
