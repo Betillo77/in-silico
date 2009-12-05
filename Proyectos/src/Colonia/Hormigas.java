@@ -226,6 +226,7 @@ public class Hormigas
 	public static double [][] leer(String nombreArchivo){
 		
 		Scanner scanner;
+		double dato;
 		try {
 			scanner = new Scanner(new File(nombreArchivo));
 		} catch (FileNotFoundException e) {
@@ -235,11 +236,14 @@ public class Hormigas
 		}
 		String linea = new String();
 		double [][] datosPrueba = new double[scanner.nextInt()][scanner.nextInt()];
-		int cont = 0;
 		for(int i = 0; i < datosPrueba.length; i++)
-			for(int j = 0; j < datosPrueba.length; j++)
-				datosPrueba[i][j] = scanner.nextDouble();
-			cont++;
+			for(int j = 0; j < datosPrueba.length; j++){
+				dato = scanner.nextDouble();
+				if (dato < 0)
+					datosPrueba[i][j] = Double.POSITIVE_INFINITY;
+				else
+					datosPrueba[i][j] = dato;
+			}
 		
 		return datosPrueba;
 	}
