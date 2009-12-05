@@ -12,10 +12,6 @@
   lista(0, 3, 14).
   lista(0, 4, 20).
   lista(0, 5, 12).
-  lista(0, 6, 11).
-  lista(0, 7, 1).
-  lista(0, 8, 3).
-  lista(0, 8, 3).
   lista(1, 0, 3).
   lista(1, 2, 6).
   lista(1, 3, 16).
@@ -24,7 +20,7 @@
   lista(2, 0, 5).
   lista(2, 1, 2).
   lista(2, 3, 17).
-  lista(2, 4, 5).
+  lista(2, 4, 15).
   lista(2, 5, 10).
   lista(3, 0, 18).
   lista(3, 1, 10).
@@ -44,7 +40,7 @@
 
 
   solucion:-
-  permutation([1, 2, 3, 4, 5, 6, 7, 8 ,9], X1), X2 = [0|X1], append(X2, [0], X), print(X), nl, peso(X, 0, Y), mejor(Z, W), Y =< Z, retract(mejor(Z, W)), assert(mejor(Y, X)), fail.
+  permutation([1, 2, 3, 4, 5], X1), X2 = [0|X1], append(X2, [0], X), print(X), nl, peso(X, 0, Y), mejor(Z, W), Y =< Z, retract(mejor(Z, W)), assert(mejor(Y, X)), fail.
 
 peso([_], A, A) :- !.
 peso([A, B | Cola], Acum, Total) :-
