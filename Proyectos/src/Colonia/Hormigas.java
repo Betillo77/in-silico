@@ -10,12 +10,12 @@ public class Hormigas
 	double [][] feromonas;
 	static final int M = 1000;
 	static final int Q = 1;
-	static final int Inicial = 46;
+	static final int Inicial = 200;
 	static final int numIteraciones = 100;
 	static final int a = 1;
 	static final int b = 1;
 	static final double p = 0.01;
-	static final double e = 0.005;
+	static final double e = 0.0051;
 	
 	@SuppressWarnings("unchecked")
 	public void solucionar(double [][] costoInicial)
