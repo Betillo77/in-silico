@@ -28,7 +28,6 @@ public class Hormigas
 				feromonas[i][j] = inicializacion;
 		int iteracion = 0;
 		double pesoOptimo = Inicial;
-		@SuppressWarnings("unused")
 		ArrayList <Integer> solucionOptima = null;
 		while(iteracion++ < numIteraciones)
 		{
@@ -72,7 +71,6 @@ public class Hormigas
 				for(int j = 0; j < costo.length; j++)
 					feromonas[i][j] = feromonas[i][j] * (1 - e);
 			double mejorPeso = Double.POSITIVE_INFINITY;
-			@SuppressWarnings("unused")
 			ArrayList <Integer> mejorSolucion = null;
 			for(int i = 0; i < hormigas.length; i++)
 			{
@@ -231,10 +229,8 @@ public class Hormigas
 			scanner = new Scanner(new File(nombreArchivo));
 		} catch (FileNotFoundException e) {
 			scanner = new Scanner("");
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String linea = new String();
 		double [][] datosPrueba = new double[scanner.nextInt()][scanner.nextInt()];
 		for(int i = 0; i < datosPrueba.length; i++)
 			for(int j = 0; j < datosPrueba.length; j++){
