@@ -1,4 +1,4 @@
-package ag;
+package Geneticos;
 
 /* VARIABLES
  * peso: Es un arreglo que indica en cada una de sus posiciones el peso de cada uno de los elementos
