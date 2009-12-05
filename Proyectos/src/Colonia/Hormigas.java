@@ -231,7 +231,8 @@ public class Hormigas
 			scanner = new Scanner("");
 			e.printStackTrace();
 		}
-		double [][] datosPrueba = new double[scanner.nextInt()][scanner.nextInt()];
+		int tam = scanner.nextInt();
+		double [][] datosPrueba = new double[tam][tam];
 		for(int i = 0; i < datosPrueba.length; i++)
 			for(int j = 0; j < datosPrueba.length; j++){
 				dato = scanner.nextDouble();
