@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Hormigas 
 {
-	
 	double [][] costo;
 	double [][] feromonas;
 	static final int M = 1000;
