@@ -40,7 +40,7 @@
 
 
   solucion:-
-  permutation([0, 1, 2, 3, 4, 5, 0], X), X = [0, _, _, _, _, _, 0], print(X), nl, peso(X, 0, Y), mejor(Z, W), Y =< Z, retract(mejor(Z, W)), assert(mejor(Y, X)), fail.
+  permutation([1, 2, 3, 4, 5], X1), X2 = [0|X1], append(X2, [0], X), print(X), nl, peso(X, 0, Y), mejor(Z, W), Y =< Z, retract(mejor(Z, W)), assert(mejor(Y, X)), fail.
 
 peso([_], A, A) :- !.
 peso([A, B | Cola], Acum, Total) :-
