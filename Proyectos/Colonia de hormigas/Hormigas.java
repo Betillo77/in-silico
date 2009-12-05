@@ -1,5 +1,6 @@
+import java.io.File;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 
 public class Hormigas 
 {
@@ -220,12 +221,25 @@ public class Hormigas
 	int indice=(int)(random()*m.length);
 	return indice;
 	}
-	///////////////////////
+	
+	public static double [][] leer(String nombreArchivo){
+		Scanner scanner = new Scanner(new File(nombreArchivo));
+		String linea = new String();
+		double [][] datosPrueba = new double[scanner.nextInt()][scanner.nextInt()];
+		int cont = 0;
+		for(int i = 0; i < datosPrueba.length; i++)
+			for(int j = 0; j < datosPrueba.length; j++)
+				datosPrueba[i][j] = scanner.nextDouble();
+			cont++;
+		
+		return datosPrueba;
+	}
 	
 	public static void main(String [] args)
 	{
 		Hormigas atomicas = new Hormigas();
-		double [][] prueba = {{Double.POSITIVE_INFINITY, 3, 4, 14, 20, 12}, {3, Double.POSITIVE_INFINITY, 6, 16, 7, 6}, {5, 2, Double.POSITIVE_INFINITY, 17, 15, 10}, {18, 10, 1, Double.POSITIVE_INFINITY, 10, 11}, {11, 8, 9, 4, Double.POSITIVE_INFINITY, 2}, {2, 6, 7, 1, 2, Double.POSITIVE_INFINITY}};
+		double [][] prueba = leer("prueba.txt");
+		//{{Double.POSITIVE_INFINITY, 3, 4, 14, 20, 12}, {3, Double.POSITIVE_INFINITY, 6, 16, 7, 6}, {5, 2, Double.POSITIVE_INFINITY, 17, 15, 10}, {18, 10, 1, Double.POSITIVE_INFINITY, 10, 11}, {11, 8, 9, 4, Double.POSITIVE_INFINITY, 2}, {2, 6, 7, 1, 2, Double.POSITIVE_INFINITY}};
 		atomicas.solucionar(prueba);
 	}
 }
