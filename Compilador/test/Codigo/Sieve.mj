@@ -1,0 +1,64 @@
+class Sieve {
+    
+    static int[] initArray(int n) {
+        int[] a = new int[n];
+        int i = 0;
+        while (i < a.length) {
+            a[i] = i;
+            i = i + 1;
+        }
+        return a;
+    }
+    
+    static void sieveAll(int[] a) {
+        int i = 2;
+        while (i < a.length) {
+            Sieve.sieve(a, i);
+            i = i + 1; 
+        }
+    }
+    
+    static void sieve(int[] a, int n) {
+        int i = 2*n;
+        while (i < a.length) {
+            a[i] = 0;
+            i = i + n;
+        }
+    }
+    
+    static void printPrimes(int[] a) {
+        int i = 2;
+        Library.print("Primes less than ");
+        Library.printi(a.length);
+        Library.print(": ");
+        while (i < a.length) {
+            if (a[i] != 0) {
+                Library.printi(a[i]);
+                Library.print(" ");
+            }
+            i = i + 1;
+        }
+    }
+    
+    
+    static void main(string[] args) {
+	int n; 
+	int[] a;
+        Library.println("Provide the number to sieve.");
+	n = Library.readi();
+	a = Sieve.initArray(n);
+        Library.println("");
+        Sieve.sieveAll(a);
+        Sieve.printPrimes(a);
+        Library.println("");
+    }
+}
+
+class Library
+{
+	static void println(string a){}
+	static void print(string b){}
+	static void printi(int c){}
+	static int readi(){}
+	static void exit(int a){}
+}
