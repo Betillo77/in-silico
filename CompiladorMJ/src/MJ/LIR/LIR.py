@@ -103,8 +103,10 @@ class VisitanteLir:
             self.listaactual.agregar('Return 999')
         
     def visitarBloque(self, bloque):
+        registroanterior = self.registroactual
         for statement in bloque.lista:
             statement.accept(self)
+        self.registroactual = registroanterior
             
     def visitarContinue(self, cont):
         self.listaactual.agregar('Jump _while_' + str(self.whileactual))
@@ -138,7 +140,6 @@ class VisitanteLir:
             
     def visitarIf(self, i):
         self.numeroif += 1
-        esteif = self.numeroif
         if i.tieneElse:
             etiqueta = '_else_' + str(self.numeroif)
         else:
@@ -269,7 +270,10 @@ class VisitanteLir:
             registroderecha = binaryOp.valorDos.accept(self)
             self.registroactual = registroanterior
             if binaryOp.operador == '+':
-                self.listaactual.agregar('Add ' + registroderecha + ', ' + registroizquierda)
+                if binaryOp.valorUno.tipo == 'string':
+                    self.listaactual.agregar('Library __stringCat(' + registroizquierda + ', ' + registroderecha + '), ' + registroizquierda)
+                else:
+                    self.listaactual.agregar('Add ' + registroderecha + ', ' + registroizquierda)
             elif binaryOp.operador == '-':
                 self.listaactual.agregar('Sub ' + registroderecha + ', ' + registroizquierda)
             elif binaryOp.operador == '*':
@@ -300,9 +304,7 @@ class VisitanteLir:
                 self.listaactual.agregar('_otro_' + str(self.numerootros) + ':')
                 self.listaactual.agregar('Move 0, ' + registroizquierda)
                 self.listaactual.agregar('_salida_otro_' + str(self.numerootros) + ':')
-            return registroizquierda
-                
-                
+            return registroizquierda 
     
     def visitarLength(self, length):
         registroexpression = length.valor.accept(self)
