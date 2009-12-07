@@ -25,6 +25,8 @@ class VisitanteLir:
         
     def visitarProgram(self, program):
         for clase in program:
+            if clase.nombre == 'Library':
+                continue
             self.numerarClase(clase)
             self.vectorDespacho += '_DV_' + clase.nombre + ': [' 
             tabla = self.tablaPrincipal.buscar(clase.nombre).tabla
@@ -37,6 +39,8 @@ class VisitanteLir:
             clase.accept(self)
         self.linea = self.strings + '\n' + self.vectorDespacho
         for listametodo in self.listametodos:
+            if listametodo.clase == 'Library':
+                continue
             self.linea += '\n' + '# ' + listametodo.clase + '.' + listametodo.nombre + '\n'
             if listametodo.nombre == 'main':
                 self.linea += '_ic_main:\n'
@@ -63,7 +67,6 @@ class VisitanteLir:
                     else:
                         entrada.numero = numeroFuncion
                     entrada.despacho = '_' + clase.nombre + '_' + entrada.nombre
-                    print entrada
             tabla.numeroCampos = numeroActualCampo
             tabla.numeroMetodos = numeroActualMetodo
         else:
@@ -80,7 +83,6 @@ class VisitanteLir:
                     entrada.despacho = '_' + clase.nombre + '_' + entrada.nombre
             tabla.numeroCampos = numeroActualCampo
             tabla.numeroMetodos = numeroActualMetodo
-            print tabla.numeroMetodos
             
     def visitarMJClass(self, clase):
         self.claseactual = clase
@@ -132,7 +134,7 @@ class VisitanteLir:
         registroexpression = whi.condicion.accept(self)
         self.registroactual = registroanterior
         self.listaactual.agregar('Compare 0, ' + registroexpression)
-        self.listaactual.agregar('JumpTrue _salida_while_' + str(self.numerowhile))
+        self.listaactual.agregar('JumpTrue _salida_while_' + str(self.whileactual))
         whi.bloque.accept(self)
         self.listaactual.agregar('Jump _while_' + str(self.whileactual))
         self.listaactual.agregar('_salida_while_' + str(self.whileactual) + ':')
@@ -140,10 +142,11 @@ class VisitanteLir:
             
     def visitarIf(self, i):
         self.numeroif += 1
+        ifactual = self.numeroif
         if i.tieneElse:
-            etiqueta = '_else_' + str(self.numeroif)
+            etiqueta = '_else_' + str(ifactual)
         else:
-            etiqueta = '_salida_if_' + str(self.numeroif)
+            etiqueta = '_salida_if_' + str(ifactual)
         registroanterior = self.registroactual            
         registroexpression = i.condicion.accept(self)
         self.registroactual = registroanterior
@@ -151,10 +154,10 @@ class VisitanteLir:
         self.listaactual.agregar('JumpTrue ' + etiqueta)
         i.bloqueIf.accept(self)
         if i.tieneElse:
-            self.listaactual.agregar('Jump _salida_if_' + str(self.numeroif))
+            self.listaactual.agregar('Jump _salida_if_' + str(ifactual))
             self.listaactual.agregar(etiqueta + ':')
             i.bloqueElse.accept(self)
-        self.listaactual.agregar('_salida_if_' + str(self.numeroif) + ':')
+        self.listaactual.agregar('_salida_if_' + str(ifactual) + ':')
     
     def visitarAssigment(self, assigment):
         registroanterior = self.registroactual          
@@ -240,7 +243,14 @@ class VisitanteLir:
             return registroexpression
         else:
             registroexpression = unaryOp.valor.accept(self)
-            self.listaactual.agregar('Neg ' + registroexpression)
+            self.numerootros += 1
+            self.listaactual.agregar('Compare 0, ' + registroexpression)
+            self.listaactual.agregar('JumpTrue _otro_' + str(self.numerootros))
+            self.listaactual.agregar('Move 0, ' + registroexpression)
+            self.listaactual.agregar('Jump _salida_otro_' + str(self.numerootros))
+            self.listaactual.agregar('_otro_' + str(self.numerootros) + ':')
+            self.listaactual.agregar('Move 1, ' + registroexpression)
+            self.listaactual.agregar('_salida_otro_' + str(self.numerootros) + ':')
             return registroexpression
             
     def visitarBinaryOp(self, binaryOp):
@@ -253,16 +263,17 @@ class VisitanteLir:
                 instruccion = 'Or '
             registroizquierda = binaryOp.valorUno.accept(self)
             self.numerootros += 1
+            otrosactual = self.numerootros
             self.listaactual.agregar('Compare ' + str(condicion) + ', ' + registroizquierda)
-            self.listaactual.agregar('JumpTrue _otro_' + str(self.numerootros))
+            self.listaactual.agregar('JumpTrue _otro_' + str(otrosactual))
             registroanterior = self.registroactual
-            registroderecha = binaryOp.valorUno.accept(self)
+            registroderecha = binaryOp.valorDos.accept(self)
             self.registroactual = registroanterior
             self.listaactual.agregar(instruccion + registroderecha + ', ' + registroizquierda)
-            self.listaactual.agregar('Jump _salida_otro_' + str(self.numerootros))
-            self.listaactual.agregar('_otro_' + str(self.numerootros) + ':')
+            self.listaactual.agregar('Jump _salida_otro_' + str(otrosactual))
+            self.listaactual.agregar('_otro_' + str(otrosactual) + ':')
             self.listaactual.agregar('Move ' + str(condicion) + ', ' + registroizquierda)
-            self.listaactual.agregar('_salida_otro_' + str(self.numerootros) + ':')
+            self.listaactual.agregar('_salida_otro_' + str(otrosactual) + ':')
             return registroizquierda
         else:
             registroizquierda = binaryOp.valorUno.accept(self)

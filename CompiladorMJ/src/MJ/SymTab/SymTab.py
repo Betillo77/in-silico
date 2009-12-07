@@ -362,7 +362,7 @@ class VisitanteTabla:
     
     def visitarLength(self, length):
         length.valor.accept(self)
-        if (length.valor.tipo[-2:] != '[]') or (length.valor.tipo == 'string'):
+        if (length.valor.tipo[-2:] != '[]') and (length.valor.tipo != 'string'):
             raise SemanticError('Error semantico, intentando acceder a longitud de objeto que no es arreglo, en metodo: ' + self.metodoActual.nombre)
         length.tipo = 'int'
 

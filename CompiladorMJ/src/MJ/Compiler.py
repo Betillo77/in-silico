@@ -15,16 +15,14 @@ def empezar():
     analizadorLexico = Lexer()
     entrada = archivoEntrada.read()
     analizadorLexico.input(entrada)
-    archivoSalida = open(sys.argv[1][:-3] + '.tok', 'w')
+    lineatokens = ''
     try:
         for token in iter(analizadorLexico.lexer.token, None):
-            archivoSalida.write(repr(token.type) + ' ' + repr(token.value) + ' ' + repr(token.lineno))
-            archivoSalida.write('\n')
+            lineatokens += repr(token.type) + ' ' + repr(token.value) + ' ' + repr(token.lineno)
+            lineatokens += '\n'
     except Error.LexicalError.LexicalError as error:
-        archivoSalida.write(error.mensaje)
+        lineatokens = error.mensaje
     archivoEntrada.close()
-    print "Tokens fueron escritos a: %s" % (str(sys.argv[1][:-3] + '.tok'))
-    archivoSalida.close()
     analizadorSintactico = Parser(analizadorLexico.tokens)
     analizadorLexico.lexer.lineno = 1
     try:
@@ -45,17 +43,25 @@ def empezar():
             pass
     analizadorCodigo = VisitanteLir(analizadorSemantico.tablaPrincipal)
     analizadorCodigo.visitarProgram(raiz)
+    dump_tokens = 0
     dump_ast = 0
     dump_symtab = 0
     dump_lir = 0
     for parametro in sys.argv:
         if parametro[0] == '-':
+            if parametro == '-dump-tokens':
+                dump_tokens = 1
             if parametro == '-dump-ast':
                 dump_ast = 1
             if parametro == '-dump-symtab':
                 dump_symtab = 1
             if parametro == '-dump-lir':
-                dump_lir = 1      
+                dump_lir = 1   
+    if(dump_tokens):
+        archivoSalida = open(sys.argv[1][:-3] + '.tok', 'w')
+        archivoSalida.write(lineatokens)
+        print "Tokens fueron escritos a: %s" % (str(sys.argv[1][:-3] + '.tok'))
+        archivoSalida.close()
     if(dump_ast):
         archivoSalida = open(sys.argv[1][:-3] + '.ast', 'w')
         archivoSalida.write(Parser.linea)
