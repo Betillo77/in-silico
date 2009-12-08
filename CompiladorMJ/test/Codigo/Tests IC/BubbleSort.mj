@@ -1,0 +1,98 @@
+class ArrayBub {
+
+	int[] a; // ref to array a
+	int n; // number of data items
+
+	void init() {
+		a = new int[10]; // create the array
+		n = 0; // no items yet
+	}
+
+	/* put element into array */
+	void insert(int value) {
+		a[n] = value; // insert it
+		n = n + 1; // increment size
+	}
+
+	void display() // displays array contents
+	{
+		int i = 0;
+		while (i < n) { // for each element,
+			Library.printi(a[i]); // display it
+			Library.print(" ");
+			i = i + 1;
+		}
+		Library.println("");
+	}
+
+	void bubbleSort() {
+		int out = n - 1;
+		int in;
+
+		while (out > 1) { // outer loop (backward)
+			in = 0;
+			while (in < out) { // inner loop (forward)
+				if (a[in] > a[in + 1]) // out of order?
+					swap(in, in + 1); // swap them
+				in = in + 1;
+			}
+			out = out - 1;
+		}
+	} // end bubbleSort()
+
+	void swap(int one, int two) {
+		int temp = a[one];
+		a[one] = a[two];
+		a[two] = temp;
+	}
+
+	static void main(string[] args) {
+		(new ArrayBub()).test();
+	}
+
+	void test() {
+
+		ArrayBub arr; // reference to array
+		arr = new ArrayBub(); // create the array
+
+		arr.init();
+
+		arr.insert(77); // insert 10 items
+		arr.insert(99);
+		arr.insert(44);
+		arr.insert(55);
+		arr.insert(22);
+		arr.insert(88);
+		arr.insert(11);
+		arr.insert(0);
+		arr.insert(66);
+		arr.insert(33);
+
+		arr.display(); // display items
+
+		arr.bubbleSort(); // bubble sort them
+
+		arr.display(); // display them again
+	}
+}
+
+class Library {
+ static void println(string s){} /* prints string s followed by a newline */
+ static void print(string s){}   /* prints string s */
+ static void printi(int i){}     /* prints integer i */
+ static void printb(boolean b){} /* prints boolean b */
+
+ static int readi(){}     /* reads an integer from the input */
+ static string readln(){} /* reads one line from the input */
+ static boolean eof(){}   /* checks end-of-file on standard input */
+
+ static int stoi(string s, int n){} /* returns the integer that s represents
+                                      or n of s is not an integer */
+ static string itos(int i){}   /* returns a string representation of i */
+ static int[] stoa(string s){} /* an array with the ascii codes of chars in s */
+ static string atos(int[] a){} /* builds a string from the ascii codes in a */
+
+ static int random(int i){} /* returns a random number between 0 and n-1 */
+ static int time(){}        /* number of milliseconds since program start */
+ static int exit(int i){}   /* terminates the program with exit code n */
+}

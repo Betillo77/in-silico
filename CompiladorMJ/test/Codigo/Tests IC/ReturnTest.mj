@@ -1,0 +1,148 @@
+class ReturnTest
+{
+	static void main (string[] arr)
+	{
+		if (ReturnTest.returnVarible() != -13)
+			Library.println("error1");
+		
+		if (ReturnTest.returnImmidate() != 3)
+			Library.println("error2");
+		
+		if (ReturnTest.returnArrayElem() != 9)
+			Library.println("error3");
+		
+		if (ReturnTest.return8InField() != 8)
+			Library.println("error4");
+		
+		if (ReturnTest.returnArrayInField().length != 2
+				|| ReturnTest.returnArrayInField()[0] != 5
+				|| ReturnTest.returnArrayInField()[1] != 6)
+			Library.println("error5");
+		
+		if (ReturnTest.returnObject() == null
+				|| ReturnTest.returnObject().b != 97)
+			Library.println("error6");
+		
+		if (ReturnTest.returnClassNull() != null)
+			Library.println("error7");
+		
+		if (ReturnTest.returnNotInitializedNull() != null)
+			Library.println("error8");
+		
+		if (ReturnTest.returnNullAsString() != null)
+			Library.println("error9");
+		
+		Library.println(ReturnTest.returnString());
+		
+		if (ReturnTest.returnNullAsArray() != null)
+			Library.println("error11");
+			
+		Library.print("End of Test");
+	}
+
+	
+	static int returnVarible()
+	{
+		int x = -13;
+		return x;
+	}
+	
+	static int returnImmidate()
+	{
+		return 3;
+	}
+	static int returnArrayElem()
+	{
+		int[] arr = new int[3];
+		arr[2] = 9;
+		return arr[2];
+	}
+
+	static int return8InField()
+	{
+		HelpClass obj = new HelpClass();
+		obj.b = 8;
+		return obj.b;
+	}
+
+	static int[] returnArrayInField()
+	{
+		HelpClass obj = new HelpClass();
+		obj.array = new int[2];
+		obj.array[0] = 5;
+		obj.array[1] = 6;
+		return obj.array;
+	}
+	
+	static HelpClass returnObject()
+	{
+		HelpClass ret = new HelpClass();
+		ret.b = 97;
+		return ret;
+	}
+		
+	static HelpClass returnClassNull()
+	{
+		HelpClass ret = new HelpClass();
+		ret = null;
+		return ret;
+	}
+	
+	static HelpClass returnNotInitializedNull()
+	{
+		HelpClass ret = new HelpClass();
+		ret = ret.helpClass;
+		return ret;
+	}
+	
+	static string returnNullAsString()
+	{
+		string ret = null;
+		return ret;
+	}
+	
+	static string returnString()
+	{
+		string ret = "Hello World";
+		return ret;
+	}
+	
+	static int[] returnNullAsArray()
+	{
+		int[] arr = new int[5];
+		arr[4] = 2;
+		arr = null;
+		return arr;
+	}
+}
+
+class HelpClass
+{
+	int b;
+	HelpClass helpClass;
+	int [] array;
+	int x;
+}
+
+class Library {
+ static void println(string s){} /* prints string s followed by a newline */
+ static void print(string s){}   /* prints string s */
+ static void printi(int i){}     /* prints integer i */
+ static void printb(boolean b){} /* prints boolean b */
+
+ static int readi(){}     /* reads an integer from the input */
+ static string readln(){} /* reads one line from the input */
+ static boolean eof(){}   /* checks end-of-file on standard input */
+
+ static int stoi(string s, int n){} /* returns the integer that s represents
+                                      or n of s is not an integer */
+ static string itos(int i){}   /* returns a string representation of i */
+ static int[] stoa(string s){} /* an array with the ascii codes of chars in s */
+ static string atos(int[] a){} /* builds a string from the ascii codes in a */
+
+ static int random(int i){} /* returns a random number between 0 and n-1 */
+ static int time(){}        /* number of milliseconds since program start */
+ static int exit(int i){}   /* terminates the program with exit code n */
+}
+
+

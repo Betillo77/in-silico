@@ -1,0 +1,27 @@
+Checking boolean literals
+true false
+Checking '!'
+true false
+Checking '=='
+true false
+Checking '!='
+true false
+Checking '<'
+true false
+Checking '>'
+true false
+Checking '<='
+true true false
+Checking '>='
+true true false
+Checking '&&'
+true false false false
+Checking '||'
+true true true false
+false1 false2 false4 true6 true8 false10 true11 true12 
+
+Statring the last block of tests
+true12 true13 true14 true15 
+true15 true16 false17 false18 
+true19 true20 false20 false21 
+false22 false23 false23 false24 

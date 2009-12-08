@@ -1,0 +1,243 @@
+/*
+ * An array which can Bubble sort it's elements.
+ * Code originated from java:
+ * http://www.samspublishing.com/articles/article.asp?p=31526&seqNum=2&rl=1
+ */
+class ArrayBub {
+
+	static void main(string[] args) 
+	{
+		Library.println("Checking boolean literals");
+		Library.printb(true);
+		Library.print(" ");
+		Library.printb(false);
+		Library.println("");
+		
+		
+		Library.println("Checking '!'");
+		Library.printb(!false);
+		Library.print(" ");
+		Library.printb(!true);
+		Library.println("");
+		
+		
+		Library.println("Checking '=='");
+		Library.printb(4 == 4);
+		Library.print(" ");
+		Library.printb(4 == 3);
+		Library.println("");
+		
+		
+		Library.println("Checking '!='");
+		Library.printb(4 != 3);
+		Library.print(" ");
+		Library.printb(4 != 4);
+		Library.println("");
+		
+		
+		Library.println("Checking '<'");
+		Library.printb(1 < 2);
+		Library.print(" ");
+		Library.printb(2 < 1);
+		Library.println("");
+				
+		
+		Library.println("Checking '>'");
+		Library.printb(4 > 3);
+		Library.print(" ");
+		Library.printb(4 < 3);
+		Library.println("");
+				
+		
+		Library.println("Checking '<='");
+		Library.printb(1 <= 2);
+		Library.print(" ");
+		Library.printb(2 <= 2);
+		Library.print(" ");
+		Library.printb(2 <= 1);
+		Library.println("");
+						
+		
+		Library.println("Checking '>='");
+		Library.printb(2 >= 1);
+		Library.print(" ");
+		Library.printb(2 >= 2);
+		Library.print(" ");
+		Library.printb(1 >= 2);
+		Library.println("");
+				
+		
+		Library.println("Checking '&&'");
+		Library.printb(true && true);
+		Library.print(" ");
+		Library.printb(false && true);
+		Library.print(" ");
+		Library.printb(true && false);
+		Library.print(" ");
+		Library.printb(false && false);
+		Library.println("");
+				
+		
+		Library.println("Checking '||'");
+		Library.printb(true || true);
+		Library.print(" ");
+		Library.printb(false || true);
+		Library.print(" ");
+		Library.printb(true || false);
+		Library.print(" ");
+		Library.printb(false || false);
+		Library.println("");	
+		
+		(new ComplexTester()).test();	
+	}
+}
+
+class ComplexTester
+{
+	int counter;
+	
+	boolean addToCounter(boolean retValue)
+	{
+		counter = counter + 1;
+		return retValue;
+	}
+
+	void test()
+	{
+		counter = 0;
+		
+		Library.printb(addToCounter(false) && addToCounter(true));
+		//counter should be 1
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(false) && addToCounter(false));
+		//counter should be 2
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) && addToCounter(false));
+		//counter should be 4
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) && addToCounter(true));
+		//counter should be 6
+		Library.printi(counter);
+		Library.print(" ");
+
+		Library.printb(addToCounter(false) || addToCounter(true));
+		//counter should be 8
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(false) || addToCounter(false));
+		//counter should be 10
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) || addToCounter(false));
+		//counter should be 11
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) || addToCounter(true));
+		//counter should be 12
+		Library.printi(counter);
+		Library.print(" ");
+		
+		Library.println("");
+		Library.println("");
+		Library.println("Statring the last block of tests");
+		
+		Library.printb(true || addToCounter(true));
+		//counter should be 12
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) || true);
+		//counter should be 13
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(false || addToCounter(true));
+		//counter should be 14
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) || false);
+		//counter should be 15
+		Library.printi(counter);
+		Library.print(" ");
+		
+		Library.println("");
+		
+		Library.printb(true || addToCounter(false));
+		//counter should be 15
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(false) || true);
+		//counter should be 16
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(false || addToCounter(false)); 
+		//counter should be 17
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(false) || false); 
+		//counter should be 18
+		Library.printi(counter);
+		Library.print(" ");
+		
+		Library.println("");
+				
+		Library.printb(true && addToCounter(true)); 
+		//counter should be 19
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) && true); 
+		//counter should be 20
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(false && addToCounter(true)); 
+		//counter should be 20
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(true) && false); 
+		//counter should be 21
+		Library.printi(counter);
+		Library.print(" ");
+		
+		Library.println("");
+		
+		Library.printb(true && addToCounter(false)); 
+		//counter should be 22
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(false) && true); 
+		//counter should be 23
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(false && addToCounter(false)); 
+		//counter should be 23
+		Library.printi(counter);
+		Library.print(" ");
+		Library.printb(addToCounter(false) && false); 
+		//counter should be 24
+		Library.printi(counter);
+		Library.print(" ");
+		
+	}
+}
+
+class Library {
+ static void println(string s){} /* prints string s followed by a newline */
+ static void print(string s){}   /* prints string s */
+ static void printi(int i){}     /* prints integer i */
+ static void printb(boolean b){} /* prints boolean b */
+
+ static int readi(){}     /* reads an integer from the input */
+ static string readln(){} /* reads one line from the input */
+ static boolean eof(){}   /* checks end-of-file on standard input */
+
+ static int stoi(string s, int n){} /* returns the integer that s represents
+                                      or n of s is not an integer */
+ static string itos(int i){}   /* returns a string representation of i */
+ static int[] stoa(string s){} /* an array with the ascii codes of chars in s */
+ static string atos(int[] a){} /* builds a string from the ascii codes in a */
+
+ static int random(int i){} /* returns a random number between 0 and n-1 */
+ static int time(){}        /* number of milliseconds since program start */
+ static int exit(int i){}   /* terminates the program with exit code n */
+}

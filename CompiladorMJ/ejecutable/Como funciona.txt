@@ -1,10 +1,15 @@
-Para compilar y crear el .bat de un codigo
-arrastre el archivo .mj al programa mj.exe.
-(o tambien le puede pasar el nombre del 
- archivo .mj al programa por consola)
+El programa mj.exe es el mismo mj.py, solo que es
+un ejecutable de Windows y no requiere python.
 
-Se creara un archivo nombre-programa.bat,
-que ejecuta el programa compilado. Para que 
-funcione necesita tener instalado java en su 
-pc, y que java.exe este dentro del PATH del 
-sistema.
+El programa requiere las librerias python26.dll,
+library.zip y microLIR.jar para ejecutar el programa
+compilado.
+
+Para compilar un programa y crear el .bat ejecutable
+simplemente arrastre el codigo fuente hasta el icono
+de MJ.exe, y, si no existe ningun error, se creara un
+archivo nombre_archivo.bat que es ejecutable.
+
+Hay algunos ejemplos de programas ya compilados en la
+carpeta ejemplos. Estos ejemplos son de los programas
+cuyo codigo fuente esta en el directorio test\codigo\

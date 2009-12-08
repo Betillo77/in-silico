@@ -1,0 +1,88 @@
+str0: "Not Working break"
+str1: "Not Working false, entering while any way"
+str2: "Entering while with true expression"
+str3: "Not Working break"
+str4: " "
+
+_DV_WhileTest2: []
+
+# WhileTest2.main
+_ic_main:
+Move 0, R1
+Move 1, R2
+Move R2, R1
+Move 0, R2
+Move 2, R3
+Move R3, R2
+_while_0:
+Move R1, R3
+Compare 0, R3
+JumpTrue _salida_while_0
+Jump _salida_while_0
+Move str0, R3
+Library __println(R3), Rdummy
+Move 0, R3
+Move R3, R1
+Jump _while_0
+_salida_while_0:
+_while_1:
+Move 0, R3
+Compare 0, R3
+JumpTrue _salida_while_1
+Move str1, R3
+Library __println(R3), Rdummy
+Jump _while_1
+_salida_while_1:
+_while_2:
+Move 1, R3
+Compare 0, R3
+JumpTrue _salida_while_2
+Move str2, R3
+Library __println(R3), Rdummy
+Jump _salida_while_2
+Move str3, R3
+Library __println(R3), Rdummy
+Move 0, R3
+Move R3, R1
+Jump _while_2
+_salida_while_2:
+Move 1, R3
+Move R3, R1
+_while_3:
+Move R2, R3
+Move 8, R4
+Compare R4, R3
+JumpGE _otro_0
+Move 1, R3
+Jump _salida_otro_0
+_otro_0:
+Move 0, R3
+_salida_otro_0:
+Compare 0, R3
+JumpTrue _salida_while_3
+Move R2, R3
+Move 1, R4
+Add R4, R3
+Move R3, R2
+Move R2, R3
+Move 5, R4
+Compare R4, R3
+JumpFalse _otro_1
+Move 1, R3
+Jump _salida_otro_1
+_otro_1:
+Move 0, R3
+_salida_otro_1:
+Compare 0, R3
+JumpTrue _salida_if_0
+Jump _while_3
+_salida_if_0:
+Move R2, R3
+Library __printi(R3), Rdummy
+Move str4, R3
+Library __print(R3), Rdummy
+Jump _while_3
+_salida_while_3:
+Library __exit(0), Rdummy
+# Fin de WhileTest2.main
+
