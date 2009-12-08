@@ -79,6 +79,8 @@ def empezar():
         archivoSalida.close()
     listabat = analizadorCodigo.linea.split('\n')
     lineabat = '@ECHO OFF\n'
+    if listabat[0] == '':
+        listabat = listabat[1:]
     lineabat += 'echo ' + listabat[0] + '>codigo.tmp\n'
     for linea in listabat[1:]:
         if linea == '':

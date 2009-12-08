@@ -418,7 +418,7 @@ class VisitanteTabla:
     def esHeredero(self, a, b):
         if a == b:
             return True
-        if (a == 'null') and not(b in ['int', 'string', 'boolean']):
+        if (a == 'null') and not(b in ['int', 'boolean']):
             return True
         if a[-2:] == '[]' or b[-2:] == '[]':
             return a == b

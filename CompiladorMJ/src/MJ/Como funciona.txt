@@ -1,4 +1,4 @@
-Existe un programa mj.exe en la carpeta ejecutable del
+Existe un programa mj.exe en la carpeta "ejecutable" del
 directorio principal de esta entrega. Usar ese programa
 es equivalente a usar mj.py.
 
@@ -10,7 +10,7 @@ el comando de la siguiente forma:
 python mj.py nombreArchivo.mj -dump-tokens -dump-ast -dump-symtab -dump-lir
 
 Donde nombreArchivo es el nombre del archivo a analizar
-y debe encontrarse en el directorio src\MJ.
+y debe encontrarse en el directorio src\MJ\.
 
 Para una prueba simple, copiar el Quicksort.mj de 
 test\Codigo\Quicksort.mj, a src\MJ\ y ejecutar el comando:
@@ -18,5 +18,5 @@ test\Codigo\Quicksort.mj, a src\MJ\ y ejecutar el comando:
 python mj.py Quicksort.mj -dump-lir
 
 Este codigo tambien genera automaticamente un .bat ejecutable que, 
-si se lleva junto con microLIR.jar, puede ejecutar el programa en 
-cualquier computador que tenga Java (al menos el JRE).
+si se lleva junto con microLIR.jar, puede ejecutar el programa 
+compilado en cualquier computador que tenga Java (JRE).

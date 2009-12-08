@@ -126,7 +126,7 @@ public class Prueba
 	int probarLiteral()
 	{
 		int cuenta = 0;
-		String a = "El valor de este programa en java fue: 23039, en MJ es:";
+		String a = "El valor de este programa en MJ fue: 23044, en Java es:";
 		boolean c = true;
 		Library.println(a);
 		if(c)
