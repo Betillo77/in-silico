@@ -1,14 +1,22 @@
+Existe un programa mj.exe en la carpeta ejecutable del
+directorio principal de esta entrega. Usar ese programa
+es equivalente a usar mj.py.
+
 Para iniciar, y segun lo especificado en el documento
-principal y la tercera entrega, se debe acceder desde
-consola (ejecutar -> cmd en windows) y se debe ejecutar
+principal y la cuarta entrega, se debe acceder desde
+consola (ejecutar -> cmd en windows) y se puede ejecutar
 el comando de la siguiente forma:
 
-python mj.py nombreArchivo.mj -dump-ast -dump-symtab
+python mj.py nombreArchivo.mj -dump-tokens -dump-ast -dump-symtab -dump-lir
 
 Donde nombreArchivo es el nombre del archivo a analizar
-y debe encontrarse en el directorio src.
+y debe encontrarse en el directorio src\MJ.
 
-Para una prueba simple, copiar el archivo bueno.mj de 
-test\semantico\bueno.mj, a src\MJ\ y ejecutar el comando:
+Para una prueba simple, copiar el Quicksort.mj de 
+test\Codigo\Quicksort.mj, a src\MJ\ y ejecutar el comando:
 
-python mj.py bueno.mj -dump-ast -dump-symtab
+python mj.py Quicksort.mj -dump-lir
+
+Este codigo tambien genera automaticamente un .bat ejecutable que, 
+si se lleva junto con microLIR.jar, puede ejecutar el programa en 
+cualquier computador que tenga Java (al menos el JRE).

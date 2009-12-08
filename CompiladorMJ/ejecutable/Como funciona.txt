@@ -1,0 +1,10 @@
+Para compilar y crear el .bat de un codigo
+arrastre el archivo .mj al programa mj.exe.
+(o tambien le puede pasar el nombre del 
+ archivo .mj al programa por consola)
+
+Se creara un archivo nombre-programa.bat,
+que ejecuta el programa compilado. Para que 
+funcione necesita tener instalado java en su 
+pc, y que java.exe este dentro del PATH del 
+sistema.

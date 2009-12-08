@@ -76,3 +76,18 @@ def empezar():
         archivoSalida = open(sys.argv[1][:-3] + '.lir', 'w')
         archivoSalida.write(analizadorCodigo.linea)
         print "Codigo intermedio escrito a: %s" % (str(sys.argv[1][:-3] + '.lir'))
+        archivoSalida.close()
+    listabat = analizadorCodigo.linea.split('\n')
+    lineabat = '@ECHO OFF\n'
+    lineabat += 'echo ' + listabat[0] + '>codigo.tmp\n'
+    for linea in listabat[1:]:
+        if linea == '':
+            lineabat += 'echo+>>codigo.tmp\n'
+        else:
+            lineabat += 'echo ' + linea + '>>codigo.tmp\n'
+        
+    lineabat += 'java -jar microLIR.jar codigo.tmp\necho+\npause\ndel codigo.tmp'
+    archivoSalida = open(sys.argv[1][:-3] + '.bat', 'w')
+    archivoSalida.write(lineabat)
+    print 'Archivo batch ejecutable escrito a: ' + sys.argv[1][:-3] + '.bat'
+    archivoSalida.close()

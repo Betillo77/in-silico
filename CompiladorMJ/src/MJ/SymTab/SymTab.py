@@ -214,7 +214,7 @@ class VisitanteTabla:
             declaracion.esFieldSt()
             if declaracion.esFieldS or declaracion.inicio:
                 if not(inicio):
-                    raise SemanticError('Error semantico, campo declarado tardiamente')
+                    raise SemanticError('Error semantico, campo declarado tardiamente: ' + declaracion.campo.nombre)
             else:
                 inicio = False
         bloque.tieneReturn = termino            
