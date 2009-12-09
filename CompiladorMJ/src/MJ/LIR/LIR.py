@@ -1,14 +1,26 @@
+
+#Clase que guarda las instrucciones generadas por cada metodo
+
 class InstruccionesMetodo:
+    
+    # Constructor de la clase
     
     def __init__(self, clase, nombre):
         self.listainstrucciones = []
         self.clase = clase
         self.nombre = nombre
+    
+    # Agrega una instruccion a la lista
         
     def agregar(self, instruccion):
         self.listainstrucciones.append(instruccion)
 
+# Clase que visita el AST generando el codigo en miniLIR, utilizando
+# el patron visitante
+
 class VisitanteLir:
+    
+    # Constructor de la clase
     
     def __init__(self, tablaPrincipal):
         self.tablaPrincipal = tablaPrincipal
@@ -22,7 +34,9 @@ class VisitanteLir:
         self.numeroif = -1
         self.numerootros = -1
         self.linea = ''
-        
+    
+    # Visita la raiz del AST, haciendo los llamados necesarios
+    
     def visitarProgram(self, program):
         for clase in program:
             if clase.nombre == 'Library':
@@ -49,6 +63,9 @@ class VisitanteLir:
             for instruccion in listametodo.listainstrucciones:
                 self.linea += instruccion + '\n'
             self.linea += '# Fin de ' + listametodo.clase + '.' + listametodo.nombre + '\n'
+    
+    # Le asigna un numero a cada campo y metodo de cada clase, incluyendo continuacion en la
+    # numeracion en aquellas clases que heredan, y asignacion de etiquetas de despacho
         
     def numerarClase(self, clase):
         if clase.extends:
@@ -83,7 +100,9 @@ class VisitanteLir:
                     entrada.despacho = '_' + clase.nombre + '_' + entrada.nombre
             tabla.numeroCampos = numeroActualCampo
             tabla.numeroMetodos = numeroActualMetodo
-            
+    
+    # De aqui en adelante estan los metodos que visitan cada nodo del AST   
+           
     def visitarMJClass(self, clase):
         self.claseactual = clase
         for metodo in clase.metodos:

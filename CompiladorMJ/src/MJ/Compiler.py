@@ -9,6 +9,9 @@ from Parser.Parser import Parser
 from SymTab.SymTab import *
 from LIR.LIR import *
 
+# Funcion principal que se encarga de llamar los modulos, visitantes, y de
+# generar la entrada salida
+
 def empezar():
     import sys
     archivoEntrada = open(sys.argv[1], 'r')

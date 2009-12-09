@@ -10,7 +10,7 @@ el comando de la siguiente forma:
 python mj.py nombreArchivo.mj -dump-tokens -dump-ast -dump-symtab -dump-lir
 
 Donde nombreArchivo es el nombre del archivo a analizar
-y debe encontrarse en el directorio src\MJ\.
+y debe encontrarse en el directorio src\MJ\
 
 Para una prueba simple, copiar el Quicksort.mj de 
 test\Codigo\Quicksort.mj, a src\MJ\ y ejecutar el comando:

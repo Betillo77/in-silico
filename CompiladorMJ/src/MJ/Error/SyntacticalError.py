@@ -1,3 +1,6 @@
+
+# Error sintactico
+
 class SyntacticalError(BaseException):
 
     def __init__(self, args):

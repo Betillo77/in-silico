@@ -1,3 +1,7 @@
+
+# Este archivo sirve para generar el archivo .exe del compilador con la
+# herramienta py2exe
+
 try:
     from distutils.core import setup
     import py2exe

@@ -4,7 +4,7 @@ from Error.SyntacticalError import SyntacticalError
 # Clases usadas en el AST, la mayoria de los nombres fueron tomados de los dados en 
 # clase. Las listas no representan objetos en nuestro AST sino que son guardadas en
 # la clase que las contiene. La impresion se hace sin usar el patron visitante segun
-# lo hablado en clase.
+# lo hablado en clase
 
 class AstNode(object):
            
@@ -415,14 +415,16 @@ class VirtualCall(Call):
             self.parametros[i - 1].imprimir()
             Parser.tabActual -= 1
         
-# Clase Parser encargada de la construccion del AST             
+# Clase Parser encargada de la construccion del AST 
+            
 class Parser(object):
     
     tabActual = 1
     linea = ''
     
     # Tabla de precedencia dada en las especificaciones, el ELSE fue una adicion para evitar
-    # ambiguedad.
+    # ambiguedad
+    
     precedence = (
                  ('right', '='),
                  ('left', 'OR'),
@@ -437,17 +439,19 @@ class Parser(object):
                  )
     
     # Se inicializa un Parser, se crea un atributo llamado yacc que es del tipo yacc, y se
-    # le pasa este modulo como parametro. Adicionalmente se importan los tokens de lexer.
+    # le pasa este modulo como parametro. Adicionalmente se importan los tokens de lexer
+    
     def __init__(self, tokens):
         self.tokens = tokens
         self.yacc = yacc.yacc(module = self)
         
-    # Para ingresar una entrada al analizador sintactico.
+    # Para ingresar una entrada al analizador sintactico
+    
     def parse(self, entrada):
         return self.yacc.parse(entrada)
           
     # Producciones del lenguaje, todas las que no corresponden exactamente a las dadas en las
-    # especificaciones (modificadas para BNF) estan comentadas.
+    # especificaciones (modificadas para BNF) estan comentadas
           
     def p_program(self, p):
         '''PROGRAM : LISTACLASES'''
@@ -710,6 +714,7 @@ class Parser(object):
         p[0] = Length(p[1])
        
     # Produccion creada para evitar un reduce potencialmente peligroso
+    
     def p_Expr11(self, p):
         '''EXPR : ID '.' LENGTH'''
         p[0] = Length(Location(0, p[1]))
@@ -836,5 +841,6 @@ class Parser(object):
         pass
     
     # Manejo de errores
+    
     def p_error(self, p):
         raise SyntacticalError('Linea %d, "%s" : Error sintactico, token no valido' % (p.lineno, p.value)) 

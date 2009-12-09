@@ -1,7 +1,11 @@
 from Error.SemanticError import SemanticError
 from types import StringType, NoneType
 
+# Clase que representa una entrada de la tabla de simbolos
+
 class Entrada:
+
+    # Constructor de la entrada
     
     def __init__(self, nombre, clase, tipo, tabla, informacion = None):
         self.nombre = nombre
@@ -10,7 +14,12 @@ class Entrada:
         self.tabla = tabla
         self.informacion = informacion
 
+# Clase que representa una tabla de simbolos. Esta tabla es generica, se
+# usa en todo el visitante
+
 class Tabla:
+    
+    # Constructor de la tabla
     
     def __init__(self, nombre, padre, tipo):
         self.nombre = nombre
@@ -18,12 +27,16 @@ class Tabla:
         self.hijos = []
         self.padre = padre
         self.tipo = tipo
-        
+    
+    # Agrega una entrada a la tabla de simbolos, si no esta repetida
+    
     def agregar(self, entrada):
         if entrada.nombre in self.tabla:
             raise SemanticError('Error semantico, identificador redefinido: ' + (entrada.nombre))
         self.tabla[entrada.nombre] = entrada
-        
+    
+    # Busca una entrada en esta tabla de simbolos o en sus antecesores
+    
     def buscar(self, nombre):
         if nombre in self.tabla:
             return self.tabla[nombre]
@@ -32,21 +45,29 @@ class Tabla:
                 return self.padre.buscar(nombre)
             raise SemanticError('Error semantico, identificador no declarado o tipo incompatible: ' + (nombre))
         
+    # Busca si un campo esta repetido en esta tabla o sus padres
+    
     def buscarCampoRepetido(self, nombre):
         if nombre in self.tabla:
             raise SemanticError('Error semantico, campo redeclarado: ' + (nombre))
         else:
             if self.padre != None:
                 self.padre.buscarCampoRepetido(nombre)
-                    
+
+    # Agrega un hijo a esta tabla
+    
     def agregarHijo(self, hijo):
         self.hijos.append(hijo)
+    
+    # Busca un hijo en esta tabla
     
     def buscarHijo(self, nombre):
         for objeto in self.hijos:
             if objeto.nombre == nombre:
                 return objeto
         raise SemanticError('Error semantico, identificador no declarado: ' + (nombre))
+    
+    # Busca si una funcion esta redefinida, y si lo esta, si fue heredada correctamente
     
     def buscarFuncionRedefinida(self, entradaMetodo):
         if entradaMetodo.nombre in self.tabla:
@@ -58,11 +79,15 @@ class Tabla:
                     raise SemanticError('Error semantico, funcion redefinida erroneamente: ' + (entradaMetodo.nombre)) 
         elif self.padre != None:
             self.padre.buscarFuncionRedefinida(entradaMetodo)
-            
+    
+    # Busca el numero que le fue dado a una funcion de la clase que representa esta tabla
+    
     def buscarNumeroFuncion(self, nombreFuncion):
         numeroFuncion = self.padre.buscarFuncionExtendida(nombreFuncion)
         return numeroFuncion
         
+    # Da el numero que tiene una funcion, si es redefinida, o -1 si no lo es
+    
     def buscarFuncionExtendida(self, nombreFuncion):
         if nombreFuncion in self.tabla:
             return self.tabla[nombreFuncion].numero
@@ -71,6 +96,8 @@ class Tabla:
                 return -1
             else:
                 return self.padre.buscarFuncionExtendida(nombreFuncion)
+    
+    # Busca la etiqueta del vector de despacho de una funcion
             
     def buscarDespachoFuncion(self, numeroFuncion):
         for entrada in self.tabla.itervalues():
@@ -79,10 +106,16 @@ class Tabla:
         return self.padre.buscarDespachoFuncion(numeroFuncion)
         
 
+# Clase hecha para estandarizar los tipos normales con el tipo void
+
 class Type:
     pass
 
+# Clase que visita semanticamente el AST, usando el patron visitante
+
 class VisitanteTabla:
+    
+    # Constructor del visitante
     
     def __init__(self):
         self.tablaPrincipal = Tabla('Principal', None, 'programa')
@@ -91,6 +124,8 @@ class VisitanteTabla:
         self.enWhile = False
         self.linea = ''
         self.main = False
+
+    # Visita la raiz del AST
     
     def visitarProgram(self, program):
         for clase in program:
@@ -117,6 +152,10 @@ class VisitanteTabla:
         for clase in self.tablaPrincipal.hijos:
             self.imprimirTabla(clase)
             self.linea += '\n\n' 
+    
+    # Genera un esqueleto de la clases existentes, para facilitar el llamado de
+    # clases desde lugares del codigo donde todavia no se han definido dichas
+    # clases.
             
     def generarTablaClase(self, clase):
         if clase.extends:
@@ -130,6 +169,10 @@ class VisitanteTabla:
             self.tablaPrincipal.agregarHijo(tablaNueva)
             entradaNueva = Entrada(clase.nombre, 'clase', 'class', tablaNueva)
             self.tablaPrincipal.agregar(entradaNueva)
+    
+    # Genera un esqueleto de los campos y metodos existentes, para facilitar el
+    # llamado de metodos desde lugares del codigo donde todavia no se han definido
+    # dichos metodos.
             
     def generarMetodosYCampos(self, clase):
         self.tablaActual = self.tablaPrincipal.buscar(clase.nombre).tabla
@@ -154,7 +197,9 @@ class VisitanteTabla:
                 self.tablaActual.padre.buscarFuncionRedefinida(entradaNueva)
                 self.tablaActual.agregar(entradaNueva)
         self.tablaActual = self.tablaPrincipal
-        
+      
+    # De aqui en adelante estan los metodos que visitan cada nodo del AST
+          
     def visitarMJClass(self, clase):
         self.tablaActual = self.tablaPrincipal.buscar(clase.nombre).tabla
         for metodo in clase.metodos:
@@ -414,6 +459,8 @@ class VisitanteTabla:
             if not(self.esHeredero(expr.tipo, parametro.tipo.tipo)):
                 raise SemanticError('Error semantico, parametros no corresponden en llamado a metodo: ' + virtualCall.nombreFuncion)
         virtualCall.tipo = virtualCall.entrada.tipo
+    
+    # Define si un tipo es subtipo de otro
         
     def esHeredero(self, a, b):
         if a == b:
@@ -428,6 +475,8 @@ class VisitanteTabla:
                 return True
             tablaH = tablaH.padre
         return False
+    
+    # Imprime a self.linea una tabla de simbolos
     
     def imprimirTabla(self, tabla):
         if len(tabla.tabla.values()) == 0:

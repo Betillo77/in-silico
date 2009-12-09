@@ -1,3 +1,6 @@
+
+# Error semantico
+
 class SemanticError(BaseException):
 
     def __init__(self, args):

@@ -1,4 +1,5 @@
-Este ejemplo fue tomado de la clase:
+# Este ejemplo fue tomado de la clase, es el ejemplo de una
+# entrada del programa Primeros_y_Siguientes.mj
 
 8
 E

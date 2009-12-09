@@ -1,3 +1,6 @@
+
+# Error lexico
+
 class LexicalError(BaseException):
 
     def __init__(self, args):

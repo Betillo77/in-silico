@@ -1,3 +1,7 @@
+
+# Codigo de la clase Quicksort. Fue hecho antes del visitante LIR, para
+# facilitar el entendimiento, por lo que difiere del codigo que genera mj.py
+
 str1: "Ingrese el tamano del arreglo: "
 str2: ""
 str3: "Ingrese el elemento "
