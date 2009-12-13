@@ -1,4 +1,6 @@
 package Colonia;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -10,15 +12,15 @@ public class Hormigas
 	double [][] feromonas;
 	static final int M = 1000;
 	static final int Q = 1;
-	static final int Inicial = 200;
-	static final int numIteraciones = 100;
-	static final int a = 1;
+	static final int Inicial = 3500;
+	static final int numIteraciones = 1000;
+	static final int a = 5;
 	static final int b = 1;
-	static final double p = 0.01;
-	static final double e = 0.0051;
+	static final double p = 0.001;
+	static final double e = 0.001;
 	
 	@SuppressWarnings("unchecked")
-	public void solucionar(double [][] costoInicial)
+	public void solucionar(double [][] costoInicial, Grafico g)
 	{
 		costo = costoInicial;
 		feromonas = new double[costo.length][costo.length];
@@ -31,6 +33,12 @@ public class Hormigas
 		ArrayList <Integer> solucionOptima = null;
 		while(iteracion++ < numIteraciones)
 		{
+			g.iteracionActual = iteracion;
+			Graphics g1 = g.getGraphics();
+			g1.setColor(Color.WHITE);
+			g1.fillRect(450, 465, 30, 30);	
+			g1.setColor(Color.BLACK);
+			g1.drawString(iteracion  + "", 460, 475);
 			System.gc();
 			int hormiga = 0;
 			ArrayList <Integer> [] hormigas = new ArrayList [M];
@@ -93,6 +101,11 @@ public class Hormigas
 			{
 				pesoOptimo = mejorPeso;
 				solucionOptima = mejorSolucion;
+				g.mejoresActual = solucionOptima;
+				g.solucionActual = mejorPeso;
+				g.soloNumero = false;
+				g.repaint();
+				g.soloNumero = true;
 				double init = M / (Q * mejorPeso);
 				for(int i = 0; i < costo.length; i++)
 					for(int j = 0; j < costo.length; j++)
@@ -243,13 +256,5 @@ public class Hormigas
 			}
 		
 		return datosPrueba;
-	}
-	
-	public static void main(String [] args)
-	{
-		Hormigas atomicas = new Hormigas();
-		double [][] prueba = leer("prueba.txt");
-		//{{Double.POSITIVE_INFINITY, 3, 4, 14, 20, 12}, {3, Double.POSITIVE_INFINITY, 6, 16, 7, 6}, {5, 2, Double.POSITIVE_INFINITY, 17, 15, 10}, {18, 10, 1, Double.POSITIVE_INFINITY, 10, 11}, {11, 8, 9, 4, Double.POSITIVE_INFINITY, 2}, {2, 6, 7, 1, 2, Double.POSITIVE_INFINITY}};
-		atomicas.solucionar(prueba);
 	}
 }
