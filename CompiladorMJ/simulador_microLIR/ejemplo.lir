@@ -1,0 +1,1263 @@
+str0: "Algoritmo para calcular los simbolos PRIMERO/SIGUIENTE"
+str1: ""
+str2: "Nota: para que funcione cada terminal y no terminal debe ser de longitud 1,"
+str3: "los no terminales deben ser letras (A-Z) mayusculas, el primer simbolo debe"
+str4: "ser el simbolo de inicio y no se debe usar el simbolo $ (fin de entrada)"
+str5: ""
+str6: "Ingrese el numero de reglas: "
+str7: ""
+str8: "Ingrese el no terminal de la regla "
+str9: ": "
+str10: ""
+str11: "Ingrese el cuerpo de la regla "
+str12: ": "
+str13: ""
+str14: "No terminal "
+str15: ":"
+str16: "Primero: "
+str17: "Siguiente: "
+str18: ""
+str19: ", "
+
+_DV_Primeros_y_Siguientes: []
+_DV_Solucion: []
+_DV_Regla: [_Regla_esAnulable,_Regla_subRegla,_Regla_iniciarRegla]
+_DV_Simbolo: [_Simbolo_iniciar]
+_DV_Terminal: [_Terminal_iniciar]
+_DV_NoTerminal: [_NoTerminal_iniciar]
+_DV_ConjuntoSimbolos: [_ConjuntoSimbolos_buscarAgregar,_ConjuntoSimbolos_iniciar,_ConjuntoSimbolos_unir,_ConjuntoSimbolos_tostring,_ConjuntoSimbolos_agregar]
+
+# Primeros_y_Siguientes.main
+_ic_main:
+StaticCall _Solucion_solucionar(), Rdummy
+Library __exit(0), Rdummy
+# Fin de Primeros_y_Siguientes.main
+
+# Solucion.solucionar
+_Solucion_solucionar:
+Move 0, R1
+Move 0, R2
+Move 0, R3
+Move 0, R4
+Move R4, R3
+Move 0, R4
+Library __allocateObject(20), R5
+MoveField _DV_ConjuntoSimbolos, R5.0
+Move R5, R4
+Move 0, R5
+Library __allocateObject(20), R6
+MoveField _DV_ConjuntoSimbolos, R6.0
+Move R6, R5
+Move 0, R6
+Move 0, R7
+Move R7, R6
+Move 0, R7
+Library __allocateObject(20), R8
+MoveField _DV_Terminal, R8.0
+Move R8, R7
+Move R7, R8
+Move 36, R9
+VirtualCall R8.0(this = R8, p1 = R9), Rdummy
+Move R4, R8
+Move 20, R9
+VirtualCall R8.1(this = R8, p1 = R9), Rdummy
+Move R5, R8
+Move 20, R9
+VirtualCall R8.1(this = R8, p1 = R9), Rdummy
+Move str0, R8
+Library __println(R8), Rdummy
+Move str1, R8
+Library __println(R8), Rdummy
+Move str2, R8
+Library __println(R8), Rdummy
+Move str3, R8
+Library __println(R8), Rdummy
+Move str4, R8
+Library __println(R8), Rdummy
+Move str5, R8
+Library __println(R8), Rdummy
+Move str6, R8
+Library __print(R8), Rdummy
+Library __readi(), R8
+Move R8, R1
+Move str7, R8
+Library __println(R8), Rdummy
+Move R1, R8
+Mul 4, R8
+Library __allocateArray(R8), R8
+Move R8, R2
+_while_0:
+Move R3, R8
+Move R1, R9
+Compare R9, R8
+JumpGE _otro_0
+Move 1, R8
+Jump _salida_otro_0
+_otro_0:
+Move 0, R8
+_salida_otro_0:
+Compare 0, R8
+JumpTrue _salida_while_0
+Move 0, R8
+Move 0, R9
+Move 0, R10
+Move 0, R11
+Move 0, R12
+Move 0, R13
+Library __allocateObject(12), R14
+MoveField _DV_Regla, R14.0
+Move R14, R13
+Move str8, R14
+Move R3, R16
+Move 1, R17
+Add R17, R16
+Library __itos(R16), R15
+Library __stringCat(R14, R15), R14
+Move str9, R15
+Library __stringCat(R14, R15), R14
+Library __print(R14), Rdummy
+Library __readln(), R14
+Move R14, R8
+Move str10, R14
+Library __println(R14), Rdummy
+Move R8, R15
+Library __stoa(R15), R14
+Move R14, R9
+Move R5, R15
+Move R9, R17
+Move 0, R18
+MoveArray R17[R18], R16
+Move 0, R17
+VirtualCall R15.0(this = R15, p1 = R16, p2 = R17), R14
+Move R14, R12
+Move str11, R14
+Move R3, R16
+Move 1, R17
+Add R17, R16
+Library __itos(R16), R15
+Library __stringCat(R14, R15), R14
+Move str12, R15
+Library __stringCat(R14, R15), R14
+Library __print(R14), Rdummy
+Library __readln(), R14
+Move R14, R10
+Move str13, R14
+Library __println(R14), Rdummy
+Move R10, R15
+Library __stoa(R15), R14
+Move R14, R11
+Move R13, R14
+Move R12, R15
+Move R11, R16
+Move R5, R17
+Move R4, R18
+VirtualCall R14.2(this = R14, p1 = R15, p2 = R16, p3 = R17, p4 = R18), Rdummy
+Move R13, R14
+Move R2, R15
+Move R3, R16
+MoveArray R14, R15[R16]
+Move R3, R14
+Move 0, R15
+Compare R15, R14
+JumpFalse _otro_1
+Move 1, R14
+Jump _salida_otro_1
+_otro_1:
+Move 0, R14
+_salida_otro_1:
+Compare 0, R14
+JumpTrue _salida_if_0
+Move R12, R14
+Move R14, R6
+_salida_if_0:
+Move R3, R14
+Move 1, R15
+Add R15, R14
+Move R14, R3
+Jump _while_0
+_salida_while_0:
+Move R6, R10
+MoveField R10.1, R9
+Move R7, R10
+VirtualCall R9.4(this = R9, p1 = R10), R8
+_while_1:
+Move 1, R8
+Compare 0, R8
+JumpTrue _salida_while_1
+Move 0, R8
+Move 0, R9
+Move R9, R8
+Move 0, R9
+Move 0, R10
+Move R10, R9
+_while_2:
+Move R8, R10
+Move R1, R11
+Compare R11, R10
+JumpGE _otro_2
+Move 1, R10
+Jump _salida_otro_2
+_otro_2:
+Move 0, R10
+_salida_otro_2:
+Compare 0, R10
+JumpTrue _salida_while_2
+Move 0, R10
+Move R2, R12
+Move R8, R13
+MoveArray R12[R13], R11
+Move R11, R10
+Move 0, R11
+Move R11, R3
+Move R10, R12
+VirtualCall R12.0(this = R12), R11
+Compare 0, R11
+JumpTrue _otro_3
+Move R10, R14
+MoveField R14.2, R13
+MoveField R13.3, R12
+Compare 0, R12
+JumpTrue _otro_4
+Move 0, R12
+Jump _salida_otro_4
+_otro_4:
+Move 1, R12
+_salida_otro_4:
+And R12, R11
+Jump _salida_otro_3
+_otro_3:
+Move 0, R11
+_salida_otro_3:
+Compare 0, R11
+JumpTrue _salida_if_1
+Move 1, R11
+Move R11, R9
+Move 1, R11
+Move R10, R13
+MoveField R13.2, R12
+MoveField R11, R12.3
+_salida_if_1:
+_while_3:
+Move R3, R11
+Move R10, R13
+MoveField R13.1, R12
+ArrayLength R12, R12
+Compare R12, R11
+JumpGE _otro_5
+Move 1, R11
+Jump _salida_otro_5
+_otro_5:
+Move 0, R11
+_salida_otro_5:
+Compare 0, R11
+JumpTrue _salida_while_3
+Move 0, R11
+Move R3, R12
+Move 1, R13
+Add R13, R12
+Move R12, R11
+Move R3, R12
+Move 0, R13
+Compare R13, R12
+JumpFalse _otro_6
+Move 1, R12
+Jump _salida_otro_6
+_otro_6:
+Move 0, R12
+_salida_otro_6:
+Compare 1, R12
+JumpTrue _otro_7
+Move R10, R15
+Move 0, R16
+Move R3, R17
+Move 1, R18
+Sub R18, R17
+Move R5, R18
+Move R4, R19
+VirtualCall R15.1(this = R15, p1 = R16, p2 = R17, p3 = R18, p4 = R19), R14
+VirtualCall R14.0(this = R14), R13
+Or R13, R12
+Jump _salida_otro_7
+_otro_7:
+Move 1, R12
+_salida_otro_7:
+Compare 0, R12
+JumpTrue _salida_if_2
+Move 0, R12
+Move R10, R16
+MoveField R16.2, R15
+MoveField R15.4, R14
+Move R10, R18
+MoveField R18.1, R17
+Move R3, R18
+MoveArray R17[R18], R16
+MoveField R16.4, R15
+VirtualCall R14.2(this = R14, p1 = R15), R13
+Move R13, R12
+Move R9, R13
+Compare 1, R13
+JumpTrue _otro_8
+Move R12, R14
+Or R14, R13
+Jump _salida_otro_8
+_otro_8:
+Move 1, R13
+_salida_otro_8:
+Move R13, R9
+_salida_if_2:
+Move R3, R12
+Move R10, R14
+MoveField R14.1, R13
+ArrayLength R13, R13
+Move 1, R14
+Sub R14, R13
+Compare R13, R12
+JumpFalse _otro_9
+Move 1, R12
+Jump _salida_otro_9
+_otro_9:
+Move 0, R12
+_salida_otro_9:
+Compare 1, R12
+JumpTrue _otro_10
+Move R10, R15
+Move R3, R16
+Move 1, R17
+Add R17, R16
+Move R10, R18
+MoveField R18.1, R17
+ArrayLength R17, R17
+Move 1, R18
+Sub R18, R17
+Move R5, R18
+Move R4, R19
+VirtualCall R15.1(this = R15, p1 = R16, p2 = R17, p3 = R18, p4 = R19), R14
+VirtualCall R14.0(this = R14), R13
+Or R13, R12
+Jump _salida_otro_10
+_otro_10:
+Move 1, R12
+_salida_otro_10:
+Compare 0, R12
+JumpTrue _salida_if_3
+Move 0, R12
+Move R10, R17
+MoveField R17.1, R16
+Move R3, R17
+MoveArray R16[R17], R15
+MoveField R15.1, R14
+Move R10, R17
+MoveField R17.2, R16
+MoveField R16.1, R15
+VirtualCall R14.2(this = R14, p1 = R15), R13
+Move R13, R12
+Move R9, R13
+Compare 1, R13
+JumpTrue _otro_11
+Move R12, R14
+Or R14, R13
+Jump _salida_otro_11
+_otro_11:
+Move 1, R13
+_salida_otro_11:
+Move R13, R9
+_salida_if_3:
+_while_4:
+Move R11, R12
+Move R10, R14
+MoveField R14.1, R13
+ArrayLength R13, R13
+Compare R13, R12
+JumpGE _otro_12
+Move 1, R12
+Jump _salida_otro_12
+_otro_12:
+Move 0, R12
+_salida_otro_12:
+Compare 0, R12
+JumpTrue _salida_while_4
+Move R3, R12
+Move 0, R13
+Compare R13, R12
+JumpFalse _otro_13
+Move 1, R12
+Jump _salida_otro_13
+_otro_13:
+Move 0, R12
+_salida_otro_13:
+Compare 1, R12
+JumpTrue _otro_14
+Move R10, R15
+Move 0, R16
+Move R3, R17
+Move 1, R18
+Sub R18, R17
+Move R5, R18
+Move R4, R19
+VirtualCall R15.1(this = R15, p1 = R16, p2 = R17, p3 = R18, p4 = R19), R14
+VirtualCall R14.0(this = R14), R13
+Or R13, R12
+Jump _salida_otro_14
+_otro_14:
+Move 1, R12
+_salida_otro_14:
+Compare 0, R12
+JumpTrue _salida_if_4
+Move 0, R12
+Move R10, R16
+MoveField R16.2, R15
+MoveField R15.4, R14
+Move R10, R18
+MoveField R18.1, R17
+Move R3, R18
+MoveArray R17[R18], R16
+MoveField R16.4, R15
+VirtualCall R14.2(this = R14, p1 = R15), R13
+Move R13, R12
+Move R9, R13
+Compare 1, R13
+JumpTrue _otro_15
+Move R12, R14
+Or R14, R13
+Jump _salida_otro_15
+_otro_15:
+Move 1, R13
+_salida_otro_15:
+Move R13, R9
+_salida_if_4:
+Move R3, R12
+Move R10, R14
+MoveField R14.1, R13
+ArrayLength R13, R13
+Move 1, R14
+Sub R14, R13
+Compare R13, R12
+JumpFalse _otro_16
+Move 1, R12
+Jump _salida_otro_16
+_otro_16:
+Move 0, R12
+_salida_otro_16:
+Compare 1, R12
+JumpTrue _otro_17
+Move R10, R15
+Move R3, R16
+Move 1, R17
+Add R17, R16
+Move R10, R18
+MoveField R18.1, R17
+ArrayLength R17, R17
+Move 1, R18
+Sub R18, R17
+Move R5, R18
+Move R4, R19
+VirtualCall R15.1(this = R15, p1 = R16, p2 = R17, p3 = R18, p4 = R19), R14
+VirtualCall R14.0(this = R14), R13
+Or R13, R12
+Jump _salida_otro_17
+_otro_17:
+Move 1, R12
+_salida_otro_17:
+Compare 0, R12
+JumpTrue _salida_if_5
+Move 0, R12
+Move R10, R17
+MoveField R17.1, R16
+Move R3, R17
+MoveArray R16[R17], R15
+MoveField R15.1, R14
+Move R10, R17
+MoveField R17.2, R16
+MoveField R16.1, R15
+VirtualCall R14.2(this = R14, p1 = R15), R13
+Move R13, R12
+Move R9, R13
+Compare 1, R13
+JumpTrue _otro_18
+Move R12, R14
+Or R14, R13
+Jump _salida_otro_18
+_otro_18:
+Move 1, R13
+_salida_otro_18:
+Move R13, R9
+_salida_if_5:
+Move R3, R12
+Move 1, R13
+Add R13, R12
+Move R11, R13
+Compare R13, R12
+JumpFalse _otro_19
+Move 1, R12
+Jump _salida_otro_19
+_otro_19:
+Move 0, R12
+_salida_otro_19:
+Compare 1, R12
+JumpTrue _otro_20
+Move R10, R15
+Move R3, R16
+Move 1, R17
+Add R17, R16
+Move R11, R17
+Move 1, R18
+Sub R18, R17
+Move R5, R18
+Move R4, R19
+VirtualCall R15.1(this = R15, p1 = R16, p2 = R17, p3 = R18, p4 = R19), R14
+VirtualCall R14.0(this = R14), R13
+Or R13, R12
+Jump _salida_otro_20
+_otro_20:
+Move 1, R12
+_salida_otro_20:
+Compare 0, R12
+JumpTrue _salida_if_6
+Move 0, R12
+Move R10, R17
+MoveField R17.1, R16
+Move R3, R17
+MoveArray R16[R17], R15
+MoveField R15.1, R14
+Move R10, R18
+MoveField R18.1, R17
+Move R11, R18
+MoveArray R17[R18], R16
+MoveField R16.4, R15
+VirtualCall R14.2(this = R14, p1 = R15), R13
+Move R13, R12
+Move R9, R13
+Compare 1, R13
+JumpTrue _otro_21
+Move R12, R14
+Or R14, R13
+Jump _salida_otro_21
+_otro_21:
+Move 1, R13
+_salida_otro_21:
+Move R13, R9
+_salida_if_6:
+Move R11, R12
+Move 1, R13
+Add R13, R12
+Move R12, R11
+Jump _while_4
+_salida_while_4:
+Move R3, R12
+Move 1, R13
+Add R13, R12
+Move R12, R3
+Jump _while_3
+_salida_while_3:
+Move R8, R11
+Move 1, R12
+Add R12, R11
+Move R11, R8
+Jump _while_2
+_salida_while_2:
+Move R9, R10
+Compare 0, R10
+JumpTrue _otro_22
+Move 0, R10
+Jump _salida_otro_22
+_otro_22:
+Move 1, R10
+_salida_otro_22:
+Compare 0, R10
+JumpTrue _salida_if_7
+Jump _salida_while_1
+_salida_if_7:
+Jump _while_1
+_salida_while_1:
+Move 0, R8
+Move R8, R3
+_while_5:
+Move R3, R8
+Move R5, R10
+MoveField R10.1, R9
+Compare R9, R8
+JumpGE _otro_23
+Move 1, R8
+Jump _salida_otro_23
+_otro_23:
+Move 0, R8
+_salida_otro_23:
+Compare 0, R8
+JumpTrue _salida_while_5
+Move 0, R8
+Move R5, R11
+MoveField R11.4, R10
+Move R3, R11
+MoveArray R10[R11], R9
+Move R9, R8
+Move 0, R9
+Move 1, R10
+Mul 4, R10
+Library __allocateArray(R10), R10
+Move R10, R9
+Move R8, R11
+MoveField R11.2, R10
+Move R9, R11
+Move 0, R12
+MoveArray R10, R11[R12]
+Move str14, R10
+Move R9, R12
+Library __atos(R12), R11
+Library __stringCat(R10, R11), R10
+Move str15, R11
+Library __stringCat(R10, R11), R10
+Library __println(R10), Rdummy
+Move str16, R10
+Move R8, R13
+MoveField R13.4, R12
+VirtualCall R12.3(this = R12), R11
+Library __stringCat(R10, R11), R10
+Library __println(R10), Rdummy
+Move str17, R10
+Move R8, R13
+MoveField R13.1, R12
+VirtualCall R12.3(this = R12), R11
+Library __stringCat(R10, R11), R10
+Library __println(R10), Rdummy
+Move R3, R10
+Move 1, R11
+Add R11, R10
+Move R10, R3
+Jump _while_5
+_salida_while_5:
+Return 999
+# Fin de Solucion.solucionar
+
+# Regla.iniciarRegla
+_Regla_iniciarRegla:
+Move 0, R1
+Move 0, R2
+Move R2, R1
+Move p2, R2
+ArrayLength R2, R2
+Mul 4, R2
+Library __allocateArray(R2), R2
+Move this, R3
+MoveField R2, R3.1
+Move p1, R2
+Move this, R3
+MoveField R2, R3.2
+_while_6:
+Move R1, R2
+Move p2, R3
+ArrayLength R3, R3
+Compare R3, R2
+JumpGE _otro_24
+Move 1, R2
+Jump _salida_otro_24
+_otro_24:
+Move 0, R2
+_salida_otro_24:
+Compare 0, R2
+JumpTrue _salida_while_6
+Move 0, R2
+Move p2, R4
+Move R1, R5
+MoveArray R4[R5], R3
+Move 65, R4
+Compare R4, R3
+JumpL _otro_25
+Move 1, R3
+Jump _salida_otro_25
+_otro_25:
+Move 0, R3
+_salida_otro_25:
+Compare 0, R3
+JumpTrue _otro_26
+Move p2, R5
+Move R1, R6
+MoveArray R5[R6], R4
+Move 90, R5
+Compare R5, R4
+JumpG _otro_27
+Move 1, R4
+Jump _salida_otro_27
+_otro_27:
+Move 0, R4
+_salida_otro_27:
+And R4, R3
+Jump _salida_otro_26
+_otro_26:
+Move 0, R3
+_salida_otro_26:
+Compare 0, R3
+JumpTrue _else_8
+Move p3, R4
+Move p2, R6
+Move R1, R7
+MoveArray R6[R7], R5
+Move 0, R6
+VirtualCall R4.0(this = R4, p1 = R5, p2 = R6), R3
+Move R3, R2
+Jump _salida_if_8
+_else_8:
+Move p4, R4
+Move p2, R6
+Move R1, R7
+MoveArray R6[R7], R5
+Move 1, R6
+VirtualCall R4.0(this = R4, p1 = R5, p2 = R6), R3
+Move R3, R2
+_salida_if_8:
+Move R2, R3
+Move this, R5
+MoveField R5.1, R4
+Move R1, R5
+MoveArray R3, R4[R5]
+Move R1, R3
+Move 1, R4
+Add R4, R3
+Move R3, R1
+Jump _while_6
+_salida_while_6:
+Return 999
+# Fin de Regla.iniciarRegla
+
+# Regla.subRegla
+_Regla_subRegla:
+Move 0, R1
+Move p2, R2
+Move p1, R3
+Sub R3, R2
+Move 1, R3
+Add R3, R2
+Mul 4, R2
+Library __allocateArray(R2), R2
+Move R2, R1
+Move 0, R2
+Move 0, R3
+Move p1, R4
+Move R4, R3
+Move 0, R4
+Move 0, R5
+Move R5, R4
+_while_7:
+Move R3, R5
+Move p2, R6
+Compare R6, R5
+JumpG _otro_28
+Move 1, R5
+Jump _salida_otro_28
+_otro_28:
+Move 0, R5
+_salida_otro_28:
+Compare 0, R5
+JumpTrue _salida_while_7
+Move this, R8
+MoveField R8.1, R7
+Move R3, R8
+MoveArray R7[R8], R6
+MoveField R6.2, R5
+Move R1, R6
+Move R4, R7
+MoveArray R5, R6[R7]
+Move R3, R5
+Move 1, R6
+Add R6, R5
+Move R5, R3
+Move R4, R5
+Move 1, R6
+Add R6, R5
+Move R5, R4
+Jump _while_7
+_salida_while_7:
+Library __allocateObject(12), R5
+MoveField _DV_Regla, R5.0
+Move R5, R2
+Move R2, R5
+Move this, R7
+MoveField R7.2, R6
+Move R1, R7
+Move p3, R8
+Move p4, R9
+VirtualCall R5.2(this = R5, p1 = R6, p2 = R7, p3 = R8, p4 = R9), Rdummy
+Move R2, R5
+Return R5
+# Fin de Regla.subRegla
+
+# Regla.esAnulable
+_Regla_esAnulable:
+Move 0, R1
+Move 0, R2
+Move R2, R1
+_while_8:
+Move R1, R2
+Move this, R4
+MoveField R4.1, R3
+ArrayLength R3, R3
+Compare R3, R2
+JumpGE _otro_29
+Move 1, R2
+Jump _salida_otro_29
+_otro_29:
+Move 0, R2
+_salida_otro_29:
+Compare 0, R2
+JumpTrue _salida_while_8
+Move this, R5
+MoveField R5.1, R4
+Move R1, R5
+MoveArray R4[R5], R3
+MoveField R3.3, R2
+Compare 0, R2
+JumpTrue _otro_30
+Move 0, R2
+Jump _salida_otro_30
+_otro_30:
+Move 1, R2
+_salida_otro_30:
+Compare 0, R2
+JumpTrue _salida_if_9
+Move 0, R2
+Return R2
+_salida_if_9:
+Move R1, R2
+Move 1, R3
+Add R3, R2
+Move R2, R1
+Jump _while_8
+_salida_while_8:
+Move 1, R2
+Return R2
+# Fin de Regla.esAnulable
+
+# Simbolo.iniciar
+_Simbolo_iniciar:
+Return 999
+# Fin de Simbolo.iniciar
+
+# Terminal.iniciar
+_Terminal_iniciar:
+Move p1, R1
+Move this, R2
+MoveField R1, R2.2
+Library __allocateObject(20), R1
+MoveField _DV_ConjuntoSimbolos, R1.0
+Move this, R2
+MoveField R1, R2.4
+Move this, R2
+MoveField R2.4, R1
+Move 1, R2
+VirtualCall R1.1(this = R1, p1 = R2), Rdummy
+Move this, R3
+MoveField R3.4, R2
+Move this, R3
+VirtualCall R2.4(this = R2, p1 = R3), R1
+Library __allocateObject(20), R1
+MoveField _DV_ConjuntoSimbolos, R1.0
+Move this, R2
+MoveField R1, R2.1
+Move this, R2
+MoveField R2.1, R1
+Move 0, R2
+VirtualCall R1.1(this = R1, p1 = R2), Rdummy
+Move 1, R1
+Move this, R3
+MoveField R3.1, R2
+MoveField R1, R2.3
+Move 0, R1
+Move this, R2
+MoveField R1, R2.3
+Return 999
+# Fin de Terminal.iniciar
+
+# NoTerminal.iniciar
+_NoTerminal_iniciar:
+Move p1, R1
+Move this, R2
+MoveField R1, R2.2
+Library __allocateObject(20), R1
+MoveField _DV_ConjuntoSimbolos, R1.0
+Move this, R2
+MoveField R1, R2.4
+Move this, R2
+MoveField R2.4, R1
+Move 20, R2
+VirtualCall R1.1(this = R1, p1 = R2), Rdummy
+Library __allocateObject(20), R1
+MoveField _DV_ConjuntoSimbolos, R1.0
+Move this, R2
+MoveField R1, R2.1
+Move this, R2
+MoveField R2.1, R1
+Move 20, R2
+VirtualCall R1.1(this = R1, p1 = R2), Rdummy
+Move 0, R1
+Move this, R2
+MoveField R1, R2.3
+Return 999
+# Fin de NoTerminal.iniciar
+
+# ConjuntoSimbolos.iniciar
+_ConjuntoSimbolos_iniciar:
+Move p1, R1
+Mul 4, R1
+Library __allocateArray(R1), R1
+Move this, R2
+MoveField R1, R2.4
+Move 0, R1
+Move this, R2
+MoveField R1, R2.1
+Move p1, R1
+Move this, R2
+MoveField R1, R2.2
+Move 0, R1
+Move this, R2
+MoveField R1, R2.3
+Return 999
+# Fin de ConjuntoSimbolos.iniciar
+
+# ConjuntoSimbolos.buscarAgregar
+_ConjuntoSimbolos_buscarAgregar:
+Move 0, R1
+Move 0, R2
+Move R2, R1
+_while_9:
+Move R1, R2
+Move this, R4
+MoveField R4.1, R3
+Compare R3, R2
+JumpGE _otro_31
+Move 1, R2
+Jump _salida_otro_31
+_otro_31:
+Move 0, R2
+_salida_otro_31:
+Compare 0, R2
+JumpTrue _salida_while_9
+Move this, R5
+MoveField R5.4, R4
+Move R1, R5
+MoveArray R4[R5], R3
+MoveField R3.2, R2
+Move p1, R3
+Compare R3, R2
+JumpFalse _otro_32
+Move 1, R2
+Jump _salida_otro_32
+_otro_32:
+Move 0, R2
+_salida_otro_32:
+Compare 0, R2
+JumpTrue _salida_if_10
+Move this, R4
+MoveField R4.4, R3
+Move R1, R4
+MoveArray R3[R4], R2
+Return R2
+_salida_if_10:
+Move R1, R2
+Move 1, R3
+Add R3, R2
+Move R2, R1
+Jump _while_9
+_salida_while_9:
+Move p2, R2
+Compare 0, R2
+JumpTrue _otro_33
+Move 0, R2
+Jump _salida_otro_33
+_otro_33:
+Move 1, R2
+_salida_otro_33:
+Compare 0, R2
+JumpTrue _else_11
+Move 0, R2
+Library __allocateObject(20), R3
+MoveField _DV_NoTerminal, R3.0
+Move R3, R2
+Move R2, R3
+Move p1, R4
+VirtualCall R3.0(this = R3, p1 = R4), Rdummy
+Move this, R4
+Move R2, R5
+VirtualCall R4.4(this = R4, p1 = R5), R3
+Move R2, R3
+Return R3
+Jump _salida_if_11
+_else_11:
+Move 0, R2
+Library __allocateObject(20), R3
+MoveField _DV_Terminal, R3.0
+Move R3, R2
+Move R2, R3
+Move p1, R4
+VirtualCall R3.0(this = R3, p1 = R4), Rdummy
+Move this, R4
+Move R2, R5
+VirtualCall R4.4(this = R4, p1 = R5), R3
+Move R2, R3
+Return R3
+_salida_if_11:
+# Fin de ConjuntoSimbolos.buscarAgregar
+
+# ConjuntoSimbolos.agregar
+_ConjuntoSimbolos_agregar:
+Move 0, R1
+Move 0, R2
+Move R2, R1
+_while_10:
+Move R1, R2
+Move this, R4
+MoveField R4.1, R3
+Compare R3, R2
+JumpGE _otro_34
+Move 1, R2
+Jump _salida_otro_34
+_otro_34:
+Move 0, R2
+_salida_otro_34:
+Compare 0, R2
+JumpTrue _salida_while_10
+Move this, R5
+MoveField R5.4, R4
+Move R1, R5
+MoveArray R4[R5], R3
+MoveField R3.2, R2
+Move p1, R4
+MoveField R4.2, R3
+Compare R3, R2
+JumpFalse _otro_35
+Move 1, R2
+Jump _salida_otro_35
+_otro_35:
+Move 0, R2
+_salida_otro_35:
+Compare 0, R2
+JumpTrue _salida_if_12
+Move 0, R2
+Return R2
+_salida_if_12:
+Move R1, R2
+Move 1, R3
+Add R3, R2
+Move R2, R1
+Jump _while_10
+_salida_while_10:
+Move this, R3
+MoveField R3.1, R2
+Move 1, R3
+Add R3, R2
+Move this, R4
+MoveField R4.2, R3
+Compare R3, R2
+JumpLE _otro_36
+Move 1, R2
+Jump _salida_otro_36
+_otro_36:
+Move 0, R2
+_salida_otro_36:
+Compare 0, R2
+JumpTrue _else_13
+Move 0, R2
+Move 0, R3
+Move R3, R2
+Move 0, R3
+Move this, R5
+MoveField R5.2, R4
+Move 2, R5
+Mul R5, R4
+Mul 4, R4
+Library __allocateArray(R4), R4
+Move R4, R3
+Move this, R5
+MoveField R5.2, R4
+Move 2, R5
+Mul R5, R4
+Move this, R5
+MoveField R4, R5.2
+Move this, R5
+MoveField R5.1, R4
+Move 1, R5
+Add R5, R4
+Move this, R5
+MoveField R4, R5.1
+_while_11:
+Move R2, R4
+Move this, R6
+MoveField R6.4, R5
+ArrayLength R5, R5
+Compare R5, R4
+JumpGE _otro_37
+Move 1, R4
+Jump _salida_otro_37
+_otro_37:
+Move 0, R4
+_salida_otro_37:
+Compare 0, R4
+JumpTrue _salida_while_11
+Move this, R6
+MoveField R6.4, R5
+Move R2, R6
+MoveArray R5[R6], R4
+Move R3, R5
+Move R2, R6
+MoveArray R4, R5[R6]
+Move R2, R4
+Move 1, R5
+Add R5, R4
+Move R4, R2
+Jump _while_11
+_salida_while_11:
+Move p1, R4
+Move R3, R5
+Move R2, R6
+MoveArray R4, R5[R6]
+Move R3, R4
+Move this, R5
+MoveField R4, R5.4
+Move 1, R4
+Return R4
+Jump _salida_if_13
+_else_13:
+Move p1, R2
+Move this, R4
+MoveField R4.4, R3
+Move this, R5
+MoveField R5.1, R4
+MoveArray R2, R3[R4]
+Move this, R3
+MoveField R3.1, R2
+Move 1, R3
+Add R3, R2
+Move this, R3
+MoveField R2, R3.1
+Move 1, R2
+Return R2
+_salida_if_13:
+# Fin de ConjuntoSimbolos.agregar
+
+# ConjuntoSimbolos.unir
+_ConjuntoSimbolos_unir:
+Move 0, R1
+Move 0, R2
+Move R2, R1
+Move 0, R2
+Move 0, R3
+Move R3, R2
+Move this, R4
+MoveField R4.3, R3
+Compare 0, R3
+JumpTrue _salida_if_14
+Move 0, R3
+Return R3
+_salida_if_14:
+_while_12:
+Move R1, R3
+Move p1, R5
+MoveField R5.1, R4
+Compare R4, R3
+JumpGE _otro_38
+Move 1, R3
+Jump _salida_otro_38
+_otro_38:
+Move 0, R3
+_salida_otro_38:
+Compare 0, R3
+JumpTrue _salida_while_12
+Move 0, R3
+Move this, R5
+Move p1, R8
+MoveField R8.4, R7
+Move R1, R8
+MoveArray R7[R8], R6
+VirtualCall R5.4(this = R5, p1 = R6), R4
+Move R4, R3
+Move R2, R4
+Compare 1, R4
+JumpTrue _otro_39
+Move R3, R5
+Or R5, R4
+Jump _salida_otro_39
+_otro_39:
+Move 1, R4
+_salida_otro_39:
+Move R4, R2
+Move R1, R4
+Move 1, R5
+Add R5, R4
+Move R4, R1
+Jump _while_12
+_salida_while_12:
+Move R2, R3
+Return R3
+# Fin de ConjuntoSimbolos.unir
+
+# ConjuntoSimbolos.tostring
+_ConjuntoSimbolos_tostring:
+Move 0, R1
+Move 0, R2
+Move R2, R1
+Move 0, R2
+Move str18, R3
+Move R3, R2
+_while_13:
+Move R1, R3
+Move this, R5
+MoveField R5.1, R4
+Compare R4, R3
+JumpGE _otro_40
+Move 1, R3
+Jump _salida_otro_40
+_otro_40:
+Move 0, R3
+_salida_otro_40:
+Compare 0, R3
+JumpTrue _salida_while_13
+Move 0, R3
+Move 1, R4
+Mul 4, R4
+Library __allocateArray(R4), R4
+Move R4, R3
+Move this, R7
+MoveField R7.4, R6
+Move R1, R7
+MoveArray R6[R7], R5
+MoveField R5.2, R4
+Move R3, R5
+Move 0, R6
+MoveArray R4, R5[R6]
+Move R1, R4
+Move this, R6
+MoveField R6.1, R5
+Move 1, R6
+Sub R6, R5
+Compare R5, R4
+JumpTrue _otro_41
+Move 1, R4
+Jump _salida_otro_41
+_otro_41:
+Move 0, R4
+_salida_otro_41:
+Compare 0, R4
+JumpTrue _else_15
+Move R2, R4
+Move R3, R6
+Library __atos(R6), R5
+Library __stringCat(R4, R5), R4
+Move str19, R5
+Library __stringCat(R4, R5), R4
+Move R4, R2
+Jump _salida_if_15
+_else_15:
+Move R2, R4
+Move R3, R6
+Library __atos(R6), R5
+Library __stringCat(R4, R5), R4
+Move R4, R2
+_salida_if_15:
+Move R1, R4
+Move 1, R5
+Add R5, R4
+Move R4, R1
+Jump _while_13
+_salida_while_13:
+Move R2, R3
+Return R3
+# Fin de ConjuntoSimbolos.tostring
+
