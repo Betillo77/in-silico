@@ -10,14 +10,14 @@ public class Hormigas
 {
 	double [][] costo;
 	double [][] feromonas;
-	static final int M = 1000;
-	static final int Q = 1;
-	static final int Inicial = 3500;
-	static final int numIteraciones = 1000;
-	static final int a = 5;
-	static final int b = 1;
-	static final double p = 0.001;
-	static final double e = 0.001;
+	static int M = 1000;
+	static int Q = 1;
+	static int Inicial = 3500;
+	static int numIteraciones = 1000;
+	static int a = 5;
+	static int b = 1;
+	static double p = 0.001;
+	static double e = 0.001;
 	
 	@SuppressWarnings("unchecked")
 	public void solucionar(double [][] costoInicial, Grafico g)
@@ -117,6 +117,94 @@ public class Hormigas
 		{
 			System.out.print(n + " ");
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList <Object> solucionar(double [][] costoInicial, int M, int Q, int Inicial, int numIteraciones, int a, int b, double p, double e)
+	{
+		costo = costoInicial;
+		feromonas = new double[costo.length][costo.length];
+		double inicializacion = M / (Q * Inicial);
+		for(int i = 0; i < costo.length; i++)
+			for(int j = 0; j < costo.length; j++)
+				feromonas[i][j] = inicializacion;
+		int iteracion = 0;
+		double pesoOptimo = Inicial;
+		ArrayList <Integer> solucionOptima = null;
+		while(iteracion++ < numIteraciones)
+		{
+			System.gc();
+			int hormiga = 0;
+			ArrayList <Integer> [] hormigas = new ArrayList [M];
+			while(hormiga++ < M)
+			{
+				ArrayList <Integer> candidatas = new ArrayList <Integer> ();
+				for(int i = 1; i < costo.length; i++)
+					candidatas.add(i);
+				int actual = 0;
+				ArrayList <Integer> rutaActual = new ArrayList <Integer> ();
+				rutaActual.add(actual);
+				while(!candidatas.isEmpty())
+				{
+					double [] probabilidades = new double[candidatas.size()];
+					double sumatoria = 0;
+					for(int j = 0; j < candidatas.size(); j++)
+					{
+						probabilidades[j] = Math.pow(feromonas[actual][candidatas.get(j)], a) * Math.pow(1 / costo[actual][candidatas.get(j)], b);
+						sumatoria += probabilidades[j];
+					}
+					for(int j = 0; j < candidatas.size(); j++)
+					{
+						probabilidades[j] /= sumatoria;
+					}
+					int escogido = qAleatorio(probabilidades);
+					rutaActual.add(candidatas.get(escogido));
+					for(int j = 0; j < rutaActual.size() - 1; j++)
+					{
+						feromonas[rutaActual.get(j)][rutaActual.get(j + 1)] = feromonas[rutaActual.get(j)][rutaActual.get(j + 1)] * (1 - p);
+					}
+					actual = candidatas.get(escogido);
+					candidatas.remove(escogido);
+				}
+				rutaActual.add(0);
+				hormigas[hormiga - 1] = rutaActual;
+			}
+			for(int i = 0; i < costo.length; i++)
+				for(int j = 0; j < costo.length; j++)
+					feromonas[i][j] = feromonas[i][j] * (1 - e);
+			double mejorPeso = Double.POSITIVE_INFINITY;
+			ArrayList <Integer> mejorSolucion = null;
+			for(int i = 0; i < hormigas.length; i++)
+			{
+				double peso = 0;
+				for(int j = 0; j < hormigas[i].size() - 1; j++)
+				{
+					peso += costo[hormigas[i].get(j)][hormigas[i].get(j + 1)];
+				}
+				for(int j = 0; j < hormigas[i].size() - 1; j++)
+				{
+					feromonas[hormigas[i].get(j)][hormigas[i].get(j + 1)] += 1 / peso;
+				}
+				if(peso < mejorPeso)
+				{
+					mejorPeso = peso;
+					mejorSolucion = hormigas[i];
+				}
+			}
+			if(mejorPeso < pesoOptimo)
+			{
+				pesoOptimo = mejorPeso;
+				solucionOptima = mejorSolucion;
+				double init = M / (Q * mejorPeso);
+				for(int i = 0; i < costo.length; i++)
+					for(int j = 0; j < costo.length; j++)
+						feromonas[i][j] = init;
+			}
+		}
+		ArrayList <Object> respuesta = new ArrayList <Object> (2);
+		respuesta.add(pesoOptimo);
+		respuesta.add(solucionOptima);
+		return respuesta;
 	}
 	
 	public static int qAleatorio(double []m)
