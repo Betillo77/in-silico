@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/media/disk/Users/Santiago/workspace/zulutrade/Jexcelapi/jxl.jar"/>
+	<classpathentry kind="src" path="Generated JUIC files"/>
+	<classpathentry kind="lib" path="/media/disk/Users/Santiago/workspace/zulutrade/Jfreechart/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="/media/disk/Users/Santiago/workspace/zulutrade/Jfreechart/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="/media/disk/Users/Santiago/Documents/eclipse/x86/qtjambi-win32-lgpl-4.5.0_01/qtjambi-4.5.0_01.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

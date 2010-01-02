@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Mar 24 21:51:13 COT 2009
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=false
+onejar.checkbox=false
+jarname=zulutrade_fat.jar
+manifest.mergeall=true
+manifest.mainclass=
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=sga.jar
+excludes=
+includes=
