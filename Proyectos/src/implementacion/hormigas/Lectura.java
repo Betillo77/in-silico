@@ -20,7 +20,7 @@ public class Lectura
 	{
 		Scanner sc;
 		try {
-			sc = new Scanner(new File("Cities.xml"));
+			sc = new Scanner(new File("src/implementacion/hormigas/Cities.xml"));
 		} catch (FileNotFoundException e) {
 			sc = null;
 		}
