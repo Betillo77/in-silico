@@ -1,4 +1,3 @@
-import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -7,10 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -21,7 +17,6 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import java.util.ArrayList;
 
 
 public class dailyOCR
@@ -166,36 +161,58 @@ public class dailyOCR
 								actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes), afectada);
 							}
 						}
-						
-						ArrayList <Senal> nuevas = leer();
-						actuales = generar(nuevas);
-						guardarPrueba(ultimasProcesadas); // Prueba
-						eliminar(tiempo);
-						termino = true;
-						int negociosAbiertos = Math.max(Escritor.lineas.size(), EscritorB.lineas.size());
+						int estrategiaActual = 0;
+						while(estrategiaActual < 6)
+						{
+							Estrategia actual = null;
+							if(estrategiaActual == 0)
+							{
+								actual = breakout1;
+							}
+							if(estrategiaActual == 1)
+							{
+								actual = breakout2;
+							}
+							if(estrategiaActual == 2)
+							{
+								actual = range1;
+							}
+							if(estrategiaActual == 3)
+							{
+								actual = range2;
+							}
+							if(estrategiaActual == 4)
+							{
+								actual = momentum1;
+							}
+							if(estrategiaActual == 5)
+							{
+								actual = momentum2;
+							}
+							for(Senal senal : actual.senales)
+							{
+								boolean encontrada = false;
+								for(Senal nueva : senalesLeidas)
+								{
+									if(actual.id.equals(nueva.estrategia) && senal.par.equals(nueva.par))
+									{
+										encontrada = true;
+										break;
+									}
+								}
+								if(!encontrada)
+								{
+									actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes), senal);
+								}
+							}
+							estrategiaActual++;
+						}						
 						Escritor.escribir();
-						EscritorB.escribir();
-						capturar();
-						Thread.sleep(negociosAbiertos > 0 ? (60000 + 16000 * negociosAbiertos) : 0);
 						Escritor.leerMagicos();
-						EscritorB.leerMagicos();
-						escribirActuales(pathPrincipal);
-						escribirActuales(pathSecundario);
-						copiarArchivo(new File(pathPrincipal + "Error.txt"), new File(pathSecundario + "Error.txt"));
-						errores = 0;
 					}
 					catch(Exception e)
 					{	
-						Error.agregar("Error interpretando las senales");
-						long tiempoant = tiempo;
-						capturar();
-						esperar();
-						eliminar(tiempoant);
-						errores++;
-						if(errores == 10)
-						{
-							apagarEquipo();
-						}
+						// TODO Manejo de excepciones
 					}
 				}
 			}
@@ -275,16 +292,18 @@ public class dailyOCR
 
 	public static Object[] leer(String entrada)
 	{
-		ArrayList<Integer> curoplots = new ArrayList <Integer> ();
-		ArrayList<Integer> strategyid = new ArrayList <Integer> ();
-		ArrayList<String> symbol = new ArrayList <String> ();
-		ArrayList<String> direction = new ArrayList <String> ();
+		String entrada1 = entrada.substring(entrada.indexOf("\"Signal\":["));
 		
-		ArrayList<Double> entryprice = new ArrayList <Double> ();
+		ArrayList <Integer> curoplots = new ArrayList <Integer> ();
+		ArrayList <Integer> strategyid = new ArrayList <Integer> ();
+		ArrayList <String> symbol = new ArrayList <String> ();
+		ArrayList <String> direction = new ArrayList <String> ();
+		
+		ArrayList <Double> entryprice = new ArrayList <Double> ();
 
-		ArrayList<Double> bid = new ArrayList <Double> ();
-		ArrayList<Double> ask = new ArrayList <Double> ();
-		ArrayList<String> currency = new ArrayList <String> ();
+		ArrayList <Double> bid = new ArrayList <Double> ();
+		ArrayList <Double> ask = new ArrayList <Double> ();
+		ArrayList <String> currency = new ArrayList <String> ();
 		
 		Pattern pattern = Pattern.compile("\"curOpLots\":\\d+");
 		Pattern pattern2 = Pattern.compile("\"strategyId\":\\d+");
@@ -296,11 +315,11 @@ public class dailyOCR
 		Pattern pattern7 = Pattern.compile("\"ask\":\\d+.\\d+");
 		Pattern pattern8 = Pattern.compile("\"currency\":\"\\w+\"");
 		
-		Matcher matcher = pattern.matcher(entrada);
-		Matcher matcher2 = pattern2.matcher(entrada);
-		Matcher matcher3 = pattern3.matcher(entrada);
-		Matcher matcher4 = pattern4.matcher(entrada);
-		Matcher matcher5 = pattern5.matcher(entrada);
+		Matcher matcher = pattern.matcher(entrada1);
+		Matcher matcher2 = pattern2.matcher(entrada1);
+		Matcher matcher3 = pattern3.matcher(entrada1);
+		Matcher matcher4 = pattern4.matcher(entrada1);
+		Matcher matcher5 = pattern5.matcher(entrada1);
 		
 		Matcher matcher6 = pattern6.matcher(entrada);
 		Matcher matcher7 = pattern7.matcher(entrada);
@@ -326,7 +345,7 @@ public class dailyOCR
   		}
   
 		while(matcher4.find()) {
-	  		String S = matcher3.group();
+	  		String S = matcher4.group();
 	  		S = S.substring(13);
 	  		S = S.replace("\"", "");
 	  		direction.add(S);
@@ -356,16 +375,21 @@ public class dailyOCR
 		}
 		
 		ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
+		
 		for(int i=0;i<curoplots.size();i++)
 		{
 			Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
 			nuevasSenales.add(actual);
 		}
 		
-		ArrayList<BidAsk> precio= new ArrayList <BidAsk>();
+		ArrayList <BidAsk> precio = new ArrayList <BidAsk>();
 		for(int i=0;i<bid.size();i++)
 		{
-			BidAsk actual=new BidAsk(bid.get(i),ask.get(i),convertirPar(currency.get(i)));
+			if(convertirPar(currency.get(i)) == null)
+			{
+				continue;
+			}
+			BidAsk actual = new BidAsk(bid.get(i),ask.get(i),convertirPar(currency.get(i)));
 			precio.add(actual);
 		}
 		
