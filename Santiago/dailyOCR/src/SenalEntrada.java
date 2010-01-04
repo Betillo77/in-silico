@@ -4,6 +4,7 @@ public class SenalEntrada
 	public TipoSenal tipo;
 	public boolean compra;
 	public int numero = 1;
+	public double precioEntrada;
 	
 	public SenalEntrada(Par par, TipoSenal tipo, boolean compra) 
 	{

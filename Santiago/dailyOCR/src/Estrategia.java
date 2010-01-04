@@ -1,9 +1,11 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
-
-import SenalEntrada.TipoSenal;
-
 
 public class Estrategia 
 {	
@@ -14,7 +16,8 @@ public class Estrategia
 	{
 		this.id = id;
 	}
-	public static void agregar(SenalEntrada entrada, Senal afectada) 
+	
+	public void agregar(SenalEntrada entrada, Senal afectada) 
 	{
 		if(entrada.tipo.equals(TipoSenal.HIT))
 		{
@@ -22,116 +25,76 @@ public class Estrategia
 		}
 		else
 		{
-			trade(entrada, afectada);
+			trade(entrada);
 		}
 	}
 	
 	private void hit(SenalEntrada entrada, Senal afectada) 
 	{
-		Senal opuesta;
-		if(senales.contains(new Senal()))) 
+		Escritor.cerrar(entrada, afectada);
+		if(afectada.numeroLotes <= 0)
 		{
-			opuesta = buscarOpuesta(senal, senales, true);
+			senales.remove(afectada);
 		}
-		else if(senales.contains(new Senal(senal.estrategia, senal.par, Senal.TRADE, false)))
-		{
-			opuesta = buscarOpuesta(senal, senales, false);
-		}
-		else
-		{
-			opuesta = null;
-			Error.agregar("No se pudo cerrar " + darNombrePar(senal) + " no esta en la lista de: " + senal.estrategia);
-			return;
-		}
-		Escritor.agregar(senal, opuesta);
-		remover(opuesta, senales);
 	}
 	
-	private static void trade(Senal senal, ArrayList <Senal> senales) 
+	private void trade(SenalEntrada entrada) 
 	{
-		if(senales.contains(new Senal(senal.estrategia, senal.par, Senal.TRADE, !senal.compra)))
+		Senal nueva = new Senal(id, entrada.compra, entrada.par, entrada.numero, entrada.precioEntrada);
+		if(tienePar(entrada.par) != null)
 		{
-			Senal opuesta = buscarOpuesta(senal, senales, !senal.compra);
-			Escritor.agregar(new Senal(senal.estrategia, senal.par, Senal.HIT, false), opuesta);
-			remover(opuesta, senales);
+			// TODO Manejo de errores
 		}
-		else
+		Escritor.abrir(entrada, nueva);
+		senales.add(nueva);
+	}
+	
+	public Senal tienePar(Par par) 
+	{
+		for(Senal senal : senales)
 		{
-			agregar(senal, senales);
+			if(senal.par == par)
+				return senal;
 		}
+		return null;
 	}
 
-	public static Senal buscarOpuesta(Senal senal, ArrayList <Senal> senales, boolean compra)
+	public void escribir(File archivo)
 	{
-		Senal opuesta = new Senal(senal.estrategia, senal.par, Senal.TRADE, compra);
-		for(Senal s : senales)
+		try 
 		{
-			if(s.equals(opuesta))
-			{
-				opuesta = s;
-			}
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo));
+			oos.writeObject(this);	
+			oos.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			// TODO Manejar errores
 		}
-		return opuesta;
+		catch (IOException e) 
+		{
+			// TODO Manejar errores
+		}	
 	}
 	
-	public static void agregar(Senal nueva, ArrayList <Senal> senales) 
+	public static Estrategia leer(File archivo)
 	{
-		int numero = 0;
-		for(Senal s : senales)
+		try 
 		{
-			if(s.equals(nueva))
-			{
-				numero++;
-			}
-		}
-		if(numero <= 1 && nueva.estrategia != Senal.BREAKOUT)
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo));
+			Estrategia e = (Estrategia) ois.readObject();
+			ois.close();
+			return e;
+		} 
+		catch (ClassNotFoundException e) 
 		{
-			senales.add(nueva);
-			Escritor.agregar(nueva);
+			return null;
+			// TODO Manejar errores
 		}
-		else if(numero == 0)
+		catch (IOException e) 
 		{
-			senales.add(nueva);
-			Escritor.agregar(nueva);
-		}
-		else
-		{
-			Error.agregar("Mas de las senales permitidas, no se puede agregar " + darNombrePar(nueva) + " a: " + nueva.estrategia);
-		}
-	}
-	
-	public static void leerSenales(File archivo, ArrayList <Senal> senales) 
-	{	
-		try
-		{
-			Scanner sc = new Scanner(archivo);
-			while(sc.hasNext())
-			{
-				int estrategia = sc.nextInt();
-				int par = sc.nextInt();
-				int tipo = sc.nextInt();
-				boolean compra = sc.nextInt() == 1;
-				int magico = sc.nextInt();
-				senales.add(new Senal(estrategia, par, tipo, compra, magico));
-			}
-			sc.close();
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error leyendo las iniciales " + archivo.getAbsolutePath());
-		}
-	}
-	
-	public static void remover(Senal opuesta, ArrayList <Senal> senales) 
-	{
-		for(int i = 0; i < senales.size(); i++)
-		{
-			Senal s = senales.get(i);
-			if(s.equals(opuesta) && s.magico == opuesta.magico && s.range2 == opuesta.range2)
-			{
-				senales.remove(i);
-				return;
-			}
-		}
+			return null;
+			// TODO Manejar errores
+		}	
 	}
 }

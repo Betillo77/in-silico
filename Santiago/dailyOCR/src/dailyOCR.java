@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.ArrayList;
 
 
 public class dailyOCR
@@ -31,34 +34,139 @@ public class dailyOCR
 	public static List <Senal> ultimasProcesadas = new ArrayList <Senal> (); // Prueba
 	public static int errores = 0;
 	
+	static Estrategia breakout1;
+	static File b1 = new File(pathPrincipal + "breakout1.o");
+	
+	static Estrategia breakout2;
+	static File b2 = new File(pathPrincipal + "breakout2.o");
+	
+	static Estrategia range1;
+	static File r1 = new File(pathPrincipal + "range1.o");
+
+	public static Estrategia range2;
+	static File r2 = new File(pathPrincipal + "range2.o");
+	
+	static Estrategia momentum1;
+	static File m1 = new File(pathPrincipal + "momentum1.o");
+	
+	static Estrategia momentum2;
+	static File m2 = new File(pathPrincipal + "momentum2.o");
+	
+	static ArrayList <BidAsk> preciosActuales;
+	
+	static
+	{
+		if(b1.exists())
+		{
+			breakout1 = Estrategia.leer(b1);
+		}
+		else
+		{
+			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
+		}
+		if(b2.exists())
+		{
+			breakout2 = Estrategia.leer(b2);
+		}
+		else
+		{
+			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
+		}
+		if(r1.exists())
+		{
+			range1 = Estrategia.leer(r1);
+		}
+		else
+		{
+			range1 = new Estrategia(IdEstrategia.RANGE1);
+		}
+		if(r2.exists())
+		{
+			range2 = Estrategia.leer(r2);
+		}
+		else
+		{
+			range2 = new Estrategia(IdEstrategia.RANGE2);
+		}
+		if(m1.exists())
+		{
+			momentum1 = Estrategia.leer(m1);
+		}
+		else
+		{
+			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
+		}
+		if(m2.exists())
+		{
+			momentum2 = Estrategia.leer(m2);
+		}
+		else
+		{
+			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
 	public static void inicio()
-	{ 
-		iniciarEquipo();
-		Breakout.leerSenales();
-		Range.leerSenales();
-		Momentum.leerSenales();
-		Breakout2.leerSenales();
-		Estrategia.leerSenales(new File(pathPrincipal + "Actuales.txt"), actuales);
-		guardarPrueba(ultimasProcesadas); // Prueba
-		try
-		{
-			Thread.sleep(12000);
-			capturar();
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error en el inicio");
-		}
+	{
 		while(true)
 		{
 			try
 			{
-				esperar();
+				Thread.sleep(1000);
+				Object[] lecturas = leer(ConexionServidor.leerServidor());
+				ArrayList <Senal> senalesLeidas = (ArrayList <Senal>) lecturas[0];
+				preciosActuales = (ArrayList <BidAsk>) lecturas[1];
 				boolean termino = false;
 				while(!termino)
 				{
 					try
 					{
+						for(Senal senal : senalesLeidas)
+						{
+							Estrategia actual = null;
+							if(senal.estrategia.equals(IdEstrategia.BREAKOUT1))
+							{
+								actual = breakout1;
+							}
+							if(senal.estrategia.equals(IdEstrategia.BREAKOUT2))
+							{
+								actual = breakout2;
+							}
+							if(senal.estrategia.equals(IdEstrategia.RANGE1))
+							{
+								actual = range1;
+							}
+							if(senal.estrategia.equals(IdEstrategia.RANGE2))
+							{
+								actual = range2;
+							}
+							if(senal.estrategia.equals(IdEstrategia.MOMENTUM1))
+							{
+								actual = momentum1;
+							}
+							if(senal.estrategia.equals(IdEstrategia.MOMENTUM2))
+							{
+								actual = momentum2;
+							}
+							Senal afectada = null;
+							if((afectada = actual.tienePar(senal.par)) != null)
+							{
+								if(afectada.numeroLotes < senal.numeroLotes)
+								{
+									// TODO Manejo de errores
+								}
+								if(afectada.numeroLotes > senal.numeroLotes)
+								{
+									actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes), afectada);
+								}
+							}
+							else
+							{
+								actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes), afectada);
+							}
+						}
+						
 						ArrayList <Senal> nuevas = leer();
 						actuales = generar(nuevas);
 						guardarPrueba(ultimasProcesadas); // Prueba
@@ -97,72 +205,11 @@ public class dailyOCR
 			}
 		}
 	}
-
-	private static void iniciarEquipo()
-	{
-		try
-		{
-			Thread.sleep(60000);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(5000);
-			new Robot().keyPress(KeyEvent.VK_LEFT);
-			Thread.sleep(5000);
-			new Robot().keyPress(KeyEvent.VK_ENTER);
-			Thread.sleep(5000);
-			new Robot().mouseMove(30, 885);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(5000);
-			new Robot().mouseMove(30, 485);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(5000);
-			new Robot().mouseMove(1110, 250);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(10000);
-			new Robot().mouseMove(1102, 35);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(30000);
-			new Robot().keyPress(KeyEvent.VK_1);
-			Thread.sleep(5000);
-			new Robot().keyPress(KeyEvent.VK_DOWN);
-			Thread.sleep(5000);
-			new Robot().keyPress(KeyEvent.VK_ENTER);
-			Thread.sleep(5000);
-			new Robot().keyPress(KeyEvent.VK_ENTER);
-			Thread.sleep(30000);
-			actualizarPagina();
-			Thread.sleep(5000);
-			new Robot().mouseMove(200, 885);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error iniciando el equipo");
-		}
-	}
-
-	private static void capturar() throws IOException, AWTException, InterruptedException
-	{
-		try
-		{
-			BufferedImage screencapture = new Robot().createScreenCapture(new Rectangle(545, 250, 385, 440));
-			tiempo = System.currentTimeMillis();
-			ImageIO.write(screencapture, "bmp", new File(pathPrincipal + "Io/" + tiempo + ".bmp"));
-			if(!chequearConexion())
+/*			if(!chequearConexion())
 			{
 				arreglarConexion();
 			}
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error en la captura");
-		}
-	}
+*/
 	
 	private static void esperar() 
 	{
@@ -182,180 +229,7 @@ public class dailyOCR
 			Error.agregar("Error esperando");
 		}
 	}
-	
-	private static ArrayList <Senal> leer() throws FileNotFoundException
-	{
-		Scanner sc = new Scanner(new File(pathPrincipal + tiempo + ".txt"));
-		sc.useDelimiter("[\\Q*\\E]");
-		ArrayList <Senal> nuevas = new ArrayList <Senal> ();
-		while(sc.hasNext())
-		{
-			String estrategia = sc.next();
-			String cuerpo = sc.next();
-			nuevas.add(Estrategia.generarSenal(estrategia, cuerpo));
-		}
-		sc.close();
-		return nuevas;
-	}
-	
-	private static ArrayList <Senal> generar(ArrayList <Senal> nuevas) throws Exception 
-	{
-		if(nuevas.size() == 19)
-		{
-			if(actuales.isEmpty())
-			{
-				procesar(duplicar(nuevas));
-				return nuevas;
-			}
-			for(int i = 0; i < 19; i++)
-			{
-				if(nuevas.subList(i, 19).equals(actuales.subList(0, 19 - i)))
-				{
-					    procesar(duplicar(nuevas.subList(0, i)));
-						return nuevas;
-				}
-			}
-			guardar(nuevas);
-			for(int i = 0; i < 6; i++)
-			{
-				if(casiIguales(nuevas.subList(i, 19), actuales.subList(0, 19 - i)))
-				{
-					Error.agregar("Se detecto una coincidencia dudosa");
-					return actuales;
-				}
-			}
-			procesar(duplicar(nuevas));
-			Error.agregar("No se detecto una coincidencia");
-			return nuevas;
-		}
-		else
-		{
-			guardar(nuevas);
-			throw(new Exception());
-		}
-		
-	}
 
-	private static boolean casiIguales(List <Senal> lista1, List <Senal> lista2)
-	{
-		int k = 0;
-		for(int i = 0; i < Math.min(lista1.size(), lista2.size()); i++)
-		{
-			if(!lista1.get(i).equals(lista2.get(i)))
-			{
-				k++;
-			}
-		}
-		if(k == 1)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	private static ArrayList <Senal> duplicar(List <Senal> nuevas)
-	{	
-		ArrayList <Senal> duplicado = new ArrayList <Senal> ();
-		duplicado.addAll(nuevas);
-		return duplicado;
-	}
-
-	private static void procesar(List <Senal> nuevas)
-	{	
-		nuevas = convertirBreakout2(nuevas);
-		nuevas.addAll(leerManuales());
-		ultimasProcesadas = nuevas; // Prueba
-		for(Senal s : invertir(nuevas))
-		{
-			if(s.estrategia == Senal.BREAKOUT)
-			{
-				Breakout.intentarAgregar(s);
-			}
-			else if(s.estrategia == Senal.BREAKOUT2)
-			{
-				Breakout2.intentarAgregar(s);
-			}
-			else if(s.estrategia == Senal.MOMENTUM)
-			{
-				Momentum.intentarAgregar(s);
-			}
-			else if(s.estrategia == Senal.RANGE)
-			{
-				Range.intentarAgregar(s);
-			}
-		}
-	}
-
-	private static List <Senal> convertirBreakout2(List <Senal> nuevas) 
-	{
-		for(int i = 9; i < nuevas.size(); i++)
-		{
-			if(nuevas.get(i).tipo == Senal.TRADE && nuevas.get(i).estrategia == Senal.BREAKOUT)
-			{
-				int k = 0;
-				for(int j = 0; j < i; j++)
-				{
-					Senal s = nuevas.get(j);
-					if(s.estrategia == Senal.BREAKOUT && s.tipo == Senal.NOIMPORTA && s.par == nuevas.get(i).par)
-					{
-						k++;
-					}
-				}
-				if(k > 7)
-				{
-					ArrayList <Senal> anteriores = duplicar(nuevas);					
-					nuevas = nuevas.subList(0, i);
-					nuevas.add(new Senal(Senal.BREAKOUT2, anteriores.get(i).par, Senal.TRADE, anteriores.get(i).compra));
-					if(anteriores.size() > i + 1)
-					{
-						nuevas.addAll(anteriores.subList(i + 1, anteriores.size()));
-					}
-					break;
-				}
-			}
-		}
-		return nuevas;
-	}
-
-	private static ArrayList <Senal> leerManuales() 
-	{
-		try
-		{
-			ArrayList <Senal> manuales = new ArrayList <Senal> ();
-			Scanner sc = new Scanner(new File(pathSecundario + "Ordenes.txt"));
-			while(sc.hasNext())
-			{
-				int estrategia = sc.nextInt();
-				int par = sc.nextInt();
-				int tipo = sc.nextInt();
-				boolean compra = sc.nextInt() == 1;
-				int magico = sc.nextInt();
-				manuales.add(new Senal(estrategia, par, tipo, compra, magico));
-			}
-			sc.close();
-			new File(pathSecundario + "Ordenes.txt").delete();
-			return manuales;
-		}
-		catch(Exception e)
-		{
-			return new ArrayList <Senal> ();
-		}
-	}
-	
-	private static List <Senal> invertir(List <Senal> nuevas) 
-	{
-		ArrayList <Senal> invertida = new ArrayList <Senal> ();
-		for(int i = 0; i < nuevas.size(); i++)
-		{
-			invertida.add(0, nuevas.get(i));
-		}
-		return invertida;
-		
-	}
-	
 	private static void eliminar(long tiempo) 
 	{
 		try
@@ -369,163 +243,7 @@ public class dailyOCR
 		}
 	}
 	
-	private static void escribirActuales(String pathPrincipal)
-	{
-		try
-		{
-			String nuevaLinea = System.getProperty("line.separator");
-			File archivoEscritura = new File(pathPrincipal + "Range.txt");
-			archivoEscritura.delete();
-			archivoEscritura.createNewFile();
-			FileWriter fw = new FileWriter(archivoEscritura);
-			for(Senal s : Range.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.close();
-			archivoEscritura = new File(pathPrincipal + "Momentum.txt");
-			archivoEscritura.delete();
-			archivoEscritura.createNewFile();
-			fw = new FileWriter(archivoEscritura);
-			for(Senal s : Momentum.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);	
-			}
-			fw.close();
-			archivoEscritura = new File(pathPrincipal + "Breakout.txt");
-			archivoEscritura.delete();
-			archivoEscritura.createNewFile();
-			fw = new FileWriter(archivoEscritura);
-			for(Senal s : Breakout.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.close();
-			archivoEscritura = new File(pathPrincipal + "Breakout2.txt");
-			archivoEscritura.delete();
-			archivoEscritura.createNewFile();
-			fw = new FileWriter(archivoEscritura);
-			for(Senal s : Breakout2.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.close();
-			archivoEscritura = new File(pathPrincipal + "Actuales.txt");
-			archivoEscritura.delete();
-			archivoEscritura.createNewFile();
-			fw = new FileWriter(archivoEscritura);
-			for(Senal s : actuales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.close();
-		}
-		catch(Exception e)
-		{
-		}
-	}
 
-	private static void guardar(ArrayList <Senal> nuevas) 
-	{
-		try 
-		{	
-			String nuevaLinea = System.getProperty("line.separator");
-			copiarArchivo(new File(pathPrincipal + "Io/" + tiempo + ".bmp"), new File(pathPrincipal + "Error/" + tiempo + ".bmp"));
-			File archivoEscritura = new File(pathPrincipal + "Error/" + tiempo + ".txt");
-			archivoEscritura.createNewFile();
-			FileWriter fw = new FileWriter(archivoEscritura);
-			fw.write("Actuales:" + nuevaLinea);
-			for(Senal s : actuales)
-			{
-				fw.write(s.estrategia + " " + Estrategia.darNombrePar(s) + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("Nuevas:" + nuevaLinea);
-			for(Senal s : nuevas)
-			{
-				fw.write(s.estrategia + " " + Estrategia.darNombrePar(s) + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.close();
-		} 
-		catch (Exception e) 
-		{
-		}
-	}
-	
-	private static void guardarPrueba(List <Senal> nuevas) // Prueba
-	{
-		try 
-		{	
-			boolean bp = false;
-			for(Senal s : nuevas)
-			{
-				if(s.tipo == Senal.TRADE || s.tipo == Senal.HIT)
-				{
-					bp = true;
-				}
-			}
-			if(!bp)
-			{
-				return;
-			}
-			String nuevaLinea = System.getProperty("line.separator");
-			copiarArchivo(new File(pathPrincipal + "Io/" + tiempo + ".bmp"), new File(pathPrincipal + "Error/Prueba/" + tiempo + ".bmp"));
-			File archivoEscritura = new File(pathPrincipal + "Error/Prueba/" + tiempo + ".txt");
-			archivoEscritura.createNewFile();
-			FileWriter fw = new FileWriter(archivoEscritura);
-			fw.write("Actuales:" + nuevaLinea);
-			for(Senal s : actuales)
-			{
-				fw.write(s.estrategia + " " + Estrategia.darNombrePar(s) + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("Nuevas:" + nuevaLinea);
-			for(Senal s : nuevas)
-			{
-				fw.write(s.estrategia + " " + Estrategia.darNombrePar(s) + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("Range:" + nuevaLinea);
-			for(Senal s : Range.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("Momentum:" + nuevaLinea);
-			for(Senal s : Momentum.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("Breakout:" + nuevaLinea);
-			for(Senal s : Breakout.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("Breakout2:" + nuevaLinea);
-			for(Senal s : Breakout2.senales)
-			{
-				fw.write(s.estrategia + " " + s.par + " " + s.tipo + " " + (s.compra ? 1 : 0) + " " + s.magico + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("Escritor:" + nuevaLinea);
-			for(String s : Escritor.lineas)
-			{
-				fw.write(s + nuevaLinea);
-			}
-			fw.write(nuevaLinea);
-			fw.write("EscritorB:" + nuevaLinea);
-			for(String s : EscritorB.lineas)
-			{
-				fw.write(s + nuevaLinea);
-			}
-			fw.close();
-		} 
-		catch (Exception e) 
-		{
-		}
-	}
 	
 	public static void copiarArchivo(File entrada, File salida) 
 	{
@@ -554,6 +272,177 @@ public class dailyOCR
 	    }
 	}
 
+
+	public static Object[] leer(String entrada)
+	{
+		ArrayList<Integer> curoplots = new ArrayList <Integer> ();
+		ArrayList<Integer> strategyid = new ArrayList <Integer> ();
+		ArrayList<String> symbol = new ArrayList <String> ();
+		ArrayList<String> direction = new ArrayList <String> ();
+		
+		ArrayList<Double> entryprice = new ArrayList <Double> ();
+
+		ArrayList<Double> bid = new ArrayList <Double> ();
+		ArrayList<Double> ask = new ArrayList <Double> ();
+		ArrayList<String> currency = new ArrayList <String> ();
+		
+		Pattern pattern = Pattern.compile("\"curOpLots\":\\d+");
+		Pattern pattern2 = Pattern.compile("\"strategyId\":\\d+");
+		Pattern pattern3 = Pattern.compile("\"symbol\":\"\\w+\"");
+		Pattern pattern4 = Pattern.compile("\"direction\":\"\\w+\"");
+		Pattern pattern5 = Pattern.compile("\"entryPrice\":\\d+.\\d+");
+		  
+		Pattern pattern6 = Pattern.compile("\"bid\":\\d+.\\d+");
+		Pattern pattern7 = Pattern.compile("\"ask\":\\d+.\\d+");
+		Pattern pattern8 = Pattern.compile("\"currency\":\"\\w+\"");
+		
+		Matcher matcher = pattern.matcher(entrada);
+		Matcher matcher2 = pattern2.matcher(entrada);
+		Matcher matcher3 = pattern3.matcher(entrada);
+		Matcher matcher4 = pattern4.matcher(entrada);
+		Matcher matcher5 = pattern5.matcher(entrada);
+		
+		Matcher matcher6 = pattern6.matcher(entrada);
+		Matcher matcher7 = pattern7.matcher(entrada);
+		Matcher matcher8 = pattern8.matcher(entrada);
+
+		while(matcher.find()) {  
+			String S = matcher.group();
+			S = S.substring(12);
+			curoplots.add(Integer.parseInt(S));
+		}
+		  
+		while(matcher2.find()) {
+			String S = matcher2.group();
+			S = S.substring(13);
+			strategyid.add(Integer.parseInt(S));  
+		}
+  
+		while(matcher3.find()) {
+			String S = matcher3.group();
+			S = S.substring(10);
+			S = S.replace("\"", "");
+			symbol.add(S);
+  		}
+  
+		while(matcher4.find()) {
+	  		String S = matcher3.group();
+	  		S = S.substring(13);
+	  		S = S.replace("\"", "");
+	  		direction.add(S);
+		}
+  
+		while (matcher5.find()) {
+			String S = matcher5.group();
+			S = S.substring(13);
+			entryprice.add(Double.parseDouble(S));	
+		}
+	
+		while (matcher6.find()) {
+			String S = matcher6.group();
+			S = S.substring(6);
+			bid.add(Double.parseDouble(S));	
+		}
+		while (matcher7.find()) {
+			String S = matcher7.group();
+			S = S.substring(6);
+			ask.add(Double.parseDouble(S));	
+		}
+		while (matcher8.find()) {
+			String S = matcher8.group();
+			S = S.substring(12);
+	  		S = S.replace("\"", "");
+	  		currency.add(S);
+		}
+		
+		ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
+		for(int i=0;i<curoplots.size();i++)
+		{
+			Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
+			nuevasSenales.add(actual);
+		}
+		
+		ArrayList<BidAsk> precio= new ArrayList <BidAsk>();
+		for(int i=0;i<bid.size();i++)
+		{
+			BidAsk actual=new BidAsk(bid.get(i),ask.get(i),convertirPar(currency.get(i)));
+			precio.add(actual);
+		}
+		
+		Object[] resultado = new Object[2];
+		resultado[0] = nuevasSenales;
+		resultado[1] = precio;
+		
+		return resultado;
+	}
+
+	public static Par convertirPar(String cuerpo)
+	{
+		Par par;
+		if(cuerpo.contains("EURUSD"))
+		{
+			par = Par.EURUSD;
+		}
+		else if(cuerpo.contains("USDJPY"))
+		{
+			par = Par.USDJPY;
+		}
+		else if(cuerpo.contains("GBPUSD"))
+		{
+			par = Par.GBPUSD;
+		}
+		else if(cuerpo.contains("USDCHF"))
+		{
+			par = Par.USDCHF;
+		}
+		else if(cuerpo.contains("EURCHF"))
+		{
+			par = Par.EURCHF;
+		}
+		else if(cuerpo.contains("AUDUSD"))
+		{
+			par = Par.AUDUSD;
+		}
+		else if(cuerpo.contains("USDCAD"))
+		{
+			par = Par.USDCAD;
+		}
+		else if(cuerpo.contains("NZDUSD"))
+		{
+			par = Par.NZDUSD;
+		}
+		else if(cuerpo.contains("EURJPY"))
+		{
+			par = Par.EURJPY;
+		}
+		else if(cuerpo.contains("GBPJPY"))
+		{
+			par = Par.GBPJPY;
+		}
+		else if(cuerpo.contains("CHFJPY"))
+		{
+			par = Par.CHFJPY;
+		}
+		else if(cuerpo.contains("GBPCHF"))
+		{
+			par = Par.GBPCHF;
+		}
+		else if(cuerpo.contains("EURAUD"))
+		{
+			par = Par.EURAUD;
+		}
+		else if(cuerpo.contains("AUDJPY"))
+		{
+			par = Par.AUDJPY;
+		}
+		else
+		{
+			par = null;
+			// TODO Manejo de errores
+		}
+		return par;
+	}
+	
 	
 	public static boolean leerEstrategias(int par, String estrategia)
 	{

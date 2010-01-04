@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 
 
@@ -37,21 +39,6 @@ public class Escritor
 			Error.agregar("No se pudo escribir en el archivo");
 		}
 	}
-	
-	public static void agregar(Senal senal)
-	{
-		lineas.add(Estrategia.darNombrePar(senal)+ ";" + (senal.compra ? "BUY" : "SELL") + ";" + (senal.tipo == Senal.TRADE ? "OPEN" : "CLOSE") + ";" + senal.magico);
-		if(senal.tipo == Senal.TRADE)
-		{
-			senales.add(senal);
-		}
-	}
-	
-	public static void agregar(Senal senal, Senal opuesta)
-	{
-		
-		agregar(new Senal(senal.estrategia, senal.par, senal.tipo, senal.compra, opuesta.magico));
-	}
 
 	public static void leerMagicos() 
 	{
@@ -61,19 +48,20 @@ public class Escritor
 			try 
 			{
 				Scanner sc = new Scanner(archivoMagicos);
+				Iterator <Senal> it = senales.iterator();
+				Senal actual = it.next();
+				int numeroActual = 0;
 				while(sc.hasNext())
 				{
 					Scanner sc2 = new Scanner(sc.next());
 					sc2.useDelimiter("\\Q;\\E");
-					String par = sc2.next();
+					sc2.next();
 					int magico = sc2.nextInt();
-					for(Senal s : senales)
+					actual.magico[numeroActual++] = magico;
+					if(numeroActual == actual.numeroLotes)
 					{
-						if(Estrategia.darNombrePar(s).equals(par) && s.magico == 0)
-						{
-							s.magico = magico;
-							break;
-						}
+						numeroActual = 0;
+						actual = it.next();
 					}
 					sc2.close();
 				}
@@ -82,24 +70,40 @@ public class Escritor
 			} 
 			catch (Exception e)
 			{
-				if(!senales.isEmpty())
-				{
-					Error.agregar("Error leyendo los numeros magicos");
-					try 
-					{
-						Thread.sleep(40000);
-					}
-					catch (Exception e1) 
-					{
-					}
-				}
-				else
-				{
-					termino = true;
-				}
+				// TODO Manejo de errores
 			}
 		}
 		senales.clear();
 		archivoMagicos.delete();
+	}
+
+	public static void cerrar(SenalEntrada entrada, Senal afectada)
+	{
+		if(entrada.numero > 5)
+		{
+			// TODO Manejo de errores
+		}
+		for(int i = 0; i < entrada.numero; i++)
+		{
+			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.magico[i]);
+		}
+		afectada.numeroLotes -= entrada.numero;
+		if(afectada.numeroLotes <= 0)
+			return;
+		afectada.magico = Arrays.copyOfRange(afectada.magico, entrada.numero, afectada.magico.length);
+	}
+
+	public static void abrir(SenalEntrada entrada, Senal nueva)
+	{
+		if(entrada.numero > 5)
+		{
+			// TODO Manejo de errores
+		}
+		for(int i = 0; i < entrada.numero; i++)
+		{
+			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + 0);
+		}
+		nueva.magico = new int[entrada.numero];
+		senales.add(nueva);
 	}
 }

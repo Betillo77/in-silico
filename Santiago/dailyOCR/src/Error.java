@@ -6,7 +6,7 @@ public class Error
 {
 	public static void agregar(String error)
 	{
-		try 
+		try
 		{
 			FileWriter fw = new FileWriter(new File(dailyOCR.pathPrincipal + "Error.txt"), true);
 			fw.write(error);

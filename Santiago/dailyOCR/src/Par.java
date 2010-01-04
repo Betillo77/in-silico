@@ -10,20 +10,20 @@ public enum Par implements Serializable
 	{
 		switch(this)
 		{
-			case EURUSD: return "EUR/USD";
-			case USDJPY: return "USD/JPY";
-			case GBPUSD: return "GBP/USD";
-			case USDCHF: return "USD/CHF";
-			case EURCHF: return "EUR/CHF";
-			case AUDUSD: return "AUD/USD";
-			case USDCAD: return "USD/CAD";
-			case NZDUSD: return "NZD/USD";
-			case EURJPY: return "EUR/JPY";
-			case GBPJPY: return "GBP/JPY";
-			case CHFJPY: return "CHF/JPY";
-			case GBPCHF: return "GBP/CHF";
-			case EURAUD: return "EUR/AUD";
-			case AUDJPY: return "AUD/JPY";
+			case EURUSD: return "EURUSD";
+			case USDJPY: return "USDJPY";
+			case GBPUSD: return "GBPUSD";
+			case USDCHF: return "USDCHF";
+			case EURCHF: return "EURCHF";
+			case AUDUSD: return "AUDUSD";
+			case USDCAD: return "USDCAD";
+			case NZDUSD: return "NZDUSD";
+			case EURJPY: return "EURJPY";
+			case GBPJPY: return "GBPJPY";
+			case CHFJPY: return "CHFJPY";
+			case GBPCHF: return "GBPCHF";
+			case EURAUD: return "EURAUD";
+			case AUDJPY: return "AUDJPY";
 			default: return "";
 		}
 	}
