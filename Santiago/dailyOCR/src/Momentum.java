@@ -14,7 +14,7 @@ public class Momentum
 	public static void intentarAgregar(Senal senal) 
 	{
 		boolean mandar = false;
-		if(senal.tipo == Senal.HIT)
+		if(senal.tipo == Tipo)
 		{
 			mandar = !dailyOCR.leerEstrategias(senal.par, "Momentum2");
 		}

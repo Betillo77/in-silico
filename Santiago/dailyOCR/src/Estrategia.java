@@ -2,214 +2,34 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import SenalEntrada.TipoSenal;
+
 
 public class Estrategia 
 {	
-	public static Senal generarSenal(String estrategia, String cuerpo)
-	{
-		int estrategia1 = 0;
-		if(estrategia.contains("Breakout"))
-		{
-			estrategia1 = Senal.BREAKOUT;
-		}
-		else if(estrategia.contains("Range"))
-		{
-			estrategia1 = Senal.RANGE;
-		}
-		else if(estrategia.contains("Momentum"))
-		{
-			estrategia1 = Senal.MOMENTUM;
-		}
-		else
-		{
-			Error.agregar(estrategia + " " + cuerpo);
-			estrategia1 = Senal.ERROR;
-		}
-		int par = 0;
-		if(estrategia1 == Senal.ERROR)
-		{
-			par = Senal.ERROR;
-		}
-		else if(cuerpo.contains("EURUSD"))
-		{
-			par = Senal.EURUSD;
-		}
-		else if(cuerpo.contains("USDJPY") || cuerpo.contains("USLOPY") || cuerpo.contains("USCOPY") || cuerpo.contains("USIDJPY") || cuerpo.contains("USCUPY") || cuerpo.contains("USID3PY") || cuerpo.contains("USD3PY"))
-		{
-			par = Senal.USDJPY;
-		}
-		else if(cuerpo.contains("GBPUSD") || cuerpo.contains("GBP.D"))
-		{
-			par = Senal.GBPUSD;
-		}
-		else if(cuerpo.contains("USDCHF"))
-		{
-			par = Senal.USDCHF;
-		}
-		else if(cuerpo.contains("EURCHF"))
-		{
-			par = Senal.EURCHF;
-		}
-		else if(cuerpo.contains("AUDUSD"))
-		{
-			par = Senal.AUDUSD;
-		}
-		else if(cuerpo.contains("USDCAD"))
-		{
-			par = Senal.USDCAD;
-		}
-		else if(cuerpo.contains("NZDUSD") || cuerpo.contains("N2DUSD") || cuerpo.contains("MUSD") || cuerpo.contains("NZD.D"))
-		{
-			par = Senal.NZDUSD;
-		}
-		else if(cuerpo.contains("EURJPY") || cuerpo.contains("EUR3PY") || cuerpo.contains("EURWY"))
-		{
-			par = Senal.EURJPY;
-		}
-		else if(cuerpo.contains("GBPJPY") || cuerpo.contains("GBP3PY"))
-		{
-			par = Senal.GBPJPY;
-		}
-		else if(cuerpo.contains("CHFJPY") || cuerpo.contains("CHF3PY"))
-		{
-			par = Senal.CHFJPY;
-		}
-		else if(cuerpo.contains("GBPCHF"))
-		{
-			par = Senal.GBPCHF;
-		}
-		else if(cuerpo.contains("EURAUD"))
-		{
-			par = Senal.EURAUD;
-		}
-		else if(cuerpo.contains("AUDJPY") || cuerpo.contains("AUD3PY"))
-		{
-			par = Senal.AUDJPY;
-		}
-		else
-		{
-			par = Senal.ERROR;
-		}
-		int tipo;
-		boolean compra = false;
-		if(par == Senal.ERROR)
-		{
-			tipo = Senal.ERROR;
-			if(estrategia1 != Senal.ERROR)
-			{
-				Error.agregar(cuerpo);
-			}
-		}
-		else if(cuerpo.contains("Order Placed") || cuerpo.contains("Optimal") || cuerpo.contains("Near"))
-		{
-			tipo = Senal.NOIMPORTA;
-		}
-		else if(cuerpo.contains("Hit"))
-		{
-			tipo = Senal.HIT;
-		}
-		else if(cuerpo.contains("Sell"))
-		{
-			tipo = Senal.TRADE;
-			compra = false;
-		}
-		else if(cuerpo.contains("Buy"))
-		{
-			tipo = Senal.TRADE;
-			compra = true;
-		}
-		else
-		{
-			tipo = Senal.ERROR;
-			Error.agregar(cuerpo);
-		}
-		Senal nueva = new Senal(estrategia1, par, tipo, compra);
-		return nueva;
-	}
+	public IdEstrategia id;
+	public ArrayList <Senal> senales;
 	
-	public static String darNombrePar(Senal senal)
+	public Estrategia(IdEstrategia id)
 	{
-		int par = senal.par;
-		String nombrePar = "";
-		if(par == Senal.AUDJPY)
+		this.id = id;
+	}
+	public static void agregar(SenalEntrada entrada, Senal afectada) 
+	{
+		if(entrada.tipo.equals(TipoSenal.HIT))
 		{
-			nombrePar = "AUDJPY";
-		}
-		else if(par == Senal.AUDUSD)
-		{
-			nombrePar = "AUDUSD";
-		}
-		else if(par == Senal.CHFJPY)
-		{
-			nombrePar = "CHFJPY";
-		}
-		else if(par == Senal.EURAUD)
-		{
-			nombrePar = "EURAUD";
-		}
-		else if(par == Senal.EURCHF)
-		{
-			nombrePar = "EURCHF";
-		}
-		else if(par == Senal.EURJPY)
-		{
-			nombrePar = "EURJPY";
-		}
-		else if(par == Senal.EURUSD)
-		{
-			nombrePar = "EURUSD";
-		}
-		else if(par == Senal.GBPCHF)
-		{
-			nombrePar = "GBPCHF";
-		}
-		else if(par == Senal.GBPJPY)
-		{
-			nombrePar = "GBPJPY";
-		}
-		else if(par == Senal.GBPUSD)
-		{
-			nombrePar = "GBPUSD";
-		}
-		else if(par == Senal.NZDUSD)
-		{
-			nombrePar = "NZDUSD";
-		}
-		else if(par == Senal.USDCAD)
-		{
-			nombrePar = "USDCAD";
-		}
-		else if(par == Senal.USDCHF)
-		{
-			nombrePar = "USDCHF";
-		}
-		else if(par == Senal.USDJPY)
-		{
-			nombrePar = "USDJPY";
+			hit(entrada, afectada);
 		}
 		else
 		{
-			nombrePar = "ERROR";
-		}
-		return nombrePar;
-	}
-	
-	public static void intentarAgregar(Senal senal, ArrayList <Senal> senales) 
-	{
-		if(senal.tipo == Senal.HIT)
-		{
-			hit(senal, senales);
-		}
-		else if(senal.tipo == Senal.TRADE)
-		{
-			trade(senal, senales);
+			trade(entrada, afectada);
 		}
 	}
 	
-	private static void hit(Senal senal, ArrayList <Senal> senales) 
+	private void hit(SenalEntrada entrada, Senal afectada) 
 	{
 		Senal opuesta;
-		if(senales.contains(new Senal(senal.estrategia, senal.par, Senal.TRADE, true))) 
+		if(senales.contains(new Senal()))) 
 		{
 			opuesta = buscarOpuesta(senal, senales, true);
 		}
