@@ -6,19 +6,13 @@ public class SenalEntrada
 	public int numero = 1;
 	public double precioEntrada;
 	
-	public SenalEntrada(Par par, TipoSenal tipo, boolean compra) 
-	{
-		this.par = par;
-		this.tipo = tipo;
-		this.compra = compra;
-	}
-	
-	public SenalEntrada(Par par, TipoSenal tipo, boolean compra, int numero) 
+	public SenalEntrada(Par par, TipoSenal tipo, boolean compra, int numero, double precioEntrada) 
 	{
 		this.par = par;
 		this.tipo = tipo;
 		this.compra = compra;
 		this.numero = numero;
+		this.precioEntrada = precioEntrada;
 	}
 
 	@Override

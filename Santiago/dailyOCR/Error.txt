@@ -1,0 +1,2 @@
+No se pudo escribir en el archivo
+EURAUD;SELL;OPEN;0

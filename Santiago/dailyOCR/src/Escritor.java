@@ -11,7 +11,8 @@ public class Escritor
 	public static ArrayList <String> lineas = new ArrayList <String> ();
 	public static ArrayList <Senal> senales = new ArrayList <Senal> ();
 	public static final String pathMeta = "D:/Archivos de programa/MetaTrader/experts/files/";
-	public static File archivoEscritura = new File(pathMeta + "ordenes.txt");
+//	public static File archivoEscritura = new File(pathMeta + "ordenes.txt");
+	public static File archivoEscritura = new File(dailyOCR.pathPrincipal + "Error.txt");
 	public static File archivoMagicos = new File(pathMeta + "magicos.txt");
 	
 	
@@ -19,11 +20,11 @@ public class Escritor
 	{
 		try
 		{
-			archivoEscritura.delete();
+//			archivoEscritura.delete();
 			if(!lineas.isEmpty())
 			{
-				archivoEscritura.createNewFile();
-				FileWriter fw = new FileWriter(archivoEscritura);
+//				archivoEscritura.createNewFile();
+				FileWriter fw = new FileWriter(archivoEscritura, true);
 				for(String linea : lineas.subList(0, lineas.size() - 1))
 				{
 					fw.write(linea + ";");
@@ -43,6 +44,31 @@ public class Escritor
 	public static void leerMagicos() 
 	{
 		boolean termino = false;
+		int numero = 0;
+		for(Senal s : senales)
+			numero += s.numeroLotes;
+		if(senales.size() > 0)
+		{
+			try 
+			{
+				Thread.sleep(25000 + 5000 * numero);
+				for(int i = 0; i < 25; i++)
+				{
+					Thread.sleep(1000);
+					if(archivoMagicos.exists())
+						break;
+				}
+			}
+			catch (InterruptedException e) 
+			{
+				// TODO Manejo de errores
+			}
+		}
+		if(!archivoMagicos.exists())
+		{
+			// TODO Manejo de errores
+			return;
+		}
 		for(int i = 0; i < 3 && !termino; i++)
 		{
 			try 

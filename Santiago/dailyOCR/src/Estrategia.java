@@ -5,16 +5,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Estrategia 
+public class Estrategia implements Serializable
 {	
+	private static final long serialVersionUID = 5641887914135732067L;
+	
 	public IdEstrategia id;
 	public ArrayList <Senal> senales;
+	public HistorialEstrategia historial;
 	
 	public Estrategia(IdEstrategia id)
 	{
 		this.id = id;
+		senales = new ArrayList <Senal> ();
+		historial = new HistorialEstrategia(id);
 	}
 	
 	public void agregar(SenalEntrada entrada, Senal afectada) 
@@ -35,6 +41,45 @@ public class Estrategia
 		if(afectada.numeroLotes <= 0)
 		{
 			senales.remove(afectada);
+			BidAsk parActual = null;
+			for(BidAsk ba : dailyOCR.preciosActuales)
+			{
+				if(ba.currency.equals(afectada.par))
+				{
+					parActual = ba;
+					break;
+				}
+			}
+			if(parActual == null)
+			{
+				// TODO Manejo de errores
+				return;
+			}
+			int resultado = 0;
+			if(afectada.compra)
+			{
+				if(afectada.precioEntrada > 10)
+				{
+					resultado = (int) Math.round((afectada.precioEntrada - parActual.ask) * 100);
+				}
+				else
+				{
+					resultado = (int) Math.round((afectada.precioEntrada - parActual.ask) * 10000);
+				}
+			}
+			else
+			{
+				if(afectada.precioEntrada > 10)
+				{
+					resultado = (int) Math.round((parActual.bid - afectada.precioEntrada) * 100);
+				}
+				else
+				{
+					resultado = (int) Math.round((parActual.bid - afectada.precioEntrada) * 10000);
+				}
+			}
+			for(int i = 0; i < entrada.numero; i++)
+				historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
 		}
 	}
 	
