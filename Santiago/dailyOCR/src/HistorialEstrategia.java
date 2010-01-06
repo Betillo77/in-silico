@@ -93,8 +93,10 @@ public class HistorialEstrategia implements Serializable
 	
 }
 
-class Entrada
+class Entrada implements Serializable
 {
+	private static final long serialVersionUID = 2596947460811823087L;
+	
 	Par par;
 	long fecha;
 	int ganancia;

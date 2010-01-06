@@ -27,7 +27,7 @@ public class Escritor
 				FileWriter fw = new FileWriter(archivoEscritura, true);
 				for(String linea : lineas.subList(0, lineas.size() - 1))
 				{
-					fw.write(linea + ";");
+					fw.write(linea + ";" + System.getProperty("line.separator"));
 				}
 				fw.write(lineas.get(lineas.size() - 1));
 				fw.close();
@@ -51,8 +51,8 @@ public class Escritor
 		{
 			try 
 			{
-				Thread.sleep(25000 + 5000 * numero);
-				for(int i = 0; i < 25; i++)
+//				Thread.sleep(25000 + 5000 * numero);
+				for(int i = 0; i < 0; i++)
 				{
 					Thread.sleep(1000);
 					if(archivoMagicos.exists())
@@ -105,31 +105,31 @@ public class Escritor
 
 	public static void cerrar(SenalEntrada entrada, Senal afectada)
 	{
-		if(entrada.numero > 5)
+		if(entrada.numeroLotes > 5)
 		{
 			// TODO Manejo de errores
 		}
-		for(int i = 0; i < entrada.numero; i++)
+		for(int i = 0; i < entrada.numeroLotes; i++)
 		{
 			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.magico[i]);
 		}
-		afectada.numeroLotes -= entrada.numero;
+		afectada.numeroLotes -= entrada.numeroLotes;
 		if(afectada.numeroLotes <= 0)
 			return;
-		afectada.magico = Arrays.copyOfRange(afectada.magico, entrada.numero, afectada.magico.length);
+		afectada.magico = Arrays.copyOfRange(afectada.magico, entrada.numeroLotes, afectada.magico.length);
 	}
 
 	public static void abrir(SenalEntrada entrada, Senal nueva)
 	{
-		if(entrada.numero > 5)
+		if(entrada.numeroLotes > 5)
 		{
 			// TODO Manejo de errores
 		}
-		for(int i = 0; i < entrada.numero; i++)
+		for(int i = 0; i < entrada.numeroLotes; i++)
 		{
 			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + 0);
 		}
-		nueva.magico = new int[entrada.numero];
+		nueva.magico = new int[entrada.numeroLotes];
 		senales.add(nueva);
 	}
 }

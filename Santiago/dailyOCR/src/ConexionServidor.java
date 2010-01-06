@@ -24,7 +24,12 @@
  *
  */
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
+import java.util.Scanner;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -36,13 +41,17 @@ public class ConexionServidor
     public static String leerServidor()
     {
     	try
-    	{
+    	{ 	
+    		File file = new File("js.txt");
+    		Scanner sc = new Scanner(file);
+    		String js = sc.next();
+    		
 	        DefaultHttpClient httpclient = new DefaultHttpClient();
 	        BasicClientCookie cookie  =  new BasicClientCookie("JSESSIONID","292E82337F956A043C63CB80051101BF"); 
 	        BasicClientCookie cookie1 = new BasicClientCookie(" s_cc","true"); 
-	        BasicClientCookie cookie2 = new BasicClientCookie("s_PVnumber","4"); 
+	        BasicClientCookie cookie2 = new BasicClientCookie("s_PVnumber", "4"); 
 	        BasicClientCookie cookie3 = new BasicClientCookie("s_sq","%5B%5BB%5D%5D");
-	        BasicClientCookie cookie4 = new BasicClientCookie("JSESSIONIDSSO","0E6DACB1E886BC4A0DD46EB443DAF7D9");
+	        BasicClientCookie cookie4 = new BasicClientCookie("JSESSIONIDSSO", js);
 	        
 	        cookie.setVersion(0);
 	        cookie1.setVersion(0);
@@ -105,7 +114,9 @@ public class ConexionServidor
 	        			sb.append((char)tmp[i]);
 	        		}
 	        	}
-	            System.out.println(sb);
+	            BufferedWriter bw = new BufferedWriter(new FileWriter("salida.txt"));
+	            bw.write(sb.toString());
+	            bw.close();
 	        }
 	        httpclient.getConnectionManager().shutdown();
 	        return sb.toString();

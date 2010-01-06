@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.Robot;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -55,7 +58,7 @@ public class dailyOCR
 	
 	static ArrayList <Estrategia> estrategias;
 	
-	static
+	public static void cargarEstrategias()
 	{
 		if(b1.exists())
 		{
@@ -121,6 +124,10 @@ public class dailyOCR
 		{
 			try
 			{
+				if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null)
+				{
+					cargarEstrategias();
+				}
 				Thread.sleep(1000);
 				Object[] lecturas = leer(ConexionServidor.leerServidor());
 				ArrayList <Senal> senalesLeidas = (ArrayList <Senal>) lecturas[0];
@@ -129,31 +136,7 @@ public class dailyOCR
 				{
 					for(Senal senal : senalesLeidas)
 					{
-						Estrategia actual = null;
-						if(senal.estrategia.equals(IdEstrategia.BREAKOUT1))
-						{
-							actual = breakout1;
-						}
-						if(senal.estrategia.equals(IdEstrategia.BREAKOUT2))
-						{
-							actual = breakout2;
-						}
-						if(senal.estrategia.equals(IdEstrategia.RANGE1))
-						{
-							actual = range1;
-						}
-						if(senal.estrategia.equals(IdEstrategia.RANGE2))
-						{
-							actual = range2;
-						}
-						if(senal.estrategia.equals(IdEstrategia.MOMENTUM1))
-						{
-							actual = momentum1;
-						}
-						if(senal.estrategia.equals(IdEstrategia.MOMENTUM2))
-						{
-							actual = momentum2;
-						}
+						Estrategia actual = darEstrategiaSenal(senal);
 						Senal afectada = null;
 						if((afectada = actual.tienePar(senal.par)) != null)
 						{
@@ -163,48 +146,69 @@ public class dailyOCR
 							}
 							if(afectada.numeroLotes > senal.numeroLotes)
 							{
-								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes, 0), afectada);
+								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes, 0), afectada, false);
 							}
 						}
 						else
 						{
-							actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada);
+							actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
 						}
 					}
 					int estrategiaActual = 0;
 					for(Estrategia actual : estrategias)
 					{
-						for(Senal senal : actual.senales)
+						Thread.sleep(1000);
+						synchronized(actual.senales)
 						{
-							boolean encontrada = false;
-							for(Senal nueva : senalesLeidas)
+							for(int i = 0; i < actual.senales.size(); i++)
 							{
-								if(actual.id.equals(nueva.estrategia) && senal.par.equals(nueva.par))
+								Senal senal = null;
+								try
 								{
-									encontrada = true;
+									senal = actual.senales.get(i);
+								}
+								catch(Exception e)
+								{
 									break;
 								}
+								boolean encontrada = false;
+								for(Senal nueva : senalesLeidas)
+								{
+									if(actual.id.equals(nueva.estrategia) && senal.par.equals(nueva.par))
+									{
+										encontrada = true;
+										break;
+									}
+								}
+								if(!encontrada)
+								{
+									if(!senal.manual)
+										actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, false);
+								}
 							}
-							if(!encontrada)
-							{
-								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal);
-							}
+							estrategiaActual++;
 						}
-						estrategiaActual++;
 					}			
 					Escritor.escribir();
 					Escritor.leerMagicos();
-					breakout1.escribir(b1);
-					breakout2.escribir(b2);
-					range1.escribir(r1);
-					range2.escribir(r2);
-					momentum1.escribir(m1);
-					momentum2.escribir(m2);
-					registrarEstadoActual();
+					if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null)
+					{
+						cargarEstrategias();
+					}
+					else
+					{
+						breakout1.escribir(b1);
+						breakout2.escribir(b2);
+						range1.escribir(r1);
+						range2.escribir(r2);
+						momentum1.escribir(m1);
+						momentum2.escribir(m2);
+						registrarEstadoActual();
+					}
 				}
 				catch(Exception e)
 				{	
-					// TODO Manejo de excepciones
+					e.printStackTrace();// TODO Manejo de excepciones
 				}
 			}
 			catch(Exception e)
@@ -241,7 +245,7 @@ public class dailyOCR
 			}
 */
 	
-	private static void esperar() 
+	public static void esperar() 
 	{
 		try
 		{
@@ -260,7 +264,7 @@ public class dailyOCR
 		}
 	}
 
-	private static void eliminar(long tiempo) 
+	public static void eliminar(long tiempo) 
 	{
 		try
 		{
@@ -402,7 +406,7 @@ public class dailyOCR
 			{
 				continue;
 			}
-			BidAsk actual = new BidAsk(bid.get(i),ask.get(i),convertirPar(currency.get(i)));
+			BidAsk actual = new BidAsk(bid.get(i), ask.get(i), convertirPar(currency.get(i)));
 			precio.add(actual);
 		}
 		
@@ -580,7 +584,7 @@ public class dailyOCR
 	{
 		try
 		{
-			Error.agregar("Error de conexinn, intentando arreglar");
+			Error.agregar("Error de conexion, intentando arreglar");
 			Runtime.getRuntime().exec("cmd /c start " + "C:\\" + "primero.bat");
 			Thread.sleep(60000);
 			actualizarPagina();
@@ -628,9 +632,88 @@ public class dailyOCR
 			Error.agregar("Error apagando el equipo");
 		}
 	}
+
+	public static List <Senal> darSenalesEstrategia(IdEstrategia estrategia) 
+	{
+		if(estrategia.equals(IdEstrategia.BREAKOUT1))
+			return breakout1.senales;
+		if(estrategia.equals(IdEstrategia.BREAKOUT2))
+			return breakout2.senales;
+		if(estrategia.equals(IdEstrategia.MOMENTUM1))
+			return momentum1.senales;
+		if(estrategia.equals(IdEstrategia.MOMENTUM2))
+			return momentum2.senales;
+		if(estrategia.equals(IdEstrategia.RANGE1))
+			return range1.senales;
+		if(estrategia.equals(IdEstrategia.RANGE2))
+			return range2.senales;
+		return null;
+	}
+
+	
+	public static Estrategia darEstrategiaSenal(Senal senal)
+	{
+		Estrategia actual = null;
+		if(senal.estrategia.equals(IdEstrategia.BREAKOUT1))
+		{
+			actual = breakout1;
+		}
+		if(senal.estrategia.equals(IdEstrategia.BREAKOUT2))
+		{
+			actual = breakout2;
+		}
+		if(senal.estrategia.equals(IdEstrategia.RANGE1))
+		{
+			actual = range1;
+		}
+		if(senal.estrategia.equals(IdEstrategia.RANGE2))
+		{
+			actual = range2;
+		}
+		if(senal.estrategia.equals(IdEstrategia.MOMENTUM1))
+		{
+			actual = momentum1;
+		}
+		if(senal.estrategia.equals(IdEstrategia.MOMENTUM2))
+		{
+			actual = momentum2;
+		}
+		return actual;
+	}
+	
+	public static synchronized void cerrarSenalManual(Senal senal) 
+	{
+		synchronized(darEstrategiaSenal(senal).senales)
+		{
+			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
+			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, true);
+			Escritor.escribir();
+			Escritor.leerMagicos();
+		}
+	}
+	
+	public static synchronized void abrirSenalManual(Senal senal) 
+	{
+		synchronized(darEstrategiaSenal(senal).senales)
+		{
+			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
+			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), senal, true);
+			Escritor.escribir();
+			Escritor.leerMagicos();
+		}
+	}
 	
 	public static void main(String [] args)
 	{
+		ParteGrafica pg = new ParteGrafica();
+		JFrame framePrincipal = new JFrame();
+		framePrincipal.setMinimumSize(new Dimension(259, 244));
+		framePrincipal.setSize(259, 244);
+		framePrincipal.add(pg);
+		framePrincipal.pack();
+		framePrincipal.setVisible(true);
+		framePrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		cargarEstrategias();
 		inicio();
 	}
 }	

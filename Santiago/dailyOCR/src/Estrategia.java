@@ -7,40 +7,50 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Estrategia implements Serializable
 {	
 	private static final long serialVersionUID = 5641887914135732067L;
 	
 	public IdEstrategia id;
-	public ArrayList <Senal> senales;
+	public List <Senal> senales;
 	public HistorialEstrategia historial;
 	
 	public Estrategia(IdEstrategia id)
 	{
 		this.id = id;
-		senales = new ArrayList <Senal> ();
+		senales = Collections.synchronizedList(new ArrayList <Senal> ());
 		historial = new HistorialEstrategia(id);
 	}
 	
-	public void agregar(SenalEntrada entrada, Senal afectada) 
+	public void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
-		if(entrada.tipo.equals(TipoSenal.HIT))
+		synchronized(senales)
 		{
-			hit(entrada, afectada);
-		}
-		else
-		{
-			trade(entrada);
+			if(entrada.tipo.equals(TipoSenal.HIT))
+			{
+				hit(entrada, afectada, dejarLista);
+			}
+			else
+			{
+				trade(entrada, dejarLista);
+			}
 		}
 	}
 	
-	private void hit(SenalEntrada entrada, Senal afectada) 
+	private void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
 		Escritor.cerrar(entrada, afectada);
 		if(afectada.numeroLotes <= 0)
 		{
-			senales.remove(afectada);
+			if(!dejarLista)
+				senales.remove(afectada);
+			else
+			{
+				afectada.magico = new int[1];
+			}
 			BidAsk parActual = null;
 			for(BidAsk ba : dailyOCR.preciosActuales)
 			{
@@ -78,14 +88,18 @@ public class Estrategia implements Serializable
 					resultado = (int) Math.round((parActual.bid - afectada.precioEntrada) * 10000);
 				}
 			}
-			for(int i = 0; i < entrada.numero; i++)
+			for(int i = 0; i < entrada.numeroLotes; i++)
 				historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
 		}
 	}
 	
-	private void trade(SenalEntrada entrada) 
+	private void trade(SenalEntrada entrada, boolean dejarLista) 
 	{
-		Senal nueva = new Senal(id, entrada.compra, entrada.par, entrada.numero, entrada.precioEntrada);
+		Senal nueva = new Senal(id, entrada.compra, entrada.par, entrada.numeroLotes, entrada.precioEntrada);
+		if(dejarLista)
+		{
+			nueva.manual = true;
+		}
 		if(tienePar(entrada.par) != null)
 		{
 			// TODO Manejo de errores
