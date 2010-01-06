@@ -14,6 +14,9 @@ public class CromosomaPaquete implements Cromosoma
 	  */
     static int utilidad [] = {10, 4, 8, 22, 16, 13, 17, 20};
     
+    static int Mactual [] = new int [peso.length];
+    static grafico g = new grafico();
+    
 	/** 
 	 * pesoMaximo: es el peso máximo que puede cargar la mochila
 	 */
@@ -97,6 +100,10 @@ public class CromosomaPaquete implements Cromosoma
 	{
 		// TODO Ligar con la parte grafica
 		System.out.println(mejorSolucion);
+		g.Mactual=Mactual;
+		g.pesos=peso;
+		g.utilidades=utilidad;
+		g.repaint();
 	}
      
 	public double darAptitud()
@@ -187,7 +194,8 @@ public class CromosomaPaquete implements Cromosoma
 		{                         
 			int nActual = cromosomaPaquete >> i * 4;  
 			nActual &= 15;                 
-			acumulado += (" " +  (char)('a' + i) + ":" + nActual);     
+			acumulado += (" " +  (char)('a' + i) + ":" + nActual);
+			Mactual[i] = nActual;
 		}         
 		acumulado += " Aptitud: " + darAptitud();
 		return acumulado;
@@ -195,8 +203,10 @@ public class CromosomaPaquete implements Cromosoma
 	
 	public static void main(String[] args)
 	{
+		
 		Cromosoma[] poblacionInicial = poblacionInicial();
 		Genetico genetico = new Genetico();
+		g.setVisible(true);
 		genetico.solucionar(poblacionInicial, 10000);
 	}
 }
