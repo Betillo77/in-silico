@@ -145,9 +145,7 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 			anterior = e.getWhen();
 			Graphics g = getGraphics();
 			g.fillOval(e.getX(), e.getY(), 6, 6);
-			Ciudad nueva = new Ciudad();
-			nueva.x = e.getX();
-			nueva.y = e.getY();
+			Ciudad nueva = new Ciudad(e.getX(), e.getY());
 			ciudades.add(nueva);
 			repaint();
 		}

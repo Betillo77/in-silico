@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Tue Dec 15 21:30:17 COT 2009
+#Thu Jan 07 02:47:40 COT 2010
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
 jarname=Proyectos_fat.jar
 manifest.mergeall=true
-manifest.mainclass=experimentacion.pruebas
+manifest.mainclass=implementacion.hormigas.ModeloHormigasTSP
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=
