@@ -4,12 +4,17 @@ import genericos.hormigas.Hormigas;
 import genericos.hormigas.ModeloHormigas;
 
 import java.awt.BorderLayout;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
 import javax.swing.JPanel;
@@ -314,9 +319,15 @@ public class ModeloHormigasTSP implements ModeloHormigas
 	{
 		return Q;
 	}
-	
+
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException
 	{
+		System.setOut(new PrintStream("salida.txt"));
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(ImageIO.read(new File("h.gif")), "gif", baos);
+		byte[] imagen1 = baos.toByteArray();
+		BigInteger b = new BigInteger(imagen1);
+		System.out.print(b.toString(Character.MAX_RADIX));
 	}
 
 	public void establecerMejorActual(ArrayList <Integer> mejorSolucion, double pesoMejor) 
