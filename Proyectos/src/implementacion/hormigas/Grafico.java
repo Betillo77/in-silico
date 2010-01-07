@@ -1,26 +1,32 @@
 package implementacion.hormigas;
 
+import implementacion.hormigas.ModeloHormigasTSP.HiloHormiga;
+
+import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JRadioButton;
+
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-public class Grafico extends JFrame
+public class Grafico extends Canvas implements MouseListener, ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	public ArrayList <Integer> mejoresActual = new ArrayList <Integer> ();
 	public double solucionActual = 0;
-	public double iteracionActual = 0;
-	public boolean soloNumero = true;
 	public ArrayList <Ciudad> ciudades;
+	public boolean modoEdicion = true;
+	public static Grafico este;
+	public boolean terminar = false;
+	
 	public Grafico()
 	{
-		setSize(new Dimension(500, 500));
+		addMouseListener(this);
 	}
 	
 	@Override
@@ -31,56 +37,134 @@ public class Grafico extends JFrame
 		g.setColor(Color.BLACK);
 		for(Ciudad a : ciudades)
 		{
-			g.fillOval(a.x + 20, a.y + 20, 6, 6);
+			g.fillOval(a.x, a.y, 6, 6);
 		}
-		g.drawString((int)solucionActual  + "", 460, 460);
-		try 
+		if(!modoEdicion)
 		{
-			g.drawImage(ImageIO.read(new File("src/implementacion/hormigas/hormiga.gif")), 100, 100, null);
-			Thread.sleep(500);
-			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, 500, 500);
-			g.setColor(Color.BLACK);
-			for(Ciudad a : ciudades)
+			g.drawString((int)solucionActual  + "", 400, 400);
+			for(int i = 0; i < mejoresActual.size() - 1; i++)
 			{
-				g.fillOval(a.x + 20, a.y + 20, 6, 6);
+				if(i != 0)
+					g.drawLine(ciudades.get(mejoresActual.get(i - 1)).x + 3, ciudades.get(mejoresActual.get(i - 1)).y + 3, ciudades.get(mejoresActual.get(i)).x + 3, ciudades.get(mejoresActual.get(i)).y + 3);
+				g.setColor(Color.RED);
+				g.drawLine(ciudades.get(mejoresActual.get(i)).x + 3, ciudades.get(mejoresActual.get(i)).y + 3,ciudades.get(mejoresActual.get(i + 1)).x + 3, ciudades.get(mejoresActual.get(i + 1)).y + 3);
+				g.setColor(Color.BLACK);
+				try 
+				{
+					Thread.yield();
+					Thread.sleep(150);
+				}
+				catch (InterruptedException e) 
+				{
+				}
 			}
-			g.drawString((int)solucionActual  + "", 460, 460);
-			Thread.sleep(500);
-			g.drawImage(ImageIO.read(new File("src/implementacion/hormigas/hormiga.gif")), 100, 100, null);
-			Thread.sleep(500);
-			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, 500, 500);
-			g.setColor(Color.BLACK);
-			for(Ciudad a : ciudades)
-			{
-				g.fillOval(a.x + 20, a.y + 20, 6, 6);
-			}
-			g.drawString((int)solucionActual  + "", 460, 460);
-		} 
-		catch (IOException e1) 
-		{
-		} 
-		catch (InterruptedException e) 
-		{
+			if(mejoresActual.size() > 1)
+				g.drawLine(ciudades.get(mejoresActual.get(mejoresActual.size() - 2)).x + 3, ciudades.get(mejoresActual.get(mejoresActual.size() - 2)).y + 3,ciudades.get(mejoresActual.get(mejoresActual.size() - 1)).x + 3, ciudades.get(mejoresActual.get(mejoresActual.size() - 1)).y + 3);
 		}
-		for(int i = 0; i < mejoresActual.size() - 1; i++)
-		{
-			if(i != 0)
-				g.drawLine(ciudades.get(mejoresActual.get(i - 1)).x + 23, ciudades.get(mejoresActual.get(i - 1)).y + 23,ciudades.get(mejoresActual.get(i)).x + 23, ciudades.get(mejoresActual.get(i)).y + 23);
-			g.setColor(Color.RED);
-			g.drawLine(ciudades.get(mejoresActual.get(i)).x + 23, ciudades.get(mejoresActual.get(i)).y + 23,ciudades.get(mejoresActual.get(i + 1)).x + 23, ciudades.get(mejoresActual.get(i + 1)).y + 23);
-			g.setColor(Color.BLACK);
-			try 
-			{
-				Thread.sleep(150);
-			}
-			catch (InterruptedException e) 
-			{
-			}
-		}
-		if(mejoresActual.size() > 1)
-			g.drawLine(ciudades.get(mejoresActual.get(mejoresActual.size() - 2)).x + 23, ciudades.get(mejoresActual.get(mejoresActual.size() - 2)).y + 23,ciudades.get(mejoresActual.get(mejoresActual.size() - 1)).x + 23, ciudades.get(mejoresActual.get(mejoresActual.size() - 1)).y + 23);
 	}
-	static double mejor;
+	
+	public synchronized void terminar()
+	{
+		terminar = true;
+	}
+	
+	public synchronized void iniciar()
+	{
+		terminar = false;
+	}
+	
+	public synchronized boolean termino()
+	{
+		return terminar;
+	}
+
+	public synchronized void establecerMejorActual(ArrayList<Integer> mejorSolucion, double pesoMejor) 
+	{
+		mejoresActual = mejorSolucion;
+		solucionActual = pesoMejor;
+		new Thread(new Runnable()
+								{
+
+									@Override
+									public void run() 
+									{
+										paint(getGraphics());
+									}
+			
+								}).start();
+	}
+	
+	public void modoEdicion()
+	{
+		modoEdicion = true;
+		ciudades.clear();
+		solucionActual = 0;
+		mejoresActual.clear();
+		terminar();
+		repaint();
+	}
+
+	public void modoSolucion()
+	{
+		modoEdicion = false;
+		HiloHormiga hh = new HiloHormiga();
+		hh.matrizDistancias = Lectura.generarDistancias(ciudades);
+		ModeloHormigasTSP modelo = new ModeloHormigasTSP();
+		hh.modelo = modelo;
+		iniciar();
+		new Thread(hh).start();
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) 
+	{
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e)
+	{
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) 
+	{
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) 
+	{
+	}
+	
+	long anterior = 0;
+	
+	@Override
+	public void mouseReleased(MouseEvent e) 
+	{
+		if(e.getWhen() != anterior && modoEdicion)
+		{
+			anterior = e.getWhen();
+			Graphics g = getGraphics();
+			g.fillOval(e.getX(), e.getY(), 6, 6);
+			Ciudad nueva = new Ciudad();
+			nueva.x = e.getX();
+			nueva.y = e.getY();
+			ciudades.add(nueva);
+			repaint();
+		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		JRadioButton boton = (JRadioButton) e.getSource();
+		boton.getModel().setSelected(true);
+		if(boton.getText().equals("Modo edicion"))
+		{
+			modoEdicion();
+		}
+		else
+		{
+			modoSolucion();
+		}
+	}
 }
