@@ -1,22 +1,16 @@
 package implementacion.genetico;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.LayoutManager;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.JFrame;
 
 public class grafico extends JFrame {
+
+	private static final long serialVersionUID = 1L;
 	
 	int Mactual [] = {4,2,1,2,5,8,2,3};
 	int pesos [] = {2,3,3,6,3,2,7,9};
@@ -36,20 +30,17 @@ public class grafico extends JFrame {
 		g.drawString("Aptitud", 1100, 100);
 		int y=700;
 		int x=50;
-		int pf=0;
 		int pt=0;
 		int ut=0;
 		int i=0;
 		try {
 			for(i=0;i<Mactual.length;i++){
 				y=700;
-				pf=0;
 				for(int j=0;j<Mactual[i];j++)
 				{
 					try {
 						Thread.sleep(150);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					g.drawImage(ImageIO.read(new File("libro.jpg")),x,y,null);
@@ -64,14 +55,12 @@ public class grafico extends JFrame {
 				try {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				x+=100;	
 			}
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		g.drawString(""+pt, 1000, 120);
@@ -79,7 +68,6 @@ public class grafico extends JFrame {
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
