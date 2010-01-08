@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="src/httpclient-4.0.1.jar"/>
 	<classpathentry kind="lib" path="src/httpcore-4.0.1.jar"/>
 	<classpathentry kind="lib" path="src/httpmime-4.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Santiago/workspace/dailyOCR/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Santiago/workspace/dailyOCR/jfreechart-1.0.12.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
