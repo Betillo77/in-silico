@@ -714,6 +714,33 @@ public class dailyOCR
 		framePrincipal.setVisible(true);
 		framePrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		cargarEstrategias();
-		inicio();
+		new Thread(new Runnable()
+					{
+
+						@Override
+						public void run() 
+						{
+							inicio();
+						}
+						
+					}).start();
+		new Thread(new Runnable()
+		{
+
+			@Override
+			public void run() 
+			{
+				try {
+					Thread.sleep(20000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				AnalisisGrafico ag = new AnalisisGrafico(IdEstrategia.BREAKOUT2);
+				ag.pack();
+				ag.setVisible(true);
+			}
+			
+		}).start();
 	}
 }	

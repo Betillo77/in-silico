@@ -93,7 +93,7 @@ public class HistorialEstrategia implements Serializable
 	
 }
 
-class Entrada implements Serializable
+class Entrada implements Serializable, Comparable <Entrada>
 {
 	private static final long serialVersionUID = 2596947460811823087L;
 	
@@ -115,5 +115,11 @@ class Entrada implements Serializable
 		fecha.setTimeInMillis(this.fecha);
 		String fechaS = fecha.get(Calendar.DAY_OF_MONTH) + "/"  + (1 + fecha.get(Calendar.MONTH)) + "/" + fecha.get(Calendar.YEAR) + " " + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE); 
 		return par + ";" + fechaS + ";" + ganancia;
+	}
+
+	@Override
+	public int compareTo(Entrada o) 
+	{
+		return new Long(fecha).compareTo(o.fecha);
 	}
 }
