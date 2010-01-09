@@ -24,7 +24,7 @@ public class grafico extends JFrame {
 	
 	@Override
 	public synchronized void paint(Graphics g){
-		//String []dir={"sunw01.jpg","sunw01.jpg","sunw01.jpg"};
+		String []direccion={"avioneta.jpg","balon1.jpg","batman.jpg","casita.jpg","muñeco.jpg","patin.jpg","peluche2.jpeg","superman.jpg"};
 		super.paint(g);
 		g.drawString("Peso", 1000, 100);
 		g.drawString("Aptitud", 1100, 100);
@@ -43,15 +43,15 @@ public class grafico extends JFrame {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					g.drawImage(ImageIO.read(new File("libro.jpg")),x,y,null);
+					g.drawImage(ImageIO.read(new File(direccion[i])),x,y,null);
 					pt+=pesos[i];
 					ut+=utilidades[i];
-					y-=50;
+					y-=55;
 					
 				}
 				char c = (char) ('a'+i);
 				String a = c+" : "+Mactual[i];
-				g.drawString(a, x, 750);
+				g.drawString(a, x, 760);
 				try {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
