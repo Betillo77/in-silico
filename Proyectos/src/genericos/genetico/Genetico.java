@@ -1,6 +1,5 @@
 package genericos.genetico;
  
-import implementacion.genetico.Cromosoma;
 
 import java.util.ArrayList;
 import java.util.Collections;
