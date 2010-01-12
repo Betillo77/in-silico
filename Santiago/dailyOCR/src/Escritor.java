@@ -121,15 +121,17 @@ public class Escritor
 
 	public static void abrir(SenalEntrada entrada, Senal nueva)
 	{
+		Estrategia e = dailyOCR.darEstrategiaSenal(nueva);
 		if(entrada.numeroLotes > 5)
 		{
 			// TODO Manejo de errores
 		}
 		for(int i = 0; i < entrada.numeroLotes; i++)
 		{
-			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + 0);
+			
+			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + 0); // IF
 		}
 		nueva.magico = new int[entrada.numeroLotes];
-		senales.add(nueva);
+		senales.add(nueva); // IF
 	}
 }
