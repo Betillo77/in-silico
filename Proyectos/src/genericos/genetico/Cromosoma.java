@@ -1,4 +1,4 @@
-package implementacion.genetico;
+package genericos.genetico;
 
 public interface Cromosoma extends Comparable <Cromosoma>
 {

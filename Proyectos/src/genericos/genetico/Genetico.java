@@ -89,8 +89,8 @@ public class Genetico
 		for(int i = 0; i < poblacionActual.length; i++)
 		{
 			elegidos[i] = descendientes.get(descendientes.size() - 1 - i); // esta es la opción elitista
-		//	int d = azar(0, descendientes.size() - 1); // esta es la opcion al azar 
-		//	elegidos[i] = descendientes.remove(d); // esta es la opcion al azar 
+	//		int d = azar(0, descendientes.size() - 1); // esta es la opcion al azar 
+	//		elegidos[i] = descendientes.remove(d); // esta es la opcion al azar 
 		}
 		return elegidos;
 	}

@@ -1,5 +1,6 @@
 package implementacion.genetico;
 
+import genericos.genetico.Cromosoma;
 import genericos.genetico.Genetico;
 
 public class CromosomaPaquete implements Cromosoma
@@ -103,7 +104,7 @@ public class CromosomaPaquete implements Cromosoma
 		g.Mactual=Mactual;
 		g.pesos=peso;
 		g.utilidades=utilidad;
-		g.repaint();
+		g.paint(g.getGraphics());
 	}
      
 	public double darAptitud()
@@ -206,6 +207,7 @@ public class CromosomaPaquete implements Cromosoma
 		
 		Cromosoma[] poblacionInicial = poblacionInicial();
 		Genetico genetico = new Genetico();
+		g.addMouseListener(g);
 		g.setVisible(true);
 		genetico.solucionar(poblacionInicial, 10000);
 	}
