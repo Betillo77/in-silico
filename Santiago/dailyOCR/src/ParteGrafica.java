@@ -57,6 +57,7 @@ public class ParteGrafica extends JPanel {
 				public void actionPerformed(java.awt.event.ActionEvent e)
 				{
 					new TablaEstrategia(IdEstrategia.BREAKOUT1);
+					new AnalisisGrafico(IdEstrategia.BREAKOUT1);
 				}
 			});
 		}
@@ -75,6 +76,7 @@ public class ParteGrafica extends JPanel {
 			Breakout2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.BREAKOUT2);
+					new AnalisisGrafico(IdEstrategia.BREAKOUT2);
 				}
 			});
 		}
@@ -93,6 +95,7 @@ public class ParteGrafica extends JPanel {
 			Range1.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.RANGE1);
+					new AnalisisGrafico(IdEstrategia.RANGE1);
 				}
 			});
 		}
@@ -111,6 +114,7 @@ public class ParteGrafica extends JPanel {
 			Range2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.RANGE2);
+					new AnalisisGrafico(IdEstrategia.RANGE2);
 				}
 			});
 		}
@@ -129,6 +133,7 @@ public class ParteGrafica extends JPanel {
 			Momentum1.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.MOMENTUM1);
+					new AnalisisGrafico(IdEstrategia.MOMENTUM1);
 				}
 			});
 		}
@@ -147,6 +152,7 @@ public class ParteGrafica extends JPanel {
 			Momentum2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.MOMENTUM2);
+					new AnalisisGrafico(IdEstrategia.MOMENTUM2);
 				}
 			});
 		}

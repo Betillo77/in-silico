@@ -1,10 +1,16 @@
 import java.awt.Choice;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,7 +26,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class AnalisisGrafico extends JFrame {
+public class AnalisisGrafico extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
@@ -60,8 +66,11 @@ public class AnalisisGrafico extends JFrame {
 	{
 		super();
 		manejador = new ManejadorAnalisisGrafico(estrategia);
-		manejador.cambiarObjetos(Par.EURUSD, 0);
+		manejador.cambiarObjetos(Par.TODOS, 8);
 		initialize();
+		setPreferredSize(new Dimension(1237, 626));
+		pack();
+		setVisible(true);
 	}
 
 	public AnalisisGrafico()
@@ -86,96 +95,97 @@ public class AnalisisGrafico extends JFrame {
 	 * @return javax.swing.JPanel
 	 */
 	private JPanel getJContentPane() {
-		if (jContentPane == null) {
-			pips1 = new JLabel();
-			pips1.setBounds(new Rectangle(185, 158, 26, 19));
-			pips1.setText("pips");
-			pips1.setFont(new Font(pips1.getFont().getName(), Font.PLAIN, 14));
-			desviacionT = new JLabel("", SwingConstants.RIGHT);
-			desviacionT.setBounds(new Rectangle(131, 157, 49, 21));
-			desviacionT.setText(new DecimalFormat("###.##").format(manejador.darDesviacion()));
-			desviacionT.setFont(new Font(desviacionT.getFont().getName(), Font.PLAIN, 14));
-			desviacion = new JLabel();
-			desviacion.setBounds(new Rectangle(20, 160, 93, 17));
-			desviacion.setText("Desviación");
-			estrategiaActual = new JLabel();
-			estrategiaActual.setBounds(new Rectangle(16, 10, 168, 24));
-			estrategiaActual.setText(manejador.darEstrategia());
-			estrategiaActual.setFont(new Font(estrategiaActual.getFont().getName(), Font.BOLD, 28));
-			graficaMeses = new JLabel(new ImageIcon(manejador.darGraficaMeses().createBufferedImage(1198, 290)));
-			graficaMeses.setBounds(new Rectangle(16, 286, 1198, 290));
-			graficaMeses.setText("JLabel");
-			graficaPromedioPips = new JLabel(new ImageIcon(manejador.darGraficaPromedioPips().createBufferedImage(443, 267)));
-			graficaPromedioPips.setBounds(new Rectangle(771, 7, 443, 267));
-			graficaPromedioPips.setText("JLabel");
-			graficaProgreso = new JLabel(new ImageIcon(manejador.darGraficaProgreso().createBufferedImage(443, 267)));
-			graficaProgreso.setBounds(new Rectangle(300, 7, 443, 267));
-			graficaProgreso.setText("JLabel");
-			Divisa = new JLabel();
-			Divisa.setBounds(new Rectangle(19, 60, 53, 16));
-			Divisa.setText("Divisa");
-			pipsTransaccion = new JLabel();
-			pipsTransaccion.setBounds(new Rectangle(185, 136, 88, 19));
-			pipsTransaccion.setText("pips/trans");
-			pipsTransaccion.setFont(new Font(pipsTransaccion.getFont().getName(), Font.PLAIN, 14));
-			promedioPipsT = new JLabel("", SwingConstants.RIGHT);
-			promedioPipsT.setBounds(new Rectangle(131, 135, 49, 21));
-			promedioPipsT.setText(new DecimalFormat("###.##").format(manejador.darPromedioPips()));
-			promedioPipsT.setFont(new Font(promedioPipsT.getFont().getName(), Font.PLAIN, 14));
-			transacciones = new JLabel();
-			transacciones.setBounds(new Rectangle(185, 114, 98, 19));
-			transacciones.setText("transacciones");
-			transacciones.setFont(new Font(transacciones.getFont().getName(), Font.PLAIN, 14));
-			numeroTransaccionesT = new JLabel("", SwingConstants.RIGHT);
-			numeroTransaccionesT.setBounds(new Rectangle(131, 113, 49, 21));
-			numeroTransaccionesT.setText(manejador.darNumeroTransacciones() + "");
-			numeroTransaccionesT.setFont(new Font(numeroTransaccionesT.getFont().getName(), Font.PLAIN, 14));
-			pips = new JLabel();
-			pips.setBounds(new Rectangle(184, 94, 38, 16));
-			pips.setText("pips");
-			pips.setFont(new Font(pips.getFont().getName(), Font.PLAIN, 14));
-			gananciaT = new JLabel("", SwingConstants.RIGHT);
-			gananciaT.setBounds(new Rectangle(131, 92, 49, 21));
-			gananciaT.setText(manejador.darGanancia() + "");
-			gananciaT.setFont(new Font(gananciaT.getFont().getName(), Font.PLAIN, 14));
-			promedioPips = new JLabel();
-			promedioPips.setBounds(new Rectangle(20, 138, 93, 16));
-			promedioPips.setText("Promedio pips");
-			numeroTransacciones = new JLabel();
-			numeroTransacciones.setBounds(new Rectangle(19, 116, 103, 16));
-			numeroTransacciones.setText("N° transacciones");
-			ganancia = new JLabel();
-			ganancia.setBounds(new Rectangle(19, 94, 82, 16));
-			ganancia.setText("Ganancia");
-			jContentPane = new JPanel();
-			jContentPane.setLayout(null);
-			jContentPane.add(ganancia, null);
-			jContentPane.add(numeroTransacciones, null);
-			jContentPane.add(promedioPips, null);
-			jContentPane.add(gananciaT, null);
-			jContentPane.add(pips, null);
-			jContentPane.add(numeroTransaccionesT, null);
-			jContentPane.add(transacciones, null);
-			jContentPane.add(promedioPipsT, null);
-			jContentPane.add(pipsTransaccion, null);
-			jContentPane.add(getChoice(), null);
-			jContentPane.add(Divisa, null);
-			jContentPane.add(graficaProgreso, null);
-			jContentPane.add(graficaPromedioPips, null);
-			jContentPane.add(graficaMeses, null);
-			jContentPane.add(getUnaSemana(), null);
-			jContentPane.add(getDosSemanas(), null);
-			jContentPane.add(getTresSemanas(), null);
-			jContentPane.add(getUnMes(), null);
-			jContentPane.add(getDosMeses(), null);
-			jContentPane.add(getTresMeses(), null);
-			jContentPane.add(getSeisMeses(), null);
-			jContentPane.add(getUnAnho(), null);
-			jContentPane.add(getTodo(), null);
-			jContentPane.add(estrategiaActual, null);
-			jContentPane.add(desviacion, null);
-			jContentPane.add(desviacionT, null);
-			jContentPane.add(pips1, null);
+		pips1 = new JLabel();
+		pips1.setBounds(new Rectangle(185, 158, 26, 19));
+		pips1.setText("pips");
+		pips1.setFont(new Font(pips1.getFont().getName(), Font.PLAIN, 14));
+		desviacionT = new JLabel("", SwingConstants.RIGHT);
+		desviacionT.setBounds(new Rectangle(131, 157, 49, 21));
+		desviacionT.setText(new DecimalFormat("###.##").format(manejador.darDesviacion()));
+		desviacionT.setFont(new Font(desviacionT.getFont().getName(), Font.PLAIN, 14));
+		desviacion = new JLabel();
+		desviacion.setBounds(new Rectangle(20, 160, 93, 17));
+		desviacion.setText("Desviación");
+		estrategiaActual = new JLabel();
+		estrategiaActual.setBounds(new Rectangle(16, 10, 258, 24));
+		estrategiaActual.setText(manejador.darEstrategia());
+		estrategiaActual.setFont(new Font(estrategiaActual.getFont().getName(), Font.BOLD, 28));
+		graficaMeses = new JLabel(new ImageIcon(manejador.darGraficaMeses().createBufferedImage(1198, 290)));
+		graficaMeses.setBounds(new Rectangle(16, 286, 1198, 290));
+		graficaMeses.setText("JLabel");
+		graficaPromedioPips = new JLabel(new ImageIcon(manejador.darGraficaPromedioPips().createBufferedImage(443, 267)));
+		graficaPromedioPips.setBounds(new Rectangle(771, 7, 443, 267));
+		graficaPromedioPips.setText("JLabel");
+		graficaProgreso = new JLabel(new ImageIcon(manejador.darGraficaProgreso().createBufferedImage(443, 267)));
+		graficaProgreso.setBounds(new Rectangle(300, 7, 443, 267));
+		graficaProgreso.setText("JLabel");
+		Divisa = new JLabel();
+		Divisa.setBounds(new Rectangle(19, 60, 53, 16));
+		Divisa.setText("Divisa");
+		pipsTransaccion = new JLabel();
+		pipsTransaccion.setBounds(new Rectangle(185, 136, 88, 19));
+		pipsTransaccion.setText("pips/trans");
+		pipsTransaccion.setFont(new Font(pipsTransaccion.getFont().getName(), Font.PLAIN, 14));
+		promedioPipsT = new JLabel("", SwingConstants.RIGHT);
+		promedioPipsT.setBounds(new Rectangle(131, 135, 49, 21));
+		promedioPipsT.setText(new DecimalFormat("###.##").format(manejador.darPromedioPips()));
+		promedioPipsT.setFont(new Font(promedioPipsT.getFont().getName(), Font.PLAIN, 14));
+		transacciones = new JLabel();
+		transacciones.setBounds(new Rectangle(185, 114, 98, 19));
+		transacciones.setText("transacciones");
+		transacciones.setFont(new Font(transacciones.getFont().getName(), Font.PLAIN, 14));
+		numeroTransaccionesT = new JLabel("", SwingConstants.RIGHT);
+		numeroTransaccionesT.setBounds(new Rectangle(131, 113, 49, 21));
+		numeroTransaccionesT.setText(manejador.darNumeroTransacciones() + "");
+		numeroTransaccionesT.setFont(new Font(numeroTransaccionesT.getFont().getName(), Font.PLAIN, 14));
+		pips = new JLabel();
+		pips.setBounds(new Rectangle(184, 94, 38, 16));
+		pips.setText("pips");
+		pips.setFont(new Font(pips.getFont().getName(), Font.PLAIN, 14));
+		gananciaT = new JLabel("", SwingConstants.RIGHT);
+		gananciaT.setBounds(new Rectangle(131, 92, 49, 21));
+		gananciaT.setText(manejador.darGanancia() + "");
+		gananciaT.setFont(new Font(gananciaT.getFont().getName(), Font.PLAIN, 14));
+		promedioPips = new JLabel();
+		promedioPips.setBounds(new Rectangle(20, 138, 93, 16));
+		promedioPips.setText("Promedio pips");
+		numeroTransacciones = new JLabel();
+		numeroTransacciones.setBounds(new Rectangle(19, 116, 103, 16));
+		numeroTransacciones.setText("N° transacciones");
+		ganancia = new JLabel();
+		ganancia.setBounds(new Rectangle(19, 94, 82, 16));
+		ganancia.setText("Ganancia");
+		jContentPane = new JPanel();
+		jContentPane.setLayout(null);
+		jContentPane.add(ganancia, null);
+		jContentPane.add(numeroTransacciones, null);
+		jContentPane.add(promedioPips, null);
+		jContentPane.add(gananciaT, null);
+		jContentPane.add(pips, null);
+		jContentPane.add(numeroTransaccionesT, null);
+		jContentPane.add(transacciones, null);
+		jContentPane.add(promedioPipsT, null);
+		jContentPane.add(pipsTransaccion, null);
+		jContentPane.add(getChoice(), null);
+		jContentPane.add(Divisa, null);
+		jContentPane.add(graficaProgreso, null);
+		jContentPane.add(graficaPromedioPips, null);
+		jContentPane.add(graficaMeses, null);
+		jContentPane.add(getUnaSemana(), null);
+		jContentPane.add(getDosSemanas(), null);
+		jContentPane.add(getTresSemanas(), null);
+		jContentPane.add(getUnMes(), null);
+		jContentPane.add(getDosMeses(), null);
+		jContentPane.add(getTresMeses(), null);
+		jContentPane.add(getSeisMeses(), null);
+		jContentPane.add(getUnAnho(), null);
+		jContentPane.add(getTodo(), null);
+		jContentPane.add(estrategiaActual, null);
+		jContentPane.add(desviacion, null);
+		jContentPane.add(desviacionT, null);
+		jContentPane.add(pips1, null);
+		if(choice.getItemCount() == 0)
+		{
 			ButtonGroup bg = new ButtonGroup();
 			bg.add(unaSemana);
 			bg.add(dosSemanas);
@@ -187,6 +197,22 @@ public class AnalisisGrafico extends JFrame {
 			bg.add(unAnho);
 			bg.add(todo);
 			bg.setSelected(todo.getModel(), true);
+			unaSemana.addActionListener(this);
+			dosSemanas.addActionListener(this);
+			tresSemanas.addActionListener(this);
+			unMes.addActionListener(this);
+			dosMeses.addActionListener(this);
+			tresMeses.addActionListener(this);
+			seisMeses.addActionListener(this);
+			unAnho.addActionListener(this);
+			todo.addActionListener(this);
+			choice.add("TODOS");
+			for(Par a : Par.values())
+			{
+				if(a != Par.TODOS)
+					choice.add(a.toString());
+			}
+			choice.addItemListener(this);
 		}
 		return jContentPane;
 	}
@@ -329,6 +355,58 @@ public class AnalisisGrafico extends JFrame {
 		}
 		return todo;
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		int numero;
+		if(((AbstractButton) e.getSource()).getText().equals("1s"))
+		{
+			numero = 0;
+		}
+		else if(((AbstractButton) e.getSource()).getText().equals("2s"))
+		{
+			numero = 1;
+		}
+		else if(((AbstractButton) e.getSource()).getText().equals("3s"))
+		{
+			numero = 2;
+		}
+		else if(((AbstractButton) e.getSource()).getText().equals("1m"))
+		{
+			numero = 3;
+		}
+		else if(((AbstractButton) e.getSource()).getText().equals("2m"))
+		{
+			numero = 4;
+		}
+		else if(((AbstractButton) e.getSource()).getText().equals("3m"))
+		{
+			numero = 5;
+		}
+		else if(((AbstractButton) e.getSource()).getText().equals("6m"))
+		{
+			numero = 6;
+		}
+		else if(((AbstractButton) e.getSource()).getText().equals("1a"))
+		{
+			numero = 7;
+		}
+		else
+		{
+			numero = 8;
+		}
+		manejador.cambiarObjetos(manejador.divisaActual, numero);
+		initialize();
+		jContentPane.revalidate();
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		Par actual = Par.stringToPar(choice.getSelectedItem());
+		manejador.cambiarObjetos(actual, manejador.tiempoActual);
+		initialize();
+		jContentPane.revalidate();
+	}
 }  //  @jve:decl-index=0:visual-constraint="5,7"
 
 
@@ -337,11 +415,14 @@ class ManejadorAnalisisGrafico
 	HistorialEstrategia historial;
 	IdEstrategia estrategia;
 	ArrayList <Object> objetos;
+	Par divisaActual = Par.TODOS;
+	int tiempoActual = 8;
 	
 	public ManejadorAnalisisGrafico(IdEstrategia estrategia)
 	{
 		this.estrategia = estrategia;
 		historial = dailyOCR.darEstrategiaSenal(new Senal(estrategia, true, Par.EURUSD, 0, 0)).historial;
+		cambiarObjetos(divisaActual, tiempoActual);
 	}
 	
 	public long darGanancia() 
@@ -368,7 +449,7 @@ class ManejadorAnalisisGrafico
 	{
 		long[][] graficaProgreso = (long[][]) objetos.get(0);
 	    XYSeries series = new XYSeries("Serie ganancia");
-	    for(int i = 0; i < graficaProgreso.length; i++)
+	    for(int i = 0; i < graficaProgreso[0].length; i++)
 	    {
 	        series.add(i, graficaProgreso[0][i]);
 	    }
@@ -380,12 +461,12 @@ class ManejadorAnalisisGrafico
 	{
 		double[][] graficaPromedioPips = (double[][]) objetos.get(5);
 	    XYSeries series = new XYSeries("Serie pips");
-	    for(int i = 0; i < graficaPromedioPips.length; i++)
+	    for(int i = 0; i < graficaPromedioPips[0].length; i++)
 	    {
 	        series.add(i, graficaPromedioPips[0][i]);
 	    }
 	    XYSeriesCollection xySeriesCollection = new XYSeriesCollection(series);
-	    return ChartFactory.createXYAreaChart("Promedio Pips vs Tiempo", "Promedio Pips", "Ganancia", xySeriesCollection, PlotOrientation.VERTICAL, false, false, false);
+	    return ChartFactory.createXYAreaChart("Promedio Pips vs Tiempo", "Tiempo", "Promedio pips", xySeriesCollection, PlotOrientation.VERTICAL, false, false, false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -403,7 +484,10 @@ class ManejadorAnalisisGrafico
 
 	public void cambiarObjetos(Par divisaActual, int tiempoActual)
 	{
-		objetos = AnalisisLogica.retornar(historial, divisaActual, tiempoActual);
+		if(AnalisisLogica.darHistorialTiempo(historial, divisaActual, tiempoActual).size() != 0)
+			objetos = AnalisisLogica.retornar(historial, divisaActual, tiempoActual);
+		this.divisaActual = divisaActual;
+		this.tiempoActual = tiempoActual;
 	}
 	
 	public String darEstrategia()
