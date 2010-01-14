@@ -25,6 +25,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import javax.swing.JCheckBox;
 
 public class AnalisisGrafico extends JFrame implements ActionListener, ItemListener {
 
@@ -58,6 +59,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JLabel desviacion = null;
 	private JLabel desviacionT = null;
 	private JLabel pips1 = null;
+	private JCheckBox activo = null;
 	
 	/**
 	 * This is the default constructor
@@ -184,6 +186,9 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		jContentPane.add(desviacion, null);
 		jContentPane.add(desviacionT, null);
 		jContentPane.add(pips1, null);
+		jContentPane.add(getActivo(), null);
+		Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(manejador.estrategia, false, Par.AUDJPY, 0, 0));
+		activo.setSelected(estrategia.darActivo(manejador.divisaActual));
 		if(choice.getItemCount() == 0)
 		{
 			ButtonGroup bg = new ButtonGroup();
@@ -359,6 +364,12 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int numero;
+		if(e.getSource() instanceof JCheckBox)
+		{
+			Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(manejador.estrategia, false, Par.AUDJPY, 0, 0));
+			estrategia.cambiarActivo(manejador.divisaActual, ((JCheckBox) e.getSource()).isSelected());
+			return;
+		}
 		if(((AbstractButton) e.getSource()).getText().equals("1s"))
 		{
 			numero = 0;
@@ -406,6 +417,21 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		manejador.cambiarObjetos(actual, manejador.tiempoActual);
 		initialize();
 		jContentPane.revalidate();
+	}
+
+	/**
+	 * This method initializes activo	
+	 * 	
+	 * @return javax.swing.JCheckBox	
+	 */
+	private JCheckBox getActivo() {
+		if (activo == null) {
+			activo = new JCheckBox();
+			activo.setBounds(new Rectangle(177, 58, 68, 21));
+			activo.setText("activo");
+			activo.addActionListener(this);
+		}
+		return activo;
 	}
 }  //  @jve:decl-index=0:visual-constraint="5,7"
 

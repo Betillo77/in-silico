@@ -10,9 +10,8 @@ public class Escritor
 {
 	public static ArrayList <String> lineas = new ArrayList <String> ();
 	public static ArrayList <Senal> senales = new ArrayList <Senal> ();
-	public static final String pathMeta = "D:/Archivos de programa/MetaTrader/experts/files/";
-//	public static File archivoEscritura = new File(pathMeta + "ordenes.txt");
-	public static File archivoEscritura = new File(dailyOCR.pathPrincipal + "Error.txt");
+	public static final String pathMeta = "C:/Program Files (x86)/dailyFX/experts/files/";
+	public static File archivoEscritura = new File(pathMeta + "ordenes.txt");
 	public static File archivoMagicos = new File(pathMeta + "magicos.txt");
 	
 	
@@ -27,7 +26,7 @@ public class Escritor
 				FileWriter fw = new FileWriter(archivoEscritura, true);
 				for(String linea : lineas.subList(0, lineas.size() - 1))
 				{
-					fw.write(linea + ";" + System.getProperty("line.separator"));
+					fw.write(linea + ";");
 				}
 				fw.write(lineas.get(lineas.size() - 1));
 				fw.close();
@@ -51,8 +50,8 @@ public class Escritor
 		{
 			try 
 			{
-//				Thread.sleep(25000 + 5000 * numero);
-				for(int i = 0; i < 0; i++)
+				Thread.sleep(25000 + 5000 * numero);
+				for(int i = 0; i < 50; i++)
 				{
 					Thread.sleep(1000);
 					if(archivoMagicos.exists())
@@ -121,17 +120,22 @@ public class Escritor
 
 	public static void abrir(SenalEntrada entrada, Senal nueva)
 	{
-		Estrategia e = dailyOCR.darEstrategiaSenal(nueva);
+		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
 		if(entrada.numeroLotes > 5)
 		{
 			// TODO Manejo de errores
 		}
-		for(int i = 0; i < entrada.numeroLotes; i++)
+		if(estrategia.darActivo(entrada.par))
 		{
-			
-			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + 0); // IF
+			for(int i = 0; i < entrada.numeroLotes; i++)
+			{
+				if(estrategia.darActivo(entrada.par))
+				{
+					lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + 0);
+				}
+			}
+			senales.add(nueva);
 		}
 		nueva.magico = new int[entrada.numeroLotes];
-		senales.add(nueva); // IF
 	}
 }

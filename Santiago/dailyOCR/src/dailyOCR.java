@@ -184,6 +184,8 @@ public class dailyOCR
 								{
 									if(!senal.manual)
 										actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, false);
+									if(senal.manual && senal.numeroLotes == 0)
+										actual.senales.remove(senal);
 								}
 							}
 							estrategiaActual++;

@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 
 public class FormatoOrdenar 
@@ -32,9 +31,6 @@ public class FormatoOrdenar
 	
 		group.add(Comprar);
 		group.add(NoComprar);
-	
-		final JTextField PrecioEntrada = new JTextField();
-		PrecioEntrada.setText("Ingrese aqui el precio de Entrada");
 	
 		JButton Enviar = new JButton("Enviar");
 	
@@ -92,7 +88,7 @@ public class FormatoOrdenar
 		    	}
 		    	else
 		    	{
-		    		temp5 = dailyOCR.preciosActuales.get(i).bid;
+		    		temp5 = dailyOCR.preciosActuales.get(i).ask;
 		    	}
 		    	Senal nueva = new Senal(temp, temp2, temp3, temp4, temp5);
 		    	synchronized(dailyOCR.darEstrategiaSenal(nueva).senales)

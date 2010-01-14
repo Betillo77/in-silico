@@ -17,12 +17,45 @@ public class Estrategia implements Serializable
 	public IdEstrategia id;
 	public List <Senal> senales;
 	public HistorialEstrategia historial;
+	public boolean[] activos = new boolean[Par.values().length];
 	
 	public Estrategia(IdEstrategia id)
 	{
 		this.id = id;
 		senales = Collections.synchronizedList(new ArrayList <Senal> ());
 		historial = new HistorialEstrategia(id);
+	}
+	
+	public synchronized void cambiarActivo(Par par, boolean activo)
+	{
+		if(activos == null)
+			activos = new boolean[Par.values().length];
+		int i = 0;
+		for(Par p : Par.values())
+		{
+			if(p == par)
+			{
+				activos[i] = activo;
+				return;
+			}
+			i++;
+		}
+	}
+	
+	public synchronized boolean darActivo(Par par)
+	{
+		if(activos == null)
+			activos = new boolean[Par.values().length];
+		int i = 0;
+		for(Par p : Par.values())
+		{
+			if(p == par)
+			{
+				return activos[i];
+			}
+			i++;
+		}
+		return false;
 	}
 	
 	public void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
@@ -42,52 +75,66 @@ public class Estrategia implements Serializable
 	
 	private void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
+		int lotesAnteriores = afectada.numeroLotes;
 		Escritor.cerrar(entrada, afectada);
-		if(afectada.numeroLotes <= 0)
+		BidAsk parActual = null;
+		for(BidAsk ba : dailyOCR.preciosActuales)
+		{
+			if(ba.currency.equals(afectada.par))
+			{
+				parActual = ba;
+				break;
+			}
+		}
+		if(parActual == null)
+		{
+			// TODO Manejo de errores
+			return;
+		}
+		int resultado = 0;
+		if(afectada.compra)
+		{
+			if(afectada.precioEntrada > 10)
+			{
+				resultado = (int) Math.round((afectada.precioEntrada - parActual.ask) * 100);
+			}
+			else
+			{
+				resultado = (int) Math.round((afectada.precioEntrada - parActual.ask) * 10000);
+			}
+		}
+		else
+		{
+			if(afectada.precioEntrada > 10)
+			{
+				resultado = (int) Math.round((parActual.bid - afectada.precioEntrada) * 100);
+			}
+			else
+			{
+				resultado = (int) Math.round((parActual.bid - afectada.precioEntrada) * 10000);
+			}
+		}
+		if(afectada.numeroLotes == 0)
 		{
 			if(!dejarLista)
 				senales.remove(afectada);
 			else
 			{
+				afectada.lotesCerradosManualmente = lotesAnteriores;
 				afectada.magico = new int[1];
 			}
-			BidAsk parActual = null;
-			for(BidAsk ba : dailyOCR.preciosActuales)
-			{
-				if(ba.currency.equals(afectada.par))
-				{
-					parActual = ba;
-					break;
-				}
-			}
-			if(parActual == null)
-			{
-				// TODO Manejo de errores
-				return;
-			}
-			int resultado = 0;
-			if(afectada.compra)
-			{
-				if(afectada.precioEntrada > 10)
-				{
-					resultado = (int) Math.round((afectada.precioEntrada - parActual.ask) * 100);
-				}
-				else
-				{
-					resultado = (int) Math.round((afectada.precioEntrada - parActual.ask) * 10000);
-				}
-			}
-			else
-			{
-				if(afectada.precioEntrada > 10)
-				{
-					resultado = (int) Math.round((parActual.bid - afectada.precioEntrada) * 100);
-				}
-				else
-				{
-					resultado = (int) Math.round((parActual.bid - afectada.precioEntrada) * 10000);
-				}
-			}
+			if(!dejarLista)
+				for(int i = 0; i < entrada.numeroLotes; i++)
+					historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
+		}
+		else if(afectada.numeroLotes < 0)
+		{
+			senales.remove(afectada);
+			for(int i = 0; i < afectada.lotesCerradosManualmente; i++)
+				historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
+		}
+		else
+		{
 			for(int i = 0; i < entrada.numeroLotes; i++)
 				historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
 		}

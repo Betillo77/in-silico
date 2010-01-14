@@ -8,9 +8,10 @@ public class Senal implements Serializable
 	public boolean compra;
 	public Par par;
 	public int numeroLotes;
+	public int lotesCerradosManualmente = 0;
 	public double precioEntrada;
 	public int[] magico = {0};
-	public boolean manual = false;
+    public boolean manual = false;
 	
 	public Senal(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada)
 	{

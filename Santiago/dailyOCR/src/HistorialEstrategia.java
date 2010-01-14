@@ -16,7 +16,7 @@ public class HistorialEstrategia implements Serializable
 	private static final long serialVersionUID = -300574046206128357L;
 	
 	IdEstrategia estrategia;
-	ArrayList <Entrada> historial;
+	private ArrayList <Entrada> historial;
 	
 	public HistorialEstrategia(IdEstrategia estrategia)
 	{
@@ -24,9 +24,14 @@ public class HistorialEstrategia implements Serializable
 		historial = new ArrayList <Entrada> ();
 	}
 	
-	public void agregarEntrada(Par par, long fecha, int ganancia)
+	public synchronized void agregarEntrada(Par par, long fecha, int ganancia)
 	{
 		historial.add(new Entrada(par, fecha, ganancia));
+	}
+	
+	public synchronized ArrayList <Entrada> darHistorial() 
+	{
+		return historial;
 	}
 	
 	public void escribir(File archivo)

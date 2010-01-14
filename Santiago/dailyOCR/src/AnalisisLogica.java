@@ -10,13 +10,13 @@ public class AnalisisLogica
 	public static  ArrayList <Entrada> Buscar(HistorialEstrategia historialEstrategia, long fecha, Par par)
 	{	
 		List <Entrada> temporal;
-		int indice = Collections.binarySearch(historialEstrategia.historial, new Entrada(Par.AUDJPY, fecha, 0));
+		int indice = Collections.binarySearch(historialEstrategia.darHistorial(), new Entrada(Par.AUDJPY, fecha, 0));
 		if(indice < 0)
 		{
 			indice++;
 			indice *= -1;
 		}	
-		temporal = ((ArrayList <Entrada>) historialEstrategia.historial.clone()).subList(indice, historialEstrategia.historial.size());
+		temporal = ((ArrayList <Entrada>) historialEstrategia.darHistorial().clone()).subList(indice, historialEstrategia.darHistorial().size());
 		for(int i = 0; i < temporal.size(); i++)
 		{
 			if(temporal.get(i).par.esDistinto(par))
