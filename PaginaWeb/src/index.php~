@@ -87,11 +87,7 @@ Trabajamos en este momento en el desarrollo de una aplicación, usando distintas 
 	if ($_POST['submit'] ) {
 		$user = $_POST['usuario'];
 		$passwd = $_POST['clave'];
-		$cnn = mysql_connect('localhost', 'phpuser', 'n=kg*n/s2');
-		if (!$cnn) {
-    		die('Could not connect: ' . mysql_error());
-		} 
-		//echo "Select * from insilico.Integrante where UserId='$user'";
+		include("conn.php");
 		$result = mysql_query("Select * from insilico.Integrante where UserId='$user'");
 		if (!$result) {
     		echo "Usuario no existe";
