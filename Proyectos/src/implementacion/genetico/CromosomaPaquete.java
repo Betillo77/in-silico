@@ -3,6 +3,15 @@ package implementacion.genetico;
 import genericos.genetico.Cromosoma;
 import genericos.genetico.Genetico;
 
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.JApplet;
+import javax.swing.JPanel;
+
 public class CromosomaPaquete implements Cromosoma
 {
 	/** 
@@ -16,7 +25,10 @@ public class CromosomaPaquete implements Cromosoma
     static int utilidad [] = {10, 4, 8, 22, 16, 13, 17, 20};
     
     static int Mactual [] = new int [peso.length];
-    static grafico g = new grafico();
+    
+    static Grafico g;
+    
+	public static FramePrincipal principal;
     
 	/** 
 	 * pesoMaximo: es el peso máximo que puede cargar la mochila
@@ -99,12 +111,8 @@ public class CromosomaPaquete implements Cromosoma
 	
 	public void establecerMejorActual(Cromosoma mejorSolucion) 
 	{
-		// TODO Ligar con la parte grafica
 		System.out.println(mejorSolucion);
-		g.Mactual=Mactual;
-		g.pesos=peso;
-		g.utilidades=utilidad;
-		g.paint(g.getGraphics());
+		g.Mactual = Mactual;
 	}
      
 	public double darAptitud()
@@ -204,11 +212,72 @@ public class CromosomaPaquete implements Cromosoma
 	
 	public static void main(String[] args)
 	{
-		
-		Cromosoma[] poblacionInicial = poblacionInicial();
-		Genetico genetico = new Genetico();
-		g.addMouseListener(g);
-		g.setVisible(true);
-		genetico.solucionar(poblacionInicial, 10000);
 	}
-}
+	
+	public static class FramePrincipal extends JApplet
+	{
+		private static final long serialVersionUID = 4596205343676591069L;
+		private static PanelInicial panelInicial;
+		public Image darImagen(String imagen)
+		{
+			try {
+			    Image img = getImage(getDocumentBase(), imagen);
+			    System.out.print(getDocumentBase());
+				MediaTracker mt = new MediaTracker(this);
+				mt.addImage(img,0);
+				mt.waitForID(0);
+				return img;
+			} catch (InterruptedException e) {
+				return null;
+			}
+		}
+		public void init()
+		{
+			principal = this;
+			setSize(new Dimension(1200,760));
+			panelInicial = new PanelInicial();
+			setContentPane(panelInicial);
+		}
+		
+		public void iniciar() 
+		{
+			g = new Grafico();
+			g.pesos = peso;
+			g.utilidades = utilidad;
+			add(g);
+			JPanel nuevo = new JPanel();
+			nuevo.add(g);
+			setContentPane(nuevo);
+			resize(new Dimension(1200,761));
+			new Thread(new Runnable()
+									{
+
+										@Override
+										public void run() 
+										{
+											peso[0] = panelInicial.tren.jSlider.getValue();
+											utilidad[0] = panelInicial.tren.jSlider1.getValue();
+											peso[1] = panelInicial.oso.jSlider.getValue();
+											utilidad[1] = panelInicial.oso.jSlider1.getValue();
+											peso[2] = panelInicial.libro.jSlider.getValue();
+											utilidad[2] = panelInicial.libro.jSlider1.getValue();
+											peso[3] = panelInicial.conejita.jSlider.getValue();
+											utilidad[3] = panelInicial.conejita.jSlider1.getValue();
+											peso[4] = panelInicial.xbox.jSlider.getValue();
+											utilidad[4] = panelInicial.xbox.jSlider1.getValue();
+											peso[5] = panelInicial.portatil.jSlider.getValue();
+											utilidad[5] = panelInicial.portatil.jSlider1.getValue();
+											peso[6] = panelInicial.bicicleta.jSlider.getValue();
+											utilidad[6] = panelInicial.bicicleta.jSlider1.getValue();
+											peso[7] = panelInicial.elefante.jSlider.getValue();
+											utilidad[7] = panelInicial.elefante.jSlider1.getValue();
+											Cromosoma[] poblacionInicial = poblacionInicial();
+											Genetico genetico = new Genetico();
+											genetico.solucionar(poblacionInicial, 10000);
+										}			
+									}).start();
+			}
+		}
+	}
+
+
