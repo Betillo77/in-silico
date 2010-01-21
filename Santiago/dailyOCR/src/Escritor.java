@@ -28,7 +28,7 @@ public class Escritor
 				{
 					fw.write(linea + ";");
 				}
-				fw.write(lineas.get(lineas.size() - 1));
+				fw.write(lineas.get(lineas.size() - 1) + ";");
 				fw.close();
 			}
 			lineas = new ArrayList <String> ();
@@ -50,7 +50,7 @@ public class Escritor
 		{
 			try 
 			{
-				Thread.sleep(25000 + 5000 * numero);
+				Thread.sleep(40000 + 16000 * numero);
 				for(int i = 0; i < 50; i++)
 				{
 					Thread.sleep(1000);

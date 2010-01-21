@@ -17,7 +17,7 @@ public class FormatoOrdenar
 		JFrame frame = new JFrame();
 		frame.setSize(400, 100);
 		String [] Estrategias = {"BREAKOUT1", "BREAKOUT2", "RANGE1", "RANGE2", "MOMENTUM1", "MOMENTUM2"};
-		String [] Pares = {"EURUSD", "USDJPY", "GBPUSD", "USDCHF", "EURCHF", "AUDUSD", "USDCAD","NZDUSD", "EURJPY", "GBPJPY", "CHFJPY2", "GBPCHF", "EURAUD", "AUDJPY"};
+		String [] Pares = {"EURUSD", "USDJPY", "GBPUSD", "USDCHF", "EURCHF", "AUDUSD", "USDCAD","NZDUSD", "EURJPY", "GBPJPY", "CHFJPY", "GBPCHF", "EURAUD", "AUDJPY"};
 		String [] NumeroLotes = {"1","2","3","4","5"};
 
 		final JComboBox estrategia = new JComboBox(Estrategias);
@@ -49,16 +49,16 @@ public class FormatoOrdenar
 			    		temp = IdEstrategia.BREAKOUT2;
 			    		break;
 			    	case 2:
-						temp = IdEstrategia.MOMENTUM1;
+						temp = IdEstrategia.RANGE1;
 			    		break;
 			    	case 3:     
-			    		temp = IdEstrategia.MOMENTUM2;
+			    		temp = IdEstrategia.RANGE2;
 			    		break;
 			    	case 4:
-			    		temp = IdEstrategia.RANGE1;
+			    		temp = IdEstrategia.MOMENTUM1;
 			    		break;
 			        case 5:
-			        	temp = IdEstrategia.RANGE2;
+			        	temp = IdEstrategia.MOMENTUM2;
 			        	break;
 		    	}
 		    	boolean temp2 = false;
