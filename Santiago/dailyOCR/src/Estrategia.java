@@ -92,7 +92,7 @@ public class Estrategia implements Serializable
 			return;
 		}
 		int resultado = 0;
-		if(afectada.compra)
+		if(!afectada.compra)
 		{
 			if(afectada.precioEntrada > 10)
 			{
