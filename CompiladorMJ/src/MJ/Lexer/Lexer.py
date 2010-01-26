@@ -1,5 +1,5 @@
-import ply.lex as lex
-from Error.LexicalError import LexicalError
+import MJ.ply.lex as lex
+from MJ.Error.LexicalError import LexicalError
 
 #
 class Lexer(object):

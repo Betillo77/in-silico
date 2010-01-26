@@ -1,7 +1,8 @@
+from MJ.Error.CompilerError import CompilerError
 
 # Error semantico
 
-class SemanticError(BaseException):
+class SemanticError(CompilerError):
 
     def __init__(self, args):
         print(args)

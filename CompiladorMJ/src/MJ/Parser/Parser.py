@@ -1,12 +1,13 @@
-import ply.yacc as yacc
-from Error.SyntacticalError import SyntacticalError
+import MJ.ply.yacc as yacc
+from MJ.Error.SyntacticalError import SyntacticalError
+from compilador.modelo import NodoAst
 
 # Clases usadas en el AST, la mayoria de los nombres fueron tomados de los dados en 
 # clase. Las listas no representan objetos en nuestro AST sino que son guardadas en
 # la clase que las contiene. La impresion se hace sin usar el patron visitante segun
 # lo hablado en clase
 
-class AstNode(object):
+class AstNode(NodoAst):
            
     def accept(self, visitante):
         metodo = getattr(visitante, "visitar%s" % self.__class__.__name__, None)
@@ -16,6 +17,12 @@ class AstNode(object):
     def esFieldSt(self):
         self.esFieldS = isinstance(self, FieldS)
         self.inicio = isinstance(self, Assigment) and self.inicio
+        
+    def darNombre(self):
+        return self.__class__.__name__
+    
+    def darAtributo(self, nombreAtributo):
+        return self.__dict__[nombreAtributo]
 
 class MJClass(AstNode):
    
@@ -30,24 +37,6 @@ class MJClass(AstNode):
                 self.campos.append(campoMetodo)
             else:
                 self.metodos.append(campoMetodo)
-                
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Clase: nombre = ' + self.nombre + ', extiende = '
-        if(self.extends):
-            Parser.linea += 'si, clase extendida = ' + self.claseExtends + '\n'
-        else:
-            Parser.linea += 'no\n'
-        for i in range(1, self.campos.__len__() + 1):
-            Parser.linea += Parser.tabActual * '    ' + 'Campo #' + str(i) + ':' + '\n'
-            Parser.tabActual += 1
-            self.campos[i - 1].imprimir()
-            Parser.tabActual -= 1
-        for i in range(1, self.metodos.__len__() + 1):
-            Parser.linea += Parser.tabActual * '    ' + 'Metodo #' + str(i) + ':' + '\n'
-            Parser.tabActual += 1
-            self.metodos[i - 1].imprimir()
-            Parser.tabActual -= 1
-        
                                 
 class Field(AstNode):
     
@@ -55,12 +44,6 @@ class Field(AstNode):
         self.nombre = nombre
         self.tipo = tipo
         self.parametro = parametro
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Campo: nombre = ' + self.nombre + ', Tipo = '
-        self.tipo.imprimir()
-        Parser.linea += '\n'
-        
 
 class Method(AstNode):
     
@@ -71,39 +54,13 @@ class Method(AstNode):
         self.bloque = bloque
         self.estatico = estatico 
         
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Metodo: nombre = ' + self.nombre + ", Tipo de Retorno = "
-        if(self.tipoRetorno == None):
-            Parser.linea += 'void'
-        else:
-            self.tipoRetorno.imprimir()
-        if(self.estatico):
-            Parser.linea += ', Estatico = si'
-        else:
-            Parser.linea += ', Estatico = no'    
-        Parser.linea += '\n'
-        for i in range(1, self.formales.__len__() + 1):
-            Parser.linea += Parser.tabActual * '    ' + 'Formal #' + str(i) + ':' + '\n'
-            Parser.tabActual += 1
-            self.formales[i - 1].imprimir()
-            Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Bloque de funcion:\n'
-        Parser.tabActual += 1
-        self.bloque.imprimir()
-        Parser.tabActual -= 1
-         
-        
 class Type(AstNode):
     
     def __init__(self, nombre, primitivo, tipo):
         self.nombre = nombre
         self.primitivo = primitivo
         self.tipo = tipo
-        
-    def imprimir(self):
-        Parser.linea += self.tipo
             
-
 class Statement(AstNode):
     pass
 
@@ -112,58 +69,22 @@ class Bloque(Statement):
     def __init__(self, lista):
         self.lista = lista
         
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Bloque:\n'
-        for i in range(1, self.lista.__len__() + 1):
-            Parser.linea += Parser.tabActual * '    ' + 'Declaracion #' + str(i) + ':' + '\n'
-            Parser.tabActual += 1
-            self.lista[i - 1].imprimir()
-            Parser.tabActual -= 1
-    
 class Continue(Statement):
-    
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Declaracion: Tipo = continue\n'
+    pass
 
 class Return(Statement):
     
     def __init__(self, retorno):
         self.retorno = retorno
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Declaracion: Tipo = return\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion de retorno:\n'
-        Parser.tabActual += 1
-        if(self.retorno == None):
-            Parser.linea += Parser.tabActual * '    ' + 'void\n'
-        else:
-            self.retorno.imprimir()
-        Parser.tabActual -= 1
            
 class Break(Statement):
-    
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Declaracion: Tipo = break\n'
+    pass
 
 class While(Statement):
     
     def __init__(self, condicion, bloque):
         self.condicion = condicion
         self.bloque = bloque
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Declaracion: Tipo = while\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Condicion:\n'
-        Parser.tabActual += 1
-        self.condicion.imprimir()
-        Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Bloque while:\n'
-        Parser.tabActual += 1
-        try:
-            self.bloque.imprimir()
-        except BaseException:
-            pass
-        Parser.tabActual -= 1
 
 class If(Statement):
     
@@ -171,33 +92,7 @@ class If(Statement):
         self.condicion = condicion
         self.bloqueIf = bloqueIf
         self.tieneElse = tieneElse
-        self.bloqueElse = bloqueElse
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Declaracion: Tipo = if, Tiene else = '
-        if(self.tieneElse):
-            Parser.linea += 'si\n'
-        else:
-            Parser.linea += 'no\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Condicion:\n'
-        Parser.tabActual += 1
-        self.condicion.imprimir()
-        Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Bloque if:\n'
-        Parser.tabActual += 1
-        try:
-            self.bloqueIf.imprimir()
-        except BaseException:
-            pass
-        Parser.tabActual -= 1
-        if(self.tieneElse):
-            Parser.linea += Parser.tabActual * '    ' + 'Bloque else:\n'
-            Parser.tabActual += 1
-            try:
-                self.bloqueElse.imprimir()
-            except BaseException:
-                pass
-            Parser.tabActual -= 1
+        self.bloqueElse = bloqueElse     
                           
 class Assigment(Statement):
     
@@ -206,28 +101,10 @@ class Assigment(Statement):
         self.expr = expr
         self.inicio = inicio
         
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Declaracion: Tipo = asignacion\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Locacion asignada:\n'
-        Parser.tabActual += 1
-        self.location.imprimir()
-        Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion asignada:\n'
-        Parser.tabActual += 1
-        self.expr.imprimir()
-        Parser.tabActual -= 1
-        
 class FieldS(Statement):
     
     def __init__(self, campo):
         self.campo = campo
-    
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Declaracion: Tipo = declaracion de campo\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Campo declarado:\n'
-        Parser.tabActual += 1
-        self.campo.imprimir()
-        Parser.tabActual -= 1
      
 class Expression(Statement):
     pass
@@ -236,14 +113,7 @@ class Literal(Expression):
     
     def __init__(self, tipoLiteral, valor):
         self.tipoLiteral = tipoLiteral
-        self.valor = valor
-    
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion: Tipo = literal\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Valor:\n' 
-        Parser.tabActual += 1
-        Parser.linea += Parser.tabActual * '    ' + str(self.valor) + '\n'
-        Parser.tabActual -= 1        
+        self.valor = valor    
 
 class Location(Expression):
     
@@ -252,54 +122,11 @@ class Location(Expression):
         self.valorUno = valorUno
         self.valorDos = valorDos
         
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Locacion: Tipo = '
-        if(self.tipoLocacion == 0):
-            Parser.linea += 'identificador\n'
-            Parser.linea += Parser.tabActual * '    ' + 'Valor identificador:\n'
-            Parser.tabActual += 1
-            Parser.linea += Parser.tabActual * '    ' + str(self.valorUno) + '\n'
-            Parser.tabActual -= 1
-        if(self.tipoLocacion == 1):
-            Parser.linea += 'campo de clase\n'
-            Parser.linea += Parser.tabActual * '    ' + 'Expresion clase:\n'
-            Parser.tabActual += 1
-            self.valorUno.imprimir()
-            Parser.tabActual -= 1
-            Parser.linea += Parser.tabActual * '    ' + 'Valor campo:\n'
-            Parser.tabActual += 1
-            Parser.linea += Parser.tabActual * '    ' + str(self.valorDos) + '\n'
-            Parser.tabActual -= 1
-        if(self.tipoLocacion == 2):
-            Parser.linea += 'posicion dentro de vector\n'
-            Parser.linea += Parser.tabActual * '    ' + 'Expresion vector:\n'
-            Parser.tabActual += 1
-            self.valorUno.imprimir()
-            Parser.tabActual -= 1
-            Parser.linea += Parser.tabActual * '    ' + 'Expresion posicion:\n'
-            Parser.tabActual += 1
-            self.valorDos.imprimir()
-            Parser.tabActual -= 1
-        
-
 class UnaryOp(Expression):
     
     def __init__(self, operador, valor):
         self.operador = operador
         self.valor = valor
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion: Tipo = operacion unaria\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Valor operador:\n'
-        Parser.tabActual += 1
-        Parser.linea += Parser.tabActual * '    ' + str(self.operador) + '\n'
-        Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion:\n'
-        Parser.tabActual += 1
-        self.valor.imprimir()
-        Parser.tabActual -= 1
-        
-        
         
 class BinaryOp(Expression):
     
@@ -308,28 +135,10 @@ class BinaryOp(Expression):
         self.valorUno = valorUno
         self.valorDos = valorDos
         
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion: Tipo = operacion binaria\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion izquierda:\n'
-        Parser.tabActual += 1
-        self.valorUno.imprimir()
-        Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Operador:\n'
-        Parser.tabActual += 1
-        Parser.linea += Parser.tabActual * '    ' + str(self.operador) + '\n'
-        Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion derecha:\n'
-        Parser.tabActual += 1
-        self.valorDos.imprimir()
-        Parser.tabActual -= 1
-        
 class Length(Expression):
     
     def __init__(self, valor):
         self.valor = valor
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion: Tipo = length\n'  
         
 class New(Expression):
     
@@ -337,31 +146,10 @@ class New(Expression):
         self.tipoNew = tipoNew
         self.valorUno = valorUno
         self.valorDos = valorDos
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion: Tipo = '
-        if(self.tipoNew == 0):
-            Parser.linea +=  'nuevo objeto\n'
-            Parser.linea += Parser.tabActual * '    ' + 'Valor identificador:\n'
-            Parser.tabActual += 1
-            Parser.linea += Parser.tabActual * '    ' + str(self.valorUno) + '\n'
-            Parser.tabActual -= 1
-        else:
-            Parser.linea +=  'nuevo vector\n'
-            Parser.linea += Parser.tabActual * '    ' + 'Tipo: '
-            self.valorUno.imprimir()
-            Parser.linea += '\n'
-            Parser.linea += Parser.tabActual * '    ' + 'Expresion longitud:\n'
-            Parser.tabActual += 1
-            self.valorDos.imprimir()
-            Parser.tabActual -= 1
-            
+ 
 class This(Expression):
-    
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Expresion: Tipo = this\n'
+    pass
         
-
 class Call(Expression):
     pass
 
@@ -371,23 +159,6 @@ class StaticCall(Call):
         self.clase = clase
         self.nombreFuncion = nombreFuncion
         self.parametros = parametros
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Llamado: Tipo = llamado estatico\n'
-        Parser.linea += Parser.tabActual * '    ' + 'Clase llamada:\n'
-        Parser.tabActual += 1
-        Parser.linea += Parser.tabActual * '    ' + str(self.clase) + '\n'
-        Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Funcion llamada:\n'
-        Parser.tabActual += 1
-        Parser.linea += Parser.tabActual * '    ' + str(self.nombreFuncion) + '\n'
-        Parser.tabActual -= 1
-        for i in range(1, self.parametros.__len__() + 1):
-            Parser.linea += Parser.tabActual * '    ' + 'Parametro #' + str(i) + ':' + '\n'
-            Parser.tabActual += 1
-            self.parametros[i - 1].imprimir()
-            Parser.tabActual -= 1
-        
 
 class VirtualCall(Call):
     
@@ -396,31 +167,11 @@ class VirtualCall(Call):
         self.parametros = parametros
         self.expresion = expresion
         self.valorExpresion = valorExpresion
-        self.statement = False
-        
-    def imprimir(self):
-        Parser.linea += Parser.tabActual * '    ' + 'Llamado: Tipo = llamado virtual\n'
-        if(self.expresion):
-            Parser.linea += Parser.tabActual * '    ' + 'Expresion llamada:\n'
-            Parser.tabActual += 1
-            self.valorExpresion.imprimir()
-            Parser.tabActual -= 1
-        Parser.linea += Parser.tabActual * '    ' + 'Funcion llamada:\n'
-        Parser.tabActual += 1
-        Parser.linea += Parser.tabActual * '    ' + str(self.nombreFuncion) + '\n'
-        Parser.tabActual -= 1
-        for i in range(1, self.parametros.__len__() + 1):
-            Parser.linea += Parser.tabActual * '    ' + 'Parametro #' + str(i) + ':' + '\n'
-            Parser.tabActual += 1
-            self.parametros[i - 1].imprimir()
-            Parser.tabActual -= 1
-        
+        self.statement = False  
+ 
 # Clase Parser encargada de la construccion del AST 
             
 class Parser(object):
-    
-    tabActual = 1
-    linea = ''
     
     # Tabla de precedencia dada en las especificaciones, el ELSE fue una adicion para evitar
     # ambiguedad

@@ -1,4 +1,4 @@
-from Error.SemanticError import SemanticError
+from MJ.Error.SemanticError import SemanticError
 from types import StringType, NoneType
 
 # Clase que representa una entrada de la tabla de simbolos
@@ -122,7 +122,6 @@ class VisitanteTabla:
         self.tablaActual = self.tablaPrincipal
         self.metodoActual = None
         self.enWhile = False
-        self.linea = ''
         self.main = False
 
     # Visita la raiz del AST
@@ -136,23 +135,7 @@ class VisitanteTabla:
             clase.accept(self)
         if not(self.main):
             raise SemanticError('Error semantico, el programa debe contener un unico main de la forma: static void main (string[] args) { ... }')
-        self.tabActual = 0
-        tablaTipos = Tabla('tipos', None, 'Tabla de')
-        for entrada in self.tablaPrincipal.tabla.values():
-            if entrada.clase == 'clase':
-                tablaTipos.agregar(entrada)
-        self.imprimirTabla(tablaTipos)
-        tablaMetodos = Tabla('metodos estaticos', None, 'Tabla de')
-        for entrada in self.tablaPrincipal.tabla.values():
-            if entrada.clase == 'metodo':
-                tablaMetodos.agregar(entrada)
-        self.imprimirTabla(tablaMetodos)
-        self.linea += '\n\nClases\n\n'
-        self.tabActual = 1
-        for clase in self.tablaPrincipal.hijos:
-            self.imprimirTabla(clase)
-            self.linea += '\n\n' 
-    
+        
     # Genera un esqueleto de la clases existentes, para facilitar el llamado de
     # clases desde lugares del codigo donde todavia no se han definido dichas
     # clases.
@@ -475,35 +458,3 @@ class VisitanteTabla:
                 return True
             tablaH = tablaH.padre
         return False
-    
-    # Imprime a self.linea una tabla de simbolos
-    
-    def imprimirTabla(self, tabla):
-        if len(tabla.tabla.values()) == 0:
-            self.linea += (self.tabActual * '    ') + 'tabla vacia\n\n'
-        else:
-            self.linea += (self.tabActual * '    ') + tabla.tipo + ' ' + tabla.nombre + '\n\n'
-            self.linea += (self.tabActual * '    ') + 'NOMBRE        CLASE         TIPO\n'
-            for entrada in tabla.tabla.values():
-                if len(entrada.nombre) > 12:
-                    self.linea += (self.tabActual * '    ') + entrada.nombre[:12] + '  '
-                else:
-                    self.linea += (self.tabActual * '    ') + entrada.nombre  + ((14 - len(entrada.nombre)) * ' ')
-                if len(entrada.clase) > 12:
-                    self.linea += entrada.clase[:12] + '  '
-                else:
-                    self.linea += entrada.clase + ((14 - len(entrada.clase)) * ' ')
-                if entrada.tipo == None:
-                    self.linea += 'void\n'
-                elif len(entrada.tipo) > 12:
-                    self.linea += entrada.tipo[:12] + '\n'
-                else:
-                    self.linea += entrada.tipo + ((14 - len(entrada.tipo)) * ' ') + '\n'
-        if len(tabla.hijos) > 0:
-            self.linea += '\n\n' + (self.tabActual * '    ') + 'hijos' + '\n\n'
-            self.tabActual += 1
-            for hijo in tabla.hijos:
-                self.imprimirTabla(hijo)
-            self.tabActual -= 1
-        elif len(tabla.tabla.values()) != 0:
-            self.linea += '\n\n'      

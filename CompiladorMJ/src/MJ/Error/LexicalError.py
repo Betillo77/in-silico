@@ -1,7 +1,8 @@
+from MJ.Error.CompilerError import CompilerError
 
 # Error lexico
 
-class LexicalError(BaseException):
+class LexicalError(CompilerError):
 
     def __init__(self, args):
         print(args)
