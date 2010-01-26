@@ -1,40 +1,15 @@
 package compilador.grafico;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import javax.swing.JFrame;
 
 import org.python.core.PyObject;
 import org.python.core.PyString;
-import org.python.util.PythonInterpreter;
-import org.python.core.PyList;
-
-import com.mxgraph.util.mxConstants;
-import com.mxgraph.util.mxPoint;
-import com.mxgraph.util.mxRectangle;
-import com.mxgraph.view.mxGraph;
-
-
-
-import javax.swing.JFrame;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.view.mxGraph;
-
-
-import javax.swing.BorderFactory;
-import javax.swing.CellRendererPane;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
-
-import com.mxgraph.canvas.mxICanvas;
-import com.mxgraph.canvas.mxImageCanvas;
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.swing.handler.mxRubberband;
-import com.mxgraph.swing.view.mxInteractiveCanvas;
-import com.mxgraph.view.mxCellState;
+import com.mxgraph.util.mxPoint;
+import com.mxgraph.util.mxRectangle;
 import com.mxgraph.view.mxGraph;
 
 
@@ -52,7 +27,6 @@ class Port extends JFrame
 	public Port()
 	{
 		super("Hello, World!");
-		PyList p = new PyList();
 		mxGraph graph = new mxGraph();
 		Object parent = graph.getDefaultParent();
 

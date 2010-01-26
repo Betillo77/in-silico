@@ -1,6 +1,5 @@
 package compilador.modelo;
 
-import org.python.core.PyInteger;
 import org.python.core.PyList;
 import org.python.core.PyObject;
 import org.python.core.PyString;
