@@ -6,9 +6,6 @@ import genericos.genetico.Genetico;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javax.swing.JApplet;
 import javax.swing.JPanel;
 
