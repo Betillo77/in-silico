@@ -45,4 +45,71 @@ public enum Par implements Serializable
 		}
 		return TODOS;
 	}
+	
+	public static Par convertirPar(String cuerpo)
+	{
+		Par par;
+		if(cuerpo.contains("EURUSD"))
+		{
+			par = Par.EURUSD;
+		}
+		else if(cuerpo.contains("USDJPY"))
+		{
+			par = Par.USDJPY;
+		}
+		else if(cuerpo.contains("GBPUSD"))
+		{
+			par = Par.GBPUSD;
+		}
+		else if(cuerpo.contains("USDCHF"))
+		{
+			par = Par.USDCHF;
+		}
+		else if(cuerpo.contains("EURCHF"))
+		{
+			par = Par.EURCHF;
+		}
+		else if(cuerpo.contains("AUDUSD"))
+		{
+			par = Par.AUDUSD;
+		}
+		else if(cuerpo.contains("USDCAD"))
+		{
+			par = Par.USDCAD;
+		}
+		else if(cuerpo.contains("NZDUSD"))
+		{
+			par = Par.NZDUSD;
+		}
+		else if(cuerpo.contains("EURJPY"))
+		{
+			par = Par.EURJPY;
+		}
+		else if(cuerpo.contains("GBPJPY"))
+		{
+			par = Par.GBPJPY;
+		}
+		else if(cuerpo.contains("CHFJPY"))
+		{
+			par = Par.CHFJPY;
+		}
+		else if(cuerpo.contains("GBPCHF"))
+		{
+			par = Par.GBPCHF;
+		}
+		else if(cuerpo.contains("EURAUD"))
+		{
+			par = Par.EURAUD;
+		}
+		else if(cuerpo.contains("AUDJPY"))
+		{
+			par = Par.AUDJPY;
+		}
+		else
+		{
+			par = null;
+			// TODO Manejo de errores
+		}
+		return par;
+	}
 }

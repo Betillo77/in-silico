@@ -12,8 +12,6 @@ public class Escritor
 	public static ArrayList <Senal> senales = new ArrayList <Senal> ();
 	public static final String pathMeta = "C:/Program Files (x86)/dailyFX/experts/files/";
 	public static File archivoEscritura = new File(pathMeta + "ordenes.txt");
-	public static File archivoMagicos = new File(pathMeta + "magicos.txt");
-	
 	
 	public static void escribir() 
 	{
@@ -50,29 +48,26 @@ public class Escritor
 		{
 			try 
 			{
-				Thread.sleep(40000 + 16000 * numero);
-				for(int i = 0; i < 50; i++)
-				{
-					Thread.sleep(1000);
-					if(archivoMagicos.exists())
-						break;
-				}
+				Thread.sleep(60000 + 16000 * numero);
 			}
 			catch (InterruptedException e) 
 			{
 				// TODO Manejo de errores
 			}
 		}
+		File archivoMagicos = new File(pathMeta + "magicos.txt");
 		if(!archivoMagicos.exists())
 		{
 			// TODO Manejo de errores
+			archivoMagicos = null;
 			return;
 		}
 		for(int i = 0; i < 3 && !termino; i++)
 		{
+			Scanner sc = new Scanner("1");
 			try 
 			{
-				Scanner sc = new Scanner(archivoMagicos);
+				sc = new Scanner(archivoMagicos);
 				Iterator <Senal> it = senales.iterator();
 				Senal actual = it.next();
 				int numeroActual = 0;
@@ -97,9 +92,15 @@ public class Escritor
 			{
 				// TODO Manejo de errores
 			}
+			finally
+			{
+				sc.close();
+				if(archivoMagicos.canWrite())
+					archivoMagicos.delete();
+				archivoMagicos = null;
+			}
 		}
 		senales.clear();
-		archivoMagicos.delete();
 	}
 
 	public static void cerrar(SenalEntrada entrada, Senal afectada)

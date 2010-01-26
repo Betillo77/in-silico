@@ -1,14 +1,8 @@
 import java.awt.Dimension;
-import java.awt.Robot;
-import java.awt.Rectangle;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +11,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import java.util.regex.Pattern;
@@ -134,68 +126,13 @@ public class dailyOCR
 				preciosActuales = (ArrayList <BidAsk>) lecturas[1];
 				try
 				{
-					for(Senal senal : senalesLeidas)
-					{
-						Estrategia actual = darEstrategiaSenal(senal);
-						Senal afectada = null;
-						if((afectada = actual.tienePar(senal.par)) != null)
-						{
-							if(afectada.numeroLotes < senal.numeroLotes)
-							{
-								// TODO Manejo de errores
-							}
-							if(afectada.numeroLotes > senal.numeroLotes)
-							{
-								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes, 0), afectada, false);
-							}
-						}
-						else
-						{
-							actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
-						}
-					}
-					int estrategiaActual = 0;
-					for(Estrategia actual : estrategias)
-					{
-						Thread.sleep(1000);
-						synchronized(actual.senales)
-						{
-							for(int i = 0; i < actual.senales.size(); i++)
-							{
-								Senal senal = null;
-								try
-								{
-									senal = actual.senales.get(i);
-								}
-								catch(Exception e)
-								{
-									break;
-								}
-								boolean encontrada = false;
-								for(Senal nueva : senalesLeidas)
-								{
-									if(actual.id.equals(nueva.estrategia) && senal.par.equals(nueva.par))
-									{
-										encontrada = true;
-										break;
-									}
-								}
-								if(!encontrada)
-								{
-									if(!senal.manual)
-										actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, false);
-									if(senal.manual && senal.numeroLotes == 0)
-										actual.senales.remove(senal);
-								}
-							}
-							estrategiaActual++;
-						}
-					}			
+					procesarSenalesLeidas(senalesLeidas);
 					Escritor.escribir();
 					Escritor.leerMagicos();
 					if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null)
 					{
 						cargarEstrategias();
+						//TODO Manejo de errores
 					}
 					else
 					{
@@ -210,7 +147,7 @@ public class dailyOCR
 				}
 				catch(Exception e)
 				{	
-					e.printStackTrace();// TODO Manejo de excepciones
+					// TODO Manejo de excepciones
 				}
 			}
 			catch(Exception e)
@@ -220,6 +157,77 @@ public class dailyOCR
 		}
 	}
 	
+	private static void procesarSenalesLeidas(ArrayList <Senal> senalesLeidas)
+	{
+		try
+		{
+			for(Senal senal : senalesLeidas)
+			{
+				Estrategia actual = darEstrategiaSenal(senal);
+				Senal afectada = null;
+				if((afectada = actual.tienePar(senal.par)) != null)
+				{
+					if(senal.compra != afectada.compra)
+					{
+						actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes, 0), afectada, false);
+						actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
+					}
+					if(afectada.numeroLotes > senal.numeroLotes)
+					{
+						actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes, 0), afectada, false);
+					}
+					else if(afectada.numeroLotes < senal.numeroLotes)
+					{
+						//TODO Manejo de errores
+					}
+				}
+				else
+				{
+					actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
+				}
+			}
+			for(Estrategia actual : estrategias)
+			{
+				Thread.sleep(1000);
+				synchronized(actual.senales)
+				{
+					for(int i = 0; i < actual.senales.size(); i++)
+					{
+						Senal senal = null;
+						try
+						{
+							senal = actual.senales.get(i);
+						}
+						catch(Exception e)
+						{
+							break;
+						}
+						boolean encontrada = false;
+						for(Senal nueva : senalesLeidas)
+						{
+							if(actual.id.equals(nueva.estrategia) && senal.par.equals(nueva.par))
+							{
+								encontrada = true;
+								break;
+							}
+						}
+						if(!encontrada)
+						{
+							if(!senal.manual)
+								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, false);
+							if(senal.manual && senal.numeroLotes == 0)
+								actual.senales.remove(senal);
+							i = -1;
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			//TODO Manejo de errores
+		}
+	}
 	private static void registrarEstadoActual() 
 	{
 		try 
@@ -246,317 +254,105 @@ public class dailyOCR
 				arreglarConexion();
 			}
 */
-	
-	public static void esperar() 
-	{
-		try
-		{
-			for(int i = 0; i < 90; i++)
-			{
-				Thread.sleep(1000);
-				if(new File(pathPrincipal + tiempo + ".txt").exists())
-				{
-					return;
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error esperando");
-		}
-	}
-
-	public static void eliminar(long tiempo) 
-	{
-		try
-		{
-			new File(pathPrincipal + tiempo + ".txt").delete();
-			new File(pathPrincipal + "Io/" + tiempo + ".bmp").delete();
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error eliminando los archivos");
-		}
-	}
-	
-
-	
-	public static void copiarArchivo(File entrada, File salida) 
-	{
-	    try 
-	    {
-	    	salida.createNewFile();
-		    FileInputStream fis  = new FileInputStream(entrada);
-		    FileOutputStream fos = new FileOutputStream(salida);
-	        byte[] buf = new byte[1024];
-	        int i = 0;
-	        while ((i = fis.read(buf)) != -1) 
-	        {
-	            fos.write(buf, 0, i);
-	        }
-		    if (fis != null)
-		    {
-		    	fis.close();
-		    }
-		    if (fos != null)
-		    {
-		    	fos.close();
-		    }
-	    }
-	    catch (Exception e) 
-	    {
-	    }
-	}
-
 
 	public static Object[] leer(String entrada)
 	{
 		String entrada1 = entrada.substring(entrada.indexOf("\"Signal\":["));
-		
 		ArrayList <Integer> curoplots = new ArrayList <Integer> ();
 		ArrayList <Integer> strategyid = new ArrayList <Integer> ();
 		ArrayList <String> symbol = new ArrayList <String> ();
 		ArrayList <String> direction = new ArrayList <String> ();
-		
 		ArrayList <Double> entryprice = new ArrayList <Double> ();
-
 		ArrayList <Double> bid = new ArrayList <Double> ();
 		ArrayList <Double> ask = new ArrayList <Double> ();
 		ArrayList <String> currency = new ArrayList <String> ();
-		
-		Pattern pattern = Pattern.compile("\"curOpLots\":\\d+");
+		Pattern pattern = Pattern.compile("\\d+,\"strategyId\":\\d+");
 		Pattern pattern2 = Pattern.compile("\"strategyId\":\\d+");
 		Pattern pattern3 = Pattern.compile("\"symbol\":\"\\w+\"");
 		Pattern pattern4 = Pattern.compile("\"direction\":\"\\w+\"");
 		Pattern pattern5 = Pattern.compile("\"entryPrice\":\\d+.\\d+");
-		  
 		Pattern pattern6 = Pattern.compile("\"bid\":\\d+.\\d+");
 		Pattern pattern7 = Pattern.compile("\"ask\":\\d+.\\d+");
 		Pattern pattern8 = Pattern.compile("\"currency\":\"\\w+\"");
-		
 		Matcher matcher = pattern.matcher(entrada1);
 		Matcher matcher2 = pattern2.matcher(entrada1);
 		Matcher matcher3 = pattern3.matcher(entrada1);
 		Matcher matcher4 = pattern4.matcher(entrada1);
 		Matcher matcher5 = pattern5.matcher(entrada1);
-		
 		Matcher matcher6 = pattern6.matcher(entrada);
 		Matcher matcher7 = pattern7.matcher(entrada);
 		Matcher matcher8 = pattern8.matcher(entrada);
-
-		while(matcher.find()) {  
+		while(matcher.find()) 
+		{  
 			String S = matcher.group();
-			S = S.substring(12);
+			S = S.substring(0, 1);
 			curoplots.add(Integer.parseInt(S));
-		}
-		  
-		while(matcher2.find()) {
+		} 
+		while(matcher2.find())
+		{
 			String S = matcher2.group();
 			S = S.substring(13);
 			strategyid.add(Integer.parseInt(S));  
 		}
-  
-		while(matcher3.find()) {
+		while(matcher3.find()) 
+		{
 			String S = matcher3.group();
 			S = S.substring(10);
 			S = S.replace("\"", "");
 			symbol.add(S);
   		}
-  
-		while(matcher4.find()) {
+		while(matcher4.find()) 
+		{
 	  		String S = matcher4.group();
 	  		S = S.substring(13);
 	  		S = S.replace("\"", "");
 	  		direction.add(S);
 		}
-  
-		while (matcher5.find()) {
+		while (matcher5.find()) 
+		{
 			String S = matcher5.group();
 			S = S.substring(13);
 			entryprice.add(Double.parseDouble(S));	
 		}
-	
-		while (matcher6.find()) {
+		while (matcher6.find())
+		{
 			String S = matcher6.group();
 			S = S.substring(6);
 			bid.add(Double.parseDouble(S));	
 		}
-		while (matcher7.find()) {
+		while (matcher7.find())
+		{
 			String S = matcher7.group();
 			S = S.substring(6);
 			ask.add(Double.parseDouble(S));	
 		}
-		while (matcher8.find()) {
+		while (matcher8.find())
+		{
 			String S = matcher8.group();
 			S = S.substring(12);
 	  		S = S.replace("\"", "");
 	  		currency.add(S);
 		}
-		
 		ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
-		
-		for(int i=0;i<curoplots.size();i++)
+		for(int i = 0; i<curoplots.size(); i++)
 		{
-			Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
+			Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), Par.convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
 			nuevasSenales.add(actual);
 		}
-		
 		ArrayList <BidAsk> precio = new ArrayList <BidAsk>();
 		for(int i=0;i<bid.size();i++)
 		{
-			if(convertirPar(currency.get(i)) == null)
+			if(Par.convertirPar(currency.get(i)) == null)
 			{
 				continue;
 			}
-			BidAsk actual = new BidAsk(bid.get(i), ask.get(i), convertirPar(currency.get(i)));
+			BidAsk actual = new BidAsk(bid.get(i), ask.get(i), Par.convertirPar(currency.get(i)));
 			precio.add(actual);
 		}
-		
 		Object[] resultado = new Object[2];
 		resultado[0] = nuevasSenales;
 		resultado[1] = precio;
-		
 		return resultado;
-	}
-
-	public static Par convertirPar(String cuerpo)
-	{
-		Par par;
-		if(cuerpo.contains("EURUSD"))
-		{
-			par = Par.EURUSD;
-		}
-		else if(cuerpo.contains("USDJPY"))
-		{
-			par = Par.USDJPY;
-		}
-		else if(cuerpo.contains("GBPUSD"))
-		{
-			par = Par.GBPUSD;
-		}
-		else if(cuerpo.contains("USDCHF"))
-		{
-			par = Par.USDCHF;
-		}
-		else if(cuerpo.contains("EURCHF"))
-		{
-			par = Par.EURCHF;
-		}
-		else if(cuerpo.contains("AUDUSD"))
-		{
-			par = Par.AUDUSD;
-		}
-		else if(cuerpo.contains("USDCAD"))
-		{
-			par = Par.USDCAD;
-		}
-		else if(cuerpo.contains("NZDUSD"))
-		{
-			par = Par.NZDUSD;
-		}
-		else if(cuerpo.contains("EURJPY"))
-		{
-			par = Par.EURJPY;
-		}
-		else if(cuerpo.contains("GBPJPY"))
-		{
-			par = Par.GBPJPY;
-		}
-		else if(cuerpo.contains("CHFJPY"))
-		{
-			par = Par.CHFJPY;
-		}
-		else if(cuerpo.contains("GBPCHF"))
-		{
-			par = Par.GBPCHF;
-		}
-		else if(cuerpo.contains("EURAUD"))
-		{
-			par = Par.EURAUD;
-		}
-		else if(cuerpo.contains("AUDJPY"))
-		{
-			par = Par.AUDJPY;
-		}
-		else
-		{
-			par = null;
-			// TODO Manejo de errores
-		}
-		return par;
-	}
-	
-	
-	public static boolean leerEstrategias(int par, String estrategia)
-	{
-		try
-		{
-			Thread.sleep(500);
-			new Robot().mouseMove(1430, 820);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(500);
-			new Robot().mouseMove(500, 300);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(500);
-			new Robot().mouseMove(1430, 230);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(500);
-			for(int i = 0; i < 14; i++)
-			{
-				new Robot().keyPress(KeyEvent.VK_UP);
-				Thread.sleep(500);
-			}
-			for(int i = 0; i < par - 1; i++)
-			{	
-				new Robot().keyPress(KeyEvent.VK_DOWN);
-				Thread.sleep(500);
-			}
-			BufferedImage screencapture = new Robot().createScreenCapture(new Rectangle(545, 250, 250, 600));
-			Thread.sleep(500);
-			new Robot().mouseMove(200, 885);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			ImageIO.write(screencapture, "bmp", new File(pathPrincipal + "Io/estrategias.bmp"));
-			boolean encontrado = false;
-			for(int i = 0; i < 90; i++)
-			{
-				Thread.sleep(1000);
-				if(new File(pathPrincipal + "estrategias.txt").exists())
-				{
-					encontrado = true;
-					break;
-				}
-			}
-			if(encontrado)
-			{
-				Scanner sc = new Scanner(new File(pathPrincipal + "estrategias.txt"));
-				String linea = "";
-				while(sc.hasNextLine())
-				{
-					linea += sc.nextLine();
-				}
-				sc.close();
-				new File(pathPrincipal + "estrategias.txt").delete();
-				new File(pathPrincipal + "Io/estrategias.bmp").delete();
-				return linea.contains(estrategia);
-			}
-			else
-			{
-				new File(pathPrincipal + "estrategias.txt").delete();
-				new File(pathPrincipal + "Io/estrategias.bmp").delete();
-				return false;
-			}
-			
-		}
-		catch(Exception e)
-		{
-			new File(pathPrincipal + "estrategias.txt").delete();
-			new File(pathPrincipal + "Io/estrategias.bmp").delete();
-			return false;
-		}
 	}
 	
 	public static boolean chequearConexion()
@@ -589,36 +385,14 @@ public class dailyOCR
 			Error.agregar("Error de conexion, intentando arreglar");
 			Runtime.getRuntime().exec("cmd /c start " + "C:\\" + "primero.bat");
 			Thread.sleep(60000);
-			actualizarPagina();
 			if(!chequearConexion())
 			{
 				Runtime.getRuntime().exec("cmd /c start " + "C:\\" + "segundo.bat");
 				Thread.sleep(60000);
-				actualizarPagina();
 			}
 		} 
 		catch (Exception e)
 		{
-		}
-	}
-
-	public static void actualizarPagina()
-	{
-		try
-		{
-			new Robot().mouseMove(1102, 35);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			new Robot().mouseMove(820, 370);
-			Thread.sleep(30000);
-			new Robot().mousePress(InputEvent.BUTTON1_MASK);
-			new Robot().mouseMove(820, 800);
-			new Robot().mouseRelease(InputEvent.BUTTON1_MASK);
-			Thread.sleep(5000);
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error interno actualizando pagina");
 		}
 	}
 	
@@ -652,7 +426,6 @@ public class dailyOCR
 		return null;
 	}
 
-	
 	public static Estrategia darEstrategiaSenal(Senal senal)
 	{
 		Estrategia actual = null;
