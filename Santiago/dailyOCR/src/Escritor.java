@@ -132,7 +132,7 @@ public class Escritor
 			{
 				if(estrategia.darActivo(entrada.par))
 				{
-					lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + 0);
+					lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + (nueva.estrategia == IdEstrategia.BREAKOUT2 ? "1" : "0"));
 				}
 			}
 			senales.add(nueva);
