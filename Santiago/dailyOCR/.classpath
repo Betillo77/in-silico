@@ -10,5 +10,11 @@
 	<classpathentry kind="lib" path="src/httpmime-4.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Santiago/workspace/dailyOCR/jcommon-1.0.15.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Santiago/workspace/dailyOCR/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cherry/Desktop/         /work/javamail-1.4.3/javamail-1.4.3/lib/dsn.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cherry/Desktop/         /work/javamail-1.4.3/javamail-1.4.3/lib/imap.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cherry/Desktop/         /work/javamail-1.4.3/javamail-1.4.3/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cherry/Desktop/         /work/javamail-1.4.3/javamail-1.4.3/lib/pop3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cherry/Desktop/         /work/javamail-1.4.3/javamail-1.4.3/lib/smtp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/cherry/Desktop/         /work/javamail-1.4.3/javamail-1.4.3/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
