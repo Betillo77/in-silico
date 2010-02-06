@@ -38,7 +38,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 public class ConexionServidor
 {
-    public static String leerServidor()
+    public static String leerServidorSSI()
     {
     	try
     	{ 	
@@ -128,8 +128,15 @@ public class ConexionServidor
     	}
     }
     
-    public static void main(String[] args)
+    public static String leerServidorTechnical()
     {
-    	leerServidor();
+    	return "";
+		//TODO Hacer metodo
+    }
+    
+    public static String leerServidorJoel()
+    {
+    	return "";
+		//TODO Hacer metodo
     }
 }

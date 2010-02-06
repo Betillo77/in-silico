@@ -8,19 +8,22 @@ import java.util.Scanner;
 
 public class Escritor 
 {
-	public static ArrayList <String> lineas = new ArrayList <String> ();
-	public static ArrayList <Senal> senales = new ArrayList <Senal> ();
-	public static final String pathMeta = "C:/Program Files (x86)/dailyFX/experts/files/";
-	public static File archivoEscritura = new File(pathMeta + "ordenes.txt");
+	public ArrayList <String> lineas = new ArrayList <String> ();
+	public ArrayList <Senal> senales = new ArrayList <Senal> ();
+	public String pathMeta;
 	
-	public static void escribir() 
+	public Escritor(String path)
+	{
+		pathMeta = path;
+	}
+	
+	public void escribir() 
 	{
 		try
 		{
-//			archivoEscritura.delete();
+			File archivoEscritura = new File(pathMeta + "ordenes.txt");
 			if(!lineas.isEmpty())
 			{
-//				archivoEscritura.createNewFile();
 				FileWriter fw = new FileWriter(archivoEscritura, true);
 				for(String linea : lineas.subList(0, lineas.size() - 1))
 				{
@@ -38,7 +41,7 @@ public class Escritor
 		}
 	}
 
-	public static void leerMagicos() 
+	public void leerMagicos() 
 	{
 		boolean termino = false;
 		int numero = 0;
@@ -48,7 +51,7 @@ public class Escritor
 		{
 			try 
 			{
-				Thread.sleep(60000 + 16000 * numero);
+				Thread.sleep(120000 + 30000 * numero);
 			}
 			catch (InterruptedException e) 
 			{
@@ -103,7 +106,7 @@ public class Escritor
 		senales.clear();
 	}
 
-	public static void cerrar(SenalEntrada entrada, Senal afectada)
+	public void cerrar(SenalEntrada entrada, Senal afectada)
 	{
 		if(entrada.numeroLotes > 5)
 		{
@@ -119,7 +122,7 @@ public class Escritor
 		afectada.magico = Arrays.copyOfRange(afectada.magico, entrada.numeroLotes, afectada.magico.length);
 	}
 
-	public static void abrir(SenalEntrada entrada, Senal nueva)
+	public void abrir(SenalEntrada entrada, Senal nueva)
 	{
 		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
 		if(entrada.numeroLotes > 5)

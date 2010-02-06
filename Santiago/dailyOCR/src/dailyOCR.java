@@ -1,9 +1,6 @@
 import java.awt.Dimension;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,15 +8,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
-
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.JFrame;
 
 
 public class dailyOCR
 {
-//	public static final String pathPrincipal = "D:/Documents and Settings/Admin/Escritorio/dailyOcr/";
 	public static final String pathPrincipal = "";
 	public static final String pathSecundario = "\\\\SANTIAGO-PC\\Users\\Public\\dailyOCR\\";
 	
@@ -46,9 +42,19 @@ public class dailyOCR
 	static Estrategia momentum2;
 	static File m2 = new File(pathPrincipal + "momentum2.o");
 	
+	static Estrategia technical;
+	static File t = new File(pathPrincipal + "technical.o");
+	
+	static Estrategia joel;
+	static File j = new File(pathPrincipal + "joel.o");
+	
 	static File log = new File(pathPrincipal + "log.txt");
 	
 	static ArrayList <Estrategia> estrategias;
+	
+	static Escritor escritorSSI = new Escritor("C:/Program Files (x86)/dailyFX/experts/files/");
+	static Escritor escritorTechnical = new Escritor("");
+	static Escritor escritorJoel = new Escritor("");
 	
 	public static void cargarEstrategias()
 	{
@@ -60,6 +66,7 @@ public class dailyOCR
 		{
 			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
 		}
+		breakout1.escritor = escritorSSI;
 		if(b2.exists())
 		{
 			breakout2 = Estrategia.leer(b2);
@@ -68,6 +75,7 @@ public class dailyOCR
 		{
 			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
 		}
+		breakout2.escritor = escritorSSI;
 		if(r1.exists())
 		{
 			range1 = Estrategia.leer(r1);
@@ -76,6 +84,7 @@ public class dailyOCR
 		{
 			range1 = new Estrategia(IdEstrategia.RANGE1);
 		}
+		range1.escritor = escritorSSI;
 		if(r2.exists())
 		{
 			range2 = Estrategia.leer(r2);
@@ -84,6 +93,7 @@ public class dailyOCR
 		{
 			range2 = new Estrategia(IdEstrategia.RANGE2);
 		}
+		range2.escritor = escritorSSI;
 		if(m1.exists())
 		{
 			momentum1 = Estrategia.leer(m1);
@@ -92,6 +102,7 @@ public class dailyOCR
 		{
 			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
 		}
+		momentum1.escritor = escritorSSI;
 		if(m2.exists())
 		{
 			momentum2 = Estrategia.leer(m2);
@@ -100,6 +111,25 @@ public class dailyOCR
 		{
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
+		momentum2.escritor = escritorSSI;
+		if(t.exists())
+		{
+			technical = Estrategia.leer(t);
+		}
+		else
+		{
+			technical = new Estrategia(IdEstrategia.TECHNICAL);
+		}
+		technical.escritor = escritorTechnical;
+		if(j.exists())
+		{
+			joel = Estrategia.leer(t);
+		}
+		else
+		{
+			joel = new Estrategia(IdEstrategia.JOEL);
+		}
+		joel.escritor = escritorJoel;
 		estrategias = new ArrayList <Estrategia> ();
 		estrategias.add(breakout1);
 		estrategias.add(breakout2);
@@ -109,9 +139,9 @@ public class dailyOCR
 		estrategias.add(range2);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void inicio()
 	{
+		int numeroErrores = 0;
 		while(true)
 		{
 			try
@@ -121,15 +151,18 @@ public class dailyOCR
 					cargarEstrategias();
 				}
 				Thread.sleep(1000);
-				Object[] lecturas = leer(ConexionServidor.leerServidor());
-				ArrayList <Senal> senalesLeidas = (ArrayList <Senal>) lecturas[0];
-				preciosActuales = (ArrayList <BidAsk>) lecturas[1];
 				try
 				{
-					procesarSenalesLeidas(senalesLeidas);
-					Escritor.escribir();
-					Escritor.leerMagicos();
-					if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null)
+					leerSSI(ConexionServidor.leerServidorSSI());
+					leerTechnical(ConexionServidor.leerServidorTechnical());
+					leerJoel(ConexionServidor.leerServidorJoel());
+					escritorSSI.escribir();
+					escritorSSI.leerMagicos();
+					escritorTechnical.escribir();
+					escritorTechnical.leerMagicos();
+					escritorJoel.escribir();
+					escritorJoel.leerMagicos();
+					if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null || joel == null || technical == null)
 					{
 						cargarEstrategias();
 						//TODO Manejo de errores
@@ -142,22 +175,44 @@ public class dailyOCR
 						range2.escribir(r2);
 						momentum1.escribir(m1);
 						momentum2.escribir(m2);
-						registrarEstadoActual();
+						technical.escribir(t);
+						joel.escribir(j);
+						numeroErrores = 0;
 					}
 				}
 				catch(Exception e)
 				{	
-					// TODO Manejo de excepciones
+					numeroErrores++;
+					if(numeroErrores == 60)
+					{
+						Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
+						{
+
+							@Override
+							public void run() 
+							{
+								try 
+								{
+									Runtime.getRuntime().exec("reiniciar.bat");
+								} 
+								catch (IOException e)
+								{
+									// TODO Manejo de errores
+								}
+							}
+						}));
+						System.exit(0);
+					}
 				}
 			}
 			catch(Exception e)
 			{
-				Error.agregar("Error en el ciclo");
+				//TODO Manejo de errores
 			}
 		}
 	}
 	
-	private static void procesarSenalesLeidas(ArrayList <Senal> senalesLeidas)
+	private static void procesarSSI(ArrayList <Senal> senalesLeidas)
 	{
 		try
 		{
@@ -228,34 +283,8 @@ public class dailyOCR
 			//TODO Manejo de errores
 		}
 	}
-	private static void registrarEstadoActual() 
-	{
-		try 
-		{
-			BufferedWriter bw = new BufferedWriter(new FileWriter(log));
-			String separador = System.getProperty("line.separator");
-			for(Estrategia actual : estrategias)
-			{
-				bw.write(actual.id + ":" + separador);
-				for(Senal senal : actual.senales)
-				{
-					bw.write(senal.toString() + separador);
-				}
-				bw.write(separador);
-			}
-			bw.close();
-		} 
-		catch (IOException e)
-		{
-		}
-	}
-/*			if(!chequearConexion())
-			{
-				arreglarConexion();
-			}
-*/
-
-	public static Object[] leer(String entrada)
+	
+	private static void leerSSI(String entrada)
 	{
 		String entrada1 = entrada.substring(entrada.indexOf("\"Signal\":["));
 		ArrayList <Integer> curoplots = new ArrayList <Integer> ();
@@ -349,10 +378,31 @@ public class dailyOCR
 			BidAsk actual = new BidAsk(bid.get(i), ask.get(i), Par.convertirPar(currency.get(i)));
 			precio.add(actual);
 		}
-		Object[] resultado = new Object[2];
-		resultado[0] = nuevasSenales;
-		resultado[1] = precio;
-		return resultado;
+		preciosActuales = precio;
+		procesarSSI(nuevasSenales);
+	}
+	
+
+	private static void procesarTechnical(ArrayList <Senal> senalesLeidas)
+	{
+		//TODO Hacer metodo		
+	}
+	
+	private static void leerTechnical(String entrada)
+	{
+		procesarTechnical(null);
+		//TODO Hacer metodo
+	}
+	
+	private static void procesarJoel(ArrayList <Senal> senalesLeidas)
+	{
+		//TODO Hacer metodo
+	}
+	
+	private static void leerJoel(String entrada)
+	{
+		procesarJoel(null);
+		//TODO Hacer metodo
 	}
 	
 	public static boolean chequearConexion()
@@ -462,8 +512,8 @@ public class dailyOCR
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
 			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, true);
-			Escritor.escribir();
-			Escritor.leerMagicos();
+			estrategiaSenal.escritor.escribir();
+			estrategiaSenal.escritor.leerMagicos();
 		}
 	}
 	
@@ -473,8 +523,8 @@ public class dailyOCR
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
 			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), senal, true);
-			Escritor.escribir();
-			Escritor.leerMagicos();
+			estrategiaSenal.escritor.escribir();
+			estrategiaSenal.escritor.leerMagicos();
 		}
 	}
 	

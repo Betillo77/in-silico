@@ -18,6 +18,7 @@ public class Estrategia implements Serializable
 	public List <Senal> senales;
 	public HistorialEstrategia historial;
 	public boolean[] activos = new boolean[Par.values().length];
+	public Escritor escritor;
 	
 	public Estrategia(IdEstrategia id)
 	{
@@ -76,7 +77,7 @@ public class Estrategia implements Serializable
 	private void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
 		int lotesAnteriores = afectada.numeroLotes;
-		Escritor.cerrar(entrada, afectada);
+		escritor.cerrar(entrada, afectada);
 		BidAsk parActual = null;
 		for(BidAsk ba : dailyOCR.preciosActuales)
 		{
@@ -151,7 +152,7 @@ public class Estrategia implements Serializable
 		{
 			// TODO Manejo de errores
 		}
-		Escritor.abrir(entrada, nueva);
+		escritor.abrir(entrada, nueva);
 		senales.add(nueva);
 	}
 	
