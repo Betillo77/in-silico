@@ -30,6 +30,7 @@
  */
 
 import java.util.*;
+
 import java.io.*;
 import javax.mail.*;
 import javax.mail.event.*;
@@ -45,6 +46,7 @@ import javax.mail.search.SearchTerm;
  * @author Bill Shannon
  */
 
+@SuppressWarnings("unused")
 public class msgshow {
 
     static String protocol;
@@ -65,6 +67,7 @@ public class msgshow {
     public static void main(String argv[]) {
 	int msgnum = -1;
 	int optind;
+	@SuppressWarnings("unused")
 	InputStream msgStream = System.in;
 
 	for (optind = 0; optind < argv.length; optind++) {
