@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="css/nuevo3.css" />
+<script type="text/javascript"
+src="perfiles/datos.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Contactenos</title>
+
+<script language="JavaScript">
+function valDatos(){  
+	var nombre=document.formulario.nombre.value;
+	var email=document.formulario.email.value;
+	var comentario=document.formulario.comentario.value;
+    re=/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,3})$/
+    if(!re.exec(email) || nombre == "" || comentario == "")    {
+		alert("Indroduzca los datos correctamente");
+		return false;
+    }else{
+        return true;
+    }
+}
+
+</script>
+
+
+</head>
+
+<body>
+<div id="wraper">
+</div>
+<div id="content1_pag2">
+<p>
+<p class="Titulo" id="insilico3" name="insilico"> Investigaci&oacute;n con funci&oacute;n social y ambiental</p>
+  <p class="Titulo" id="insilico4" name="insilico2">IN SILICO</p>
+</p>
+
+
+<div id="botones2">
+<table>
+<tr onmouseover="document.body.style.cursor='crosshair'" onmouseout="document.body.style.cursor='default'">
+<td class="celdas" onmouseover="style.backgroundColor='#95B3D7'" onmouseout="style.backgroundColor='transparent'" onclick="document.location.href='http://www.google.com'">El Grupo</td>
+<td class="celdas" onmouseover="style.backgroundColor='#95B3D7'" onmouseout="style.backgroundColor='transparent'" onclick="document.location.href='http://www.google.com'">Nuestro Trabajo</td>
+<td class="celdas" onmouseover="style.backgroundColor='#95B3D7'" onmouseout="style.backgroundColor='transparent'" onclick="document.location.href='http://www.google.com'">Maratones</td>
+<td class="celdas" onmouseover="style.backgroundColor='#95B3D7'" onmouseout="style.backgroundColor='transparent'" onclick="document.location.href='http://www.google.com'">Integrantes</td>
+</tr>
+</table>
+</div>
+
+<div id="enlaces" >
+<a href="http://www.utp.edu.co" > Universidad Tecnologica de Pereira</a> &bull;
+<a href="http://isc.utp.edu.co" > Ingenieria de Sistemas y computacion</a>&bull;
+<a href="http://www.google.com.co" > Contactenos</a></div>
+
+<img id="imagen_central" src="imagenes/prueba central.jpg" /> 
+
+<FORM ACTION="InsertComent.php" METHOD="POST" onsubmit="return valDatos();" name="formulario" >
+
+<div id="contenido_principal">
+  <img id="fondo_principal" src="imagenes/fondo.png" />
+  <p id="contactenos1">
+  CONTACTENOS
+  </p>
+
+  <p id="contactenos2">
+ 	 
+  Gracias por querer comunicarse con nosotros. 
+		El semillero insilico se reune todos los Jueves de 2 a 5 de la tarde.
+		Tambien puede enviarnos sus comentarios llenando el formulario.   </p>
+		<TABLE id="tabla">
+	<TR>
+		<TH height="27" align="left"> Nombre </TH>
+		<TH align="left"><input type="text" name="nombre" size="30"><TH> 
+	</TR>
+	<TR>
+		<TH height="40" align="left">Email</TH> 
+		<TH align="left"><input type="text" name="email" size="30"></TH>
+	</TR>
+	<TR>
+		<TH height="129" align="left">Comentario        </TH> 
+		<TH align="left"><textarea rows="7" name="comentario" cols="45"></textarea></TH>
+	</TR>
+	<TR>
+		<TH></TH>
+		<TH><input type="submit" value="enviar" name="enviar" >
+		</TH>
+	</TR>
+  </TABLE>
+  <p id="contactenos3">
+  	Semillero Insilico Universidad Tecnológica de Pereira,
+	insilico@utp.edu.co,
+	Vereda La Julita, vía Mundo Nuevo.
+	Pereira, Risaralda. Colombia.
+	Tel #######  </p>
+  
+</div>
+
+
+
+
+</FORM>
+</body>
+</html>

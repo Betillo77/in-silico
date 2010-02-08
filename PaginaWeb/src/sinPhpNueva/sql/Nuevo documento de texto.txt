@@ -1,0 +1,45 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.0.1
+-- http://www.phpmyadmin.net
+--
+-- Servidor: localhost
+-- Tiempo de generación: 07-02-2010 a las 20:47:56
+-- Versión del servidor: 5.1.36
+-- Versión de PHP: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Base de datos: `insilico`
+--
+
+-- --------------------------------------------------------
+create database insilico;
+Use insilico;
+--
+-- Estructura de tabla para la tabla `comentarios`
+--
+
+CREATE TABLE IF NOT EXISTS `comentarios` (
+  `n_comentario` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `fecha` varchar(20) NOT NULL,
+  `comentario` varchar(1000) NOT NULL,
+  PRIMARY KEY (`n_comentario`),
+  KEY `n_comentario` (`n_comentario`),
+  KEY `n_comentario_2` (`n_comentario`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+
+--
+-- Volcar la base de datos para la tabla `comentarios`
+--
+
+INSERT INTO `comentarios` (`n_comentario`, `nombre`, `email`, `fecha`, `comentario`) VALUES
+(22, 'kdfk', 'jeison-9402@hotmail.com', '07/02/2010', 'ksjd'),
+(23, 'juan', 'jeffyner_95_04@hotmail.com', '07/02/2010', 'jdhdjas hds'),
+(24, 'Juan David', 'juandavid_1024@hotmail.com', '07/02/2010', 'kjjksd sdjsk sik'),
+(25, 'juan', 'juandavid_1024@hotmail.com', '07/02/2010', 'jsd dfsdklfskl '),
+(26, 'juan', 'juandavid_1024@hotmail.com', '07/02/2010', 'jsd dfsdklfskl '),
+(27, 'kdjks', 'juandavid_1024@hotmail.com', '07/02/2010', 'jdfjdk'),
+(28, 'sdsd', 'juandavid_1024@hotmail.com', '07/02/2010', 'c,xfds');
