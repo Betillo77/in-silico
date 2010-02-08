@@ -385,13 +385,106 @@ public class dailyOCR
 
 	private static void procesarTechnical(ArrayList <Senal> senalesLeidas)
 	{
-		//TODO Hacer metodo		
+		for(Senal senal : senalesLeidas)
+		{
+			boolean esta = false;
+			for(Senal otra : technical.senales)
+			{
+				if(senal.par == otra.par)
+				{
+					esta = true;
+					if(senal.compra != otra.compra)
+					{
+						technical.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, 1, 0), otra, false);
+						break;
+					}
+				}
+			}
+			if(!esta)
+			{
+		    	SenalEntrada nueva = new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, 1, precioPar(senal.par, senal.compra));
+		    	nueva.limite = senal.precioEntrada;
+		    	if(nueva.limite > 10)
+		    	{
+		    		double anteriorLimite;
+		    		if(senal.compra)
+		    			anteriorLimite = senal.precioEntrada - 0.8;
+		    		else
+		    			anteriorLimite = senal.precioEntrada + 0.8;
+		    		if(senal.compra && precioPar(senal.par, senal.compra) > anteriorLimite)
+		    			break;
+		    		if(!senal.compra && precioPar(senal.par, senal.compra) < anteriorLimite)
+		    			break;
+		    	}
+		    	else
+		    	{
+		    		double anteriorLimite;
+		    		if(senal.compra)
+		    			anteriorLimite = senal.precioEntrada - 0.008;
+		    		else
+		    			anteriorLimite = senal.precioEntrada + 0.008;
+		    		if(senal.compra && precioPar(senal.par, senal.compra) > anteriorLimite)
+		    			break;
+		    		if(!senal.compra && precioPar(senal.par, senal.compra) < anteriorLimite)
+		    			break;
+		    	}
+				technical.agregar(nueva, senal, false);
+			}
+		}
+		for(Senal otra : technical.senales)
+		{
+			double otroPrecio = precioPar(otra.par, !otra.compra);
+			if(otra.compra && otra.limite < otroPrecio)
+			{
+				technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
+			}
+			if(!otra.compra && otra.limite > otroPrecio)
+			{
+				technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
+			}
+		}
 	}
 	
-	private static void leerTechnical(String entrada)
+	private static void leerTechnical(String [] contenidos)
 	{
-		procesarTechnical(null);
-		//TODO Hacer metodo
+		ArrayList <Senal> nuevas = new ArrayList <Senal> (10);
+		for(int i = 0; i < contenidos.length; i++)
+		{
+			String actual = contenidos[i];
+			String par = actual.substring(0, actual.indexOf(" "));
+			Par estePar = Par.convertirPar(par);
+			int indice = actual.indexOf("Our preference:");
+			if(indice == -1)
+			{
+				continue;
+				//TODO Manejo de errores
+			}
+			actual = actual.substring(indice);
+			boolean compra = actual.contains("Long") || actual.contains("long") || actual.contains("buy") || actual.contains("Buy");
+			ArrayList <Double> valores = new ArrayList <Double> (10);
+			String [] partido = actual.split(" ");
+			for(String s : partido)
+			{
+				try
+				{
+					double prueba = Double.parseDouble(s);
+					valores.add(prueba);
+				}
+				catch(Exception e)
+				{
+				}
+			}
+			try
+			{
+				double limite = valores.get(2);
+				nuevas.add(new Senal(IdEstrategia.TECHNICAL, compra, estePar, 1, limite));
+			}
+			catch(Exception e)
+			{
+				//TODO Manejo de excepciones
+			}
+		}
+		procesarTechnical(nuevas);
 	}
 	
 	private static void procesarJoel(ArrayList <Senal> senalesLeidas)
@@ -526,6 +619,23 @@ public class dailyOCR
 			estrategiaSenal.escritor.escribir();
 			estrategiaSenal.escritor.leerMagicos();
 		}
+	}
+	
+	public static double precioPar(Par par, boolean compra)
+	{
+    	int i = 0;
+    	while(!(dailyOCR.preciosActuales.get(i).currency.equals(par)))
+    	{
+    		i++;
+    	}
+    	if(compra == true)
+    	{
+    		return dailyOCR.preciosActuales.get(i).bid;
+    	}
+    	else
+    	{
+    		return dailyOCR.preciosActuales.get(i).ask;
+    	}
 	}
 	
 	public static void main(String [] args)

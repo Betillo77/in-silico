@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -128,12 +130,149 @@ public class ConexionServidor
     	}
     }
     
-    public static String leerServidorTechnical()
+    
+    
+    public static String leerTechnical()
     {
-    	return "";
-		//TODO Hacer metodo
+        try
+        {      
+                DefaultHttpClient httpclient = new DefaultHttpClient();
+               
+                BasicClientCookie cookie10 = new BasicClientCookie("JSESSIONIDSSO", "DD8561C6129E3E909C6E617163A9D5B7");
+                
+                cookie10.setVersion(0);
+                
+                cookie10.setDomain("plus.dailyfx.com");
+
+                cookie10.setPath("/");
+
+                httpclient.getCookieStore().addCookie(cookie10);
+                
+                HttpGet httget2 = new HttpGet("https://plus.dailyfx.com/tnews/fxcentral/INDEX_TA_RECENT.HTM");
+
+                HttpResponse response = httpclient.execute(httget2);
+                HttpEntity entity = response.getEntity();
+                response.getStatusLine();
+                StringBuilder sb = new StringBuilder("");
+                if (entity != null)
+                {
+                        InputStream instream = entity.getContent();
+                        int l;
+                        byte[] tmp = new byte[2048];
+                        while ((l = instream.read(tmp)) != -1)
+                        {
+                                for(int i = 0; i < l; i++)
+                                {
+                                        sb.append((char)tmp[i]);
+                                }
+                        }
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("salida1.txt"));
+                    bw.write(sb.toString());
+                    bw.close();
+                }
+                httpclient.getConnectionManager().shutdown();
+                return sb.toString();
+        }
+        catch(Exception e)
+        {
+                // TODO Manejo de errores
+                return "Error";
+        }
     }
     
+    public static String[] direcciones(String datos)
+    {
+    	String [] direcciones = new String[7];	
+    	Pattern pattern = Pattern.compile("HTM\\w*.htm");
+        Matcher matcher = pattern.matcher(datos);
+        matcher.find();
+        direcciones[0] = matcher.group();
+        matcher.find();
+        direcciones[1] = matcher.group();
+        matcher.find(); 
+        direcciones[2] = matcher.group();
+        matcher.find();
+        direcciones[3] = matcher.group();
+       Pattern pattern2 = Pattern.compile(";CAD");
+        Matcher matcher2 = pattern2.matcher(datos);
+        matcher2.find();
+        Pattern pattern3 = Pattern.compile("HTM\\w*.htm");
+        Matcher matcher3 = pattern3.matcher(datos.substring(matcher2.end()));
+        matcher3.find();
+        direcciones[4] = matcher3.group();
+        Pattern pattern4 = Pattern.compile(";AUD");
+        Matcher matcher4 = pattern4.matcher(datos);
+        matcher4.find();
+        Pattern pattern5 = Pattern.compile("HTM\\w*.htm");
+        Matcher matcher5 = pattern5.matcher(datos.substring(matcher4.end()));
+        matcher5.find();
+        direcciones[5] = matcher5.group();
+        Pattern pattern6 = Pattern.compile(";NZD");
+        Matcher matcher6 = pattern6.matcher(datos);
+        matcher6.find();
+        Pattern pattern7 = Pattern.compile("HTM\\w*.htm");
+        Matcher matcher7 = pattern7.matcher(datos.substring(matcher6.end()));
+        matcher7.find();
+        direcciones[6] = matcher7.group();
+    	return direcciones;
+    }
+    
+    public static String [] leerServidorTechnical()
+    {
+    	String [] direcciones = direcciones(leerTechnical());
+    	String [] html = new String [7];
+    	String [] constantes = {"EURUSD", "USDJPY", "GBPUSD", "USDCHF", "USDCAD", "AUDUSD", "NZDUSD"};
+    	for(int j = 0; j < html.length; j++)
+    	{
+	    	String temp = "";
+	        try
+	        {      
+	            DefaultHttpClient httpclient = new DefaultHttpClient();
+	           
+	            BasicClientCookie cookie10 = new BasicClientCookie("JSESSIONIDSSO", "DD8561C6129E3E909C6E617163A9D5B7");
+	            
+	            cookie10.setVersion(0);
+	            
+	            cookie10.setDomain("plus.dailyfx.com");
+	
+	            cookie10.setPath("/");
+	
+	            httpclient.getCookieStore().addCookie(cookie10);
+	
+	            HttpGet httget2 = new HttpGet("https://plus.dailyfx.com/tnews/fxcentral/" + direcciones[j]);
+	         
+	            HttpResponse response = httpclient.execute(httget2);
+	            HttpEntity entity = response.getEntity();
+	            response.getStatusLine();
+	            StringBuilder sb = new StringBuilder("");
+	            if (entity != null)
+	            {
+	                    InputStream instream = entity.getContent();
+	                    int l;
+	                    byte[] tmp = new byte[2048];
+	                    while ((l = instream.read(tmp)) != -1)
+	                    {
+	                            for(int i = 0; i < l; i++)
+	                            {
+	                                    sb.append((char)tmp[i]);
+	                            }
+	                    }
+	                BufferedWriter bw = new BufferedWriter(new FileWriter("salida.txt"));
+	                bw.write(sb.toString());
+	                bw.close();
+	            }
+	            httpclient.getConnectionManager().shutdown();
+	            temp = sb.toString();
+	        }
+	        catch(Exception e)
+	        {
+	                // TODO Manejo de errores
+	        }
+	        html[j] = constantes[j] + " " + temp;
+    	}
+    	return html;	
+    }
+
     public static String leerServidorJoel()
     {
     	return "";

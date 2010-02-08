@@ -144,6 +144,8 @@ public class Estrategia implements Serializable
 	private void trade(SenalEntrada entrada, boolean dejarLista) 
 	{
 		Senal nueva = new Senal(id, entrada.compra, entrada.par, entrada.numeroLotes, entrada.precioEntrada);
+		if(id.equals(IdEstrategia.TECHNICAL))
+			nueva.limite = entrada.limite;
 		if(dejarLista)
 		{
 			nueva.manual = true;

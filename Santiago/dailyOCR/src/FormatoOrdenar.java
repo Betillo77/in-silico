@@ -70,22 +70,7 @@ public class FormatoOrdenar
 								    	
 								    	int temp4 = NumeroDeLotes.getSelectedIndex()+1;
 								    	
-								    	int i = 0;
-								    	
-								    	while(!(dailyOCR.preciosActuales.get(i).currency.equals(temp3)))
-								    	{
-								    		i++;
-								    	}
-								    	double temp5;
-								    	if(temp2 == true)
-								    	{
-								    		temp5 = dailyOCR.preciosActuales.get(i).bid;
-								    	}
-								    	else
-								    	{
-								    		temp5 = dailyOCR.preciosActuales.get(i).ask;
-								    	}
-								    	Senal nueva = new Senal(temp, temp2, temp3, temp4, temp5);
+								    	Senal nueva = new Senal(temp, temp2, temp3, temp4, dailyOCR.precioPar(temp3, temp2));
 								    	synchronized(dailyOCR.darEstrategiaSenal(nueva).senales)
 								    	{
 								    		Thread.yield();
