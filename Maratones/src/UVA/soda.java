@@ -1,3 +1,5 @@
+package UVA;
+
 import java.util.Scanner;
 
 public class soda 

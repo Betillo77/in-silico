@@ -1,5 +1,6 @@
 package UVA;
 import java.io.FileNotFoundException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -65,13 +66,12 @@ public class batman
 		}
 	    Villano p1 = new Villano();
 	    p1.defensa = Integer.MAX_VALUE;
-	    p1.nombre = "";
 	    villanos.add(p1);
 		for(int i = 0; i < nVillanos; i++)
 		{
 			sc2 = new Scanner(sc.nextLine());
 			Villano v = new Villano();
-			v.nombre = sc2.next();
+			sc2.next();
 			v.defensa = sc2.nextInt();
 			Scanner sc3 = new Scanner(sc2.next());
 			sc3.useDelimiter(",");
@@ -101,7 +101,6 @@ public class batman
 	
 	private class Villano
 	{
-		String nombre;
 		int defensa;
 		ArrayList <String> superpoderes = new ArrayList <String> ();
 	}

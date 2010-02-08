@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0050)http://uva.onlinejudge.org/external/100/10000.html -->
+<!--Converted with LaTeX2HTML 98.1 release (February 19th, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others --><HTML><HEAD><TITLE>Longest Paths</TITLE>
+<META name=description content="Problem A: Longest Paths">
+<META name=keywords content=htmlatex>
+<META name=resource-type content=document>
+<META name=distribution content=global>
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+<META name=GENERATOR content="MSHTML 8.00.7600.16490"></HEAD>
+<BODY lang=EN bgColor=#ffffff>
+<H1><BR clear=all>
+<CENTER>
+<TABLE bgColor=#0060f0>
+  <TBODY>
+  <TR>
+    <TD><B><FONT color=#c0ffff size=5>&nbsp;<A 
+      name=SECTION0001000000000000000000> Longest 
+  Paths</A>&nbsp;</FONT></B></TR></TBODY></TABLE></CENTER></H1>
+<P>It is a well known fact that some people do not have their social abilities 
+completely enabled. One example is the lack of talent for calculating distances 
+and intervals of time. This causes some people to always choose the longest way 
+to go from one place to another, with the consequence that they are late to 
+whatever appointments they have, including weddings and programming contests. 
+This can be highly annoying for their friends. 
+<P>César has this kind of problem. When he has to go from one point to another 
+he realizes that he has to visit many people, and thus always chooses the 
+longest path. One of César's friends, Felipe, has understood the nature of the 
+problem. Felipe thinks that with the help of a computer he might be able to 
+calculate the time that César is going to need to arrive to his destination. 
+That way he could spend his time in something more enjoyable than waiting for 
+César. 
+<P>
+<P><BR>Your goal is to help Felipe developing a program that computes the length 
+of the longest path that can be constructed in a given graph from a given 
+starting point (César's residence). You can assume that the graph has no cycles 
+(there is no path from any node to itself), so César will reach his destination 
+in a finite time. In the same line of reasoning, nodes are not considered 
+directly connected to themselves. 
+<P>
+<H2><FONT color=#0070e8><A 
+name=SECTION0001001000000000000000>Input</A>&nbsp;</FONT> </H2>The input 
+consists of a number of cases. The first line on each case contains a positive 
+number <I>n</I> ( <!-- MATH: $1 < n \le 100$ --><IMG border=0 
+alt="$1 < n \le 100$" align=middle src="longest_files/10000img1.gif" width=96 
+height=30>) that specifies the number of points that César might visit (i.e., 
+the number of nodes in the graph). 
+<P>A value of <I>n</I> = 0 indicates the end of the input. 
+<P>
+<P><BR>After this, a second number <I>s</I> is provided, indicating the starting 
+point in César's journey ( <!-- MATH: $1 \le s \le n$ --><IMG border=0 
+alt="$1 \le s \le n$" align=middle src="longest_files/10000img2.gif" width=78 
+height=30>). Then, you are given a list of pairs of places <I>p</I> and 
+<I>q</I>, one pair per line, with the places on each line separated by 
+white-space. The pair ``<IMG border=0 alt="$p \ q$" align=middle 
+src="longest_files/10000img3.gif" width=27 height=30>" indicates that César can 
+visit <I>q</I> after <I>p</I>. 
+<P>A pair of zeros (``<TT>0 0</TT>") indicates the end of the case. 
+<P>
+<P><BR>As mentioned before, you can assume that the graphs provided will not be 
+cyclic. 
+<P>
+<H2><FONT color=#0070e8><A 
+name=SECTION0001002000000000000000>Output</A>&nbsp;</FONT> </H2>For each test 
+case you have to find the length of the longest path that begins at the starting 
+place. You also have to print the number of the final place of such longest 
+path. If there are several paths of maximum length, print the final place with 
+smallest number. 
+<P>
+<P><BR>Print a new line after each test case. 
+<P>
+<H2><FONT color=#0070e8><A name=SECTION0001003000000000000000>Sample 
+Input</A>&nbsp;</FONT> </H2><PRE>2
+1
+1 2
+0 0
+5
+3
+1 2
+3 5
+3 1
+2 4
+4 5
+0 0
+5
+5
+5 1
+5 2
+5 3
+5 4
+4 1
+4 2
+0 0
+0
+</PRE>
+<P>
+<H2><FONT color=#0070e8><A name=SECTION0001004000000000000000>Sample 
+Output</A>&nbsp;</FONT> </H2><PRE>Case 1: The longest path from 1 has length 1, finishing at 2.
+
+Case 2: The longest path from 3 has length 4, finishing at 5.
+
+Case 3: The longest path from 5 has length 2, finishing at 1.
+</PRE>
+<P>
+<P><BR>
+<HR>
+
+<ADDRESS><I>Miguel Revilla</I> <BR><I>2000-08-21</I> </ADDRESS></BODY></HTML>
