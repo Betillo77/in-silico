@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,11 +9,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
-
 
 public class dailyOCR
 {
@@ -24,119 +22,23 @@ public class dailyOCR
 	public static ArrayList <BidAsk> preciosActuales;
 	public static int errores = 0;
 	
-	static Estrategia breakout1;
-	static File b1 = new File(pathPrincipal + "breakout1.o");
-	
-	static Estrategia breakout2;
-	static File b2 = new File(pathPrincipal + "breakout2.o");
-	
-	static Estrategia range1;
-	static File r1 = new File(pathPrincipal + "range1.o");
-
-	public static Estrategia range2;
-	static File r2 = new File(pathPrincipal + "range2.o");
-	
-	static Estrategia momentum1;
-	static File m1 = new File(pathPrincipal + "momentum1.o");
-	
-	static Estrategia momentum2;
-	static File m2 = new File(pathPrincipal + "momentum2.o");
-	
-	static Estrategia technical;
-	static File t = new File(pathPrincipal + "technical.o");
-	
-	static Estrategia joel;
-	static File j = new File(pathPrincipal + "joel.o");
-	
 	static File log = new File(pathPrincipal + "log.txt");
-	
-	static ArrayList <Estrategia> estrategias;
-	
-	static Escritor escritorSSI = new Escritor("C:/Program Files (x86)/dailyFX/experts/files/");
 	static Escritor escritorTechnical = new Escritor("");
 	static Escritor escritorJoel = new Escritor("");
 	
-	public static void cargarEstrategias()
+	static SistemaEstrategias [] sistemas;
+	
+	public static void cargarSistemasEstrategias()
 	{
-		if(b1.exists())
-		{
-			breakout1 = Estrategia.leer(b1);
-		}
-		else
-		{
-			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
-		}
-		breakout1.escritor = escritorSSI;
-		if(b2.exists())
-		{
-			breakout2 = Estrategia.leer(b2);
-		}
-		else
-		{
-			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
-		}
-		breakout2.escritor = escritorSSI;
-		if(r1.exists())
-		{
-			range1 = Estrategia.leer(r1);
-		}
-		else
-		{
-			range1 = new Estrategia(IdEstrategia.RANGE1);
-		}
-		range1.escritor = escritorSSI;
-		if(r2.exists())
-		{
-			range2 = Estrategia.leer(r2);
-		}
-		else
-		{
-			range2 = new Estrategia(IdEstrategia.RANGE2);
-		}
-		range2.escritor = escritorSSI;
-		if(m1.exists())
-		{
-			momentum1 = Estrategia.leer(m1);
-		}
-		else
-		{
-			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
-		}
-		momentum1.escritor = escritorSSI;
-		if(m2.exists())
-		{
-			momentum2 = Estrategia.leer(m2);
-		}
-		else
-		{
-			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
-		}
-		momentum2.escritor = escritorSSI;
-		if(t.exists())
-		{
-			technical = Estrategia.leer(t);
-		}
-		else
-		{
-			technical = new Estrategia(IdEstrategia.TECHNICAL);
-		}
-		technical.escritor = escritorTechnical;
-		if(j.exists())
-		{
-			joel = Estrategia.leer(t);
-		}
-		else
-		{
-			joel = new Estrategia(IdEstrategia.JOEL);
-		}
-		joel.escritor = escritorJoel;
-		estrategias = new ArrayList <Estrategia> ();
-		estrategias.add(breakout1);
-		estrategias.add(breakout2);
-		estrategias.add(momentum1);
-		estrategias.add(momentum2);
-		estrategias.add(range1);
-		estrategias.add(range2);
+		sistemas = new SistemaEstrategias[2];
+		SistemaEstrategias sdfx = new SistemaDailyFX();
+		sdfx.cargarEstrategias();
+		sistemas[0] = sdfx;
+		SistemaEstrategias joel = new SistemaJoel();
+		joel.cargarEstrategias();
+		sistemas[1] = joel;	
+		SistemaEstrategias technical = new SistemaTechnical();
+		sistemas[2] = technical;
 	}
 	
 	public static void inicio()
@@ -146,38 +48,20 @@ public class dailyOCR
 		{
 			try
 			{
-				if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null)
+				for(SistemaEstrategias se : sistemas)
 				{
-					cargarEstrategias();
+					se.verificarConsistencia();
 				}
 				Thread.sleep(1000);
 				try
 				{
-					leerSSI(ConexionServidor.leerServidorSSI());
-					leerTechnical(ConexionServidor.leerServidorTechnical());
-					leerJoel(ConexionServidor.leerServidorJoel());
-					escritorSSI.escribir();
-					escritorSSI.leerMagicos();
-					escritorTechnical.escribir();
-					escritorTechnical.leerMagicos();
-					escritorJoel.escribir();
-					escritorJoel.leerMagicos();
-					if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null || joel == null || technical == null)
+					for(SistemaEstrategias se : sistemas)
 					{
-						cargarEstrategias();
-						//TODO Manejo de errores
-					}
-					else
-					{
-						breakout1.escribir(b1);
-						breakout2.escribir(b2);
-						range1.escribir(r1);
-						range2.escribir(r2);
-						momentum1.escribir(m1);
-						momentum2.escribir(m2);
-						technical.escribir(t);
-						joel.escribir(j);
-						numeroErrores = 0;
+						se.iniciarProcesamiento();
+						se.escritor.escribir();
+						se.escritor.leerMagicos();
+						se.verificarConsistencia();
+						se.persistir();
 					}
 				}
 				catch(Exception e)
@@ -210,292 +94,6 @@ public class dailyOCR
 				//TODO Manejo de errores
 			}
 		}
-	}
-	
-	private static void procesarSSI(ArrayList <Senal> senalesLeidas)
-	{
-		try
-		{
-			for(Senal senal : senalesLeidas)
-			{
-				Estrategia actual = darEstrategiaSenal(senal);
-				Senal afectada = null;
-				if((afectada = actual.tienePar(senal.par)) != null)
-				{
-					if(senal.compra != afectada.compra)
-					{
-						actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes, 0), afectada, false);
-						actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
-					}
-					if(afectada.numeroLotes > senal.numeroLotes)
-					{
-						actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes, 0), afectada, false);
-					}
-					else if(afectada.numeroLotes < senal.numeroLotes)
-					{
-						//TODO Manejo de errores
-					}
-				}
-				else
-				{
-					actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
-				}
-			}
-			for(Estrategia actual : estrategias)
-			{
-				Thread.sleep(1000);
-				synchronized(actual.senales)
-				{
-					for(int i = 0; i < actual.senales.size(); i++)
-					{
-						Senal senal = null;
-						try
-						{
-							senal = actual.senales.get(i);
-						}
-						catch(Exception e)
-						{
-							break;
-						}
-						boolean encontrada = false;
-						for(Senal nueva : senalesLeidas)
-						{
-							if(actual.id.equals(nueva.estrategia) && senal.par.equals(nueva.par))
-							{
-								encontrada = true;
-								break;
-							}
-						}
-						if(!encontrada)
-						{
-							if(!senal.manual)
-								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, false);
-							if(senal.manual && senal.numeroLotes == 0)
-								actual.senales.remove(senal);
-							i = -1;
-						}
-					}
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			//TODO Manejo de errores
-		}
-	}
-	
-	private static void leerSSI(String entrada)
-	{
-		String entrada1 = entrada.substring(entrada.indexOf("\"Signal\":["));
-		ArrayList <Integer> curoplots = new ArrayList <Integer> ();
-		ArrayList <Integer> strategyid = new ArrayList <Integer> ();
-		ArrayList <String> symbol = new ArrayList <String> ();
-		ArrayList <String> direction = new ArrayList <String> ();
-		ArrayList <Double> entryprice = new ArrayList <Double> ();
-		ArrayList <Double> bid = new ArrayList <Double> ();
-		ArrayList <Double> ask = new ArrayList <Double> ();
-		ArrayList <String> currency = new ArrayList <String> ();
-		Pattern pattern = Pattern.compile("\\d+,\"strategyId\":\\d+");
-		Pattern pattern2 = Pattern.compile("\"strategyId\":\\d+");
-		Pattern pattern3 = Pattern.compile("\"symbol\":\"\\w+\"");
-		Pattern pattern4 = Pattern.compile("\"direction\":\"\\w+\"");
-		Pattern pattern5 = Pattern.compile("\"entryPrice\":\\d+.\\d+");
-		Pattern pattern6 = Pattern.compile("\"bid\":\\d+.\\d+");
-		Pattern pattern7 = Pattern.compile("\"ask\":\\d+.\\d+");
-		Pattern pattern8 = Pattern.compile("\"currency\":\"\\w+\"");
-		Matcher matcher = pattern.matcher(entrada1);
-		Matcher matcher2 = pattern2.matcher(entrada1);
-		Matcher matcher3 = pattern3.matcher(entrada1);
-		Matcher matcher4 = pattern4.matcher(entrada1);
-		Matcher matcher5 = pattern5.matcher(entrada1);
-		Matcher matcher6 = pattern6.matcher(entrada);
-		Matcher matcher7 = pattern7.matcher(entrada);
-		Matcher matcher8 = pattern8.matcher(entrada);
-		while(matcher.find()) 
-		{  
-			String S = matcher.group();
-			S = S.substring(0, 1);
-			curoplots.add(Integer.parseInt(S));
-		} 
-		while(matcher2.find())
-		{
-			String S = matcher2.group();
-			S = S.substring(13);
-			strategyid.add(Integer.parseInt(S));  
-		}
-		while(matcher3.find()) 
-		{
-			String S = matcher3.group();
-			S = S.substring(10);
-			S = S.replace("\"", "");
-			symbol.add(S);
-  		}
-		while(matcher4.find()) 
-		{
-	  		String S = matcher4.group();
-	  		S = S.substring(13);
-	  		S = S.replace("\"", "");
-	  		direction.add(S);
-		}
-		while (matcher5.find()) 
-		{
-			String S = matcher5.group();
-			S = S.substring(13);
-			entryprice.add(Double.parseDouble(S));	
-		}
-		while (matcher6.find())
-		{
-			String S = matcher6.group();
-			S = S.substring(6);
-			bid.add(Double.parseDouble(S));	
-		}
-		while (matcher7.find())
-		{
-			String S = matcher7.group();
-			S = S.substring(6);
-			ask.add(Double.parseDouble(S));	
-		}
-		while (matcher8.find())
-		{
-			String S = matcher8.group();
-			S = S.substring(12);
-	  		S = S.replace("\"", "");
-	  		currency.add(S);
-		}
-		ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
-		for(int i = 0; i<curoplots.size(); i++)
-		{
-			Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), Par.convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
-			nuevasSenales.add(actual);
-		}
-		ArrayList <BidAsk> precio = new ArrayList <BidAsk>();
-		for(int i=0;i<bid.size();i++)
-		{
-			if(Par.convertirPar(currency.get(i)) == null)
-			{
-				continue;
-			}
-			BidAsk actual = new BidAsk(bid.get(i), ask.get(i), Par.convertirPar(currency.get(i)));
-			precio.add(actual);
-		}
-		preciosActuales = precio;
-		procesarSSI(nuevasSenales);
-	}
-	
-
-	private static void procesarTechnical(ArrayList <Senal> senalesLeidas)
-	{
-		for(Senal senal : senalesLeidas)
-		{
-			boolean esta = false;
-			for(Senal otra : technical.senales)
-			{
-				if(senal.par == otra.par)
-				{
-					esta = true;
-					if(senal.compra != otra.compra)
-					{
-						technical.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, 1, 0), otra, false);
-						break;
-					}
-				}
-			}
-			if(!esta)
-			{
-		    	SenalEntrada nueva = new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, 1, precioPar(senal.par, senal.compra));
-		    	nueva.limite = senal.precioEntrada;
-		    	if(nueva.limite > 10)
-		    	{
-		    		double anteriorLimite;
-		    		if(senal.compra)
-		    			anteriorLimite = senal.precioEntrada - 0.8;
-		    		else
-		    			anteriorLimite = senal.precioEntrada + 0.8;
-		    		if(senal.compra && precioPar(senal.par, senal.compra) > anteriorLimite)
-		    			break;
-		    		if(!senal.compra && precioPar(senal.par, senal.compra) < anteriorLimite)
-		    			break;
-		    	}
-		    	else
-		    	{
-		    		double anteriorLimite;
-		    		if(senal.compra)
-		    			anteriorLimite = senal.precioEntrada - 0.008;
-		    		else
-		    			anteriorLimite = senal.precioEntrada + 0.008;
-		    		if(senal.compra && precioPar(senal.par, senal.compra) > anteriorLimite)
-		    			break;
-		    		if(!senal.compra && precioPar(senal.par, senal.compra) < anteriorLimite)
-		    			break;
-		    	}
-				technical.agregar(nueva, senal, false);
-			}
-		}
-		for(Senal otra : technical.senales)
-		{
-			double otroPrecio = precioPar(otra.par, !otra.compra);
-			if(otra.compra && otra.limite < otroPrecio)
-			{
-				technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
-			}
-			if(!otra.compra && otra.limite > otroPrecio)
-			{
-				technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
-			}
-		}
-	}
-	
-	private static void leerTechnical(String [] contenidos)
-	{
-		ArrayList <Senal> nuevas = new ArrayList <Senal> (10);
-		for(int i = 0; i < contenidos.length; i++)
-		{
-			String actual = contenidos[i];
-			String par = actual.substring(0, actual.indexOf(" "));
-			Par estePar = Par.convertirPar(par);
-			int indice = actual.indexOf("Our preference:");
-			if(indice == -1)
-			{
-				continue;
-				//TODO Manejo de errores
-			}
-			actual = actual.substring(indice);
-			boolean compra = actual.contains("Long") || actual.contains("long") || actual.contains("buy") || actual.contains("Buy");
-			ArrayList <Double> valores = new ArrayList <Double> (10);
-			String [] partido = actual.split(" ");
-			for(String s : partido)
-			{
-				try
-				{
-					double prueba = Double.parseDouble(s);
-					valores.add(prueba);
-				}
-				catch(Exception e)
-				{
-				}
-			}
-			try
-			{
-				double limite = valores.get(2);
-				nuevas.add(new Senal(IdEstrategia.TECHNICAL, compra, estePar, 1, limite));
-			}
-			catch(Exception e)
-			{
-				//TODO Manejo de excepciones
-			}
-		}
-		procesarTechnical(nuevas);
-	}
-	
-	private static void procesarJoel(ArrayList <Senal> senalesLeidas)
-	{
-		//TODO Hacer metodo
-	}
-	
-	private static void leerJoel(String entrada)
-	{
-		procesarJoel(null);
-		//TODO Hacer metodo
 	}
 	
 	public static boolean chequearConexion()
@@ -554,49 +152,30 @@ public class dailyOCR
 
 	public static List <Senal> darSenalesEstrategia(IdEstrategia estrategia) 
 	{
-		if(estrategia.equals(IdEstrategia.BREAKOUT1))
-			return breakout1.senales;
-		if(estrategia.equals(IdEstrategia.BREAKOUT2))
-			return breakout2.senales;
-		if(estrategia.equals(IdEstrategia.MOMENTUM1))
-			return momentum1.senales;
-		if(estrategia.equals(IdEstrategia.MOMENTUM2))
-			return momentum2.senales;
-		if(estrategia.equals(IdEstrategia.RANGE1))
-			return range1.senales;
-		if(estrategia.equals(IdEstrategia.RANGE2))
-			return range2.senales;
+		for(SistemaEstrategias se : sistemas)
+		{
+			Estrategia posible = se.darEstrategia(estrategia);
+			if(posible != null)
+			{
+				return posible.senales;
+			}
+		}
 		return null;
+		//TODO Manejo de errores
 	}
 
 	public static Estrategia darEstrategiaSenal(Senal senal)
 	{
-		Estrategia actual = null;
-		if(senal.estrategia.equals(IdEstrategia.BREAKOUT1))
+		for(SistemaEstrategias se : sistemas)
 		{
-			actual = breakout1;
+			Estrategia posible = se.darEstrategia(senal.estrategia);
+			if(posible != null)
+			{
+				return posible;
+			}
 		}
-		if(senal.estrategia.equals(IdEstrategia.BREAKOUT2))
-		{
-			actual = breakout2;
-		}
-		if(senal.estrategia.equals(IdEstrategia.RANGE1))
-		{
-			actual = range1;
-		}
-		if(senal.estrategia.equals(IdEstrategia.RANGE2))
-		{
-			actual = range2;
-		}
-		if(senal.estrategia.equals(IdEstrategia.MOMENTUM1))
-		{
-			actual = momentum1;
-		}
-		if(senal.estrategia.equals(IdEstrategia.MOMENTUM2))
-		{
-			actual = momentum2;
-		}
-		return actual;
+		return null;
+		//TODO Manejo de errores
 	}
 	
 	public static synchronized void cerrarSenalManual(Senal senal) 
@@ -648,7 +227,7 @@ public class dailyOCR
 		framePrincipal.pack();
 		framePrincipal.setVisible(true);
 		framePrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		cargarEstrategias();
+		cargarSistemasEstrategias();
 		new Thread(new Runnable()
 					{
 
