@@ -1,0 +1,11 @@
+window_sizes 1200 700 300 894 501 120
+diagrams
+  active  usecasediagram_ref 128016 // use_case
+    715 400 100 4 0 0
+end
+show_stereotypes
+selected usecase_ref 128528 // Edit documents
+open
+  usecaseview_ref 128016 // use case
+end
+end

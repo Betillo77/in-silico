@@ -89,15 +89,11 @@ Trabajamos en este momento en el desarrollo de una aplicación, usando distintas 
 		$passwd = $_POST['clave'];
 		include("conn.php");
 		$result = mysql_query("Select * from insilico.Integrante where UserId='$user'");
-		if (!$result) {
-    		echo "Usuario no existe";
+		$row = mysql_fetch_assoc($result);
+		if ($row && $row['Password'] == $passwd) {
+			echo "Correcto";
 		} else {
-			$row = mysql_fetch_assoc($result);
-			if ($row['Password'] == $passwd) {
-				echo "Correcto";
-			} else {
-				echo "Incorrecto";				
-			}
+			echo "Incorrecto";				
 		}
 		echo "<br />$user - $passwd";
 		mysql_close($cnn);

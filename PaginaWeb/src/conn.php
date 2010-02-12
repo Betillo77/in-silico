@@ -1,6 +1,6 @@
 <?php
 
-	$cnn = mysql_connect('localhost', 'phpuser', 'n=kg*n/s2');
+	$cnn = mysql_connect('localhost', 'in-silico', 'in-silico');
 	if (!$cnn) {
    		die('Could not connect: ' . mysql_error());
 	} 

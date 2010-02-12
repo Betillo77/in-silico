@@ -1,0 +1,32 @@
+format 66
+
+classcanvas 128016 class_ref 128016 // Member
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 17 99 2000
+end
+usecasecanvas 128144 usecase_ref 128016 // Add member
+  xyzwh 216 7 3005 64 32 label_xy 213 39
+end
+usecasecanvas 128272 usecase_ref 128144 // edit profile
+  xyzwh 217 59 3005 64 32 label_xy 220 91
+end
+usecasecanvas 128400 usecase_ref 128272 // Add project
+  xyzwh 215 240 3005 64 32 label_xy 216 272
+end
+usecasecanvas 130448 usecase_ref 128400 // Add document
+  xyzwh 218 112 3005 64 32 label_xy 211 144
+end
+usecasecanvas 130704 usecase_ref 128528 // Edit documents
+  xyzwh 217 166 3010 64 32 label_xy 208 198
+end
+line 128528 ---> decenter_begin 292 decenter_end 140
+  from ref 128016 z 3006 to ref 128144
+line 128656 --->
+  from ref 128016 z 3006 to ref 128272
+line 128784 --->
+  from ref 128016 z 3006 to ref 128400
+line 130576 --->
+  from ref 128016 z 3006 to ref 130448
+line 130832 --->
+  from ref 128016 z 3011 to ref 130704
+end
