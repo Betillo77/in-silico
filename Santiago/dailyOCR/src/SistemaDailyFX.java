@@ -99,7 +99,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 		catch (Exception e)
 		{
-			//TODO Manejo de errores
+    		Error.agregar(e.getMessage() + " Error en metodo lectura de sistemaDailyFx");
 		}
 	}
 
@@ -231,7 +231,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 					}
 					else if(afectada.numeroLotes < senal.numeroLotes)
 					{
-						//TODO Manejo de errores
+			    		Error.agregar("La señal entrante tiene mas lotes que la que ya existio");
+
 					}
 				}
 				else
@@ -278,7 +279,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-			//TODO Manejo de errores
+    		Error.agregar(e.getMessage() + "Error al procesar señales probablemente en thread.sleep");
 		}
 	}
 

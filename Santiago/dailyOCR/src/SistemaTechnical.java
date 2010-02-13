@@ -24,7 +24,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		}
 		catch (Exception e)
 		{
-			//TODO Manejo de errores
+    		Error.agregar(e.getMessage() + " Error metodo invalido en Sistema technical");
 		}
 	}
 
@@ -47,8 +47,8 @@ public class SistemaTechnical extends SistemaEstrategias
 			int indice = actual.indexOf("Our preference:");
 			if(indice == -1)
 			{
+				Error.agregar("Mensaje invalido: " + actual);
 				continue;
-				//TODO Manejo de errores
 			}
 			actual = actual.substring(indice);
 			boolean compra = actual.contains("Long") || actual.contains("long") || actual.contains("buy") || actual.contains("Buy");
@@ -72,7 +72,7 @@ public class SistemaTechnical extends SistemaEstrategias
 			}
 			catch(Exception e)
 			{
-				//TODO Manejo de excepciones
+	    		Error.agregar(e.getMessage() + " Error al añadir nuevas estrategias en SIstema technical");
 			}
 		}
 		return nuevas;

@@ -44,11 +44,11 @@ public class HistorialEstrategia implements Serializable
 		} 
 		catch (FileNotFoundException e) 
 		{
-			// TODO Manejar errores
+    		Error.agregar(e.getMessage() + " Error al escribir archivo de historial de estrategia");
 		}
 		catch (IOException e) 
 		{
-			// TODO Manejar errores
+    		Error.agregar(e.getMessage() + " Error de E/S al escribir historial de estrategia");
 		}	
 	}
 	
@@ -65,11 +65,12 @@ public class HistorialEstrategia implements Serializable
 		} 
 		catch (FileNotFoundException e) 
 		{
-			// TODO Manejar errores
+    		Error.agregar(e.getMessage() + " Error al escribirCSV archivo no encontrado");
 		}
 		catch (IOException e) 
 		{
-			// TODO Manejar errores
+    		Error.agregar(e.getMessage() + " Error de entrada salida al escribirCSV");
+
 		}	
 	}
 	
@@ -84,13 +85,14 @@ public class HistorialEstrategia implements Serializable
 		} 
 		catch (ClassNotFoundException e) 
 		{
+    		Error.agregar(e.getMessage() + " Error de clase no encontrada en leer HistorialEstrategia");
 			return null;
-			// TODO Manejar errores
 		}
 		catch (IOException e) 
 		{
+    		Error.agregar(e.getMessage() + " Error de E/S en leer historial estrategia");
 			return null;
-			// TODO Manejar errores
+			
 		}	
 	}
 	

@@ -26,7 +26,7 @@ public abstract class SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-			//TODO Manejo de errores
+    		Error.agregar(e.getMessage() + "Error en Iniciar procesamiento al procesar");
 		}
 	}
 

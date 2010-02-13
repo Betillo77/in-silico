@@ -55,13 +55,14 @@ public class Escritor
 			}
 			catch (InterruptedException e) 
 			{
-				// TODO Manejo de errores
+	    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos");
+
 			}
 		}
 		File archivoMagicos = new File(pathMeta + "magicos.txt");
 		if(!archivoMagicos.exists())
 		{
-			// TODO Manejo de errores
+    		Error.agregar("Archivo magico no existe");
 			archivoMagicos = null;
 			return;
 		}
@@ -93,7 +94,7 @@ public class Escritor
 			} 
 			catch (Exception e)
 			{
-				// TODO Manejo de errores
+	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos");
 			}
 			finally
 			{
@@ -110,7 +111,7 @@ public class Escritor
 	{
 		if(entrada.numeroLotes > 5)
 		{
-			// TODO Manejo de errores
+    		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.par.toString());
 		}
 		for(int i = 0; i < entrada.numeroLotes; i++)
 		{
@@ -127,7 +128,7 @@ public class Escritor
 		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
 		if(entrada.numeroLotes > 5)
 		{
-			// TODO Manejo de errores
+    		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.par.toString());
 		}
 		if(estrategia.darActivo(entrada.par))
 		{

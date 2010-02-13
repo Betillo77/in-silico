@@ -89,7 +89,7 @@ public class Estrategia implements Serializable
 		}
 		if(parActual == null)
 		{
-			// TODO Manejo de errores
+    		Error.agregar("Par no encontrado");
 			return;
 		}
 		int resultado = 0;
@@ -152,7 +152,7 @@ public class Estrategia implements Serializable
 		}
 		if(tienePar(entrada.par) != null)
 		{
-			// TODO Manejo de errores
+    		Error.agregar("Par ya exite en esta estrategia " + id.toString());
 		}
 		escritor.abrir(entrada, nueva);
 		senales.add(nueva);
@@ -178,11 +178,11 @@ public class Estrategia implements Serializable
 		} 
 		catch (FileNotFoundException e) 
 		{
-			// TODO Manejar errores
+    		Error.agregar(e.getMessage() + " Error no se encontro el archivo en escribir estrategia");
 		}
 		catch (IOException e) 
 		{
-			// TODO Manejar errores
+    		Error.agregar(e.getMessage() + " Error de entrada/salida en estrategia");
 		}	
 	}
 	
@@ -197,13 +197,14 @@ public class Estrategia implements Serializable
 		} 
 		catch (ClassNotFoundException e) 
 		{
+    		Error.agregar(e.getMessage() + " Error al leer estrategia");
 			return null;
-			// TODO Manejar errores
 		}
 		catch (IOException e) 
 		{
+    		Error.agregar(e.getMessage() + " Error de entrada salida al leer estrategia");
 			return null;
-			// TODO Manejar errores
+			
 		}	
 	}
 }

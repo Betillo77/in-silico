@@ -15,7 +15,7 @@ public enum IdEstrategia implements Serializable
 			case 12: return BREAKOUT1;
 			case 14: return RANGE1;
 			default: 
-				// TODO: Manejar error aca
+				Error.agregar("id estrategia desconocido: " + id);
 				return null;
 		}
 	}

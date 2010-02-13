@@ -81,7 +81,7 @@ public class dailyOCR
 								} 
 								catch (IOException e)
 								{
-									// TODO Manejo de errores
+						    		Error.agregar(e.getMessage() + " Error reiniciando");
 								}
 							}
 						}));
@@ -91,7 +91,7 @@ public class dailyOCR
 			}
 			catch(Exception e)
 			{
-				//TODO Manejo de errores
+	    		Error.agregar(e.getMessage() + " Error en el ciclo general");
 			}
 		}
 	}
@@ -160,8 +160,9 @@ public class dailyOCR
 				return posible.senales;
 			}
 		}
+		Error.agregar("No se encontraron las señales de: " + estrategia.toString());
 		return null;
-		//TODO Manejo de errores
+		
 	}
 
 	public static Estrategia darEstrategiaSenal(Senal senal)
@@ -174,8 +175,8 @@ public class dailyOCR
 				return posible;
 			}
 		}
+		Error.agregar("No se encontraron las señales de: " + senal.estrategia.toString());
 		return null;
-		//TODO Manejo de errores
 	}
 	
 	public static synchronized void cerrarSenalManual(Senal senal) 

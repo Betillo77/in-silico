@@ -26,7 +26,7 @@ public class SistemaJoel extends SistemaEstrategias
 		}
 		catch (Exception e)
 		{
-			//TODO Manejo de errores
+    		Error.agregar(e.getMessage() + " Error metodo invalido en Sistema Joel");
 		}
 	}
 	

@@ -101,9 +101,9 @@ public class ConexionServidor
 	        return resultado;
     	}
     	catch(Exception e)
-    	{
+    	{	
+    		Error.agregar(e.getMessage() + " Error en leer del servidor");
     		return null;
-    		// TODO Manejo de errores
     	}
     }
     
@@ -142,9 +142,9 @@ public class ConexionServidor
                 return sb.toString();
         }
         catch(Exception e)
-        {
-                return null;
-                // TODO Manejo de errores
+        {		
+    		Error.agregar(e.getMessage() + " Error al leer el analisis tecnico");
+            return null;
         }
     }
     
@@ -227,7 +227,7 @@ public class ConexionServidor
 	        }
 	        catch(Exception e)
 	        {
-	        	// TODO Manejo de errores
+	    		Error.agregar(e.getMessage() + " Error al leer los valores del analisis tecnico");
 	        }
 	        html[j] = constantes[j] + " " + lectura;
     	}
