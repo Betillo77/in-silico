@@ -1,33 +1,5 @@
-/*
- * Copyright 1997-2009 Sun Microsystems, Inc. All Rights Reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *
- *   - Neither the name of Sun Microsystems nor the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+//PARA ACCEDER AL PROGRAMA USAR RUN, NO HE HECHO PRUEBAS EXHAUSTIVAS PERO CREO QUE FUNCIONA.
+//DUVUELVE UN ARRAY LIST CON LAS SEÑALES NUEVAS QUE ENCUENTRE EN EL CORREO
 
 import java.util.*;
 
@@ -35,16 +7,12 @@ import java.io.*;
 import javax.mail.*;
 import javax.mail.event.*;
 import javax.mail.internet.*;
+import javax.mail.search.FlagTerm;
 import javax.mail.search.FromStringTerm;
 import javax.mail.search.SearchTerm;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
-/*
- * Demo app that exercises the Message interfaces.
- * Show information about and contents of messages.
- *
- * @author John Mani
- * @author Bill Shannon
- */
 
 @SuppressWarnings("unused")
 public class msgshow {
@@ -64,11 +32,16 @@ public class msgshow {
     static boolean saveAttachments = false;
     static int attnum = 1;
 
-    public static void main(String argv[]) {
+    public static ArrayList<SenalJoel> run() 
+    {
+    String argv[]={"-T", "pop3s", "-H", "pop3.live.com", "-U", "jorgeadrianmartinez@hotmail.com", "-P", "calidadIngesis"};
+    ArrayList <SenalJoel> ListaSenales = new ArrayList <SenalJoel> ( );
+    int NumeroDeMensajesAnterior = 0;
 	int msgnum = -1;
 	int optind;
 	InputStream msgStream = System.in;
-
+	
+	//este codigo no lo hice yo para que no me regañe xD
 	for (optind = 0; optind < argv.length; optind++) {
 	    if (argv[optind].equals("-T")) {
 		protocol = argv[++optind];
@@ -106,12 +79,24 @@ public class msgshow {
 "\t[-P password] [-f mailbox] [msgnum] [-v] [-D] [-s] [-S] [-a]");
 		System.out.println(
 "or     msgshow -m [-v] [-D] [-s] [-S] [-f msg-file]");
-		System.exit(1);
-	    } else {
+		}
+	    else
+	    {
 		break;
 	    }
 	}
-
+	try
+	{
+	File file=new File("F:\\numeroDecorreos.txt");
+	Scanner sc=new Scanner(file);
+	NumeroDeMensajesAnterior=sc.nextInt();
+	}
+	catch(FileNotFoundException e){Error.agregar("Error no se encuentra el archivo numeroDecorreos.txt " + e.getMessage());}
+	catch(InputMismatchException e){Error.agregar("Error de entrada revise el archivo numeroDecorreos.txt " + e.getMessage());}
+	catch(Exception e){Error.agregar("Error desconocido al abrir o leer el archivo " + e.getMessage());}
+	//TERMINA PRIMERA INSERCION
+	
+	
 	try {
 	    if (optind < argv.length)
 		 msgnum = Integer.parseInt(argv[optind]);
@@ -159,113 +144,219 @@ public class msgshow {
 	    // Open the Folder
 
 	    Folder folder = store.getDefaultFolder();
-	    if (folder == null) {
-		System.out.println("No default folder");
-		System.exit(1);
-	    }
-
-	    if (mbox == null)
-		mbox = "INBOX";
-	    folder = folder.getFolder(mbox);
-	    if (folder == null) {
-		System.out.println("Invalid folder");
-		System.exit(1);
-	    }
-
-	    // try to open read/write and if that fails try read-only
-	    try {
-		folder.open(Folder.READ_WRITE);
-	    } catch (MessagingException ex) {
-		folder.open(Folder.READ_ONLY);
-	    }
-	    int totalMessages = folder.getMessageCount();
-
-	    if (totalMessages == 0) {
-		System.out.println("Empty folder");
-		folder.close(false);
-		store.close();
-		System.exit(1);
-	    }
-	    if (verbose) {
-		int newMessages = folder.getNewMessageCount();
-		System.out.println("Total messages = " + totalMessages);
-		System.out.println("New messages = " + newMessages);
-		System.out.println("-------------------------------");
-	    }
-
-	    if (msgnum == -1) {
-
-		// Attributes & Flags for all messages ..
-		Message[] msgs = folder.getMessages();
-
-		// Use a suitable FetchProfile
-		//folder.fetch(msgs, fp);
-		SearchTerm term=null;
-		FromStringTerm fromTerm=new FromStringTerm("Santiago Gutierrez <santigutierrez1@hotmail.com>");
-		System.out.println("debuging");
-		term=fromTerm;
-		Message [] mensajes=folder.search(term);
-		System.out.println("----Longitud");
-		System.out.println(mensajes.length);
+	    
+	    
+	    if (folder == null) 
+	    {
+						System.out.println("No default folder");
+						System.exit(1);
+					    }
 		
-
-		  for (int i = msgs.length-2; i < msgs.length; i++) {
-
-			 Address []a=msgs[i].getFrom();
-			 
-			 for(int j=0;j<a.length;j++)
-			 {
-				 System.out.println("from_MM");
-				 System.out.println(a[j].toString());
-				 
-			 }
-		Object temp=msgs[i].getContent();
-		Multipart mp=(Multipart)temp;
-		System.out.println(mp.getCount());
-		System.out.println(mp.getBodyPart(0).getContent());
-		System.out.println("subject: "+msgs[i].getSubject());
-		     // System.out.println(msgs[i].getHeader("X-mailer"));
-		  }
-
-
-		/*	
-		for (int i = msgs.length-2; i < msgs.length; i++) {
-		    System.out.println("--------------------------");
-		    System.out.println("MESSAGE #" + (i + 1) + ":");
-		    dumpEnvelope(msgs[i]);
-		    // dumpPart(msgs[i]);
-		}*/
-	    } else {
-		System.out.println("Getting message number: " + msgnum);
-		Message m = null;
+					    if (mbox == null)
+						mbox = "INBOX";
+					    folder = folder.getFolder(mbox);
+					    if (folder == null) {
+						System.out.println("Invalid folder");
+					   }
 		
+			    // Trata de abrir la carpeta como de Lectura/Escritura, sino la abre como solo lectura
+					    try
+					    {
+					    folder.open(Folder.READ_WRITE);
+					    }
+					    catch (MessagingException ex)
+					    {
+						folder.open(Folder.READ_ONLY);
+					    }
+					    
+		int totalMessages = folder.getMessageCount();
+	
+		if(totalMessages > NumeroDeMensajesAnterior)
+	    {
+		  
 		try {
-		    m = folder.getMessage(msgnum);
-		    //dumpPart(m);
-		} catch (IndexOutOfBoundsException iex) {
-		    System.out.println("Message number out of range");
+		        FileWriter fw = new FileWriter("F:\\numeroDecorreos.txt");
+		        BufferedWriter bw = new BufferedWriter(fw);
+		        PrintWriter salida = new PrintWriter(bw);
+		        salida.println(totalMessages);
+		        salida.close();
+		    }
+		    catch(java.io.IOException ioex) {
+		      Error.agregar("Error al escribir en el archivo: "+ioex.getMessage());
+		    }
+		
+					    if (totalMessages == 0) {
+						System.out.println("Empty folder");
+						folder.close(false);
+						store.close();
+						return ListaSenales;
+						//Para salir de una vez
+						}
+			  
+					    if (msgnum == -1)
+					    {
+						Message[] msgs = folder.getMessages();
+				
+							for (int i = ((totalMessages-(totalMessages-NumeroDeMensajesAnterior))-1); i < msgs.length; i++)
+							{
+								
+								
+								if(isJoel(msgs[i]))
+								{				
+								SenalJoel nueva=deducir(msgs[i].getSubject());
+									if(nueva!=null)
+									{
+										ListaSenales.add(nueva);
+									}
+								
+								}
+							}
+				
+					    }
+			    
+					    else {
+						System.out.println("Getting message number: " + msgnum);
+						Message m = null;
+						
+						try 
+						{
+						  m = folder.getMessage(msgnum);
+						}
+						catch (IndexOutOfBoundsException iex) 
+						{
+						  	System.out.println("Message number out of range");
+						}
+						
+					    }
+		
+					    folder.close(false);
+					    store.close();
 		}
-	    }
-
-	    folder.close(false);
-	    store.close();
-	} catch (Exception ex) {
-	    System.out.println("Oops, got exception! " + ex.getMessage());
-	    ex.printStackTrace();
-	    System.exit(1);
+	    
+	
 	}
-	System.exit(0);
+			catch (Exception ex) 
+			{
+			    Error.agregar("Error en la lectura del correo, probablemente" +
+			    		"de sobre uso, o esta caido el servicio en hotmail " + ex.getMessage());
+			}
+	
+   return ListaSenales;
     }
-
-    static String indentStr = "                                               ";
-    static int level = 0;
-
-    /**
-     * Print a, possibly indented, string.
-     */
-    public static void pr(String s) {
-	if (showStructure)
-	    System.out.print(indentStr.substring(0, level * 2));
-	System.out.println(s);
+    
+    public static boolean isJoel(Message mensaje)
+    {
+    	try {
+			if(mensaje.getFrom()[0].toString().equals("DailyFX <jskruger@fxcm.com>"))
+			{	
+				
+				return true;
+			}
+		} catch (MessagingException e) {
+			
+			Error.agregar("Error al recibir el mensaje " + e.getMessage());
+			
+		}
+    	return false;
     }
+    
+    public static SenalJoel deducir(String subject)
+    {boolean recomendado = false;
+    boolean compra = false;
+    Par par = null;
+    int NumeroDeLotes = 2;
+    double PrecioDeEntrada = 0.0;
+    double Parada = 0.0;
+    double Limite = 0.1;
+    SenalJoel nueva=new SenalJoel(IdEstrategia.JOEL, false, par, -1, -0.1,-0.1,false);
+    
+    	if(subject.contains("@"))
+    	{
+
+    		if(subject.contains("RECOMMENDATION"))
+    		{
+    			recomendado=true;
+    			
+    		}
+    		if(subject.contains("BUY")||subject.contains("BOUGHT")||subject.contains("LONG"))
+    		{
+    		compra=true;	
+    		}
+    		//PARECE... MEJOR, SE QUE ES REDUNDANTE PERO ES MEJOR ASEGURARSE
+    		else if(subject.contains("SELL")||subject.contains("SOLD")||subject.contains("SHORT"))
+    		{
+    			compra=false;
+    		}
+    		Pattern BuscaPares=Pattern.compile("[A-Z]*/[A-Z]*");
+    		Matcher match=BuscaPares.matcher(subject);
+    		if(match.find())
+    		{	
+    			String ConSlash = match.group();
+    			String SinSlash = ConSlash.replace("/" , "");
+    			Par a = Par.convertirPar( SinSlash );
+    			if(a!=null)
+    			{
+    				par=a;
+    			}
+    			
+    			
+    		}
+    		Pattern At = Pattern.compile( "@\\d+.?\\d*" );
+    		Matcher match1 = At.matcher( subject );
+    		if( match1.find() )
+    		{
+    		String conAt=match1.group();
+    		String sinAt=conAt.substring(1);
+    		PrecioDeEntrada=Double.parseDouble(sinAt);
+    		}
+    		Pattern Stop = Pattern.compile( "STOP\\s\\d+.?\\d*" );
+    		Matcher match2 = Stop.matcher( subject );
+    		
+    		if(match2.find())
+    		{
+    			String conStop = match2.group();
+    			String sinStop = conStop.substring(5);
+    			Parada = Double.parseDouble( sinStop );
+    			
+    		}
+    		if(subject.contains("LIMIT"))
+    		{
+    			Pattern Limit=Pattern.compile( "LIMIT\\s\\d+.?\\d*" );
+    			Matcher match3 = Limit.matcher(subject);
+    			
+    			if(match3.find())
+    			{
+    				String conLimite=match3.group();
+    				String sinLimite=conLimite.substring(6);
+    				Limite=Double.parseDouble(sinLimite);
+    				
+    			}
+    			
+    			
+    			
+    		}
+    		
+    		if(par!=null && PrecioDeEntrada>0 && Parada>0)
+    		{
+    		nueva.compra = compra;
+    		nueva.estrategia = IdEstrategia.JOEL;
+    		nueva.par = par;
+    		nueva.numeroLotes = NumeroDeLotes;
+    		nueva.precioEntrada = PrecioDeEntrada;
+    		nueva.limite = Limite;
+    		nueva.stop = Parada;
+    		nueva.recomendado = recomendado;
+    		return nueva;
+    		}
+    		
+    	}
+    	
+    	
+    	
+    	
+    
+    return null;	
+    }
+    
+ 
 }

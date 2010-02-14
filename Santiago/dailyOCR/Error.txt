@@ -941,3 +941,23 @@ BREAKOUT2 Venta 5 Lotes de AUDUSD a: 0.89749
 MOMENTUM1 Venta 1 Lotes de GBPJPY a: 145.456
 BREAKOUT2 Venta 5 Lotes de GBPJPY a: 145.137
 No se pudo escribir en el archivo
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
+El par no se encuentra dentro de los pares: EURCAD
