@@ -1,7 +1,12 @@
+package control;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
+import servidor.ConexionServidor;
+
 
 
 public class SistemaDailyFX extends SistemaEstrategias

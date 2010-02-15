@@ -1,8 +1,10 @@
+package control;
 import java.io.Serializable;
+
 
 public enum IdEstrategia implements Serializable
 {
-	BREAKOUT1, BREAKOUT2, RANGE1, RANGE2, MOMENTUM1, MOMENTUM2, TECHNICAL, JOEL;
+	BREAKOUT1, BREAKOUT2, RANGE1, RANGE2, MOMENTUM1, MOMENTUM2, TECHNICAL, JOEL, JOELRECOMENDACIONES;
 	
 	public static IdEstrategia darEstrategia(int id)
 	{

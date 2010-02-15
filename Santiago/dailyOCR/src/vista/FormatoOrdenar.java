@@ -1,3 +1,5 @@
+package vista;
+
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -8,6 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
+
+import control.IdEstrategia;
+import control.Par;
+import control.Senal;
+import control.dailyOCR;
 
 
 public class FormatoOrdenar 

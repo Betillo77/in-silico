@@ -1,4 +1,6 @@
+package control;
 import java.io.Serializable;
+
 
 public enum Par implements Serializable
 {

@@ -1,5 +1,11 @@
+package control;
 import java.io.File;
+
 import java.util.ArrayList;
+
+
+import servidor.ConexionServidor;
+
 
 
 public class SistemaTechnical extends SistemaEstrategias 

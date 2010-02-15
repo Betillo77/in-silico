@@ -1,3 +1,5 @@
+package control;
+
 public class SenalEntrada
 {
 	public Par par;

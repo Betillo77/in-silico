@@ -1,3 +1,5 @@
+package control;
+
 import java.awt.Dimension;
 
 import java.io.BufferedReader;
@@ -11,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+
+
+import vista.ParteGrafica;
 
 public class dailyOCR
 {

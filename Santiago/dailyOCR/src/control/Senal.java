@@ -1,4 +1,6 @@
+package control;
 import java.io.Serializable;
+
 
 public class Senal implements Serializable
 {

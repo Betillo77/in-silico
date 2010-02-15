@@ -1,3 +1,5 @@
+package vista;
+
 import java.awt.Choice;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,6 +27,15 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import control.AnalisisLogica;
+import control.Estrategia;
+import control.HistorialEstrategia;
+import control.IdEstrategia;
+import control.Par;
+import control.Senal;
+import control.dailyOCR;
+
 import javax.swing.JCheckBox;
 
 public class AnalisisGrafico extends JFrame implements ActionListener, ItemListener {

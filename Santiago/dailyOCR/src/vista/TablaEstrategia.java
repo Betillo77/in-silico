@@ -1,3 +1,5 @@
+package vista;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -5,6 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
+
+import control.IdEstrategia;
+import control.Par;
+import control.Senal;
+import control.dailyOCR;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
+package control;
 import java.io.File;
 import java.io.FileWriter;
+
 
 
 public class Error 
