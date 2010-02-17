@@ -41,7 +41,6 @@ import java.util.EventObject;
 
 import javax.swing.CellEditor;
 import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
 
 /**
@@ -67,11 +66,11 @@ public class EditorCeldaAbstracto implements CellEditor {
     public void cancelCellEditing() {}
 
     public void addCellEditorListener(CellEditorListener l) {
-    	listenerList.add(CellEditorListener.class, l);
+//    	listenerList.add(CellEditorListener.class, l);
     }
 
     public void removeCellEditorListener(CellEditorListener l) {
-    	listenerList.remove(CellEditorListener.class, l);
+//    	listenerList.remove(CellEditorListener.class, l);
     }
 
     /**
@@ -80,12 +79,12 @@ public class EditorCeldaAbstracto implements CellEditor {
      * @see EventListenerList
      */
     protected void fireEditingStopped() {
-	Object[] listeners = listenerList.getListenerList();
-	for (int i = 0; i< listeners.length; i++) {
-	    if (listeners[i] == CellEditorListener.class) {
-		((CellEditorListener) listeners[i + 1]).editingStopped(new ChangeEvent(this));
-	    }	       
-	}
+//		Object[] listeners = listenerList.getListenerList();
+//		for (int i = 0; i< listeners.length; i++) {
+//		    if (listeners[i] == CellEditorListener.class) {
+//			((CellEditorListener) listeners[i + 1]).editingStopped(new ChangeEvent(this));
+//		    }	       
+//		}
     }
 
     /**
@@ -94,12 +93,12 @@ public class EditorCeldaAbstracto implements CellEditor {
      * @see EventListenerList
      */
     protected void fireEditingCanceled() {
-	Object[] listeners = listenerList.getListenerList();
-	for (int i = 0; i< listeners.length; i++) {
-	    if (listeners[i]==CellEditorListener.class) {
-		((CellEditorListener)listeners[i+1]).editingCanceled(new ChangeEvent(this));
-	    }	       
-	}
+//		Object[] listeners = listenerList.getListenerList();
+//		for (int i = 0; i< listeners.length; i++) {
+//		    if (listeners[i]==CellEditorListener.class) {
+//			((CellEditorListener)listeners[i+1]).editingCanceled(new ChangeEvent(this));
+//		    }	       
+//		}
     }
 }
 

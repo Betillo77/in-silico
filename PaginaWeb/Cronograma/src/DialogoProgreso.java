@@ -25,6 +25,7 @@ public class DialogoProgreso extends JDialog {
 	private final Vector <Registro> progreso;
 	private final Integrante[] integrantes;
 	private JScrollPane scrollListaProgreso = null;
+	private int ultimoRegistro = 0;
 
 	/**
 	 * @param owner
@@ -120,10 +121,10 @@ public class DialogoProgreso extends JDialog {
 											Object[] hastaCien = new Object[100];
 											for(int i = 0; i < 100; i++)
 												hastaCien[i] = i + 1;
-											int horas = (Integer) JOptionPane.showInputDialog(null, "Seleccione el integrante", "Integrante", JOptionPane.QUESTION_MESSAGE, null, hastaCien, hastaCien[0]);
+											int horas = (Integer) JOptionPane.showInputDialog(null, "Seleccione el numero de horas trabajadas", "Horas", JOptionPane.QUESTION_MESSAGE, null, hastaCien, hastaCien[0]);
 											este.requestFocus();
-											Registro nuevo = new Registro(integrante, fecha, horas);
-											//TODO Conexion con BD
+											Registro nuevo = new Registro(integrante, fecha, horas, ++ultimoRegistro);
+											ConexionBaseDatos.agregarRegistro(tarea.id, nuevo);
 											progreso.add(nuevo);
 											listaProgreso.setListData(progreso);
 										}
@@ -150,7 +151,7 @@ public class DialogoProgreso extends JDialog {
 					int si = JOptionPane.showConfirmDialog(null, "En verdad quiere eliminar: " + listaProgreso.getSelectedValue(), "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 					if(si == JOptionPane.YES_OPTION)
 					{
-						//TODO Conexion con BD
+						ConexionBaseDatos.eliminarRegistro(((Registro) listaProgreso.getSelectedValue()).idInterno);
 						progreso.remove(listaProgreso.getSelectedValue());
 						listaProgreso.setListData(progreso);
 					}
@@ -175,7 +176,7 @@ public class DialogoProgreso extends JDialog {
 			 {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					//TODO Abrir la direccion PHP
+					ConexionBaseDatos.abrirReporte(tarea.id, padre.idProyecto);
 					System.out.println(tarea.id + padre.getClass().toString());
 				}
 			 });

@@ -1,6 +1,7 @@
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.JApplet;
 import javax.swing.JPanel;
@@ -11,7 +12,7 @@ public class CronogramaGrafico extends JApplet
 
 	private static final long serialVersionUID = 79834162436921L;
 	
-	String idProyecto;
+	String idProyecto = "porta";
 
 	private JPanel panelPrincipal = null;
 	private ArbolTabla arbolTabla = null;  //  @jve:decl-index=0:visual-constraint="543,10"
@@ -26,7 +27,7 @@ public class CronogramaGrafico extends JApplet
 	public void agregarTarea(Tarea t) {
 		t.id = arbolTabla.tareas[arbolTabla.tareas.length - 1].id + 1;
 		Tarea[] tareas = arbolTabla.tareas;
-		// TODO Conexion con BD
+		ConexionBaseDatos.crearTarea(t, idProyecto);
 		tareas = Arrays.copyOf(tareas, tareas.length + 1);
 		tareas[tareas.length - 1] = t;
 		arbolTabla.tareas = tareas;
@@ -36,7 +37,7 @@ public class CronogramaGrafico extends JApplet
 	
 	public void modificarTarea(Tarea t) 
 	{
-		// TODO Conexion con BD
+		ConexionBaseDatos.actualizarTarea(t);
 		for(int i = 0; i < arbolTabla.tareas.length; i++)
 			if(t.id == arbolTabla.tareas[i].id)
 			{
@@ -67,7 +68,7 @@ public class CronogramaGrafico extends JApplet
 	
 
 	public void eliminarTarea(int id) {
-		// TODO Conexion con BD
+		ConexionBaseDatos.eliminarTarea(id);
     	eliminar(id, arbolTabla.tareas[0]);
     	((ModeloLogicoArbol) ((AdaptadorArbolTabla) arbolTabla.getModel()).treeTableModel).cambiarModelo();
 	}
@@ -95,31 +96,23 @@ public class CronogramaGrafico extends JApplet
 	 * @return void
 	 */
 	public void init() {
-		Integrante s = new Integrante("Santiago Gutierrez Alzate", "desocupado");
-		Integrante s1 = new Integrante("Sebastian Gomez Gonzalez", "sebasutp");
-		Integrante s2 = new Integrante("juandavid_1024@hotmail.com", "Juan David");
-		Integrante s3 = new Integrante("Adrian", "noga..loco");
-		Integrante[] i = {s, s1, s2, s3};
-		Tarea t = new Tarea("sga", 0, "prueba1", null, 0, Estado.ENPROGRESO, 0, new ArrayList<Tarea>(), new ArrayList<Integrante>());
-		Tarea t1 = new Tarea("sga", 1, "prueba2", null, 0, Estado.ENPROGRESO, 0, new ArrayList<Tarea>(), new ArrayList<Integrante>());
-		Tarea t2 = new Tarea("sga", 2, "prueba3", null, 0, Estado.ENPROGRESO, 0, new ArrayList<Tarea>(), new ArrayList<Integrante>());
-		Tarea t3 = new Tarea("sga", 3, "prueba4", null, 0, Estado.ENPROGRESO, 0, new ArrayList<Tarea>(), new ArrayList<Integrante>());
-		Tarea t4 = new Tarea("sga", 4, "prueba5", null, 0, Estado.ENPROGRESO, 0, new ArrayList<Tarea>(), new ArrayList<Integrante>());
-		t1.padre = t;
-		t1.preRequisitos.add(t);
-		t1.responsables.add(s);
-		t1.responsables.add(s3);
-		t.hijos.add(t1);
-		t.hijos.add(t2);
-		t.hijos.add(t3);
-		t.hijos.add(t4);
-		t1.padre = t;
-		t2.padre = t;
-		t3.padre = t;
-		t4.padre = t;
-		t4.preRequisitos.add(t);
-		Tarea[] ta = {t, t1, t2, t3, t4};
-		arbolTabla = new ArbolTabla(this, new ModeloLogicoArbol(t), i, ta);
+		
+		ArrayList <Integrante> integrantes = ConexionBaseDatos.darIntegrantes();
+		Integrante[] i = new Integrante[integrantes.size()];
+		integrantes.toArray(i);
+		Arrays.sort(i);
+		Collections.sort(integrantes);
+		ArrayList <Tarea> tareas = ConexionBaseDatos.leerTareasActuales(idProyecto, integrantes);
+		Tarea[] ta = new Tarea[tareas.size()];
+		tareas.toArray(ta);
+		Tarea raiz = null;
+		for(Tarea t : ta)
+			if(t.padre == null)
+			{
+				raiz = t;
+				break;
+			}
+		arbolTabla = new ArbolTabla(this, new ModeloLogicoArbol(raiz), i, ta);
 		this.setSize(492, 551);
 		this.setContentPane(getPanelPrincipal());
 		arbolTabla.setVisible(true);

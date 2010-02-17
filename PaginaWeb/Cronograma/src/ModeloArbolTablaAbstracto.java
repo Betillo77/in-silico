@@ -141,7 +141,7 @@ public abstract class ModeloArbolTablaAbstracto implements ModeloArbolTabla {
     
     
 
-    public Class<?> getColumnClass(int column) 
+    public Class <?> getColumnClass(int column) 
     {
     	return Object.class; 
     }

@@ -50,6 +50,8 @@ public class DialogoTarea extends JDialog {
 	private Tarea modificando = null;
 	private JLabel estadoLabel = null;
 	private JComboBox estado = null;
+	private JButton quitarResponsable = null;
+	private JButton quitarRequisito = null;
 
 	public DialogoTarea(CronogramaGrafico cg, Integrante[] i, Tarea[] t) {
 		super((Dialog)null);
@@ -137,6 +139,8 @@ public class DialogoTarea extends JDialog {
 			jContentPane.add(getScrollNombre(), null);
 			jContentPane.add(estadoLabel, null);
 			jContentPane.add(getEstado(), null);
+			jContentPane.add(getQuitarResponsable(), null);
+			jContentPane.add(getQuitarRequisito(), null);
 		}
 		return jContentPane;
 	}
@@ -254,20 +258,19 @@ public class DialogoTarea extends JDialog {
 			agregarRequsito.setText("+");
 			final Component este = this;
 			agregarRequsito.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent arg0) 
-				{
-					Tarea tarea = (Tarea) JOptionPane.showInputDialog(este, "Seleccione el requisito", "Seleccion", JOptionPane.QUESTION_MESSAGE, null, tareas, tareas[0]);
-					este.requestFocus();
-					String idTarea = tarea.toString().split(" ")[0];
-					if(tareasAgregadas.contains(idTarea))
-						return;
-					tareasAgregadas.add(tarea);
-					tareasAgregadasId.add(idTarea);
-					requsitos.setListData(tareasAgregadasId);	
-				}
-
-			});
+											 {
+												 public void actionPerformed(ActionEvent arg0) 
+												 {
+													 Tarea tarea = (Tarea) JOptionPane.showInputDialog(este, "Seleccione el requisito", "Seleccion", JOptionPane.QUESTION_MESSAGE, null, tareas, tareas[0]);
+													 este.requestFocus();
+													 String idTarea = tarea.toString().split(" ")[0];
+													 if(tareasAgregadas.contains(idTarea))
+														 return;
+													 tareasAgregadas.add(tarea);
+													 tareasAgregadasId.add(idTarea);
+													 requsitos.setListData(tareasAgregadasId);	
+												 }
+							  				 });
 		}
 		return agregarRequsito;
 	}
@@ -386,5 +389,57 @@ public class DialogoTarea extends JDialog {
 				estado.addItem(e);
 		}
 		return estado;
+	}
+
+	/**
+	 * This method initializes quitarResponsable	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getQuitarResponsable() {
+		if (quitarResponsable == null) {
+			quitarResponsable = new JButton();
+			quitarResponsable.setBounds(new Rectangle(314, 230, 41, 26));
+			quitarResponsable.setText("-");
+			quitarResponsable.addActionListener(new ActionListener()
+												{
+													public void actionPerformed(ActionEvent arg0) 
+													{
+														integrantesAgregados.remove(responsables.getSelectedValue());
+														responsables.setListData(integrantesAgregados);
+													}
+				
+												});
+		}
+		return quitarResponsable;
+	}
+
+	/**
+	 * This method initializes quitarRequisito	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getQuitarRequisito() {
+		if (quitarRequisito == null) {
+			quitarRequisito = new JButton();
+			quitarRequisito.setBounds(new Rectangle(314, 322, 41, 26));
+			quitarRequisito.setText("-");
+			quitarRequisito.addActionListener(new ActionListener()
+											 {
+												 public void actionPerformed(ActionEvent arg0) 
+												 {
+													 int tarea = Integer.parseInt((String) requsitos.getSelectedValue());
+													 for(Tarea t : tareasAgregadas)
+														 if(t.id == tarea)
+														 {
+															 tareasAgregadas.remove(t);
+															 break;
+														 }
+													 tareasAgregadasId.remove(tarea + "");
+													 requsitos.setListData(tareasAgregadasId);	
+												 }
+							  				 });
+		}
+		return quitarRequisito;
 	}
 }  //  @jve:decl-index=0:visual-constraint="10,10"

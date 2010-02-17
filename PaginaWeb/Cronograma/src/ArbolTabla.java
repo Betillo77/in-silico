@@ -38,11 +38,10 @@
  */
 
 import java.awt.Component;
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Vector;
 
@@ -91,8 +90,8 @@ public class ArbolTabla extends JTable {
     	tree.setCellRenderer(cr);
     	super.setModel(new AdaptadorArbolTabla(treeTableModel, tree));
     	tree.setSelectionModel(new DefaultTreeSelectionModel() { 
-    		private static final long serialVersionUID = 15334879775434L;
     		
+    		private static final long serialVersionUID = 15334879775434L; 		
     		{
     			setSelectionModel(listSelectionModel); 
     		} 
@@ -125,7 +124,7 @@ public class ArbolTabla extends JTable {
     }
 
     public class TreeTableCellRenderer extends JTree implements TableCellRenderer {
-
+    	
 		private static final long serialVersionUID = -4402515413278666263L;
 		
 		protected int visibleRow;
@@ -159,6 +158,8 @@ public class ArbolTabla extends JTable {
 		    return tree;
 		}
     }
+
+    // Aqui vamos
     
     public boolean editCellAt(int row, int column, EventObject e) {
     	if(((Tarea) getValueAt(row, 0)).hijos.size() == 0 && column == 0)
@@ -195,13 +196,16 @@ public class ArbolTabla extends JTable {
 		new DialogoTarea(padre, integrantes, tareas, aModificar).setVisible(true);
 	}
 
-	public void verProgresoTarea(int idCambio) {
-		//TODO Conexion con la BD
-		Registro prueba = new Registro(integrantes[0], Calendar.getInstance(), 12);
-		Vector <Registro> p = new Vector <Registro> ();
-		p.add(prueba);
-		new DialogoProgreso(padre, integrantes, p, tareas[0]).setVisible(true);
+	public void verProgresoTarea(int id) {
+		ArrayList <Registro> registros = ConexionBaseDatos.darRegistros(id, integrantes);
+		Tarea aVer = null;
+		for(Tarea t : tareas)
+			if(t.id == id)
+			{
+				aVer = t;
+				break;
+			}
+		new DialogoProgreso(padre, integrantes, new Vector <Registro> (registros), aVer).setVisible(true);
 	}
 
 }
-

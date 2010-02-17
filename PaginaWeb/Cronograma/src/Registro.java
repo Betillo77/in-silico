@@ -6,12 +6,14 @@ public class Registro implements Comparable <Registro>
 	Integrante integrante;
 	Calendar fecha;
 	int horas;
+	int idInterno;
 	
-	public Registro(Integrante integrante, Calendar fecha, int horas) 
+	public Registro(Integrante integrante, Calendar fecha, int horas, int idInterno) 
 	{
 		this.integrante = integrante;
 		this.fecha = fecha;
 		this.horas = horas;
+		this.idInterno = idInterno;
 	}
 
 	public int compareTo(Registro otro) 
