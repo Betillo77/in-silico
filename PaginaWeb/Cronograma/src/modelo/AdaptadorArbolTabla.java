@@ -1,3 +1,4 @@
+package modelo;
 /*
  *
  * Copyright 1997, 1998 Sun Microsystems, Inc. All Rights Reserved.
@@ -37,6 +38,7 @@
  * maintenance of any nuclear facility.
  */
 
+
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -61,7 +63,7 @@ public class AdaptadorArbolTabla extends AbstractTableModel
 	private static final long serialVersionUID = -7842760810626231025L;
 	
 	JTree tree;
-    ModeloArbolTabla treeTableModel;
+    public ModeloArbolTabla treeTableModel;
 
     public AdaptadorArbolTabla(ModeloArbolTabla treeTableModel, JTree tree) {
         this.tree = tree;

@@ -1,3 +1,4 @@
+package vista;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Rectangle;
@@ -18,6 +19,11 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+
+import modelo.Estado;
+import modelo.Integrante;
+import modelo.Tarea;
 
 public class DialogoTarea extends JDialog {
 

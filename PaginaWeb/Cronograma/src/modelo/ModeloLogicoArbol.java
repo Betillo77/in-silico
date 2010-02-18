@@ -1,3 +1,5 @@
+package modelo;
+
 /*
  *
  * Copyright 1997, 1998 Sun Microsystems, Inc. All Rights Reserved.
@@ -52,7 +54,7 @@
 public class ModeloLogicoArbol extends ModeloArbolTablaAbstracto implements ModeloArbolTabla {
 
     // Names of the columns.
-    static protected String[]  cNames = {"Nombre", "Horas presupuestadas", "Horas trabajadas", "Estado", "Pre-requisitos", "Responsables"};
+    static protected String[]  cNames = {"Nombre", "HPre", "HTra", "Estado", "Pre-requisitos", "Responsables"};
 
     // Types of the columns.
     static protected Class<?>[]  cTypes = {ModeloArbolTabla.class, Integer.class, Integer.class, Estado.class, String.class, String.class};
@@ -62,7 +64,6 @@ public class ModeloLogicoArbol extends ModeloArbolTablaAbstracto implements Mode
     }
     
     public int getChildCount(Object node) { 
-    	
     	return ((Tarea) node).hijos.size();
     }
     
@@ -109,4 +110,8 @@ public class ModeloLogicoArbol extends ModeloArbolTablaAbstracto implements Mode
 	    }
 	    return ""; 
     }
+
+	public void cambiarRaiz(Object raiz) {
+		root = raiz;
+	}
 }

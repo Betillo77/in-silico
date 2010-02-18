@@ -1,13 +1,18 @@
+package modelo;
+
 import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import vista.ArbolTabla;
+
+
 public class ListenerArbolTabla extends MouseAdapter implements ActionListener {
 	ArbolTabla arbolTabla;
 
-	ListenerArbolTabla(ArbolTabla at) {
+	public ListenerArbolTabla(ArbolTabla at) {
 		arbolTabla = at;
 	}
 

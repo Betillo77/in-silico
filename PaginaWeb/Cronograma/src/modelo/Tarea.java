@@ -1,17 +1,19 @@
+package modelo;
 import java.util.ArrayList;
+
 
 public class Tarea
 {
 	String idProyecto;
-	int id;
-	String concepto;
-	Tarea padre;
-	int tiempo;
-	Estado estado;
-	int tiempoTrabajado;
-	ArrayList <Tarea> preRequisitos;
-	ArrayList <Integrante> responsables;
-	ArrayList <Tarea> hijos = new ArrayList <Tarea> ();
+	public int id;
+	public String concepto;
+	public Tarea padre;
+	public int tiempo;
+	public Estado estado;
+	public int tiempoTrabajado;
+	public ArrayList <Tarea> preRequisitos;
+	public ArrayList <Integrante> responsables;
+	public ArrayList <Tarea> hijos = new ArrayList <Tarea> ();
 
 	public Tarea(String idProyecto, int id, String concepto, Tarea padre, int tiempo, Estado estado, int tiempoTrabajado, ArrayList <Tarea> preRequisitos, ArrayList <Integrante> responsables)
 	{

@@ -1,7 +1,10 @@
+package vista;
 import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -11,6 +14,13 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import conexion.ConexionBaseDatos;
+
+
+import modelo.Integrante;
+import modelo.Registro;
+import modelo.Tarea;
 
 public class DialogoProgreso extends JDialog {
 
@@ -37,6 +47,34 @@ public class DialogoProgreso extends JDialog {
 		integrantes = i;
 		progreso = prog;
 		listaProgreso.setListData(progreso);
+		addWindowListener(new WindowListener() {
+
+			public void windowOpened(WindowEvent arg0) {
+			}
+			
+			public void windowIconified(WindowEvent arg0) {
+			}
+			
+			public void windowDeiconified(WindowEvent arg0) {
+			}
+			
+			public void windowDeactivated(WindowEvent arg0) {
+			}
+			
+			public void windowClosing(WindowEvent arg0) {
+				padre.actualizarTareas();
+				padre.refrescarArbolTabla();
+			}
+			
+			public void windowClosed(WindowEvent arg0) {
+				padre.actualizarTareas();
+				padre.refrescarArbolTabla();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+			}
+		});
 	}
 
 	/**
@@ -94,39 +132,47 @@ public class DialogoProgreso extends JDialog {
 				
 										@Override
 										public void actionPerformed(ActionEvent e) {
-											Integrante integrante = (Integrante) JOptionPane.showInputDialog(null, "Seleccione el integrante", "Integrante", JOptionPane.QUESTION_MESSAGE, null, integrantes, integrantes[0]);
-											este.requestFocus();
-											String lectura = JOptionPane.showInputDialog(null, "Ingrese la fecha en formato DD-MM-AA", "Fecha");
-											este.requestFocus();
-											Calendar fecha = Calendar.getInstance();
 											try
 											{
-												String[] arregloFecha = lectura.split("-");
-												int dia = Integer.parseInt(arregloFecha[0]);
-												int mes = Integer.parseInt(arregloFecha[1]);
-												int a = Integer.parseInt(arregloFecha[2]);
-												if(dia < 1 || dia > 31 || mes < 1 || mes > 12 || a < 0 || a > 99)
-													throw(new Exception(""));
-												a += 2000;
-												fecha.clear();
-												fecha.set(a, mes - 1, dia);
-												fecha.setLenient(false);
-											}
-											catch(Exception ex)
-											{
-												JOptionPane.showMessageDialog(null, "Fecha invalida");
+												Integrante integrante = (Integrante) JOptionPane.showInputDialog(null, "Seleccione el integrante", "Integrante", JOptionPane.QUESTION_MESSAGE, null, integrantes, integrantes[0]);
 												este.requestFocus();
-												return;
+												String lectura = JOptionPane.showInputDialog(null, "Ingrese la fecha en formato DD-MM-AA", "Fecha");
+												este.requestFocus();
+												Calendar fecha = Calendar.getInstance();
+												try
+												{
+													String[] arregloFecha = lectura.split("-");
+													int dia = Integer.parseInt(arregloFecha[0]);
+													int mes = Integer.parseInt(arregloFecha[1]);
+													int a = Integer.parseInt(arregloFecha[2]);
+													if(dia < 1 || dia > 31 || mes < 1 || mes > 12 || a < 0 || a > 99)
+														throw(new Exception(""));
+													a += 2000;
+													fecha.clear();
+													fecha.set(a, mes - 1, dia);
+													fecha.setLenient(false);
+												}
+												catch(Exception ex)
+												{
+													JOptionPane.showMessageDialog(null, "Fecha invalida");
+													este.requestFocus();
+													return;
+												}
+												Object[] hastaCien = new Object[100];
+												for(int i = 0; i < 100; i++)
+													hastaCien[i] = i + 1;
+												int horas = (Integer) JOptionPane.showInputDialog(null, "Seleccione el numero de horas trabajadas", "Horas", JOptionPane.QUESTION_MESSAGE, null, hastaCien, hastaCien[0]);
+												este.requestFocus();
+												Registro nuevo = new Registro(integrante, fecha, horas, ++ultimoRegistro);
+												ConexionBaseDatos.agregarRegistro(tarea.id, nuevo);
+												progreso.add(nuevo);
+												listaProgreso.setListData(progreso);
 											}
-											Object[] hastaCien = new Object[100];
-											for(int i = 0; i < 100; i++)
-												hastaCien[i] = i + 1;
-											int horas = (Integer) JOptionPane.showInputDialog(null, "Seleccione el numero de horas trabajadas", "Horas", JOptionPane.QUESTION_MESSAGE, null, hastaCien, hastaCien[0]);
-											este.requestFocus();
-											Registro nuevo = new Registro(integrante, fecha, horas, ++ultimoRegistro);
-											ConexionBaseDatos.agregarRegistro(tarea.id, nuevo);
-											progreso.add(nuevo);
-											listaProgreso.setListData(progreso);
+											catch(Exception e1)
+											{
+												JOptionPane.showMessageDialog(null, "Error de conexión con el servidor");
+												System.exit(0);
+											}
 										}
 									});
 		}
@@ -148,14 +194,22 @@ public class DialogoProgreso extends JDialog {
 			 {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					int si = JOptionPane.showConfirmDialog(null, "En verdad quiere eliminar: " + listaProgreso.getSelectedValue(), "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-					if(si == JOptionPane.YES_OPTION)
+					try
 					{
-						ConexionBaseDatos.eliminarRegistro(((Registro) listaProgreso.getSelectedValue()).idInterno);
-						progreso.remove(listaProgreso.getSelectedValue());
-						listaProgreso.setListData(progreso);
+						int si = JOptionPane.showConfirmDialog(null, "En verdad quiere eliminar: " + listaProgreso.getSelectedValue(), "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+						if(si == JOptionPane.YES_OPTION)
+						{
+							ConexionBaseDatos.eliminarRegistro(((Registro) listaProgreso.getSelectedValue()).idInterno);
+							progreso.remove(listaProgreso.getSelectedValue());
+							listaProgreso.setListData(progreso);
+						}
+						este.requestFocus();
 					}
-					este.requestFocus();
+					catch(Exception e1)
+					{
+						JOptionPane.showMessageDialog(null, "Error de conexión con el servidor");
+						System.exit(0);
+					}
 				}
 			 });
 		}

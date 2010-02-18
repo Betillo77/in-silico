@@ -1,3 +1,4 @@
+package vista;
 /*
  *
  * Copyright 1997, 1998 Sun Microsystems, Inc. All Rights Reserved.
@@ -37,6 +38,7 @@
  * maintenance of any nuclear facility.
  */
 
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -50,11 +52,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeModel;
+
+import modelo.AdaptadorArbolTabla;
+import modelo.EditorCeldaAbstracto;
+import modelo.Integrante;
+import modelo.ListenerArbolTabla;
+import modelo.ModeloArbolTabla;
+import modelo.Registro;
+import modelo.Tarea;
+import conexion.ConexionBaseDatos;
 
 /**
  * This example shows how to create a simple JTreeTable component, 
@@ -73,14 +86,16 @@ public class ArbolTabla extends JTable {
 	
 	protected TreeTableCellRenderer tree;
 	
-	JPopupMenu popupMenu = new JPopupMenu();
+	public JPopupMenu popupMenu = new JPopupMenu();
 	CronogramaGrafico padre;
+	ModeloArbolTabla modeloArbolTabla;
 
 	Integrante[] integrantes;
 	Tarea[] tareas;
 	
     public ArbolTabla(CronogramaGrafico p, ModeloArbolTabla treeTableModel, Integrante[] i, Tarea[] t) {
     	super();
+    	modeloArbolTabla = treeTableModel;
     	padre = p;
     	integrantes = i;
     	tareas = t;
@@ -89,6 +104,18 @@ public class ArbolTabla extends JTable {
     	//	cr.setLeafIcon(new ImageIcon("prueba.jpg")); TODO
     	tree.setCellRenderer(cr);
     	super.setModel(new AdaptadorArbolTabla(treeTableModel, tree));
+    	getTableHeader().getColumnModel().getColumn(0).setMinWidth(305);
+    	getTableHeader().getColumnModel().getColumn(0).setMaxWidth(305);
+    	getTableHeader().getColumnModel().getColumn(1).setMinWidth(35);
+    	getTableHeader().getColumnModel().getColumn(1).setMaxWidth(35);
+    	getTableHeader().getColumnModel().getColumn(2).setMinWidth(35);
+    	getTableHeader().getColumnModel().getColumn(2).setMaxWidth(35);
+    	getTableHeader().getColumnModel().getColumn(3).setMinWidth(70);
+    	getTableHeader().getColumnModel().getColumn(3).setMaxWidth(70);
+    	getTableHeader().getColumnModel().getColumn(4).setMinWidth(176);
+    	getTableHeader().getColumnModel().getColumn(4).setMaxWidth(176);
+    	getTableHeader().getColumnModel().getColumn(5).setMinWidth(176);
+    	getTableHeader().getColumnModel().getColumn(5).setMaxWidth(176);
     	tree.setSelectionModel(new DefaultTreeSelectionModel() { 
     		
     		private static final long serialVersionUID = 15334879775434L; 		
@@ -117,6 +144,13 @@ public class ArbolTabla extends JTable {
 		setDefaultEditor(ModeloArbolTabla.class, new TreeTableCellEditor());	
 		setShowGrid(false);
 		setIntercellSpacing(new Dimension(0, 0));
+		DefaultTableCellRenderer rendererCentrado = new DefaultTableCellRenderer();
+		rendererCentrado.setHorizontalAlignment(SwingConstants.CENTER);
+		getColumn("HPre").setCellRenderer(rendererCentrado);
+		getColumn("HTra").setCellRenderer(rendererCentrado);
+		getColumn("Estado").setCellRenderer(rendererCentrado);
+		getColumn("Pre-requisitos").setCellRenderer(rendererCentrado);
+		getColumn("Responsables").setCellRenderer(rendererCentrado);
     }
     
     public int getEditingRow() {
@@ -158,15 +192,14 @@ public class ArbolTabla extends JTable {
 		    return tree;
 		}
     }
-
-    // Aqui vamos
     
     public boolean editCellAt(int row, int column, EventObject e) {
     	if(((Tarea) getValueAt(row, 0)).hijos.size() == 0 && column == 0)
     	{
-    		selectAll();
-    		return super.editCellAt(0, 1, e);
+    		selectAll();	
+    		return super.editCellAt(row, column, e);
     	}
+    	selectAll();
     	return super.editCellAt(row, column, e);
     }
 
@@ -197,15 +230,23 @@ public class ArbolTabla extends JTable {
 	}
 
 	public void verProgresoTarea(int id) {
-		ArrayList <Registro> registros = ConexionBaseDatos.darRegistros(id, integrantes);
-		Tarea aVer = null;
-		for(Tarea t : tareas)
-			if(t.id == id)
-			{
-				aVer = t;
-				break;
-			}
-		new DialogoProgreso(padre, integrantes, new Vector <Registro> (registros), aVer).setVisible(true);
+		try
+		{
+			ArrayList <Registro> registros = ConexionBaseDatos.darRegistros(id, integrantes);
+			Tarea aVer = null;
+			for(Tarea t : tareas)
+				if(t.id == id)
+				{
+					aVer = t;
+					break;
+				}
+			new DialogoProgreso(padre, integrantes, new Vector <Registro> (registros), aVer).setVisible(true);
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, "Error de conexión con el servidor");
+			System.exit(0);
+		}
 	}
 
 }

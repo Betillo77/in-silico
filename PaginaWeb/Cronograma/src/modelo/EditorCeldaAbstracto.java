@@ -1,3 +1,4 @@
+package modelo;
 /*
  *
  * Copyright 1997, 1998 Sun Microsystems, Inc. All Rights Reserved.
@@ -37,11 +38,14 @@
  * maintenance of any nuclear facility.
  */
 
+
 import java.util.EventObject;
 
 import javax.swing.CellEditor;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.EventListenerList;
+
+import vista.ArbolTabla;
 
 /**
  * @version %I% %G% 

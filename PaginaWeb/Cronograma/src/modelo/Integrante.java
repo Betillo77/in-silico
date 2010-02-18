@@ -1,7 +1,8 @@
+package modelo;
 public class Integrante implements Comparable <Integrante>
 {
 	String nombre;
-	String id;
+	public String id;
 	
 	public Integrante(String nombre, String id) 
 	{

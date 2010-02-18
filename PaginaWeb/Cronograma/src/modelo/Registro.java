@@ -1,12 +1,14 @@
+package modelo;
 import java.util.Calendar;
+
 
 
 public class Registro implements Comparable <Registro>
 {
-	Integrante integrante;
-	Calendar fecha;
-	int horas;
-	int idInterno;
+	public Integrante integrante;
+	public Calendar fecha;
+	public int horas;
+	public int idInterno;
 	
 	public Registro(Integrante integrante, Calendar fecha, int horas, int idInterno) 
 	{

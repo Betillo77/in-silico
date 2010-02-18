@@ -1,3 +1,4 @@
+package modelo;
 /*
  *
  * Copyright 1997, 1998 Sun Microsystems, Inc. All Rights Reserved.
@@ -87,5 +88,7 @@ public interface ModeloArbolTabla extends TreeModel
      * at column number <code>column</code>.
      */
     public void setValueAt(Object aValue, Object node, int column);
+    
+    public void cambiarRaiz(Object raiz);
 }
 
