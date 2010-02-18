@@ -35,7 +35,7 @@ public class dailyOCR
 	
 	public static void cargarSistemasEstrategias()
 	{
-		sistemas = new SistemaEstrategias[2];
+		sistemas = new SistemaEstrategias[3];
 		SistemaEstrategias sdfx = new SistemaDailyFX();
 		sdfx.cargarEstrategias();
 		sistemas[0] = sdfx;
@@ -43,6 +43,7 @@ public class dailyOCR
 		joel.cargarEstrategias();
 		sistemas[1] = joel;	
 		SistemaEstrategias technical = new SistemaTechnical();
+		technical.cargarEstrategias();
 		sistemas[2] = technical;
 	}
 	
@@ -74,6 +75,8 @@ public class dailyOCR
 					numeroErrores++;
 					if(numeroErrores == 60)
 					{
+						Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
+						Runtime.getRuntime().exec("reiniciar.bat");
 						Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
 						{
 

@@ -29,9 +29,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 	Estrategia momentum2;
 	File m2 = new File(pathPersistencia + "momentum2.o");
 	
-	Estrategia technical;
-	File t = new File(pathPersistencia + "technical.o");
-	
 	ArrayList <Estrategia> estrategias;
 	
 	public void cargarEstrategias()
@@ -40,6 +37,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 		if(b1.exists())
 		{
 			breakout1 = Estrategia.leer(b1);
+			if(breakout1 == null)
+			{
+				b1.delete();
+				breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
+			}
 		}
 		else
 		{
@@ -49,6 +51,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 		if(b2.exists())
 		{
 			breakout2 = Estrategia.leer(b2);
+			if(breakout2 == null)
+			{
+				b2.delete();
+				breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
+			}
 		}
 		else
 		{
@@ -58,6 +65,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 		if(r1.exists())
 		{
 			range1 = Estrategia.leer(r1);
+			if(range1 == null)
+			{
+				r1.delete();
+				range1 = new Estrategia(IdEstrategia.RANGE1);
+			}
 		}
 		else
 		{
@@ -67,6 +79,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 		if(r2.exists())
 		{
 			range2 = Estrategia.leer(r2);
+			if(range2 == null)
+			{
+				r2.delete();
+				range2 = new Estrategia(IdEstrategia.RANGE2);
+			}
 		}
 		else
 		{
@@ -76,6 +93,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 		if(m1.exists())
 		{
 			momentum1 = Estrategia.leer(m1);
+			if(momentum1 == null)
+			{
+				m1.delete();
+				momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
+			}
 		}
 		else
 		{
@@ -85,6 +107,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 		if(m2.exists())
 		{
 			momentum2 = Estrategia.leer(m2);
+			if(momentum2 == null)
+			{
+				m2.delete();
+				momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
+			}
 		}
 		else
 		{
@@ -284,7 +311,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-    		Error.agregar(e.getMessage() + "Error al procesar señales probablemente en thread.sleep");
+    		Error.agregar(e.getMessage() + ": Error al procesar señales de dailyFX.");
 		}
 	}
 
@@ -296,7 +323,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 		range2.escribir(r2);
 		momentum1.escribir(m1);
 		momentum2.escribir(m2);
-		technical.escribir(t);
 	}
 
 	public Estrategia darEstrategia(IdEstrategia id)

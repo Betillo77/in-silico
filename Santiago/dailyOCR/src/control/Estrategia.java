@@ -28,6 +28,9 @@ public class Estrategia implements Serializable
 		this.id = id;
 		senales = Collections.synchronizedList(new ArrayList <Senal> ());
 		historial = new HistorialEstrategia(id);
+		if(id == IdEstrategia.BREAKOUT2)
+			for(int i = 0; i < activos.length; i++)
+				activos[i] = true;
 	}
 	
 	public synchronized void cambiarActivo(Par par, boolean activo)
@@ -179,14 +182,18 @@ public class Estrategia implements Serializable
 			oos.writeObject(this);	
 			oos.close();
 		} 
-		catch (FileNotFoundException e) 
+		catch(FileNotFoundException e) 
 		{
     		Error.agregar(e.getMessage() + " Error no se encontro el archivo en escribir estrategia");
 		}
-		catch (IOException e) 
+		catch(IOException e) 
 		{
     		Error.agregar(e.getMessage() + " Error de entrada/salida en estrategia");
 		}	
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error escribiendo el archivo");
+		}
 	}
 	
 	public static Estrategia leer(File archivo)
@@ -198,16 +205,21 @@ public class Estrategia implements Serializable
 			ois.close();
 			return e;
 		} 
-		catch (ClassNotFoundException e) 
+		catch(ClassNotFoundException e) 
 		{
     		Error.agregar(e.getMessage() + " Error al leer estrategia");
 			return null;
 		}
-		catch (IOException e) 
+		catch(IOException e) 
 		{
     		Error.agregar(e.getMessage() + " Error de entrada salida al leer estrategia");
 			return null;
 			
 		}	
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error de entrada salida al leer estrategia");
+			return null;
+		}
 	}
 }

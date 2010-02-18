@@ -8,7 +8,6 @@ import java.util.List;
 
 public class AnalisisLogica 
 {
-	@SuppressWarnings("unchecked")
 	public static  ArrayList <Entrada> Buscar(HistorialEstrategia historialEstrategia, long fecha, Par par)
 	{	
 		List <Entrada> temporal;
@@ -18,7 +17,7 @@ public class AnalisisLogica
 			indice++;
 			indice *= -1;
 		}	
-		temporal = ((ArrayList <Entrada>) historialEstrategia.darHistorial().clone()).subList(indice, historialEstrategia.darHistorial().size());
+		temporal = clonarArrayList(historialEstrategia.darHistorial()).subList(indice, historialEstrategia.darHistorial().size());
 		for(int i = 0; i < temporal.size(); i++)
 		{
 			if(temporal.get(i).par.esDistinto(par))
@@ -30,6 +29,13 @@ public class AnalisisLogica
 		return new ArrayList <Entrada> (temporal);
 	}
 
+	private static ArrayList <Entrada> clonarArrayList(ArrayList <Entrada> aClonar)
+	{
+		ArrayList <Entrada> clon = new ArrayList <Entrada> ();
+		for(Entrada e : aClonar)
+			clon.add(e);
+		return clon;
+	}
 	
 	public static ArrayList <Object> retornar(HistorialEstrategia historialEstrategia, Par par,int timeFrame)
 	{
@@ -87,7 +93,7 @@ public class AnalisisLogica
 		retornar.add(datos);
 		retornar.add(promedio);
 		retornar.add(transacciones);
-		retornar.add(datos[0][temporal.size()-1]);
+		retornar.add(datos[0][temporal.size() - 1]);
 		retornar.add(desviacion);
 		retornar.add(PromedioPips);
 		retornar.add(meses);

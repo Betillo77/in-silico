@@ -2,6 +2,7 @@ package control;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -54,19 +55,53 @@ public class Escritor
 		{
 			try 
 			{
-				Thread.sleep(120000 + 30000 * numero);
+				Thread.sleep(30000 + 20000 * numero);
 			}
 			catch (InterruptedException e) 
 			{
 	    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos");
-
 			}
 		}
-		File archivoMagicos = new File(pathMeta + "magicos.txt");
-		if(!archivoMagicos.exists())
+		int numeroVeces = 0;
+		try
 		{
-    		Error.agregar("Archivo magico no existe");
-			archivoMagicos = null;
+			while(true)
+			{
+				numeroVeces++;
+				if(numeroVeces == 100)
+				{
+					Error.agregar("Error de lectura, intentando reiniciar.");
+					Runtime.getRuntime().exec("reiniciar.bat");
+					Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
+					{
+	
+						@Override
+						public void run() 
+						{
+							try 
+							{
+								Runtime.getRuntime().exec("reiniciar.bat");
+							} 
+							catch (IOException e)
+							{
+					    		Error.agregar(e.getMessage() + " Error reiniciando");
+							}
+						}
+					}));
+					System.exit(0);
+				}
+				File archivoMagicos = new File(pathMeta + "magicos.txt");
+				if(!archivoMagicos.exists())
+				{
+					Thread.sleep(10000);
+				}
+				else
+					break;
+			}
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico");
 			return;
 		}
 		for(int i = 0; i < 3 && !termino; i++)
@@ -74,7 +109,7 @@ public class Escritor
 			Scanner sc = new Scanner("1");
 			try 
 			{
-				sc = new Scanner(archivoMagicos);
+				sc = new Scanner(new File(pathMeta + "magicos.txt"));
 				Iterator <Senal> it = senales.iterator();
 				Senal actual = it.next();
 				int numeroActual = 0;
@@ -102,9 +137,8 @@ public class Escritor
 			finally
 			{
 				sc.close();
-				if(archivoMagicos.canWrite())
-					archivoMagicos.delete();
-				archivoMagicos = null;
+				if(new File(pathMeta + "magicos.txt").canWrite())
+					new File(pathMeta + "magicos.txt").delete();
 			}
 		}
 		senales.clear();

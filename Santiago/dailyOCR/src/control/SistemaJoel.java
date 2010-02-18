@@ -25,6 +25,11 @@ public class SistemaJoel extends SistemaEstrategias
 		if(j.exists())
 		{
 			joel = Estrategia.leer(j);
+			if(joel == null)
+			{
+				j.delete();
+				joel = new Estrategia(IdEstrategia.JOEL);
+			}
 		}
 		else
 		{
@@ -34,6 +39,12 @@ public class SistemaJoel extends SistemaEstrategias
 		if(jr.exists())
 		{
 			joelRecomendaciones = Estrategia.leer(jr);
+			if(joelRecomendaciones == null)
+			{
+				jr.delete();
+				joelRecomendaciones = new Estrategia(IdEstrategia.JOELRECOMENDACIONES);
+				joelRecomendaciones.historial.agregarEntrada(Par.EURUSD, 0, 0);
+			}
 			numeroCorreosAnterior = joelRecomendaciones.historial.darHistorial().get(0).ganancia;
 		}
 		else
@@ -150,59 +161,66 @@ public class SistemaJoel extends SistemaEstrategias
 	
 	protected void procesar(ArrayList <Senal> senalesLeidas) 
 	{
-		Calendar c = Calendar.getInstance();
-		for(Iterator <Senal> it = joelRecomendaciones.senales.iterator(); it.hasNext();)
+		try
 		{
-			try
+			Calendar c = Calendar.getInstance();
+			for(Iterator <Senal> it = joelRecomendaciones.senales.iterator(); it.hasNext();)
 			{
-				SenalJoel senalJoel = (SenalJoel) it.next();
-				Calendar c1 = Calendar.getInstance();
-				c1.setTimeInMillis(senalJoel.tiempoEntrada);
-				if(c.get(Calendar.DATE) == c1.get(Calendar.DATE))
+				try
 				{
-					if(c.get(Calendar.HOUR) > 17)
+					SenalJoel senalJoel = (SenalJoel) it.next();
+					Calendar c1 = Calendar.getInstance();
+					c1.setTimeInMillis(senalJoel.tiempoEntrada);
+					if(c.get(Calendar.DATE) == c1.get(Calendar.DATE))
 					{
-						it.remove();
+						if(c.get(Calendar.HOUR) > 17)
+						{
+							it.remove();
+						}
+						else
+						{
+							double precioActual = dailyOCR.precioPar(senalJoel.par, senalJoel.compra);
+							if((senalJoel.compra && senalJoel.precioEntrada <= precioActual) || (!senalJoel.compra && senalJoel.precioEntrada >= precioActual))
+							{
+								joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, precioActual), senalJoel, false);
+								it.remove();
+							}
+						}
 					}
 					else
 					{
-						double precioActual = dailyOCR.precioPar(senalJoel.par, senalJoel.compra);
-						if((senalJoel.compra && senalJoel.precioEntrada <= precioActual) || (!senalJoel.compra && senalJoel.precioEntrada >= precioActual))
-						{
-							joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, precioActual), senalJoel, false);
-							it.remove();
-						}
+						it.remove();
 					}
 				}
-				else
+				catch(Exception e)
 				{
-					it.remove();
+					Error.agregar("Se produjo un error manejando las recomendaciones de Joel: " + e.getMessage());
 				}
 			}
-			catch(Exception e)
+			joelRecomendaciones.historial.darHistorial().get(0).ganancia = numeroCorreosAnterior;
+			for(Senal senalSimple : senalesLeidas)
 			{
-				Error.agregar("Se produjo un error manejando las recomendaciones de Joel.");
+				try
+				{
+					SenalJoel senalJoel = (SenalJoel) senalSimple;
+					if(senalJoel.recomendado)
+					{
+						joelRecomendaciones.senales.add(senalJoel);
+					}
+					else
+					{
+						joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, senalJoel.precioEntrada), senalJoel, false);
+					}
+				}
+				catch(Exception e)
+				{
+					Error.agregar("Error procesando senal de Joel: " + e.getMessage());
+				}
 			}
 		}
-		joelRecomendaciones.historial.darHistorial().get(0).ganancia = numeroCorreosAnterior;
-		for(Senal senalSimple : senalesLeidas)
+		catch(Exception e)
 		{
-			try
-			{
-				SenalJoel senalJoel = (SenalJoel) senalSimple;
-				if(senalJoel.recomendado)
-				{
-					joelRecomendaciones.senales.add(senalJoel);
-				}
-				else
-				{
-					joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, senalJoel.precioEntrada), senalJoel, false);
-				}
-			}
-			catch(Exception e)
-			{
-				Error.agregar("Error procesando senal de Joel.");
-			}
+			Error.agregar("Se produjo un error en el sistema Joel: " + e.getMessage());
 		}
 	}
 	
