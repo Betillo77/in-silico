@@ -229,7 +229,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 			nuevasSenales.add(actual);
 		}
 		ArrayList <BidAsk> precio = new ArrayList <BidAsk>();
-		for(int i=0;i<bid.size();i++)
+		for(int i=0; i < bid.size(); i++)
 		{
 			if(Par.convertirPar(currency.get(i)) == null)
 			{
@@ -260,11 +260,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 					if(afectada.numeroLotes > senal.numeroLotes)
 					{
 						actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes, 0), afectada, false);
-					}
-					else if(afectada.numeroLotes < senal.numeroLotes)
-					{
-			    		Error.agregar("La señal entrante tiene mas lotes que la que ya existio");
-
 					}
 				}
 				else
@@ -302,8 +297,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 							if(!senal.manual)
 								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, false);
 							if(senal.manual && senal.numeroLotes == 0)
+							{
 								actual.senales.remove(senal);
-							i = -1;
+								i = -1;
+							}
 						}
 					}
 				}

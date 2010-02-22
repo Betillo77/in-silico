@@ -3,6 +3,7 @@ package servidor;
  * ====================================================================
  *
  *  Licensed to the Apache Software Foundation (ASF) under one or more
+
  *  contributor license agreements.  See the NOTICE file distributed with
  *  this work for additional information regarding copyright ownership.
  *  The ASF licenses this file to You under the Apache License, Version 2.0
@@ -27,6 +28,7 @@ package servidor;
 
 
 import java.io.BufferedWriter;
+
 
 import java.io.FileWriter;
 import java.io.InputStream;
@@ -58,6 +60,7 @@ public class ConexionServidor
 	
 	private static final String jsDailyFX = "0E6DACB1E886BC4A0DD46EB443DAF7D9";
 	
+	@SuppressWarnings("unused")
 	private static final String jsTechnical = "DD8561C6129E3E909C6E617163A9D5B7";
 	
     public static String [] leerServidorDailyFX()
@@ -128,7 +131,7 @@ public class ConexionServidor
         try
         {      
                 DefaultHttpClient clienteHttp = new DefaultHttpClient();
-                BasicClientCookie galleta = new BasicClientCookie("JSESSIONIDSSO", jsTechnical);
+                BasicClientCookie galleta = new BasicClientCookie("JSESSIONIDSSO", "1D81C3BEE2EA8CDB1E86E50F5216D2F6");
                 galleta.setVersion(0);
                 galleta.setDomain("plus.dailyfx.com");
                 galleta.setPath("/");
@@ -408,7 +411,7 @@ public class ConexionServidor
     	}
 		catch (Exception ex) 
 		{
-			Error.agregar("Error en la lectura del correo, probablemente de sobre uso, o esta caido el servicio en hotmail " + ex.getMessage());
+			//Error.agregar("Error en la lectura del correo, probablemente de sobre uso, o esta caido el servicio en hotmail " + ex.getMessage());
 		}
 		String[] aDevolver = new String[listaSenales.size()];
 		listaSenales.toArray(aDevolver);

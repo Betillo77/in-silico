@@ -15,6 +15,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	
 	public void cargarEstrategias() 
 	{
+		escritor = new Escritor("technical/");
 		if(t.exists())
 		{
 			technical = Estrategia.leer(t);
@@ -47,7 +48,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		}
 	}
 	
-	protected ArrayList <Senal> leer(String [] contenidos)
+	protected ArrayList <Senal> leer(String[] contenidos)
 	{
 		ArrayList <Senal> nuevas = new ArrayList <Senal> (10);
 		try
@@ -111,7 +112,6 @@ public class SistemaTechnical extends SistemaEstrategias
 						if(senal.compra != otra.compra)
 						{
 							technical.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, 1, 0), otra, false);
-							break;
 						}
 					}
 				}
@@ -119,41 +119,28 @@ public class SistemaTechnical extends SistemaEstrategias
 				{
 			    	SenalEntrada nueva = new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, 1, dailyOCR.precioPar(senal.par, senal.compra));
 			    	nueva.limite = senal.precioEntrada;
-			    	if(nueva.limite > 10)
-			    	{
-			    		double anteriorLimite;
-			    		if(senal.compra)
-			    			anteriorLimite = senal.precioEntrada - 0.8;
-			    		else
-			    			anteriorLimite = senal.precioEntrada + 0.8;
-			    		if(senal.compra && dailyOCR.precioPar(senal.par, senal.compra) > anteriorLimite)
-			    			break;
-			    		if(!senal.compra && dailyOCR.precioPar(senal.par, senal.compra) < anteriorLimite)
-			    			break;
-			    	}
+					double precioActual = dailyOCR.precioPar(senal.par, !senal.compra);
+			    	double cambio = nueva.limite > 10 ?	0.8 : 0.08;
+			    	double anteriorLimite;
+			    	if(senal.compra)
+			    		anteriorLimite = nueva.limite - cambio;
 			    	else
-			    	{
-			    		double anteriorLimite;
-			    		if(senal.compra)
-			    			anteriorLimite = senal.precioEntrada - 0.008;
-			    		else
-			    			anteriorLimite = senal.precioEntrada + 0.008;
-			    		if(senal.compra && dailyOCR.precioPar(senal.par, senal.compra) > anteriorLimite)
-			    			break;
-			    		if(!senal.compra && dailyOCR.precioPar(senal.par, senal.compra) < anteriorLimite)
-			    			break;
-			    	}
+			    		anteriorLimite = nueva.limite + cambio;
+			    	if(senal.compra && precioActual > anteriorLimite)
+			    		continue;
+			    	if(!senal.compra && precioActual < anteriorLimite)
+			    		continue;
 					technical.agregar(nueva, senal, false);
 				}
 			}
 			for(Senal otra : technical.senales)
 			{
-				double otroPrecio = dailyOCR.precioPar(otra.par, !otra.compra);
-				if(otra.compra && otra.limite < otroPrecio)
+				double precioActual = dailyOCR.precioPar(otra.par, !otra.compra);
+				if(otra.compra && otra.limite < precioActual)
 				{
 					technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
 				}
-				if(!otra.compra && otra.limite > otroPrecio)
+				if(!otra.compra && otra.limite > precioActual)
 				{
 					technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
 				}

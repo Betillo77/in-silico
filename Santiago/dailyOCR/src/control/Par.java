@@ -109,7 +109,6 @@ public enum Par implements Serializable
 		}
 		else
 		{
-			Error.agregar("El par no se encuentra dentro de los pares: " + cuerpo);
 			par = null;
 		}
 		return par;

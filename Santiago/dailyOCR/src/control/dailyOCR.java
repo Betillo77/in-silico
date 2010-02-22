@@ -28,23 +28,21 @@ public class dailyOCR
 	public static int errores = 0;
 	
 	static File log = new File(pathPrincipal + "log.txt");
-	static Escritor escritorTechnical = new Escritor("");
-	static Escritor escritorJoel = new Escritor("");
 	
 	static SistemaEstrategias [] sistemas;
 	
 	public static void cargarSistemasEstrategias()
 	{
-		sistemas = new SistemaEstrategias[3];
+		sistemas = new SistemaEstrategias[1];
 		SistemaEstrategias sdfx = new SistemaDailyFX();
 		sdfx.cargarEstrategias();
 		sistemas[0] = sdfx;
-		SistemaEstrategias joel = new SistemaJoel();
-		joel.cargarEstrategias();
-		sistemas[1] = joel;	
-		SistemaEstrategias technical = new SistemaTechnical();
-		technical.cargarEstrategias();
-		sistemas[2] = technical;
+//		SistemaEstrategias joel = new SistemaJoel();
+//		joel.cargarEstrategias();
+//		sistemas[1] = joel;	
+//		SistemaEstrategias technical = new SistemaTechnical();
+//		technical.cargarEstrategias();
+//		sistemas[2] = technical;
 	}
 	
 	public static void inicio()
@@ -58,7 +56,7 @@ public class dailyOCR
 				{
 					se.verificarConsistencia();
 				}
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 				try
 				{
 					for(SistemaEstrategias se : sistemas)
@@ -192,7 +190,7 @@ public class dailyOCR
 		synchronized(darEstrategiaSenal(senal).senales)
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
-			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, true);
+			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, !senal.manual);
 			estrategiaSenal.escritor.escribir();
 			estrategiaSenal.escritor.leerMagicos();
 		}

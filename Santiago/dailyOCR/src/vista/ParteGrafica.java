@@ -19,6 +19,8 @@ public class ParteGrafica extends JPanel {
 	private JButton Momentum2 = null;
 	private JButton orden = null;
 	private JButton salir = null;
+	private JButton joel = null;
+	private JButton technical = null;
 	
 	/**
 	 * This is the default constructor
@@ -35,16 +37,18 @@ public class ParteGrafica extends JPanel {
 	 */
 	private void initialize() {
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.setRows(4);
+		gridLayout.setRows(5);
 		gridLayout.setColumns(2);
 		this.setLayout(gridLayout);
-		this.setSize(259, 244);
+		this.setSize(259, 290);
 		this.add(getBreakout1(), null);
 		this.add(getBreakout2(), null);
 		this.add(getRange1(), null);
 		this.add(getRange2(), null);
 		this.add(getMomentum1(), null);
 		this.add(getMomentum2(), null);
+		this.add(getTechnical(), null);
+		this.add(getJoel(), null);
 		this.add(getOrden(), null);
 		this.add(getSalir(), null);
 	}
@@ -199,5 +203,43 @@ public class ParteGrafica extends JPanel {
 		}
 		return salir;
 	}
-}
+
+	/**
+	 * This method initializes joel	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getJoel() {
+		if (joel == null) {
+			joel = new JButton();
+			joel.setText("Joel");
+			joel.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					new TablaEstrategia(IdEstrategia.JOEL);
+					new AnalisisGrafico(IdEstrategia.JOEL);
+				}
+			});
+		}
+		return joel;
+	}
+
+	/**
+	 * This method initializes technical	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getTechnical() {
+		if (technical == null) {
+			technical = new JButton();
+			technical.setText("Technical");
+			technical.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					new TablaEstrategia(IdEstrategia.TECHNICAL);
+					new AnalisisGrafico(IdEstrategia.TECHNICAL);
+				}
+			});
+		}
+		return technical;
+	}
+}  //  @jve:decl-index=0:visual-constraint="10,10"
   //  @jve:decl-index=0:visual-constraint="189,13"

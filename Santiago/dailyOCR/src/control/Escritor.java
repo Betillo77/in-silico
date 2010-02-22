@@ -3,6 +3,7 @@ package control;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -10,8 +11,10 @@ import java.util.Scanner;
 
 
 
-public class Escritor 
+public class Escritor implements Serializable
 {
+	private static final long serialVersionUID = -6112706980498122769L;
+	
 	public ArrayList <String> lineas = new ArrayList <String> ();
 	public ArrayList <Senal> senales = new ArrayList <Senal> ();
 	public String pathMeta;
@@ -61,6 +64,10 @@ public class Escritor
 			{
 	    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos");
 			}
+		}
+		else
+		{
+			return;
 		}
 		int numeroVeces = 0;
 		try
@@ -117,13 +124,13 @@ public class Escritor
 				{
 					Scanner sc2 = new Scanner(sc.next());
 					sc2.useDelimiter("\\Q;\\E");
-					sc2.next();
 					int magico = sc2.nextInt();
 					actual.magico[numeroActual++] = magico;
 					if(numeroActual == actual.numeroLotes)
 					{
 						numeroActual = 0;
-						actual = it.next();
+						if(it.hasNext())
+							actual = it.next();
 					}
 					sc2.close();
 				}

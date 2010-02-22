@@ -13,7 +13,7 @@ import servidor.ConexionServidor;
 
 public class SistemaJoel extends SistemaEstrategias 
 {
-	static final String pathPrincipal = "";
+	static final String pathPrincipal = "joel";
 	public static int numeroCorreosAnterior = 0;
 	Estrategia joel;
 	Estrategia joelRecomendaciones;
@@ -22,6 +22,7 @@ public class SistemaJoel extends SistemaEstrategias
 
 	public void cargarEstrategias() 
 	{
+		escritor = new Escritor("joel/");
 		if(j.exists())
 		{
 			joel = Estrategia.leer(j);

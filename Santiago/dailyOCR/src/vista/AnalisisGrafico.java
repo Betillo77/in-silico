@@ -526,13 +526,13 @@ class ManejadorAnalisisGrafico
 		else
 		{
 			objetos = new ArrayList <Object> ();
-			objetos.add(new long[0][0]);
+			objetos.add(new long[1][0]);
 			objetos.add(0.0D);
 			int a = 1;
 			objetos.add(a);
 			objetos.add(1L);
 			objetos.add(0.0D);
-			objetos.add(new double[0][0]);
+			objetos.add(new double[1][0]);
 			objetos.add(new ArrayList <String> ());
 		}
 		this.divisaActual = divisaActual;
