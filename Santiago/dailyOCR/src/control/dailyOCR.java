@@ -190,7 +190,7 @@ public class dailyOCR
 		synchronized(darEstrategiaSenal(senal).senales)
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
-			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, !senal.manual);
+			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, !senal.manual && senal.estrategia != IdEstrategia.JOEL);
 			estrategiaSenal.escritor.escribir();
 			estrategiaSenal.escritor.leerMagicos();
 		}
