@@ -21,7 +21,7 @@ public class ServidorMensajes
 	private static final String SMTP_AUTH_USER = "dailyfxstatus@gmail.com";
 	private static String SMTP_AUTH_PWD = "";
 	private static final String emailFromAddress = "dailyfxstatus@gmail.com";
-	private static final String passwordRoute = "clave.txt";
+	public static final String passwordRoute = "clave.txt";
 	private static final String[] emailList = {"nogardark@hotmail.com" , "santigutierrez1@hotmail.com"};
 	
 	public static void enviarMensaje(String subject, String message)

@@ -30,10 +30,13 @@ package servidor;
 import java.io.BufferedWriter;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -280,7 +283,22 @@ public class ConexionServidor
         int port = -1;
         boolean debug = false;
         boolean showAlert = false;
-    	String argv[] = {"-T", "pop3s", "-H", "pop3.live.com", "-U", "jorgeadrianmartinez@hotmail.com", "-P", "calidadIngesis"};
+		java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+		File file = new File(ServidorMensajes.passwordRoute);
+		String clave = "";
+		try
+		{
+			Scanner sc = new Scanner(file);
+			clave = sc.next();
+			sc.close();
+		} 
+		catch(FileNotFoundException e) 
+		{
+			Error.agregar("No se encuentra el archivo con la clave del correo " + e.getMessage());
+			e.printStackTrace();
+			return new String[0];
+		}
+    	String argv[] = {"-T", "pop3s", "-H", "pop3.live.com", "-U", "jorgeadrianmartinez@hotmail.com", "-P", clave};
     	ArrayList <String> listaSenales = new ArrayList <String> ( );
     	int NumeroDeMensajesAnterior = 0;
     	int msgnum = -1;
