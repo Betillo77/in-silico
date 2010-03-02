@@ -166,7 +166,7 @@ public class dailyOCR
 				return posible.senales;
 			}
 		}
-		Error.agregar("No se encontraron las señales de: " + estrategia.toString());
+		Error.agregar("No se encontraron las seï¿½ales de: " + estrategia.toString());
 		return null;
 		
 	}
@@ -181,7 +181,7 @@ public class dailyOCR
 				return posible;
 			}
 		}
-		Error.agregar("No se encontraron las señales de: " + senal.estrategia.toString());
+		Error.agregar("No se encontraron las seï¿½ales de: " + senal.estrategia.toString());
 		return null;
 	}
 	

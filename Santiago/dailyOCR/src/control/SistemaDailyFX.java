@@ -33,7 +33,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 	
 	public void cargarEstrategias()
 	{
-		escritor = new Escritor("C:/Program Files (x86)/dailyFX/experts/files/");
+		escritor = new Escritor("dailyFX/experts/files/");
 		if(b1.exists())
 		{
 			breakout1 = Estrategia.leer(b1);
@@ -145,101 +145,109 @@ public class SistemaDailyFX extends SistemaEstrategias
 
 	protected ArrayList <Senal> leer(String [] entradas)
 	{
-		String entrada = entradas[0];
-		String entrada1 = entrada.substring(entrada.indexOf("\"Signal\":["));
-		ArrayList <Integer> curoplots = new ArrayList <Integer> ();
-		ArrayList <Integer> strategyid = new ArrayList <Integer> ();
-		ArrayList <String> symbol = new ArrayList <String> ();
-		ArrayList <String> direction = new ArrayList <String> ();
-		ArrayList <Double> entryprice = new ArrayList <Double> ();
-		ArrayList <Double> bid = new ArrayList <Double> ();
-		ArrayList <Double> ask = new ArrayList <Double> ();
-		ArrayList <String> currency = new ArrayList <String> ();
-		Pattern pattern = Pattern.compile("\\d+,\"strategyId\":\\d+");
-		Pattern pattern2 = Pattern.compile("\"strategyId\":\\d+");
-		Pattern pattern3 = Pattern.compile("\"symbol\":\"\\w+\"");
-		Pattern pattern4 = Pattern.compile("\"direction\":\"\\w+\"");
-		Pattern pattern5 = Pattern.compile("\"entryPrice\":\\d+.\\d+");
-		Pattern pattern6 = Pattern.compile("\"bid\":\\d+.\\d+");
-		Pattern pattern7 = Pattern.compile("\"ask\":\\d+.\\d+");
-		Pattern pattern8 = Pattern.compile("\"currency\":\"\\w+\"");
-		Matcher matcher = pattern.matcher(entrada1);
-		Matcher matcher2 = pattern2.matcher(entrada1);
-		Matcher matcher3 = pattern3.matcher(entrada1);
-		Matcher matcher4 = pattern4.matcher(entrada1);
-		Matcher matcher5 = pattern5.matcher(entrada1);
-		Matcher matcher6 = pattern6.matcher(entrada);
-		Matcher matcher7 = pattern7.matcher(entrada);
-		Matcher matcher8 = pattern8.matcher(entrada);
-		while(matcher.find()) 
-		{  
-			String S = matcher.group();
-			S = S.substring(0, 1);
-			curoplots.add(Integer.parseInt(S));
-		} 
-		while(matcher2.find())
+		try
 		{
-			String S = matcher2.group();
-			S = S.substring(13);
-			strategyid.add(Integer.parseInt(S));  
-		}
-		while(matcher3.find()) 
-		{
-			String S = matcher3.group();
-			S = S.substring(10);
-			S = S.replace("\"", "");
-			symbol.add(S);
-  		}
-		while(matcher4.find()) 
-		{
-	  		String S = matcher4.group();
-	  		S = S.substring(13);
-	  		S = S.replace("\"", "");
-	  		direction.add(S);
-		}
-		while (matcher5.find()) 
-		{
-			String S = matcher5.group();
-			S = S.substring(13);
-			entryprice.add(Double.parseDouble(S));	
-		}
-		while (matcher6.find())
-		{
-			String S = matcher6.group();
-			S = S.substring(6);
-			bid.add(Double.parseDouble(S));	
-		}
-		while (matcher7.find())
-		{
-			String S = matcher7.group();
-			S = S.substring(6);
-			ask.add(Double.parseDouble(S));	
-		}
-		while (matcher8.find())
-		{
-			String S = matcher8.group();
-			S = S.substring(12);
-	  		S = S.replace("\"", "");
-	  		currency.add(S);
-		}
-		ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
-		for(int i = 0; i<curoplots.size(); i++)
-		{
-			Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), Par.convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
-			nuevasSenales.add(actual);
-		}
-		ArrayList <BidAsk> precio = new ArrayList <BidAsk>();
-		for(int i=0; i < bid.size(); i++)
-		{
-			if(Par.convertirPar(currency.get(i)) == null)
+			String entrada = entradas[0];
+			String entrada1 = entrada.substring(entrada.indexOf("\"Signal\":["));
+			ArrayList <Integer> curoplots = new ArrayList <Integer> ();
+			ArrayList <Integer> strategyid = new ArrayList <Integer> ();
+			ArrayList <String> symbol = new ArrayList <String> ();
+			ArrayList <String> direction = new ArrayList <String> ();
+			ArrayList <Double> entryprice = new ArrayList <Double> ();
+			ArrayList <Double> bid = new ArrayList <Double> ();
+			ArrayList <Double> ask = new ArrayList <Double> ();
+			ArrayList <String> currency = new ArrayList <String> ();
+			Pattern pattern = Pattern.compile("\\d+,\"strategyId\":\\d+");
+			Pattern pattern2 = Pattern.compile("\"strategyId\":\\d+");
+			Pattern pattern3 = Pattern.compile("\"symbol\":\"\\w+\"");
+			Pattern pattern4 = Pattern.compile("\"direction\":\"\\w+\"");
+			Pattern pattern5 = Pattern.compile("\"entryPrice\":\\d+.\\d+");
+			Pattern pattern6 = Pattern.compile("\"bid\":\\d+.\\d+");
+			Pattern pattern7 = Pattern.compile("\"ask\":\\d+.\\d+");
+			Pattern pattern8 = Pattern.compile("\"currency\":\"\\w+\"");
+			Matcher matcher = pattern.matcher(entrada1);
+			Matcher matcher2 = pattern2.matcher(entrada1);
+			Matcher matcher3 = pattern3.matcher(entrada1);
+			Matcher matcher4 = pattern4.matcher(entrada1);
+			Matcher matcher5 = pattern5.matcher(entrada1);
+			Matcher matcher6 = pattern6.matcher(entrada);
+			Matcher matcher7 = pattern7.matcher(entrada);
+			Matcher matcher8 = pattern8.matcher(entrada);
+			while(matcher.find()) 
+			{  
+				String S = matcher.group();
+				S = S.substring(0, 1);
+				curoplots.add(Integer.parseInt(S));
+			} 
+			while(matcher2.find())
 			{
-				continue;
+				String S = matcher2.group();
+				S = S.substring(13);
+				strategyid.add(Integer.parseInt(S));  
 			}
-			BidAsk actual = new BidAsk(bid.get(i), ask.get(i), Par.convertirPar(currency.get(i)));
-			precio.add(actual);
+			while(matcher3.find()) 
+			{
+				String S = matcher3.group();
+				S = S.substring(10);
+				S = S.replace("\"", "");
+				symbol.add(S);
+	  		}
+			while(matcher4.find()) 
+			{
+		  		String S = matcher4.group();
+		  		S = S.substring(13);
+		  		S = S.replace("\"", "");
+		  		direction.add(S);
+			}
+			while (matcher5.find()) 
+			{
+				String S = matcher5.group();
+				S = S.substring(13);
+				entryprice.add(Double.parseDouble(S));	
+			}
+			while (matcher6.find())
+			{
+				String S = matcher6.group();
+				S = S.substring(6);
+				bid.add(Double.parseDouble(S));	
+			}
+			while (matcher7.find())
+			{
+				String S = matcher7.group();
+				S = S.substring(6);
+				ask.add(Double.parseDouble(S));	
+			}
+			while (matcher8.find())
+			{
+				String S = matcher8.group();
+				S = S.substring(12);
+		  		S = S.replace("\"", "");
+		  		currency.add(S);
+			}
+			ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
+			for(int i = 0; i<curoplots.size(); i++)
+			{
+				Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), Par.convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
+				nuevasSenales.add(actual);
+			}
+			ArrayList <BidAsk> precio = new ArrayList <BidAsk>();
+			for(int i=0; i < bid.size(); i++)
+			{
+				if(Par.convertirPar(currency.get(i)) == null)
+				{
+					continue;
+				}
+				BidAsk actual = new BidAsk(bid.get(i), ask.get(i), Par.convertirPar(currency.get(i)));
+				precio.add(actual);
+			}
+			dailyOCR.preciosActuales = precio;
+			return nuevasSenales;
 		}
-		dailyOCR.preciosActuales = precio;
-		return nuevasSenales;
+		catch(Exception e)
+		{
+			Error.agregar("Error leyendo las senales de DailyFX " + e.getMessage());
+			throw(new RuntimeException("Error de lectura"));
+		}
 	}
 
 	protected void procesar(ArrayList <Senal> senalesLeidas)
@@ -308,7 +316,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-    		Error.agregar(e.getMessage() + ": Error al procesar señales de dailyFX.");
+    		Error.agregar(e.getMessage() + ": Error al procesar seï¿½ales de dailyFX.");
 		}
 	}
 

@@ -2,7 +2,6 @@ package control;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +30,7 @@ public class Escritor implements Serializable
 			File archivoEscritura = new File(pathMeta + "ordenes.txt");
 			if(!lineas.isEmpty())
 			{
+				archivoEscritura.createNewFile();
 				FileWriter fw = new FileWriter(archivoEscritura, true);
 				for(String linea : lineas.subList(0, lineas.size() - 1))
 				{
@@ -58,7 +58,7 @@ public class Escritor implements Serializable
 		{
 			try 
 			{
-				Thread.sleep(30000 + 20000 * numero);
+				Thread.sleep(60000 + 30000 * numero);
 			}
 			catch (InterruptedException e) 
 			{
@@ -77,30 +77,13 @@ public class Escritor implements Serializable
 				numeroVeces++;
 				if(numeroVeces == 100)
 				{
-					Error.agregar("Error de lectura, intentando reiniciar.");
-					Runtime.getRuntime().exec("reiniciar.bat");
-					Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
-					{
-	
-						@Override
-						public void run() 
-						{
-							try 
-							{
-								Runtime.getRuntime().exec("reiniciar.bat");
-							} 
-							catch (IOException e)
-							{
-					    		Error.agregar(e.getMessage() + " Error reiniciando");
-							}
-						}
-					}));
-					System.exit(0);
+					Error.agregar("Error de lectura, magicos no fueron leidos");
+					return;
 				}
 				File archivoMagicos = new File(pathMeta + "magicos.txt");
 				if(!archivoMagicos.exists())
 				{
-					Thread.sleep(10000);
+					Thread.sleep(30000);
 				}
 				else
 					break;
@@ -111,9 +94,17 @@ public class Escritor implements Serializable
 			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico");
 			return;
 		}
-		for(int i = 0; i < 3 && !termino; i++)
+		for(int i = 0; i < 60 && !termino; i++)
 		{
 			Scanner sc = new Scanner("1");
+			if(i != 0)
+				try 
+				{
+					Thread.sleep(60000);
+				} 
+				catch (InterruptedException e1)
+				{
+				}
 			try 
 			{
 				sc = new Scanner(new File(pathMeta + "magicos.txt"));
@@ -144,10 +135,10 @@ public class Escritor implements Serializable
 			finally
 			{
 				sc.close();
-				if(new File(pathMeta + "magicos.txt").canWrite())
-					new File(pathMeta + "magicos.txt").delete();
 			}
 		}
+		if(new File(pathMeta + "magicos.txt").canWrite())
+			new File(pathMeta + "magicos.txt").delete();
 		senales.clear();
 	}
 
