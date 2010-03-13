@@ -1,11 +1,10 @@
 package control;
-import java.io.File;
-
 import java.util.ArrayList;
 
-import control.conexion.ConexionServidor;
-
+import modelo.Estrategia;
+import modelo.Senal;
 import modelo.SenalEntrada;
+import control.conexion.ConexionServidor;
 
 
 
@@ -14,21 +13,12 @@ import modelo.SenalEntrada;
 public class SistemaTechnical extends SistemaEstrategias 
 {
 	Estrategia technical;
-	File t = new File(pathPersistencia + "technical.o");
 	
 	public void cargarEstrategias() 
 	{
 		escritor = new Escritor("technical/");
-		if(t.exists())
-		{
-			technical = Estrategia.leer(t);
-			if(technical == null)
-			{
-				t.delete();
-				technical = new Estrategia(IdEstrategia.TECHNICAL);
-			}
-		}
-		else
+		technical = Estrategia.leer(IdEstrategia.TECHNICAL);
+		if(technical == null)
 		{
 			technical = new Estrategia(IdEstrategia.TECHNICAL);
 		}
@@ -157,7 +147,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	
 	public void persistir() 
 	{
-		technical.escribir(t);
+		technical.escribir();
 	}
 	
 	public Estrategia darEstrategia(IdEstrategia id)

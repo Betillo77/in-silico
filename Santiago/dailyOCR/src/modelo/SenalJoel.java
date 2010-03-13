@@ -2,7 +2,6 @@ package modelo;
 
 import control.IdEstrategia;
 import control.Par;
-import control.Senal;
 
 
 

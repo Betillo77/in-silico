@@ -15,6 +15,8 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import modelo.BidAsk;
+import modelo.Estrategia;
+import modelo.Senal;
 import modelo.SenalEntrada;
 
 

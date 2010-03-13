@@ -1,14 +1,13 @@
 package control;
-import java.io.File;
-
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import control.conexion.ConexionServidor;
-
 import modelo.BidAsk;
+import modelo.Estrategia;
+import modelo.Senal;
 import modelo.SenalEntrada;
+import control.conexion.ConexionServidor;
 
 
 
@@ -17,108 +16,49 @@ import modelo.SenalEntrada;
 public class SistemaDailyFX extends SistemaEstrategias
 {
 	Estrategia breakout1;
-	File b1 = new File(pathPersistencia + "breakout1.o");
-	
 	Estrategia breakout2;
-	File b2 = new File(pathPersistencia + "breakout2.o");
-	
 	Estrategia range1;
-	File r1 = new File(pathPersistencia + "range1.o");
-
 	Estrategia range2;
-	File r2 = new File(pathPersistencia + "range2.o");
-	
 	Estrategia momentum1;
-	File m1 = new File(pathPersistencia + "momentum1.o");
-	
 	Estrategia momentum2;
-	File m2 = new File(pathPersistencia + "momentum2.o");
 	
 	ArrayList <Estrategia> estrategias;
 	
 	public void cargarEstrategias()
 	{
 		escritor = new Escritor("dailyFX/experts/files/");
-		if(b1.exists())
-		{
-			breakout1 = Estrategia.leer(b1);
-			if(breakout1 == null)
-			{
-				b1.delete();
-				breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
-			}
-		}
-		else
+		breakout1 = Estrategia.leer(IdEstrategia.BREAKOUT1);
+		if(breakout1 == null)
 		{
 			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
 		}
 		breakout1.escritor = escritor;
-		if(b2.exists())
-		{
-			breakout2 = Estrategia.leer(b2);
-			if(breakout2 == null)
-			{
-				b2.delete();
-				breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
-			}
-		}
-		else
+		breakout2 = Estrategia.leer(IdEstrategia.BREAKOUT2);
+		if(breakout2 == null)
 		{
 			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
 		}
 		breakout2.escritor = escritor;
-		if(r1.exists())
-		{
-			range1 = Estrategia.leer(r1);
-			if(range1 == null)
-			{
-				r1.delete();
-				range1 = new Estrategia(IdEstrategia.RANGE1);
-			}
-		}
-		else
+		range1 = Estrategia.leer(IdEstrategia.RANGE1);
+		if(range1 == null)
 		{
 			range1 = new Estrategia(IdEstrategia.RANGE1);
 		}
 		range1.escritor = escritor;
-		if(r2.exists())
-		{
-			range2 = Estrategia.leer(r2);
-			if(range2 == null)
-			{
-				r2.delete();
-				range2 = new Estrategia(IdEstrategia.RANGE2);
-			}
-		}
-		else
+		range2 = Estrategia.leer(IdEstrategia.RANGE2);
+		if(range2 == null)
 		{
 			range2 = new Estrategia(IdEstrategia.RANGE2);
 		}
 		range2.escritor = escritor;
-		if(m1.exists())
-		{
-			momentum1 = Estrategia.leer(m1);
-			if(momentum1 == null)
-			{
-				m1.delete();
-				momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
-			}
-		}
-		else
+		momentum1 = Estrategia.leer(IdEstrategia.MOMENTUM1);
+		if(momentum1 == null)
 		{
 			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
 		}
 		momentum1.escritor = escritor;
-		if(m2.exists())
-		{
-			momentum2 = Estrategia.leer(m2);
-			if(momentum2 == null)
-			{
-				m2.delete();
-				momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
-			}
-		}
-		else
+		momentum2 = Estrategia.leer(IdEstrategia.MOMENTUM2);
+		if(momentum2 == null)
 		{
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
@@ -327,12 +267,12 @@ public class SistemaDailyFX extends SistemaEstrategias
 
 	public void persistir() 
 	{
-		breakout1.escribir(b1);
-		breakout2.escribir(b2);
-		range1.escribir(r1);
-		range2.escribir(r2);
-		momentum1.escribir(m1);
-		momentum2.escribir(m2);
+		breakout1.escribir();
+		breakout2.escribir();
+		range1.escribir();
+		range2.escribir();
+		momentum1.escribir();
+		momentum2.escribir();
 	}
 
 	public Estrategia darEstrategia(IdEstrategia id)

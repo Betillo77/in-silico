@@ -9,10 +9,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import control.Estrategia;
+import modelo.Estrategia;
+import modelo.Senal;
+
+
 import control.IdEstrategia;
 import control.Par;
-import control.Senal;
 import control.dailyOCR;
 
 public class FormatoPares extends JDialog {

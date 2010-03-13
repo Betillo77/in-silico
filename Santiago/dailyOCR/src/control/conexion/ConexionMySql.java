@@ -41,6 +41,34 @@ public class ConexionMySql
 		}
 	}
 	
+	public synchronized static void guardarPersistencia(IdEstrategia id, String xml) 
+	{
+		try
+		{
+			Statement st = conexion.createStatement();
+		    st.executeUpdate("UPDATE Persistencia set Datos='" + xml + "' where IdEstrategia=" + (id.ordinal() + 1));
+		}
+		catch (SQLException s)
+		{
+			Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + xml); 
+		}
+	}
+	
+	public synchronized static String cargarPersistencia(IdEstrategia id) 
+	{
+		try 
+		{
+			ResultSet rs = conexion.createStatement().executeQuery("select * from Persistencia where IdEstrategia=" + (id.ordinal() + 1));
+			rs.next();
+			return rs.getString(2);
+		} 
+		catch (SQLException e) 
+		{
+			JOptionPane.showMessageDialog(null, "Error haciendo la lectura de la persistencia de la base de datos");
+			return "";
+		}
+	}
+	
     public static Connection dbConnect(String db_connect_string, String db_userid, String db_password)
     {
         try

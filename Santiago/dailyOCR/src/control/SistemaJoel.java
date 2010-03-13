@@ -1,16 +1,15 @@
 package control;
-import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import control.conexion.ConexionServidor;
-
+import modelo.Estrategia;
+import modelo.Senal;
 import modelo.SenalEntrada;
 import modelo.SenalJoel;
+import control.conexion.ConexionServidor;
 
 
 
@@ -21,36 +20,18 @@ public class SistemaJoel extends SistemaEstrategias
 	public static int numeroCorreosAnterior = 0;
 	Estrategia joel;
 	Estrategia joelRecomendaciones;
-	File j = new File(pathPrincipal + "joel.o");
-	File jr = new File(pathPrincipal + "joelRecomendaciones.o");
 
 	public void cargarEstrategias() 
 	{
 		escritor = new Escritor("joel/");
-		if(j.exists())
-		{
-			joel = Estrategia.leer(j);
-			if(joel == null)
-			{
-				j.delete();
-				joel = new Estrategia(IdEstrategia.JOEL);
-			}
-		}
-		else
+		joel = Estrategia.leer(IdEstrategia.JOEL);
+		if(joel == null)
 		{
 			joel = new Estrategia(IdEstrategia.JOEL);
 		}
 		joel.escritor = escritor;
-		if(jr.exists())
-		{
-			joelRecomendaciones = Estrategia.leer(jr);
-			if(joelRecomendaciones == null)
-			{
-				jr.delete();
-				joelRecomendaciones = new Estrategia(IdEstrategia.JOELRECOMENDACIONES);
-			}
-		}
-		else
+		joelRecomendaciones = Estrategia.leer(IdEstrategia.JOELRECOMENDACIONES);
+		if(joelRecomendaciones == null)
 		{
 			joelRecomendaciones = new Estrategia(IdEstrategia.JOELRECOMENDACIONES);
 		}
@@ -227,8 +208,8 @@ public class SistemaJoel extends SistemaEstrategias
 	
 	public void persistir() 
 	{
-		joel.escribir(j);
-		joelRecomendaciones.escribir(jr);
+		joel.escribir();
+		joelRecomendaciones.escribir();
 	}
 	
 	public Estrategia darEstrategia(IdEstrategia id)

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import modelo.Estrategia;
+import modelo.Senal;
 import modelo.SenalEntrada;
 
 

@@ -8,10 +8,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
+import modelo.Senal;
+
+
 
 import control.IdEstrategia;
 import control.Par;
-import control.Senal;
 import control.dailyOCR;
 
 import java.awt.*;

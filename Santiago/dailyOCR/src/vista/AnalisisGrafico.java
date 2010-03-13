@@ -26,6 +26,10 @@ import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
 
+
+import modelo.Estrategia;
+import modelo.Senal;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
@@ -34,10 +38,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import control.AnalisisLogica;
-import control.Estrategia;
 import control.IdEstrategia;
 import control.Par;
-import control.Senal;
 import control.dailyOCR;
 
 import javax.swing.JCheckBox;

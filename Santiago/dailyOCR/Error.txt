@@ -112,3 +112,15 @@ Error al enviar el correo 454 4.7.0 Cannot authenticate due to temporary system 
 
 control.IdEstrategia Error al leer estrategia
 No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+Error al enviar el correo 454 4.7.0 Cannot authenticate due to temporary system problem. Try again later. 24sm570877eyx.8
+
+control.Estrategia Error al leer estrategia
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+No se encuentra el archivo con la clave del correo clave.txt (No such file or directory)
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero ó directorio)
+No se encuentra el archivo con la clave del correo clave.txt (No such file or directory)

@@ -2,6 +2,10 @@ package control;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import modelo.Estrategia;
+import modelo.Senal;
+
+
 
 public abstract class SistemaEstrategias
 {
