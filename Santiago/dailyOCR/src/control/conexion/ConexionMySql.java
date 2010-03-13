@@ -2,13 +2,14 @@ package control.conexion;
 
 import java.sql.*;
 
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import control.Entrada;
+import control.AnalisisLogica.Entrada;
 import control.IdEstrategia;
 import control.Par;
 import control.Error;

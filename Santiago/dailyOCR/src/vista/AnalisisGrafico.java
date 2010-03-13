@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.Choice;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -8,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,6 +20,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
@@ -31,7 +35,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import control.AnalisisLogica;
 import control.Estrategia;
-import control.HistorialEstrategia;
 import control.IdEstrategia;
 import control.Par;
 import control.Senal;
@@ -71,7 +74,6 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JLabel desviacion = null;
 	private JLabel desviacionT = null;
 	private JLabel pips1 = null;
-	private JCheckBox activo = null;
 	
 	/**
 	 * This is the default constructor
@@ -101,7 +103,38 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private void initialize() {
 		this.setSize(1237, 626);
 		this.setContentPane(getJContentPane());
-		this.setTitle("JFrame");
+		this.setTitle(manejador.estrategia.toString());
+		this.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {	
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+			}
+		});
 	}
 
 	/**
@@ -199,9 +232,6 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		jContentPane.add(desviacion, null);
 		jContentPane.add(desviacionT, null);
 		jContentPane.add(pips1, null);
-		jContentPane.add(getActivo(), null);
-		Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(manejador.estrategia, false, Par.AUDJPY, 0, 0));
-		activo.setSelected(estrategia.darActivo(manejador.divisaActual));
 		if(choice.getItemCount() == 0)
 		{
 			ButtonGroup bg = new ButtonGroup();
@@ -431,20 +461,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		initialize();
 		jContentPane.revalidate();
 	}
-
-	/**
-	 * This method initializes activo	
-	 * 	
-	 * @return javax.swing.JCheckBox	
-	 */
-	private JCheckBox getActivo() {
-		if (activo == null) {
-			activo = new JCheckBox();
-			activo.setBounds(new Rectangle(177, 58, 68, 21));
-			activo.setText("activo");
-			activo.addActionListener(this);
-		}
-		return activo;
+	
+	public static void main(String [] args)
+	{
+		new AnalisisGrafico(IdEstrategia.values()[JOptionPane.showOptionDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)]);
 	}
 }  //  @jve:decl-index=0:visual-constraint="5,7"
 
