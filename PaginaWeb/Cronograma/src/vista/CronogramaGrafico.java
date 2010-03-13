@@ -156,6 +156,7 @@ public class CronogramaGrafico extends JApplet
 	public void init() {
 		try
 		{
+			ConexionBaseDatos.SERVIDOR = getCodeBase().toString();
 			integrantes = ConexionBaseDatos.darIntegrantes();
 			Integrante[] i = new Integrante[integrantes.size()];
 			integrantes.toArray(i);

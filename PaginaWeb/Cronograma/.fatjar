@@ -1,10 +1,10 @@
 #Fat Jar Configuration File
-#Tue Mar 09 19:39:23 COT 2010
+#Sat Mar 13 11:11:30 COT 2010
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
-jarname=Cronograma_fat.jar
+jarname=p.jar
 manifest.mergeall=true
 manifest.mainclass=
 manifest.file=<createnew>

@@ -25,7 +25,7 @@ import org.apache.http.protocol.HTTP;
 public class ConexionBaseDatos 
 {
 	
-	private static final String SERVIDOR = "http://10.42.43.1/phptest/in-silico/applet_php/";
+	public static String SERVIDOR;
 	private static final String SCRIPT1 = "cronJava.php";
 	private static final String SCRIPT2 = "cronJava.php";
 	private static final String SCRIPT3 = "cronJava.php";
