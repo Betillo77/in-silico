@@ -3,8 +3,11 @@ import java.io.File;
 
 import java.util.ArrayList;
 
+import control.conexion.ConexionServidor;
 
-import servidor.ConexionServidor;
+import modelo.SenalEntrada;
+
+
 
 
 
@@ -86,13 +89,13 @@ public class SistemaTechnical extends SistemaEstrategias
 				}
 				catch(Exception e)
 				{
-		    		Error.agregar(e.getMessage() + " Error al añadir nuevas senales en sistema technical");
+		    		Error.agregar(e.getMessage() + " Error al aï¿½adir nuevas senales en sistema technical");
 				}
 			}
 		}
 		catch(Exception e)
 		{
-			Error.agregar(e.getMessage() + " Error al añadir nuevas senales en sistema technical");
+			Error.agregar(e.getMessage() + " Error al aï¿½adir nuevas senales en sistema technical");
 		}
 		return nuevas;
 	}
@@ -148,7 +151,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-			Error.agregar(e.getMessage() + " Error al añadir nuevas senales en sistema technical");
+			Error.agregar(e.getMessage() + " Error al aï¿½adir nuevas senales en sistema technical");
 		}
 	}
 	

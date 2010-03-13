@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 
+
 import control.IdEstrategia;
 import control.Par;
 import control.Senal;

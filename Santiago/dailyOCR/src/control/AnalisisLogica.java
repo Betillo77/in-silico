@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 
+
 public class AnalisisLogica 
 {
 	public static  ArrayList <Entrada> Buscar(HistorialEstrategia historialEstrategia, long fecha, Par par)

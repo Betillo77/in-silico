@@ -14,6 +14,9 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import modelo.BidAsk;
+import modelo.SenalEntrada;
+
 
 import vista.ParteGrafica;
 
@@ -77,7 +80,6 @@ public class dailyOCR
 						Runtime.getRuntime().exec("reiniciar.bat");
 						Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
 						{
-
 							@Override
 							public void run() 
 							{

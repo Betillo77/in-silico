@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
@@ -118,7 +119,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		desviacionT.setFont(new Font(desviacionT.getFont().getName(), Font.PLAIN, 14));
 		desviacion = new JLabel();
 		desviacion.setBounds(new Rectangle(20, 160, 93, 17));
-		desviacion.setText("Desviación");
+		desviacion.setText("Desviaciï¿½n");
 		estrategiaActual = new JLabel();
 		estrategiaActual.setBounds(new Rectangle(16, 10, 258, 24));
 		estrategiaActual.setText(manejador.darEstrategia());
@@ -164,7 +165,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		promedioPips.setText("Promedio pips");
 		numeroTransacciones = new JLabel();
 		numeroTransacciones.setBounds(new Rectangle(19, 116, 103, 16));
-		numeroTransacciones.setText("N° transacciones");
+		numeroTransacciones.setText("Nï¿½ transacciones");
 		ganancia = new JLabel();
 		ganancia.setBounds(new Rectangle(19, 94, 82, 16));
 		ganancia.setText("Ganancia");
@@ -458,7 +459,7 @@ class ManejadorAnalisisGrafico
 	public ManejadorAnalisisGrafico(IdEstrategia estrategia)
 	{
 		this.estrategia = estrategia;
-		historial = dailyOCR.darEstrategiaSenal(new Senal(estrategia, true, Par.EURUSD, 0, 0)).historial;
+		historial = null;
 		cambiarObjetos(divisaActual, tiempoActual);
 	}
 	

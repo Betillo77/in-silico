@@ -3,7 +3,8 @@ package control;
 import java.io.File;
 import java.io.FileWriter;
 
-import servidor.ServidorMensajes;
+import control.conexion.ConexionServidorMensajes;
+
 
 public class Error 
 {
@@ -14,7 +15,7 @@ public class Error
 			FileWriter fw = new FileWriter(new File("Error.txt"), true);
 			fw.write(error);
 			fw.write(System.getProperty("line.separator"));
-			ServidorMensajes.enviarMensaje("DailyOCR", error);
+			ConexionServidorMensajes.enviarMensaje("DailyOCR", error);
 			fw.close();
 		} 
 		catch (Exception e)

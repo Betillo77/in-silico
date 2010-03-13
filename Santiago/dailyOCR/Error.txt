@@ -99,3 +99,16 @@ Par ya exite en esta estrategia BREAKOUT2
 Par ya exite en esta estrategia BREAKOUT2
 La se馻l entrante tiene mas lotes que la que ya existio
 La se馻l entrante tiene mas lotes que la que ya existio
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero 贸 directorio)
+Error al enviar el correo 454 4.7.0 Cannot authenticate due to temporary system problem. Try again later. 7sm3054783qwf.17
+
+control.Estrategia Error al leer estrategia
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero 贸 directorio)
+Error al enviar el correo 454 4.7.0 Cannot authenticate due to temporary system problem. Try again later. 21sm1313871iwn.3
+
+control.IdEstrategia Error al leer estrategia
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero 贸 directorio)
+Error al enviar el correo 454 4.7.0 Cannot authenticate due to temporary system problem. Try again later. 20sm1320067iwn.5
+
+control.IdEstrategia Error al leer estrategia
+No se encuentra el archivo con la clave del correo clave.txt (No existe el fichero 贸 directorio)

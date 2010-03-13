@@ -1,11 +1,16 @@
 package control;
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import control.conexion.ConexionServidor;
 
-import servidor.ConexionServidor;
+import modelo.BidAsk;
+import modelo.SenalEntrada;
+
+
 
 
 

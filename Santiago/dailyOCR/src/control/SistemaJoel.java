@@ -7,7 +7,11 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import servidor.ConexionServidor;
+import control.conexion.ConexionServidor;
+
+import modelo.SenalEntrada;
+import modelo.SenalJoel;
+
 
 
 
@@ -44,14 +48,11 @@ public class SistemaJoel extends SistemaEstrategias
 			{
 				jr.delete();
 				joelRecomendaciones = new Estrategia(IdEstrategia.JOELRECOMENDACIONES);
-				joelRecomendaciones.historial.agregarEntrada(Par.EURUSD, 0, 0);
 			}
-			numeroCorreosAnterior = joelRecomendaciones.historial.darHistorial().get(0).ganancia;
 		}
 		else
 		{
 			joelRecomendaciones = new Estrategia(IdEstrategia.JOELRECOMENDACIONES);
-			joelRecomendaciones.historial.agregarEntrada(Par.EURUSD, 0, 0);
 		}
 		try
 		{
@@ -198,7 +199,6 @@ public class SistemaJoel extends SistemaEstrategias
 					Error.agregar("Se produjo un error manejando las recomendaciones de Joel: " + e.getMessage());
 				}
 			}
-			joelRecomendaciones.historial.darHistorial().get(0).ganancia = numeroCorreosAnterior;
 			for(Senal senalSimple : senalesLeidas)
 			{
 				try

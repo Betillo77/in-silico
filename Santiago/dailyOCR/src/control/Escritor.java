@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import modelo.SenalEntrada;
+
 
 
 public class Escritor implements Serializable
@@ -46,6 +48,7 @@ public class Escritor implements Serializable
 			lineas = new ArrayList <String> ();
 			Error.agregar("No se pudo escribir en el archivo");
 		}
+		new File(pathMeta + "magicos.txt").delete();
 	}
 
 	public void leerMagicos() 

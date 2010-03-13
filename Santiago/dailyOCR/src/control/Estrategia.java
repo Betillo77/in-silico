@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import control.conexion.ConexionMySql;
+
+import modelo.BidAsk;
+import modelo.SenalEntrada;
+
+
+
 
 public class Estrategia implements Serializable
 {	
@@ -19,7 +26,6 @@ public class Estrategia implements Serializable
 	
 	public IdEstrategia id;
 	public List <Senal> senales;
-	public HistorialEstrategia historial;
 	public boolean[] activos = new boolean[Par.values().length];
 	public Escritor escritor;
 	
@@ -27,7 +33,6 @@ public class Estrategia implements Serializable
 	{
 		this.id = id;
 		senales = Collections.synchronizedList(new ArrayList <Senal> ());
-		historial = new HistorialEstrategia(id);
 		if(id == IdEstrategia.BREAKOUT2)
 			for(int i = 0; i < activos.length; i++)
 				activos[i] = true;
@@ -132,18 +137,18 @@ public class Estrategia implements Serializable
 			}
 			if(!dejarLista)
 				for(int i = 0; i < entrada.numeroLotes; i++)
-					historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
+					ConexionMySql.agregarEntrada(id, afectada.par, System.currentTimeMillis(), resultado);
 		}
 		else if(afectada.numeroLotes < 0)
 		{
 			senales.remove(afectada);
 			for(int i = 0; i < afectada.lotesCerradosManualmente; i++)
-				historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
+				ConexionMySql.agregarEntrada(id, afectada.par, System.currentTimeMillis(), resultado);
 		}
 		else
 		{
 			for(int i = 0; i < entrada.numeroLotes; i++)
-				historial.agregarEntrada(afectada.par, System.currentTimeMillis(), resultado);
+				ConexionMySql.agregarEntrada(id, afectada.par, System.currentTimeMillis(), resultado);
 		}
 	}
 	

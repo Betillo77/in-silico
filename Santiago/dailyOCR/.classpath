@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="smtp.jar"/>
 	<classpathentry kind="lib" path="jcommon-1.0.15.jar"/>
 	<classpathentry kind="lib" path="jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/mysql.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

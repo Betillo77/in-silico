@@ -2,6 +2,8 @@ package control;
 import java.io.Serializable;
 
 
+
+
 public class Senal implements Serializable
 {
 	private static final long serialVersionUID = -9035153664488602362L;

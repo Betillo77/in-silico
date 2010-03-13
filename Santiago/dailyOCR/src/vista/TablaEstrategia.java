@@ -8,6 +8,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
+
 import control.IdEstrategia;
 import control.Par;
 import control.Senal;
@@ -64,7 +65,7 @@ public class TablaEstrategia extends JFrame
 							        		if (e.getClickCount() == 2)
 							        		{
 							        			JTable tabla = (JTable) e.getSource();
-							        			int temp = JOptionPane.showConfirmDialog(table, "En realidad desea cerrar esta señal?", "Cerrar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							        			int temp = JOptionPane.showConfirmDialog(table, "En realidad desea cerrar esta seï¿½al?", "Cerrar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 							        			if(temp == 0)
 							        			{
 							        				dailyOCR.cerrarSenalManual(lista.get(tabla.getSelectedRow()));

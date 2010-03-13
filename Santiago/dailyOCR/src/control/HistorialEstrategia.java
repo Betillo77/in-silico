@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 
+
 public class HistorialEstrategia implements Serializable
 {
 	private static final long serialVersionUID = -300574046206128357L;
