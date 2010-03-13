@@ -248,7 +248,7 @@ public class FormatoPares extends JDialog {
 	private JCheckBox getAudusd() {
 		if (audusd == null) {
 			audusd = new JCheckBox();
-			audusd.setBounds(new Rectangle(34, 164, 84, 24));
+			audusd.setBounds(new Rectangle(34, 164, 87, 24));
 			audusd.setText("AUD/USD");
 			Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
 			int i = 0;
@@ -280,7 +280,7 @@ public class FormatoPares extends JDialog {
 	private JCheckBox getUsdcad() {
 		if (usdcad == null) {
 			usdcad = new JCheckBox();
-			usdcad.setBounds(new Rectangle(34, 194, 84, 24));
+			usdcad.setBounds(new Rectangle(34, 194, 87, 24));
 			usdcad.setText("USD/CAD");
 			Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
 			int i = 0;
@@ -312,7 +312,7 @@ public class FormatoPares extends JDialog {
 	private JCheckBox getNzdusd() {
 		if (nzdusd == null) {
 			nzdusd = new JCheckBox();
-			nzdusd.setBounds(new Rectangle(161, 14, 84, 24));
+			nzdusd.setBounds(new Rectangle(161, 14, 87, 24));
 			nzdusd.setText("NZD/USD");
 			Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
 			int i = 0;

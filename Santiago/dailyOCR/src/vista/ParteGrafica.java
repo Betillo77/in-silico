@@ -87,7 +87,7 @@ public class ParteGrafica extends JPanel {
 			Breakout2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.BREAKOUT2);
-					new FormatoPares(null, IdEstrategia.BREAKOUT2);
+					new FormatoPares(null, IdEstrategia.BREAKOUT2).setVisible(true);
 				}
 			});
 		}
