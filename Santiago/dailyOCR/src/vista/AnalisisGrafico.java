@@ -92,6 +92,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		super();
 		initialize();
 	}
+	
 	/**
 	 * This method initializes this
 	 * 

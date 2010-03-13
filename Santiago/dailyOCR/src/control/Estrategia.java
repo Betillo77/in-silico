@@ -17,9 +17,6 @@ import control.conexion.ConexionMySql;
 import modelo.BidAsk;
 import modelo.SenalEntrada;
 
-
-
-
 public class Estrategia implements Serializable
 {	
 	private static final long serialVersionUID = 5641887914135732067L;
