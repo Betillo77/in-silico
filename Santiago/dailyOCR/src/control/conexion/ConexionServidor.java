@@ -30,6 +30,7 @@ package control.conexion;
 import java.io.BufferedWriter;
 
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -40,6 +41,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -298,7 +300,9 @@ public class ConexionServidor
 			Error.agregar("No se encuentra el archivo con la clave del correo " + e.getMessage());
 			e.printStackTrace();
 			return new String[0];
-		}
+	    }
+		
+		//pop.gmail.com
     	String argv[] = {"-T", "pop3s", "-H", "pop3.live.com", "-U", "jorgeadrianmartinez@hotmail.com", "-P", clave};
     	ArrayList <String> listaSenales = new ArrayList <String> ( );
     	int NumeroDeMensajesAnterior = 0;
@@ -405,11 +409,12 @@ public class ConexionServidor
 			    if (msgnum == -1)
 			    {
 			    	Message[] msgs = folder.getMessages();				
-					for (int i = ((totalMessages - (totalMessages - NumeroDeMensajesAnterior)) - 1); i < msgs.length; i++)
+					for (int i =0; i < msgs.length; i++)
 					{						
 						if(isJoel(msgs[i]))
 						{				
 							listaSenales.add(msgs[i].getSubject());	
+					        msgs[i].setFlag(Flags.Flag.DELETED, true);
 						}
 					}
 			    }
@@ -424,7 +429,7 @@ public class ConexionServidor
 						Error.agregar("Error leyendo los mensajes del email.");
 					}	
 				}
-				folder.close(false);
+				folder.close(true);
 				store.close();
 			}
     	}
@@ -435,5 +440,10 @@ public class ConexionServidor
 		String[] aDevolver = new String[listaSenales.size()];
 		listaSenales.toArray(aDevolver);
 		return aDevolver;
+    }
+    
+    public static void main(String []args)
+    {
+     	
     }
 }
