@@ -13,8 +13,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
-
 public class HistorialEstrategia implements Serializable
 {
 	private static final long serialVersionUID = -300574046206128357L;
@@ -104,33 +102,3 @@ public class HistorialEstrategia implements Serializable
 	
 }
 
-class Entrada implements Serializable, Comparable <Entrada>
-{
-	private static final long serialVersionUID = 2596947460811823087L;
-	
-	Par par;
-	long fecha;
-	int ganancia;
-	
-	public Entrada(Par par, long fecha, int ganancia)
-	{
-		this.par = par;
-		this.fecha = fecha;
-		this.ganancia = ganancia;
-	}
-	
-	@Override
-	public String toString()
-	{
-		Calendar fecha = Calendar.getInstance();
-		fecha.setTimeInMillis(this.fecha);
-		String fechaS = fecha.get(Calendar.DAY_OF_MONTH) + "/"  + (1 + fecha.get(Calendar.MONTH)) + "/" + fecha.get(Calendar.YEAR) + " " + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE); 
-		return par + ";" + fechaS + ";" + ganancia;
-	}
-
-	@Override
-	public int compareTo(Entrada o) 
-	{
-		return new Long(fecha).compareTo(o.fecha);
-	}
-}

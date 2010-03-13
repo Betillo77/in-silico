@@ -1,24 +1,27 @@
 package control;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import control.conexion.ConexionMySql;
+
 
 
 public class AnalisisLogica 
 {
-	public static  ArrayList <Entrada> Buscar(HistorialEstrategia historialEstrategia, long fecha, Par par)
+	public static  ArrayList <Entrada> Buscar(IdEstrategia historialEstrategia, long fecha, Par par)
 	{	
-		List <Entrada> temporal;
-		int indice = Collections.binarySearch(historialEstrategia.darHistorial(), new Entrada(Par.AUDJPY, fecha, 0));
+		List <Entrada> temporal = ConexionMySql.darEntradas(historialEstrategia);
+		int indice = Collections.binarySearch(temporal, new Entrada(Par.AUDJPY, fecha, 0));
 		if(indice < 0)
 		{
 			indice++;
 			indice *= -1;
 		}	
-		temporal = clonarArrayList(historialEstrategia.darHistorial()).subList(indice, historialEstrategia.darHistorial().size());
+		temporal = temporal.subList(indice, temporal.size());
 		for(int i = 0; i < temporal.size(); i++)
 		{
 			if(temporal.get(i).par.esDistinto(par))
@@ -29,23 +32,28 @@ public class AnalisisLogica
 		}
 		return new ArrayList <Entrada> (temporal);
 	}
-
-	private static ArrayList <Entrada> clonarArrayList(ArrayList <Entrada> aClonar)
-	{
-		ArrayList <Entrada> clon = new ArrayList <Entrada> ();
-		for(Entrada e : aClonar)
-			clon.add(e);
-		return clon;
-	}
 	
-	public static ArrayList <Object> retornar(HistorialEstrategia historialEstrategia, Par par,int timeFrame)
-	{
+	public static ArrayList <Object> retornar(IdEstrategia estrategia, Par par,int timeFrame)
+	{	
 		double promedio;
 		long [][] datos;
 		double [][] PromedioPips;
 		int transacciones;
 		ArrayList <Entrada> temporal = new ArrayList <Entrada> ();
-		temporal = darHistorialTiempo(historialEstrategia, par, timeFrame);
+		temporal = darHistorialTiempo(estrategia, par, timeFrame);
+		if(temporal.size() == 0)
+		{
+			ArrayList <Object> objetos = new ArrayList <Object> ();
+			objetos.add(new long[1][0]);
+			objetos.add(0.0D);
+			int a = 1;
+			objetos.add(a);
+			objetos.add(1L);
+			objetos.add(0.0D);
+			objetos.add(new double[1][0]);
+			objetos.add(new ArrayList <String> ());
+			return objetos;
+		}
 		int ganancia = 0;
 		datos = new long[2][temporal.size()];
 		PromedioPips = new double[2][temporal.size()];
@@ -68,7 +76,7 @@ public class AnalisisLogica
 		temporal1 = temporal1 / temporal.size();
 		temporal1 = Math.sqrt(temporal1);
 		desviacion = temporal1;		
-		ArrayList<Entrada> temporal2 = Buscar(historialEstrategia, 0, par);
+		ArrayList<Entrada> temporal2 = Buscar(estrategia, 0, par);
 		Calendar fecha1 = Calendar.getInstance();
 		fecha1.setTimeInMillis(temporal2.get(0).fecha);
 		Calendar actual = fecha1;
@@ -101,7 +109,7 @@ public class AnalisisLogica
 		return retornar;
 	}
 
-	public static ArrayList <Entrada> darHistorialTiempo(HistorialEstrategia historialEstrategia, Par par, int timeFrame) 
+	public static ArrayList <Entrada> darHistorialTiempo(IdEstrategia historialEstrategia, Par par, int timeFrame) 
 	{
 		Calendar fecha = Calendar.getInstance();
 		ArrayList <Entrada> temporal;
@@ -151,7 +159,35 @@ public class AnalisisLogica
 			default:                 return "ERROR";
 		}
 	}
-	
-	
+}
 
+public class Entrada implements Serializable, Comparable <Entrada>
+{
+	private static final long serialVersionUID = 2596947460811823087L;
+	
+	Par par;
+	long fecha;
+	int ganancia;
+	
+	public Entrada(Par par, long fecha, int ganancia)
+	{
+		this.par = par;
+		this.fecha = fecha;
+		this.ganancia = ganancia;
+	}
+	
+	@Override
+	public String toString()
+	{
+		Calendar fecha = Calendar.getInstance();
+		fecha.setTimeInMillis(this.fecha);
+		String fechaS = fecha.get(Calendar.DAY_OF_MONTH) + "/"  + (1 + fecha.get(Calendar.MONTH)) + "/" + fecha.get(Calendar.YEAR) + " " + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE); 
+		return par + ";" + fechaS + ";" + ganancia;
+	}
+
+	@Override
+	public int compareTo(Entrada o) 
+	{
+		return new Long(fecha).compareTo(o.fecha);
+	}
 }

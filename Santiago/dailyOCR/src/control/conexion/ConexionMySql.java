@@ -1,10 +1,17 @@
 package control.conexion;
 
 import java.sql.*;
-import java.util.Calendar;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import control.Entrada;
 import control.IdEstrategia;
 import control.Par;
+import control.Error;
 
 
 public class ConexionMySql
@@ -29,7 +36,7 @@ public class ConexionMySql
 		}
 		catch (SQLException s)
 		{
-			System.out.println("SQL statement is not executed!");
+			Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + par.toString() + ", " + fechaLong + ", " + ganancia); 
 		}
 	}
 	
@@ -39,7 +46,6 @@ public class ConexionMySql
         {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             Connection conn = DriverManager.getConnection(db_connect_string, db_userid, db_password);
-            System.out.println("connected");
             return conn;
                 
         }
@@ -48,6 +54,25 @@ public class ConexionMySql
                 return null;
         }
     }
+
+	public static List <Entrada> darEntradas(IdEstrategia estrategia) 
+	{
+		try 
+		{
+			ResultSet rs = conexion.createStatement().executeQuery("select * from Historial where IdEstrategia=" + estrategia.ordinal());
+			ArrayList <Entrada> entradasNuevas = new ArrayList <Entrada> ();
+			while(rs.next())
+			{
+				entradasNuevas.add(new Entrada(Par.values()[rs.getInt("Par")], rs.getDate("Fecha").getTime(), rs.getInt("Ganancia")));
+			}
+			return entradasNuevas;
+		} 
+		catch (SQLException e) 
+		{
+			JOptionPane.showMessageDialog(null, "Error haciendo la lectura de la base de datos");
+			return new ArrayList <Entrada> ();
+		}
+	}
 }
 
 class DB

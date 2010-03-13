@@ -451,7 +451,6 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 
 class ManejadorAnalisisGrafico
 {
-	HistorialEstrategia historial;
 	IdEstrategia estrategia;
 	ArrayList <Object> objetos;
 	Par divisaActual = Par.TODOS;
@@ -460,7 +459,6 @@ class ManejadorAnalisisGrafico
 	public ManejadorAnalisisGrafico(IdEstrategia estrategia)
 	{
 		this.estrategia = estrategia;
-		historial = null;
 		cambiarObjetos(divisaActual, tiempoActual);
 	}
 	
@@ -523,20 +521,7 @@ class ManejadorAnalisisGrafico
 
 	public void cambiarObjetos(Par divisaActual, int tiempoActual)
 	{
-		if(AnalisisLogica.darHistorialTiempo(historial, divisaActual, tiempoActual).size() != 0)
-			objetos = AnalisisLogica.retornar(historial, divisaActual, tiempoActual);
-		else
-		{
-			objetos = new ArrayList <Object> ();
-			objetos.add(new long[1][0]);
-			objetos.add(0.0D);
-			int a = 1;
-			objetos.add(a);
-			objetos.add(1L);
-			objetos.add(0.0D);
-			objetos.add(new double[1][0]);
-			objetos.add(new ArrayList <String> ());
-		}
+		objetos = AnalisisLogica.retornar(estrategia, divisaActual, tiempoActual);
 		this.divisaActual = divisaActual;
 		this.tiempoActual = tiempoActual;
 	}
