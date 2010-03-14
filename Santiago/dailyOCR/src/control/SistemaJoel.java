@@ -1,7 +1,8 @@
 package control;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -132,6 +133,21 @@ public class SistemaJoel extends SistemaEstrategias
 	
 	protected ArrayList <Senal> leer(String[] lecturas) 
 	{
+		if(lecturas.length > 0)
+		{
+			try
+			{
+	            BufferedWriter bw = new BufferedWriter(new FileWriter("joel/emails.txt", true));
+	            for(String s : lecturas)
+	            {
+	            	bw.write(s + "\n");
+	            }
+	            bw.close();
+			}
+			catch(Exception e)
+			{
+			}
+		}
 		ArrayList <Senal> senalesLeidas = new ArrayList <Senal> ();
 		for(String titulo : lecturas)
 		{
@@ -147,52 +163,52 @@ public class SistemaJoel extends SistemaEstrategias
 		try
 		{
 			Calendar c = Calendar.getInstance();
-			for(Iterator <Senal> it = joelRecomendaciones.senales.iterator(); it.hasNext();)
-			{
-				try
-				{
-					SenalJoel senalJoel = (SenalJoel) it.next();
-					Calendar c1 = Calendar.getInstance();
-					c1.setTimeInMillis(senalJoel.tiempoEntrada);
-					if(c.get(Calendar.DATE) == c1.get(Calendar.DATE))
-					{
-						if(c.get(Calendar.HOUR) > 17)
-						{
-							it.remove();
-						}
-						else
-						{
-							double precioActual = dailyOCR.precioPar(senalJoel.par, senalJoel.compra);
-							if((senalJoel.compra && senalJoel.precioEntrada <= precioActual) || (!senalJoel.compra && senalJoel.precioEntrada >= precioActual))
-							{
-								joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, precioActual), senalJoel, false);
-								it.remove();
-							}
-						}
-					}
-					else
-					{
-						it.remove();
-					}
-				}
-				catch(Exception e)
-				{
-					Error.agregar("Se produjo un error manejando las recomendaciones de Joel: " + e.getMessage());
-				}
-			}
+//			for(Iterator <Senal> it = joelRecomendaciones.senales.iterator(); it.hasNext();)
+//			{
+//				try
+//				{
+//					SenalJoel senalJoel = (SenalJoel) it.next();
+//					Calendar c1 = Calendar.getInstance();
+//					c1.setTimeInMillis(senalJoel.tiempoEntrada);
+//					if(c.get(Calendar.DATE) == c1.get(Calendar.DATE))
+//					{
+//						if(c.get(Calendar.HOUR) > 17)
+//						{
+//							it.remove();
+//						}
+//						else
+//						{
+////							double precioActual = dailyOCR.precioPar(senalJoel.par, senalJoel.compra);
+////							if((senalJoel.compra && senalJoel.precioEntrada <= precioActual) || (!senalJoel.compra && senalJoel.precioEntrada >= precioActual))
+////							{
+//								joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, precioActual), senalJoel, false);
+//								it.remove();
+////							}
+//						}
+//					}
+//					else
+//					{
+//						it.remove();
+//					}
+//				}
+//				catch(Exception e)
+//				{
+//					Error.agregar("Se produjo un error manejando las recomendaciones de Joel: " + e.getMessage());
+//				}
+//			}
 			for(Senal senalSimple : senalesLeidas)
 			{
 				try
 				{
 					SenalJoel senalJoel = (SenalJoel) senalSimple;
-					if(senalJoel.recomendado)
-					{
-						joelRecomendaciones.senales.add(senalJoel);
-					}
-					else
-					{
+//					if(senalJoel.recomendado)
+//					{
+//						joelRecomendaciones.senales.add(senalJoel);
+//					}
+//					else
+//					{
 						joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, senalJoel.precioEntrada), senalJoel, false);
-					}
+//					}
 				}
 				catch(Exception e)
 				{
