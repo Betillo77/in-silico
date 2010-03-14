@@ -1,6 +1,7 @@
 package control;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -48,10 +49,67 @@ public class SistemaJoel extends SistemaEstrategias
 	
 	public void verificarConsistencia() 
 	{
-		if(joel == null || joelRecomendaciones == null)
+		if(joel == null || joelRecomendaciones == null || joel.verificarConsistencia() || joelRecomendaciones.verificarConsistencia())
 		{
 			cargarEstrategias();
 		}
+	}
+	
+	public void iniciarHilo() 
+	{
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				int numeroErrores = 0;
+				while(true)
+				{
+					try
+					{
+						verificarConsistencia();
+						Thread.sleep(1200000);
+						iniciarProcesamiento();
+					    escritor.escribir();
+						verificarConsistencia();
+						persistir();
+					}
+					catch(Exception e)
+					{	
+						try
+						{
+							numeroErrores++;
+				    		Error.agregar(e.getMessage() + " Error en el ciclo Joel");
+				    		Thread.sleep(60000);
+							if(numeroErrores == 60)
+							{
+								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
+								Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
+								{
+									@Override
+									public void run() 
+									{
+										try 
+										{
+											Runtime.getRuntime().exec("java -jar dailyOCR.jar");
+										} 
+										catch (IOException e)
+										{
+								    		Error.agregar(e.getMessage() + " Error reiniciando");
+										}
+									}
+								}));
+								System.exit(0);
+							}
+						}
+						catch(Exception e1)
+						{
+				    		Error.agregar(e.getMessage() + " Error en el ciclo Joel");
+						}
+					}
+				}
+			}
+		}).start();
 	}
 	
 	public static SenalJoel deducir(String subject)
@@ -162,7 +220,7 @@ public class SistemaJoel extends SistemaEstrategias
 	{
 		try
 		{
-			Calendar c = Calendar.getInstance();
+//			Calendar c = Calendar.getInstance();
 //			for(Iterator <Senal> it = joelRecomendaciones.senales.iterator(); it.hasNext();)
 //			{
 //				try
@@ -178,12 +236,12 @@ public class SistemaJoel extends SistemaEstrategias
 //						}
 //						else
 //						{
-////							double precioActual = dailyOCR.precioPar(senalJoel.par, senalJoel.compra);
-////							if((senalJoel.compra && senalJoel.precioEntrada <= precioActual) || (!senalJoel.compra && senalJoel.precioEntrada >= precioActual))
-////							{
+//							double precioActual = dailyOCR.precioPar(senalJoel.par, senalJoel.compra);
+//							if((senalJoel.compra && senalJoel.precioEntrada <= precioActual) || (!senalJoel.compra && senalJoel.precioEntrada >= precioActual))
+//							{
 //								joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, precioActual), senalJoel, false);
 //								it.remove();
-////							}
+//							}
 //						}
 //					}
 //					else

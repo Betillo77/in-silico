@@ -23,6 +23,11 @@ public class ConexionMySql
 	{
 		try
 		{
+			if(ganancia > 2000)
+			{
+				Error.agregar("Entrada sospechosa: " + id.name() + ", " + par.name() + ", " + fechaLong + ", ¿ganancia: " + ganancia + "?");
+				return;
+			}
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(fechaLong);
 			String fecha = "'" + calendar.get(Calendar.YEAR);
@@ -84,7 +89,7 @@ public class ConexionMySql
         }
     }
 
-	public static List <Entrada> darEntradas(IdEstrategia estrategia) 
+	public synchronized static List <Entrada> darEntradas(IdEstrategia estrategia) 
 	{
 		try 
 		{
@@ -102,9 +107,4 @@ public class ConexionMySql
 			return new ArrayList <Entrada> ();
 		}
 	}
-}
-
-class DB
-{
-
 }

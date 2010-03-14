@@ -47,7 +47,7 @@ public class Estrategia implements Serializable
 		int i = 0;
 		for(Par p : Par.values())
 		{
-			if(p == par)
+			if(p.equals(par))
 			{
 				activos[i] = activo;
 				return;
@@ -63,7 +63,7 @@ public class Estrategia implements Serializable
 		int i = 0;
 		for(Par p : Par.values())
 		{
-			if(p == par)
+			if(p.equals(par))
 			{
 				return activos[i];
 			}
@@ -157,8 +157,7 @@ public class Estrategia implements Serializable
 	private void trade(SenalEntrada entrada, boolean dejarLista) 
 	{
 		Senal nueva = new Senal(id, entrada.compra, entrada.par, entrada.numeroLotes, entrada.precioEntrada);
-		if(id.equals(IdEstrategia.TECHNICAL))
-			nueva.limite = entrada.limite;
+		nueva.limite = entrada.limite;
 		if(dejarLista)
 		{
 			nueva.manual = true;
@@ -166,6 +165,7 @@ public class Estrategia implements Serializable
 		if(tienePar(entrada.par) != null)
 		{
     		Error.agregar("Par ya exite en esta estrategia " + id.toString());
+    		return;
 		}
 		escritor.abrir(entrada, nueva);
 		senales.add(nueva);
@@ -179,6 +179,12 @@ public class Estrategia implements Serializable
 				return senal;
 		}
 		return null;
+	}
+	
+
+	public boolean verificarConsistencia() 
+	{
+		return senales == null || id == null || activos == null || escritor == null;
 	}
 	
     public void escribir()
@@ -203,6 +209,8 @@ public class Estrategia implements Serializable
     	try
     	{
 	    	String entrada = ConexionMySql.cargarPersistencia(id);
+	    	if(entrada.length() < 10)
+	    		return null;
 	    	char[] entradaChar = entrada.toCharArray();
 	    	byte[] entradaByte = new byte[entradaChar.length];
 	    	int i = 0;
@@ -230,7 +238,7 @@ public class Estrategia implements Serializable
 		this.id = id;
 	}
 
-	public List<Senal> getSenales() {
+	public List <Senal> getSenales() {
 		if(senales == null)
 			return null;
 		ArrayList <Senal> senalesNuevas = new ArrayList <Senal> ();

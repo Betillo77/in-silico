@@ -1,4 +1,5 @@
 package control;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,10 +83,70 @@ public class SistemaDailyFX extends SistemaEstrategias
 
 	public void verificarConsistencia()
 	{
-		if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null)
+		if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null ||
+		   breakout1.verificarConsistencia() || breakout2.verificarConsistencia() || range1.verificarConsistencia() ||
+		   range2.verificarConsistencia() || momentum1.verificarConsistencia() || momentum2.verificarConsistencia())
 		{
 			cargarEstrategias();
 		}
+	}
+	
+	public void iniciarHilo() 
+	{
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				int numeroErrores = 0;
+				while(true)
+				{
+					try
+					{
+						verificarConsistencia();
+						Thread.sleep(10000);
+						iniciarProcesamiento();
+					    escritor.escribir();
+						escritor.leerMagicos();
+						verificarConsistencia();
+						persistir();
+					}
+					catch(Exception e)
+					{	
+						try
+						{
+							numeroErrores++;
+				    		Error.agregar(e.getMessage() + " Error en el ciclo dailyFX");
+				    		Thread.sleep(60000);
+							if(numeroErrores == 60)
+							{
+								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
+								Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
+								{
+									@Override
+									public void run() 
+									{
+										try 
+										{
+											Runtime.getRuntime().exec("java -jar dailyOCR.jar");
+										} 
+										catch (IOException e)
+										{
+								    		Error.agregar(e.getMessage() + " Error reiniciando");
+										}
+									}
+								}));
+								System.exit(0);
+							}
+						}
+						catch(Exception e1)
+						{
+				    		Error.agregar(e.getMessage() + " Error en el ciclo dailyFX");
+						}
+					}
+				}
+			}
+		}).start();
 	}
 
 	protected ArrayList <Senal> leer(String [] entradas)

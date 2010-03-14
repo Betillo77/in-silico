@@ -1,4 +1,5 @@
 package control;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import modelo.Estrategia;
@@ -35,10 +36,68 @@ public class SistemaTechnical extends SistemaEstrategias
 
 	public void verificarConsistencia() 
 	{
-		if(technical == null)
+		if(technical == null || technical.verificarConsistencia())
 		{
 			cargarEstrategias();
 		}
+	}
+	
+	public void iniciarHilo() 
+	{
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				int numeroErrores = 0;
+				while(true)
+				{
+					try
+					{
+						verificarConsistencia();
+						Thread.sleep(10000);
+						iniciarProcesamiento();
+					    escritor.escribir();
+						escritor.leerMagicos();
+						verificarConsistencia();
+						persistir();
+					}
+					catch(Exception e)
+					{	
+						try
+						{
+							numeroErrores++;
+				    		Error.agregar(e.getMessage() + " Error en el ciclo Technical");
+				    		Thread.sleep(60000);
+							if(numeroErrores == 60)
+							{
+								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
+								Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
+								{
+									@Override
+									public void run() 
+									{
+										try 
+										{
+											Runtime.getRuntime().exec("java -jar dailyOCR.jar");
+										} 
+										catch (IOException e)
+										{
+								    		Error.agregar(e.getMessage() + " Error reiniciando");
+										}
+									}
+								}));
+								System.exit(0);
+							}
+						}
+						catch(Exception e1)
+						{
+				    		Error.agregar(e.getMessage() + " Error en el ciclo Technical");
+						}
+					}
+				}
+			}
+		}).start();
 	}
 	
 	protected ArrayList <Senal> leer(String[] contenidos)

@@ -38,4 +38,6 @@ public abstract class SistemaEstrategias
 	public abstract void persistir();
 
 	public abstract Estrategia darEstrategia(IdEstrategia estrategia);
+
+	public abstract void iniciarHilo();
 }
