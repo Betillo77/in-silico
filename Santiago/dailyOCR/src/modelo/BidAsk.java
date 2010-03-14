@@ -2,13 +2,36 @@ package modelo;
 
 import control.Par;
 
-
 public class BidAsk
 {
-	public double bid;
-	public double ask;
-	public Par currency;
+	private double bid;
+	private double ask;
+	private Par currency;
 	
+	public double getBid() {
+		return bid;
+	}
+
+	public void setBid(double bid) {
+		this.bid = bid;
+	}
+
+	public double getAsk() {
+		return ask;
+	}
+
+	public void setAsk(double ask) {
+		this.ask = ask;
+	}
+
+	public Par getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Par currency) {
+		this.currency = currency;
+	}
+
 	public BidAsk(double bid, double ask, Par currency)
 	{
 		this.bid = bid;

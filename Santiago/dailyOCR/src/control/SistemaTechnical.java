@@ -1,4 +1,5 @@
 package control;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -6,10 +7,6 @@ import modelo.Estrategia;
 import modelo.Senal;
 import modelo.SenalEntrada;
 import control.conexion.ConexionServidor;
-
-
-
-
 
 public class SistemaTechnical extends SistemaEstrategias 
 {
@@ -23,7 +20,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		{
 			technical = new Estrategia(IdEstrategia.TECHNICAL);
 		}
-		technical.escritor = escritor;
+		technical.setEscritor(escritor);
 		try
 		{
 			metodoLectura = ConexionServidor.class.getMethod("leerServidorTechnical");
@@ -32,6 +29,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		{
     		Error.agregar(e.getMessage() + " Error metodo invalido en Sistema technical");
 		}
+		persistir();
 	}
 
 	public void verificarConsistencia() 
@@ -156,45 +154,51 @@ public class SistemaTechnical extends SistemaEstrategias
 			for(Senal senal : senalesLeidas)
 			{
 				boolean esta = false;
-				for(Senal otra : technical.senales)
+				synchronized(technical.getSenales())
 				{
-					if(senal.par == otra.par)
+					for(Senal otra : technical.getSenales())
 					{
-						esta = true;
-						if(senal.compra != otra.compra)
+						if(senal.getPar() == otra.getPar())
 						{
-							technical.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, 1, 0), otra, false);
+							esta = true;
+							if(senal.isCompra() != otra.isCompra())
+							{
+								technical.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, 1, 0), otra, false);
+							}
 						}
 					}
 				}
 				if(!esta)
 				{
-			    	SenalEntrada nueva = new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, 1, dailyOCR.precioPar(senal.par, senal.compra));
-			    	nueva.limite = senal.precioEntrada;
-					double precioActual = dailyOCR.precioPar(senal.par, !senal.compra);
-			    	double cambio = nueva.limite > 10 ?	0.8 : 0.08;
+			    	SenalEntrada nueva = new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), 1, dailyOCR.precioPar(senal.getPar(), senal.isCompra()));
+			    	nueva.setLimite(senal.getPrecioEntrada());
+					double precioActual = dailyOCR.precioPar(senal.getPar(), !senal.isCompra());
+			    	double cambio = nueva.getLimite() > 10 ?	0.8 : 0.08;
 			    	double anteriorLimite;
-			    	if(senal.compra)
-			    		anteriorLimite = nueva.limite - cambio;
+			    	if(senal.isCompra())
+			    		anteriorLimite = nueva.getLimite() - cambio;
 			    	else
-			    		anteriorLimite = nueva.limite + cambio;
-			    	if(senal.compra && precioActual > anteriorLimite)
+			    		anteriorLimite = nueva.getLimite() + cambio;
+			    	if(senal.isCompra() && precioActual > anteriorLimite)
 			    		continue;
-			    	if(!senal.compra && precioActual < anteriorLimite)
+			    	if(!senal.isCompra() && precioActual < anteriorLimite)
 			    		continue;
 					technical.agregar(nueva, senal, false);
 				}
 			}
-			for(Senal otra : technical.senales)
+			synchronized(technical.getSenales())
 			{
-				double precioActual = dailyOCR.precioPar(otra.par, !otra.compra);
-				if(otra.compra && otra.limite < precioActual)
+				for(Senal otra : technical.getSenales())
 				{
-					technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
-				}
-				if(!otra.compra && otra.limite > precioActual)
-				{
-					technical.agregar(new SenalEntrada(otra.par, TipoSenal.HIT, false, 1, 0), otra, false);
+					double precioActual = dailyOCR.precioPar(otra.getPar(), !otra.isCompra());
+					if(otra.isCompra() && otra.getLimite() < precioActual)
+					{
+						technical.agregar(new SenalEntrada(otra.getPar(), TipoSenal.HIT, false, 1, 0), otra, false);
+					}
+					if(!otra.isCompra() && otra.getLimite() > precioActual)
+					{
+						technical.agregar(new SenalEntrada(otra.getPar(), TipoSenal.HIT, false, 1, 0), otra, false);
+					}
 				}
 			}
 		}

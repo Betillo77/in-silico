@@ -1,9 +1,11 @@
 package control;
+
 import java.io.BufferedWriter;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,13 +15,8 @@ import modelo.SenalEntrada;
 import modelo.SenalJoel;
 import control.conexion.ConexionServidor;
 
-
-
-
 public class SistemaJoel extends SistemaEstrategias 
 {
-	static final String pathPrincipal = "joel";
-	public static int numeroCorreosAnterior = 0;
 	Estrategia joel;
 	Estrategia joelRecomendaciones;
 
@@ -31,7 +28,7 @@ public class SistemaJoel extends SistemaEstrategias
 		{
 			joel = new Estrategia(IdEstrategia.JOEL);
 		}
-		joel.escritor = escritor;
+		joel.setEscritor(escritor);
 		joelRecomendaciones = Estrategia.leer(IdEstrategia.JOELRECOMENDACIONES);
 		if(joelRecomendaciones == null)
 		{
@@ -45,6 +42,7 @@ public class SistemaJoel extends SistemaEstrategias
 		{
     		Error.agregar(e.getMessage() + " Error metodo invalido en Sistema Joel");
 		}
+		persistir();
 	}
 	
 	public void verificarConsistencia() 
@@ -71,6 +69,7 @@ public class SistemaJoel extends SistemaEstrategias
 						Thread.sleep(1200000);
 						iniciarProcesamiento();
 					    escritor.escribir();
+					  //escritor.leerMagicos();
 						verificarConsistencia();
 						persistir();
 					}
@@ -195,6 +194,8 @@ public class SistemaJoel extends SistemaEstrategias
 		{
 			try
 			{
+				if(!new File("joel/emails.txt").exists())
+					new File("joel/emails.txt").createNewFile();
 	            BufferedWriter bw = new BufferedWriter(new FileWriter("joel/emails.txt", true));
 	            for(String s : lecturas)
 	            {
@@ -265,7 +266,7 @@ public class SistemaJoel extends SistemaEstrategias
 //					}
 //					else
 //					{
-						joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, senalJoel.precioEntrada), senalJoel, false);
+						joel.agregar(new SenalEntrada(senalJoel.getPar(), TipoSenal.TRADE, senalJoel.isCompra(), 1, senalJoel.getPrecioEntrada()), senalJoel, false);
 //					}
 				}
 				catch(Exception e)

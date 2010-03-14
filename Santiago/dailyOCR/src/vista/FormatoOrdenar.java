@@ -19,7 +19,6 @@ import control.IdEstrategia;
 import control.Par;
 import control.dailyOCR;
 
-
 public class FormatoOrdenar 
 {		
 	public FormatoOrdenar()
@@ -81,7 +80,7 @@ public class FormatoOrdenar
 								    	int temp4 = NumeroDeLotes.getSelectedIndex()+1;
 								    	
 								    	Senal nueva = new Senal(temp, temp2, temp3, temp4, dailyOCR.precioPar(temp3, temp2));
-								    	synchronized(dailyOCR.darEstrategiaSenal(nueva).senales)
+								    	synchronized(dailyOCR.darEstrategiaSenal(nueva).getSenales())
 								    	{
 								    		Thread.yield();
 								    		dailyOCR.abrirSenalManual(nueva);

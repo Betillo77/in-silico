@@ -74,7 +74,7 @@ public class ConexionMySql
 		}
 	}
 	
-    public static Connection dbConnect(String db_connect_string, String db_userid, String db_password)
+    public synchronized static Connection dbConnect(String db_connect_string, String db_userid, String db_password)
     {
         try
         {

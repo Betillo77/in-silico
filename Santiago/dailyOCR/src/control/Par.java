@@ -1,8 +1,6 @@
 package control;
-import java.io.Serializable;
 
-
-public enum Par implements Serializable
+public enum Par
 {
 	EURUSD, USDJPY, GBPUSD, USDCHF, EURCHF, AUDUSD, USDCAD,
 	NZDUSD, EURJPY, GBPJPY, CHFJPY, GBPCHF, EURAUD, AUDJPY, 
@@ -35,7 +33,7 @@ public enum Par implements Serializable
 	{
 		if(par == TODOS)
 			return false;
-		return this != par;
+		return !equals(par);
 	}
 
 	public static Par stringToPar(String string) 

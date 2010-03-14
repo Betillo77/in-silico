@@ -304,8 +304,7 @@ public class ConexionServidor
 		
 		//pop.gmail.com
     	String argv[] = {"-T", "pop3s", "-H", "pop3.live.com", "-U", "jorgeadrianmartinez@hotmail.com", "-P", clave};
-    	ArrayList <String> listaSenales = new ArrayList <String> ( );
-    	int NumeroDeMensajesAnterior = 0;
+    	ArrayList <String> listaSenales = new ArrayList <String> ();
     	int msgnum = -1;
     	int optind;
     	for (optind = 0; optind < argv.length; optind++) 
@@ -336,7 +335,6 @@ public class ConexionServidor
 	     	else if (!argv[optind].startsWith("-"))
 	     		break;
     	}
-    	NumeroDeMensajesAnterior = SistemaJoel.numeroCorreosAnterior;
     	try 
     	{
     		if (optind < argv.length)
@@ -377,7 +375,6 @@ public class ConexionServidor
 	  	    	Error.agregar("No se encontro la carpeta en el email.");
 	  	    	return null;
 	  	    }
-		
 	  	    if (mbox == null)
 	  	    	mbox = "INBOX";
 	  	    folder = folder.getFolder(mbox);
@@ -397,53 +394,44 @@ public class ConexionServidor
 				return null;
 			}
 			int totalMessages = folder.getMessageCount();
-			if(totalMessages > NumeroDeMensajesAnterior)
+			if(totalMessages == 0)
 			{
-				SistemaJoel.numeroCorreosAnterior = totalMessages;
-				if(totalMessages == 0)
-				{
-					folder.close(false);
-					store.close();
-					return new String[0];
-				}	  
-			    if (msgnum == -1)
-			    {
-			    	Message[] msgs = folder.getMessages();				
-					for (int i =0; i < msgs.length; i++)
-					{						
-						if(isJoel(msgs[i]))
-						{				
-							listaSenales.add(msgs[i].getSubject());	
-					        msgs[i].setFlag(Flags.Flag.DELETED, true);
-						}
-					}
-			    }
-			    else
-			    {
-					try 
-					{
-						folder.getMessage(msgnum);
-					}
-					catch (IndexOutOfBoundsException iex) 
-					{
-						Error.agregar("Error leyendo los mensajes del email.");
-					}	
-				}
-				folder.close(true);
+				folder.close(false);
 				store.close();
+				return new String[0];
+			}	  
+		    if (msgnum == -1)
+		    {
+		    	Message[] msgs = folder.getMessages();				
+				for (int i = 0; i < msgs.length; i++)
+				{						
+					if(isJoel(msgs[i]))
+					{				
+						listaSenales.add(msgs[i].getSubject());	
+				        msgs[i].setFlag(Flags.Flag.DELETED, true);
+					}
+				}
+		    }
+		    else
+		    {
+				try 
+				{
+					folder.getMessage(msgnum);
+				}
+				catch (IndexOutOfBoundsException iex) 
+				{
+					Error.agregar("Error leyendo los mensajes del email.");
+				}	
 			}
+			folder.close(true);
+			store.close();
     	}
-		catch (Exception ex) 
+		catch (Exception e) 
 		{
-			//Error.agregar("Error en la lectura del correo, probablemente de sobre uso, o esta caido el servicio en hotmail " + ex.getMessage());
+			Error.agregar("Error en la lectura del correo, probablemente de sobre uso, o esta caido el servicio en hotmail " + e.getMessage());
 		}
 		String[] aDevolver = new String[listaSenales.size()];
 		listaSenales.toArray(aDevolver);
 		return aDevolver;
-    }
-    
-    public static void main(String []args)
-    {
-     	
     }
 }

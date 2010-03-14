@@ -2,7 +2,6 @@ package control;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,12 +11,10 @@ import modelo.Estrategia;
 import modelo.Senal;
 import modelo.SenalEntrada;
 
+// TODO Cambiar por escritor especifico de cada clase
 
-
-public class Escritor implements Serializable
-{
-	private static final long serialVersionUID = -6112706980498122769L;
-	
+public class Escritor
+{	
 	public ArrayList <String> lineas = new ArrayList <String> ();
 	public ArrayList <Senal> senales = new ArrayList <Senal> ();
 	public String pathMeta;
@@ -34,13 +31,13 @@ public class Escritor implements Serializable
 			File archivoEscritura = new File(pathMeta + "ordenes.txt");
 			if(!lineas.isEmpty())
 			{
-				archivoEscritura.createNewFile();
+				if(!archivoEscritura.exists())
+					archivoEscritura.createNewFile();
 				FileWriter fw = new FileWriter(archivoEscritura, true);
-				for(String linea : lineas.subList(0, lineas.size() - 1))
+				for(String linea : lineas)
 				{
 					fw.write(linea + ";");
 				}
-				fw.write(lineas.get(lineas.size() - 1) + ";");
 				fw.close();
 			}
 			lineas = new ArrayList <String> ();
@@ -48,7 +45,7 @@ public class Escritor implements Serializable
 		catch(Exception e)
 		{
 			lineas = new ArrayList <String> ();
-			Error.agregar("No se pudo escribir en el archivo");
+			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
 		}
 		new File(pathMeta + "magicos.txt").delete();
 	}
@@ -58,7 +55,7 @@ public class Escritor implements Serializable
 		boolean termino = false;
 		int numero = 0;
 		for(Senal s : senales)
-			numero += s.numeroLotes;
+			numero += s.getNumeroLotes();
 		if(senales.size() > 0)
 		{
 			try 
@@ -67,7 +64,7 @@ public class Escritor implements Serializable
 			}
 			catch (InterruptedException e) 
 			{
-	    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos");
+	    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos en path: " + pathMeta);
 			}
 		}
 		else
@@ -82,7 +79,7 @@ public class Escritor implements Serializable
 				numeroVeces++;
 				if(numeroVeces == 100)
 				{
-					Error.agregar("Error de lectura, magicos no fueron leidos");
+					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
 					return;
 				}
 				File archivoMagicos = new File(pathMeta + "magicos.txt");
@@ -96,7 +93,7 @@ public class Escritor implements Serializable
 		}
 		catch(Exception e)
 		{
-			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico");
+			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
 			return;
 		}
 		for(int i = 0; i < 60 && !termino; i++)
@@ -121,8 +118,8 @@ public class Escritor implements Serializable
 					Scanner sc2 = new Scanner(sc.next());
 					sc2.useDelimiter("\\Q;\\E");
 					int magico = sc2.nextInt();
-					actual.magico[numeroActual++] = magico;
-					if(numeroActual == actual.numeroLotes)
+					actual.getMagico()[numeroActual++] = magico;
+					if(numeroActual == actual.getNumeroLotes())
 					{
 						numeroActual = 0;
 						if(it.hasNext())
@@ -135,7 +132,7 @@ public class Escritor implements Serializable
 			} 
 			catch (Exception e)
 			{
-	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos");
+	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos, en path: " + pathMeta);
 			}
 			finally
 			{
@@ -144,43 +141,43 @@ public class Escritor implements Serializable
 		}
 		if(new File(pathMeta + "magicos.txt").canWrite())
 			new File(pathMeta + "magicos.txt").delete();
-		senales.clear();
+		senales = new ArrayList <Senal> ();
 	}
 
 	public void cerrar(SenalEntrada entrada, Senal afectada)
 	{
-		if(entrada.numeroLotes > 5)
+		if(entrada.getNumeroLotes() > 5)
 		{
-    		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.par.toString());
+    		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
 		}
-		for(int i = 0; i < entrada.numeroLotes; i++)
+		for(int i = 0; i < entrada.getNumeroLotes(); i++)
 		{
-			lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.magico[i]);
+			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
 		}
-		afectada.numeroLotes -= entrada.numeroLotes;
-		if(afectada.numeroLotes <= 0)
+		afectada.setNumeroLotes(afectada.getNumeroLotes() - entrada.getNumeroLotes());
+		if(afectada.getNumeroLotes() <= 0)
 			return;
-		afectada.magico = Arrays.copyOfRange(afectada.magico, entrada.numeroLotes, afectada.magico.length);
+		afectada.setMagico(Arrays.copyOfRange(afectada.getMagico(), entrada.getNumeroLotes(), afectada.getMagico().length));
 	}
 
 	public void abrir(SenalEntrada entrada, Senal nueva)
 	{
 		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
-		if(entrada.numeroLotes > 5)
+		if(entrada.getNumeroLotes() > 5)
 		{
-    		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.par.toString());
+    		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
 		}
-		if(estrategia.darActivo(entrada.par))
+		if(estrategia.darActivo(entrada.getPar()))
 		{
-			for(int i = 0; i < entrada.numeroLotes; i++)
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
 			{
-				if(estrategia.darActivo(entrada.par))
+				if(estrategia.darActivo(entrada.getPar()))
 				{
-					lineas.add(entrada.par + ";" + (entrada.compra ? "BUY" : "SELL") + ";" + "OPEN;" + (nueva.estrategia == IdEstrategia.BREAKOUT2 ? "1" : "0"));
+					lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + (nueva.getEstrategia() == IdEstrategia.BREAKOUT2 ? "1" : "0"));
 				}
 			}
 			senales.add(nueva);
 		}
-		nueva.magico = new int[entrada.numeroLotes];
+		nueva.setMagico(new int[entrada.getNumeroLotes()]);
 	}
 }

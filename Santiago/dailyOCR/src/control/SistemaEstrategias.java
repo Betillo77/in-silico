@@ -1,11 +1,10 @@
 package control;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import modelo.Estrategia;
 import modelo.Senal;
-
-
 
 public abstract class SistemaEstrategias
 {
@@ -31,7 +30,7 @@ public abstract class SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-    		Error.agregar(e.getMessage() + "Error en Iniciar procesamiento al procesar");
+    		Error.agregar(e.getMessage() + "Error en Iniciar procesamiento al procesar en: " + getClass().getCanonicalName());
 		}
 	}
 

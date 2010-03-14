@@ -98,7 +98,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.EURUSD)
 				{
-					eurusd.setSelected(estrategia.activos[i]);
+					eurusd.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -130,7 +130,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.USDJPY)
 				{
-					usdjpy.setSelected(estrategia.activos[i]);
+					usdjpy.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -162,7 +162,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.GBPUSD)
 				{
-					gbpusd.setSelected(estrategia.activos[i]);
+					gbpusd.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -194,7 +194,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.USDCHF)
 				{
-					usdchf.setSelected(estrategia.activos[i]);
+					usdchf.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -226,7 +226,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.EURCHF)
 				{
-					eurchf.setSelected(estrategia.activos[i]);
+					eurchf.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -258,7 +258,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.AUDUSD)
 				{
-					audusd.setSelected(estrategia.activos[i]);
+					audusd.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -290,7 +290,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.USDCAD)
 				{
-					usdcad.setSelected(estrategia.activos[i]);
+					usdcad.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -322,7 +322,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.NZDUSD)
 				{
-					nzdusd.setSelected(estrategia.activos[i]);
+					nzdusd.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -354,7 +354,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.EURJPY)
 				{
-					eurjpy.setSelected(estrategia.activos[i]);
+					eurjpy.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -386,7 +386,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.GBPJPY)
 				{
-					gbpjpy.setSelected(estrategia.activos[i]);
+					gbpjpy.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -418,7 +418,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.CHFJPY)
 				{
-					chfjpy.setSelected(estrategia.activos[i]);
+					chfjpy.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -450,7 +450,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.GBPCHF)
 				{
-					gbpchf.setSelected(estrategia.activos[i]);
+					gbpchf.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -482,7 +482,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.EURAUD)
 				{
-					euraud.setSelected(estrategia.activos[i]);
+					euraud.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;
@@ -514,7 +514,7 @@ public class FormatoPares extends JDialog {
 			{
 				if(p == Par.AUDJPY)
 				{
-					audjpy.setSelected(estrategia.activos[i]);
+					audjpy.setSelected(estrategia.getActivos()[i]);
 					break;
 				}
 				i++;

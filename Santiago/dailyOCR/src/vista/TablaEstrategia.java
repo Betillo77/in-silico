@@ -39,12 +39,12 @@ public class TablaEstrategia extends JFrame
 			final Object[][] mostrar = new Object[lista.size()][6];
 			for(int i = 0; i < lista.size(); i++)
 			{
-				mostrar[i][0] = lista.get(i).estrategia.toString();
-				mostrar[i][1] = lista.get(i).compra;
-				mostrar[i][2] = lista.get(i).par.toString();
-				mostrar[i][3] = lista.get(i).numeroLotes;
-				mostrar[i][4] = lista.get(i).precioEntrada;
-				int [] temp = lista.get(i).magico;
+				mostrar[i][0] = lista.get(i).getEstrategia().toString();
+				mostrar[i][1] = lista.get(i).isCompra();
+				mostrar[i][2] = lista.get(i).getPar().toString();
+				mostrar[i][3] = lista.get(i).getNumeroLotes();
+				mostrar[i][4] = lista.get(i).getPrecioEntrada();
+				int [] temp = lista.get(i).getMagico();
 				String temp2 = "";
 				for(int j=0;j<temp.length-1;j++)
 				{
@@ -125,17 +125,17 @@ public class TablaEstrategia extends JFrame
 					{
 						try
 						{
-							mostrar[i][0] = lista.get(i).estrategia.toString();
+							mostrar[i][0] = lista.get(i).getEstrategia().toString();
 						}
 						catch(Exception e1)
 						{
 							return;
 						}
-						mostrar[i][1] = lista.get(i).compra;
-						mostrar[i][2] = lista.get(i).par.toString();
-						mostrar[i][3] = lista.get(i).numeroLotes;
-						mostrar[i][4] = lista.get(i).precioEntrada;
-						int [] temp = lista.get(i).magico;
+						mostrar[i][1] = lista.get(i).isCompra();
+						mostrar[i][2] = lista.get(i).getPar().toString();
+						mostrar[i][3] = lista.get(i).getNumeroLotes();
+						mostrar[i][4] = lista.get(i).getPrecioEntrada();
+						int [] temp = lista.get(i).getMagico();
 						String temp2 = "";
 						for(int j=0;j<temp.length-1;j++)
 						{
@@ -155,23 +155,5 @@ public class TablaEstrategia extends JFrame
 			});
 			t.start();
 		}
-	}
-	   
-	     
-
-	public static void main(String[] args) 
-	{	 
-		Senal a=new Senal(IdEstrategia.BREAKOUT1,true,Par.AUDUSD,2,0.32);
-		int [] testing={0,0,0,0,0,9};
-		a.magico=testing;
-		ArrayList<Senal> test=new ArrayList<Senal>();
-		test.add(a);
-		test.add(a);
-		test.add(a);
-		test.add(a);
-		test.add(a);
-		test.add(a);
-		TablaEstrategia prueba = new TablaEstrategia(IdEstrategia.BREAKOUT1);
-		prueba.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 }

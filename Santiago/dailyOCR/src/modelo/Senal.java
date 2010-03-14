@@ -1,29 +1,32 @@
 package modelo;
-import java.io.Serializable;
 
 import control.IdEstrategia;
 import control.Par;
 
-
-
-
-public class Senal implements Serializable
+public class Senal
 {
-	private static final long serialVersionUID = -9035153664488602362L;
-	
-	public IdEstrategia estrategia;
-	public boolean compra;
-	public Par par;
-	public int numeroLotes;
-	public int lotesCerradosManualmente = 0;
-	public double precioEntrada;
-	public int[] magico = {0};
-    public boolean manual = false;
-    public double limite;
+	private IdEstrategia estrategia;
+	private boolean compra;
+	private Par par;
+	private int numeroLotes;
+	private int lotesCerradosManualmente = 0;
+	private double precioEntrada;
+	private int[] magico = {0};
+    private boolean manual = false;
+    private double limite;
 	
     public Senal()
     {
     }
+    
+	public Senal(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada)
+	{
+		this.estrategia = estrategia;
+		this.compra = compra;
+		this.par = par;
+		this.numeroLotes = numeroLotes;
+		this.precioEntrada = precioEntrada;
+	}
     
 	public IdEstrategia getEstrategia() {
 		return estrategia;
@@ -97,15 +100,6 @@ public class Senal implements Serializable
 		this.limite = limite;
 	}
 
-	public Senal(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada)
-	{
-		this.estrategia = estrategia;
-		this.compra = compra;
-		this.par = par;
-		this.numeroLotes = numeroLotes;
-		this.precioEntrada = precioEntrada;
-	}
-	
 	public String toString()
 	{
 		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada; 

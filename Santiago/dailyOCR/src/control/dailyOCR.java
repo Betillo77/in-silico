@@ -16,7 +16,6 @@ import vista.ParteGrafica;
 public class dailyOCR
 {
 	public static ArrayList <BidAsk> preciosActuales;
-	static File log = new File("log.txt");
 	static ArrayList <SistemaEstrategias> sistemas;
 	static Class <?> [] clasesSistemas = {
 											SistemaDailyFX.class,
@@ -56,10 +55,10 @@ public class dailyOCR
 			Estrategia posible = se.darEstrategia(estrategia);
 			if(posible != null)
 			{
-				return posible.senales;
+				return posible.getSenales();
 			}
 		}
-		Error.agregar("No se encontraron las se�ales de: " + estrategia.toString());
+		Error.agregar("No se encontraron las senales de: " + estrategia.toString());
 		return null;
 		
 	}
@@ -68,52 +67,52 @@ public class dailyOCR
 	{
 		for(SistemaEstrategias se : sistemas)
 		{
-			Estrategia posible = se.darEstrategia(senal.estrategia);
+			Estrategia posible = se.darEstrategia(senal.getEstrategia());
 			if(posible != null)
 			{
 				return posible;
 			}
 		}
-		Error.agregar("No se encontraron las se�ales de: " + senal.estrategia.toString());
+		Error.agregar("No se encontraron las senales de: " + senal.getEstrategia().toString());
 		return null;
 	}
 	
 	public static synchronized void cerrarSenalManual(Senal senal) 
 	{
-		synchronized(darEstrategiaSenal(senal).senales)
+		synchronized(darEstrategiaSenal(senal).getSenales())
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
-			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, !senal.manual && senal.estrategia != IdEstrategia.JOEL);
-			estrategiaSenal.escritor.escribir();
-			estrategiaSenal.escritor.leerMagicos();
+			estrategiaSenal.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal, !senal.isManual() && senal.getEstrategia() != IdEstrategia.JOEL);
+			estrategiaSenal.getEscritor().escribir();
+			estrategiaSenal.getEscritor().leerMagicos();
 		}
 	}
 	
 	public static synchronized void abrirSenalManual(Senal senal) 
 	{
-		synchronized(darEstrategiaSenal(senal).senales)
+		synchronized(darEstrategiaSenal(senal).getSenales())
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
-			estrategiaSenal.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), senal, true);
-			estrategiaSenal.escritor.escribir();
-			estrategiaSenal.escritor.leerMagicos();
+			estrategiaSenal.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), senal, true);
+			estrategiaSenal.getEscritor().escribir();
+			estrategiaSenal.getEscritor().leerMagicos();
 		}
 	}
 	
 	public static double precioPar(Par par, boolean compra)
 	{
     	int i = 0;
-    	while(!(dailyOCR.preciosActuales.get(i).currency.equals(par)))
+    	while(!(dailyOCR.preciosActuales.get(i).getCurrency().equals(par)))
     	{
     		i++;
     	}
     	if(compra == true)
     	{
-    		return dailyOCR.preciosActuales.get(i).bid;
+    		return dailyOCR.preciosActuales.get(i).getBid();
     	}
     	else
     	{
-    		return dailyOCR.preciosActuales.get(i).ask;
+    		return dailyOCR.preciosActuales.get(i).getAsk();
     	}
 	}
 	

@@ -1,5 +1,7 @@
 package control;
+
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,37 +31,37 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
 		}
-		breakout1.escritor = escritor;
+		breakout1.setEscritor(escritor);
 		breakout2 = Estrategia.leer(IdEstrategia.BREAKOUT2);
 		if(breakout2 == null)
 		{
 			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
 		}
-		breakout2.escritor = escritor;
+		breakout2.setEscritor(escritor);
 		range1 = Estrategia.leer(IdEstrategia.RANGE1);
 		if(range1 == null)
 		{
 			range1 = new Estrategia(IdEstrategia.RANGE1);
 		}
-		range1.escritor = escritor;
+		range1.setEscritor(escritor);
 		range2 = Estrategia.leer(IdEstrategia.RANGE2);
 		if(range2 == null)
 		{
 			range2 = new Estrategia(IdEstrategia.RANGE2);
 		}
-		range2.escritor = escritor;
+		range2.setEscritor(escritor);
 		momentum1 = Estrategia.leer(IdEstrategia.MOMENTUM1);
 		if(momentum1 == null)
 		{
 			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
 		}
-		momentum1.escritor = escritor;
+		momentum1.setEscritor(escritor);
 		momentum2 = Estrategia.leer(IdEstrategia.MOMENTUM2);
 		if(momentum2 == null)
 		{
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
-		momentum2.escritor = escritor;
+		momentum2.setEscritor(escritor);
 		estrategias = new ArrayList <Estrategia> ();
 		estrategias.add(breakout1);
 		estrategias.add(breakout2);
@@ -75,6 +77,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
     		Error.agregar(e.getMessage() + " Error en metodo lectura de sistemaDailyFx");
 		}
+		persistir();
 	}
 
 	public void verificarConsistencia()
@@ -258,36 +261,36 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			for(Senal senal : senalesLeidas)
 			{
-				Estrategia actual = darEstrategia(senal.estrategia);
+				Estrategia actual = darEstrategia(senal.getEstrategia());
 				Senal afectada = null;
-				if((afectada = actual.tienePar(senal.par)) != null)
+				if((afectada = actual.tienePar(senal.getPar())) != null)
 				{
-					if(senal.compra != afectada.compra)
+					if(senal.isCompra() != afectada.isCompra())
 					{
-						actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes, 0), afectada, false);
-						actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
+						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes(), 0), afectada, false);
+						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
 					}
-					if(afectada.numeroLotes > senal.numeroLotes)
+					if(afectada.getNumeroLotes() > senal.getNumeroLotes())
 					{
-						actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, afectada.numeroLotes - senal.numeroLotes, 0), afectada, false);
+						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada, false);
 					}
 				}
 				else
 				{
-					actual.agregar(new SenalEntrada(senal.par, TipoSenal.TRADE, senal.compra, senal.numeroLotes, senal.precioEntrada), afectada, false);
+					actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
 				}
 			}
 			for(Estrategia actual : estrategias)
 			{
 				Thread.sleep(1000);
-				synchronized(actual.senales)
+				synchronized(actual.getSenales())
 				{
-					for(int i = 0; i < actual.senales.size(); i++)
+					for(int i = 0; i < actual.getSenales().size(); i++)
 					{
 						Senal senal = null;
 						try
 						{
-							senal = actual.senales.get(i);
+							senal = actual.getSenales().get(i);
 						}
 						catch(Exception e)
 						{
@@ -296,7 +299,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 						boolean encontrada = false;
 						for(Senal nueva : senalesLeidas)
 						{
-							if(actual.id.equals(nueva.estrategia) && senal.par.equals(nueva.par))
+							if(actual.getId().equals(nueva.getEstrategia()) && senal.getPar().equals(nueva.getPar()))
 							{
 								encontrada = true;
 								break;
@@ -304,11 +307,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 						}
 						if(!encontrada)
 						{
-							if(!senal.manual)
-								actual.agregar(new SenalEntrada(senal.par, TipoSenal.HIT, false, senal.numeroLotes, 0), senal, false);
-							if(senal.manual && senal.numeroLotes == 0)
+							if(!senal.isManual())
+								actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal, false);
+							if(senal.isManual() && senal.getNumeroLotes() == 0)
 							{
-								actual.senales.remove(senal);
+								actual.getSenales().remove(senal);
 								i = -1;
 							}
 						}
@@ -318,7 +321,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-    		Error.agregar(e.getMessage() + ": Error al procesar se�ales de dailyFX.");
+    		Error.agregar(e.getMessage() + ": Error al procesar senales de dailyFX.");
 		}
 	}
 

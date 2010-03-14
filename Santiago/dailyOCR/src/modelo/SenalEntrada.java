@@ -5,12 +5,12 @@ import control.TipoSenal;
 
 public class SenalEntrada
 {
-	public Par par;
-	public TipoSenal tipo;
-	public boolean compra;
-	public int numeroLotes = 1;
-	public double precioEntrada;
-	public double limite;
+	private Par par;
+	private TipoSenal tipo;
+	private boolean compra;
+	private int numeroLotes = 1;
+	private double precioEntrada;
+	private double limite;
 	
 	public SenalEntrada(Par par, TipoSenal tipo, boolean compra, int numeroLotes, double precioEntrada) 
 	{
@@ -19,6 +19,54 @@ public class SenalEntrada
 		this.compra = compra;
 		this.numeroLotes = numeroLotes;
 		this.precioEntrada = precioEntrada;
+	}
+
+	public Par getPar() {
+		return par;
+	}
+
+	public void setPar(Par par) {
+		this.par = par;
+	}
+
+	public TipoSenal getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoSenal tipo) {
+		this.tipo = tipo;
+	}
+
+	public boolean isCompra() {
+		return compra;
+	}
+
+	public void setCompra(boolean compra) {
+		this.compra = compra;
+	}
+
+	public int getNumeroLotes() {
+		return numeroLotes;
+	}
+
+	public void setNumeroLotes(int numeroLotes) {
+		this.numeroLotes = numeroLotes;
+	}
+
+	public double getPrecioEntrada() {
+		return precioEntrada;
+	}
+
+	public void setPrecioEntrada(double precioEntrada) {
+		this.precioEntrada = precioEntrada;
+	}
+
+	public double getLimite() {
+		return limite;
+	}
+
+	public void setLimite(double limite) {
+		this.limite = limite;
 	}
 
 	@Override
