@@ -10,10 +10,6 @@ import modelo.Senal;
 import modelo.SenalEntrada;
 import control.conexion.ConexionServidor;
 
-
-
-
-
 public class SistemaDailyFX extends SistemaEstrategias
 {
 	Estrategia breakout1;

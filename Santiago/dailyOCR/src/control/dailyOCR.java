@@ -44,6 +44,7 @@ public class dailyOCR
 	{
 		for(SistemaEstrategias sistema : sistemas)
 		{
+			sistema.cargarEstrategias();
 			sistema.iniciarHilo();
 		}
 	}
