@@ -4,7 +4,6 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +21,7 @@ public class Estrategia
 	private IdEstrategia id;
 	private List <Senal> senales;
 	private boolean[] activos = new boolean[Par.values().length];
-	private Escritor escritor;
+	public Escritor escritor;
 	
 	public Estrategia()
 	{
@@ -87,7 +86,7 @@ public class Estrategia
 	private void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
 		int lotesAnteriores = afectada.getNumeroLotes();
-		getEscritor().cerrar(entrada, afectada);
+		escritor.cerrar(entrada, afectada);
 		BidAsk parActual = null;
 		for(BidAsk ba : dailyOCR.preciosActuales)
 		{
@@ -164,7 +163,7 @@ public class Estrategia
     		Error.agregar("Par ya exite en esta estrategia " + id.toString());
     		return;
 		}
-		getEscritor().abrir(entrada, nueva);
+		escritor.abrir(entrada, nueva);
 		senales.add(nueva);
 	}
 	
@@ -181,7 +180,7 @@ public class Estrategia
 
 	public boolean verificarConsistencia() 
 	{
-		return senales == null || id == null || activos == null || getEscritor() == null;
+		return senales == null || id == null || activos == null || escritor == null;
 	}
 	
     public void escribir()
@@ -256,13 +255,5 @@ public class Estrategia
 
 	public void setActivos(boolean[] activos) {
 		this.activos = activos;
-	}
-
-	public void setEscritor(Escritor escritor) {
-		this.escritor = escritor;
-	}
-
-	public Escritor getEscritor() {
-		return escritor;
 	}
 }

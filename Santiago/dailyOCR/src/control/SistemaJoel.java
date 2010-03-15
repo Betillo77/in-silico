@@ -28,7 +28,7 @@ public class SistemaJoel extends SistemaEstrategias
 		{
 			joel = new Estrategia(IdEstrategia.JOEL);
 		}
-		joel.setEscritor(escritor);
+		joel.escritor = escritor;
 		joelRecomendaciones = Estrategia.leer(IdEstrategia.JOELRECOMENDACIONES);
 		if(joelRecomendaciones == null)
 		{

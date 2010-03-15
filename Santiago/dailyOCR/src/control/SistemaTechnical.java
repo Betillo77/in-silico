@@ -20,7 +20,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		{
 			technical = new Estrategia(IdEstrategia.TECHNICAL);
 		}
-		technical.setEscritor(escritor);
+		technical.escritor = escritor;
 		try
 		{
 			metodoLectura = ConexionServidor.class.getMethod("leerServidorTechnical");

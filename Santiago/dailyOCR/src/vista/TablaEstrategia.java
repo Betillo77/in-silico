@@ -1,25 +1,22 @@
 package vista;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
 import modelo.Senal;
-
-
-
 import control.IdEstrategia;
-import control.Par;
 import control.dailyOCR;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
 	
 public class TablaEstrategia extends JFrame
 {

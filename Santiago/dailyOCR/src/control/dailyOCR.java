@@ -1,7 +1,6 @@
 package control;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,8 +82,8 @@ public class dailyOCR
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
 			estrategiaSenal.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal, !senal.isManual() && senal.getEstrategia() != IdEstrategia.JOEL);
-			estrategiaSenal.getEscritor().escribir();
-			estrategiaSenal.getEscritor().leerMagicos();
+			estrategiaSenal.escritor.escribir();
+			estrategiaSenal.escritor.leerMagicos();
 		}
 	}
 	
@@ -94,8 +93,8 @@ public class dailyOCR
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
 			estrategiaSenal.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), senal, true);
-			estrategiaSenal.getEscritor().escribir();
-			estrategiaSenal.getEscritor().leerMagicos();
+			estrategiaSenal.escritor.escribir();
+			estrategiaSenal.escritor.leerMagicos();
 		}
 	}
 	

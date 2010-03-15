@@ -31,37 +31,37 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
 		}
-		breakout1.setEscritor(escritor);
+		breakout1.escritor = escritor;
 		breakout2 = Estrategia.leer(IdEstrategia.BREAKOUT2);
 		if(breakout2 == null)
 		{
 			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
 		}
-		breakout2.setEscritor(escritor);
+		breakout2.escritor = escritor;
 		range1 = Estrategia.leer(IdEstrategia.RANGE1);
 		if(range1 == null)
 		{
 			range1 = new Estrategia(IdEstrategia.RANGE1);
 		}
-		range1.setEscritor(escritor);
+		range1.escritor = escritor;
 		range2 = Estrategia.leer(IdEstrategia.RANGE2);
 		if(range2 == null)
 		{
 			range2 = new Estrategia(IdEstrategia.RANGE2);
 		}
-		range2.setEscritor(escritor);
+		range2.escritor = escritor;
 		momentum1 = Estrategia.leer(IdEstrategia.MOMENTUM1);
 		if(momentum1 == null)
 		{
 			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
 		}
-		momentum1.setEscritor(escritor);
+		momentum1.escritor = escritor;
 		momentum2 = Estrategia.leer(IdEstrategia.MOMENTUM2);
 		if(momentum2 == null)
 		{
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
-		momentum2.setEscritor(escritor);
+		momentum2.escritor = escritor;
 		estrategias = new ArrayList <Estrategia> ();
 		estrategias.add(breakout1);
 		estrategias.add(breakout2);

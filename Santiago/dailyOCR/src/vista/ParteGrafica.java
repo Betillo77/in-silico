@@ -65,7 +65,7 @@ public class ParteGrafica extends JPanel {
 				public void actionPerformed(java.awt.event.ActionEvent e)
 				{
 					new TablaEstrategia(IdEstrategia.BREAKOUT1);
-					new FormatoPares(null, IdEstrategia.BREAKOUT1);
+					new FormatoPares(null, IdEstrategia.BREAKOUT1).setVisible(true);
 				}
 			});
 		}
@@ -103,7 +103,7 @@ public class ParteGrafica extends JPanel {
 			Range1.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.RANGE1);
-					new FormatoPares(null, IdEstrategia.RANGE1);
+					new FormatoPares(null, IdEstrategia.RANGE1).setVisible(true);
 				}
 			});
 		}
@@ -122,7 +122,7 @@ public class ParteGrafica extends JPanel {
 			Range2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.RANGE2);
-					new FormatoPares(null, IdEstrategia.RANGE2);
+					new FormatoPares(null, IdEstrategia.RANGE2).setVisible(true);
 				}
 			});
 		}
@@ -141,7 +141,7 @@ public class ParteGrafica extends JPanel {
 			Momentum1.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.MOMENTUM1);
-					new FormatoPares(null, IdEstrategia.MOMENTUM1);
+					new FormatoPares(null, IdEstrategia.MOMENTUM1).setVisible(true);
 				}
 			});
 		}
@@ -160,7 +160,7 @@ public class ParteGrafica extends JPanel {
 			Momentum2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.MOMENTUM2);
-					new FormatoPares(null, IdEstrategia.MOMENTUM2);
+					new FormatoPares(null, IdEstrategia.MOMENTUM2).setVisible(true);
 				}
 			});
 		}
@@ -215,7 +215,7 @@ public class ParteGrafica extends JPanel {
 			joel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.JOEL);
-					new AnalisisGrafico(IdEstrategia.JOEL);
+					new FormatoPares(null, IdEstrategia.JOEL).setVisible(true);
 				}
 			});
 		}
@@ -233,8 +233,6 @@ public class ParteGrafica extends JPanel {
 			technical.setText("Technical");
 			technical.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					new TablaEstrategia(IdEstrategia.TECHNICAL);
-					new AnalisisGrafico(IdEstrategia.TECHNICAL);
 				}
 			});
 		}

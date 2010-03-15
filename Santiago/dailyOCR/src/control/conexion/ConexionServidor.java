@@ -26,11 +26,7 @@ package control.conexion;
  *
  */
 
-
 import java.io.BufferedWriter;
-
-
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -57,9 +53,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
-
 import control.Error;
-import control.SistemaJoel;
 
 public class ConexionServidor
 {
