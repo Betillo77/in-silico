@@ -34,6 +34,7 @@ public class SistemaJoel extends SistemaEstrategias
 		{
 			joelRecomendaciones = new Estrategia(IdEstrategia.JOELRECOMENDACIONES);
 		}
+		joelRecomendaciones.escritor = escritor;
 		try
 		{
 			metodoLectura = ConexionServidor.class.getMethod("leerServidorJoel");
