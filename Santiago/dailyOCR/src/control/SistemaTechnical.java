@@ -2,6 +2,7 @@ package control;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import modelo.Estrategia;
 import modelo.Senal;
@@ -10,11 +11,12 @@ import control.conexion.ConexionServidor;
 
 public class SistemaTechnical extends SistemaEstrategias 
 {
+	Escritor escritor;
 	Estrategia technical;
 	
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("technical/");
+		escritor = new Escritor("technical/", SistemaTechnical.class);
 		technical = Estrategia.leer(IdEstrategia.TECHNICAL);
 		if(technical == null)
 		{
@@ -220,5 +222,21 @@ public class SistemaTechnical extends SistemaEstrategias
 			return technical;
 		}
 		return null;
+	}
+	
+	public static Collection <String> metodoMeta(SenalEntrada entrada, Senal afectada)
+	{
+		ArrayList <String> lineas = new ArrayList <String> ();
+		if(entrada.getTipo().equals(TipoSenal.HIT))
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+			{
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
+			}
+		else
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+			{
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;0");
+			}
+		return lineas;
 	}
 }

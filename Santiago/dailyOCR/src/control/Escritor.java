@@ -2,8 +2,11 @@ package control;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -15,13 +18,22 @@ import modelo.SenalEntrada;
 
 public class Escritor
 {	
-	public ArrayList <String> lineas = new ArrayList <String> ();
-	public ArrayList <Senal> senales = new ArrayList <Senal> ();
-	public String pathMeta;
+	private ArrayList <String> lineas = new ArrayList <String> ();
+	private ArrayList <Senal> senales = new ArrayList <Senal> ();
+	private String pathMeta;
+	public Method metodoMeta;
 	
-	public Escritor(String path)
+	public Escritor(String path, Class <?> clase)
 	{
 		pathMeta = path;
+		try 
+		{
+			metodoMeta = clase.getMethod("metodoMeta", SenalEntrada.class, Senal.class);
+		} 
+		catch(Exception e) 
+		{
+			Error.agregar(e.getMessage() + " Error en metodoMeta de: " + pathMeta);
+		}
 	}
 	
 	public void escribir() 
@@ -144,15 +156,20 @@ public class Escritor
 		senales = new ArrayList <Senal> ();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void cerrar(SenalEntrada entrada, Senal afectada)
 	{
 		if(entrada.getNumeroLotes() > 5)
 		{
     		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
 		}
-		for(int i = 0; i < entrada.getNumeroLotes(); i++)
+		try 
 		{
-			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
+			lineas.addAll((Collection <String>) metodoMeta.invoke(entrada, afectada));
+		} 
+		catch (Exception e) 
+		{
+			Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
 		}
 		afectada.setNumeroLotes(afectada.getNumeroLotes() - entrada.getNumeroLotes());
 		if(afectada.getNumeroLotes() <= 0)
@@ -160,6 +177,7 @@ public class Escritor
 		afectada.setMagico(Arrays.copyOfRange(afectada.getMagico(), entrada.getNumeroLotes(), afectada.getMagico().length));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void abrir(SenalEntrada entrada, Senal nueva)
 	{
 		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
@@ -169,11 +187,15 @@ public class Escritor
 		}
 		if(estrategia.darActivo(entrada.getPar()))
 		{
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+			if(estrategia.darActivo(entrada.getPar()))
 			{
-				if(estrategia.darActivo(entrada.getPar()))
+				try 
 				{
-					lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + (nueva.getEstrategia() == IdEstrategia.BREAKOUT2 ? "1" : "0"));
+					lineas.addAll((Collection <String>) metodoMeta.invoke(entrada, nueva));
+				} 
+				catch (Exception e) 
+				{
+					Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
 				}
 			}
 			senales.add(nueva);

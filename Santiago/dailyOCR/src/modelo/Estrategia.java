@@ -87,44 +87,10 @@ public class Estrategia
 	{
 		int lotesAnteriores = afectada.getNumeroLotes();
 		escritor.cerrar(entrada, afectada);
-		BidAsk parActual = null;
-		for(BidAsk ba : dailyOCR.preciosActuales)
-		{
-			if(ba.getCurrency().equals(afectada.getPar()))
-			{
-				parActual = ba;
-				break;
-			}
-		}
-		if(parActual == null)
-		{
-    		Error.agregar("Par no encontrado");
-			return;
-		}
-		int resultado = 0;
-		if(!afectada.isCompra())
-		{
-			if(afectada.getPrecioEntrada() > 10)
-			{
-				resultado = (int) Math.round((afectada.getPrecioEntrada() - parActual.getAsk()) * 100);
-			}
-			else
-			{
-				resultado = (int) Math.round((afectada.getPrecioEntrada() - parActual.getAsk()) * 10000);
-			}
-		}
-		else
-		{
-			if(afectada.getPrecioEntrada() > 10)
-			{
-				resultado = (int) Math.round((parActual.getBid() - afectada.getPrecioEntrada()) * 100);
-			}
-			else
-			{
-				resultado = (int) Math.round((parActual.getBid() - afectada.getPrecioEntrada()) * 10000);
-			}
-		}
-		if(afectada.getNumeroLotes() == 0)
+		double precioActual = dailyOCR.precioPar(afectada.getPar(), afectada.isCompra());
+		double precioParActual = afectada.isCompra() ? precioActual - afectada.getPrecioEntrada() : afectada.getPrecioEntrada() - precioActual;
+		int resultado = afectada.getPrecioEntrada() > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+		if(afectada.getNumeroLotes() <= 0)
 		{
 			if(!dejarLista)
 				senales.remove(afectada);
@@ -133,21 +99,10 @@ public class Estrategia
 				afectada.setLotesCerradosManualmente(lotesAnteriores);
 				afectada.setMagico(new int[1]);
 			}
-			if(!dejarLista)
-				for(int i = 0; i < entrada.getNumeroLotes(); i++)
-					ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
 		}
-		else if(afectada.getNumeroLotes() < 0)
-		{
-			senales.remove(afectada);
-			for(int i = 0; i < afectada.getLotesCerradosManualmente(); i++)
-				ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
-		}
-		else
-		{
+		if(!dejarLista)
 			for(int i = 0; i < entrada.getNumeroLotes(); i++)
 				ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
-		}
 	}
 	
 	private void trade(SenalEntrada entrada, boolean dejarLista) 
@@ -171,12 +126,11 @@ public class Estrategia
 	{
 		for(Senal senal : senales)
 		{
-			if(senal.getPar() == par)
+			if(senal.getPar().equals(par))
 				return senal;
 		}
 		return null;
 	}
-	
 
 	public boolean verificarConsistencia() 
 	{

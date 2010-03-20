@@ -6,35 +6,29 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import modelo.Estrategia;
 import modelo.Senal;
 import modelo.SenalEntrada;
-import modelo.SenalJoel;
 import control.conexion.ConexionServidor;
 
 public class SistemaJoel extends SistemaEstrategias 
 {
+	Escritor escritor;
 	Estrategia joel;
-	Estrategia joelRecomendaciones;
 
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("joel/");
+		escritor = new Escritor("joel/experts/files/", SistemaJoel.class);
 		joel = Estrategia.leer(IdEstrategia.JOEL);
 		if(joel == null)
 		{
 			joel = new Estrategia(IdEstrategia.JOEL);
 		}
 		joel.escritor = escritor;
-		joelRecomendaciones = Estrategia.leer(IdEstrategia.JOELRECOMENDACIONES);
-		if(joelRecomendaciones == null)
-		{
-			joelRecomendaciones = new Estrategia(IdEstrategia.JOELRECOMENDACIONES);
-		}
-		joelRecomendaciones.escritor = escritor;
 		try
 		{
 			metodoLectura = ConexionServidor.class.getMethod("leerServidorJoel");
@@ -48,7 +42,7 @@ public class SistemaJoel extends SistemaEstrategias
 	
 	public void verificarConsistencia() 
 	{
-		if(joel == null || joelRecomendaciones == null || joel.verificarConsistencia() || joelRecomendaciones.verificarConsistencia())
+		if(joel == null || joel.verificarConsistencia())
 		{
 			cargarEstrategias();
 		}
@@ -112,15 +106,12 @@ public class SistemaJoel extends SistemaEstrategias
 		}).start();
 	}
 	
-	public static SenalJoel deducir(String subject)
+	public static Senal deducir(String subject)
     {
     	boolean recomendado = false;
     	boolean compra = false;
     	Par par = null;
-    	int numeroDeLotes = 2;
-    	double precioDeEntrada = 0.0;
-    	double parada = 0.0;
-    	double limite = Double.NaN;
+    	double precioDeEntrada = -1;
     	if(subject.contains("@"))
     	{
     		if(subject.contains("RECOMMENDATION"))
@@ -150,6 +141,10 @@ public class SistemaJoel extends SistemaEstrategias
     			{
     				par = a;
     			}
+    			else
+    			{
+    				return null;
+    			}
     		}
     		Pattern At = Pattern.compile("@\\d+.?\\d*");
     		Matcher match1 = At.matcher(subject);
@@ -159,35 +154,18 @@ public class SistemaJoel extends SistemaEstrategias
     			String sinAt = conAt.substring(1);
     			precioDeEntrada = Double.parseDouble(sinAt);
     		}
-    		Pattern Stop = Pattern.compile("STOP\\s\\d+.?\\d*");
-    		Matcher match2 = Stop.matcher(subject);
-    		if(match2.find())
+    		if(!recomendado && precioDeEntrada > 0)
+    			precioDeEntrada = -1;
+    		else
+    			return null;
+    		if(par != null && precioDeEntrada > 0)
     		{
-    			String conStop = match2.group();
-    			String sinStop = conStop.substring(5);
-    			parada = Double.parseDouble(sinStop);
-    		}
-    		if(subject.contains("LIMIT"))
-    		{
-    			Pattern Limit = Pattern.compile("LIMIT\\s\\d+.?\\d*");
-    			Matcher match3 = Limit.matcher(subject);
-    			if(match3.find())
-    			{
-    				String conLimite = match3.group();
-    				String sinLimite = conLimite.substring(6);
-    				limite = Double.parseDouble(sinLimite);
-    			}
-    		}
-    		
-    		if(par != null && precioDeEntrada > 0 && parada > 0)
-    		{
-    	    	SenalJoel nueva = new SenalJoel(IdEstrategia.JOEL, compra, par, numeroDeLotes, precioDeEntrada, parada, recomendado, limite); 
+    	    	Senal nueva = new Senal(IdEstrategia.JOEL, compra, par, 1, precioDeEntrada); 
     			return nueva;
     		}
     	}
     	return null;	
     }
-	
 	
 	protected ArrayList <Senal> leer(String[] lecturas) 
 	{
@@ -211,7 +189,7 @@ public class SistemaJoel extends SistemaEstrategias
 		ArrayList <Senal> senalesLeidas = new ArrayList <Senal> ();
 		for(String titulo : lecturas)
 		{
-			SenalJoel sj = deducir(titulo);
+			Senal sj = deducir(titulo);
 			if(sj != null)
 				senalesLeidas.add(sj);
 		}
@@ -222,53 +200,11 @@ public class SistemaJoel extends SistemaEstrategias
 	{
 		try
 		{
-//			Calendar c = Calendar.getInstance();
-//			for(Iterator <Senal> it = joelRecomendaciones.senales.iterator(); it.hasNext();)
-//			{
-//				try
-//				{
-//					SenalJoel senalJoel = (SenalJoel) it.next();
-//					Calendar c1 = Calendar.getInstance();
-//					c1.setTimeInMillis(senalJoel.tiempoEntrada);
-//					if(c.get(Calendar.DATE) == c1.get(Calendar.DATE))
-//					{
-//						if(c.get(Calendar.HOUR) > 17)
-//						{
-//							it.remove();
-//						}
-//						else
-//						{
-//							double precioActual = dailyOCR.precioPar(senalJoel.par, senalJoel.compra);
-//							if((senalJoel.compra && senalJoel.precioEntrada <= precioActual) || (!senalJoel.compra && senalJoel.precioEntrada >= precioActual))
-//							{
-//								joel.agregar(new SenalEntrada(senalJoel.par, TipoSenal.TRADE, senalJoel.compra, 1, precioActual), senalJoel, false);
-//								it.remove();
-//							}
-//						}
-//					}
-//					else
-//					{
-//						it.remove();
-//					}
-//				}
-//				catch(Exception e)
-//				{
-//					Error.agregar("Se produjo un error manejando las recomendaciones de Joel: " + e.getMessage());
-//				}
-//			}
-			for(Senal senalSimple : senalesLeidas)
+			for(Senal senal : senalesLeidas)
 			{
 				try
 				{
-					SenalJoel senalJoel = (SenalJoel) senalSimple;
-//					if(senalJoel.recomendado)
-//					{
-//						joelRecomendaciones.senales.add(senalJoel);
-//					}
-//					else
-//					{
-						joel.agregar(new SenalEntrada(senalJoel.getPar(), TipoSenal.TRADE, senalJoel.isCompra(), 1, senalJoel.getPrecioEntrada()), senalJoel, false);
-//					}
+					joel.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), 1, senal.getPrecioEntrada()), senal, false);
 				}
 				catch(Exception e)
 				{
@@ -285,7 +221,6 @@ public class SistemaJoel extends SistemaEstrategias
 	public void persistir() 
 	{
 		joel.escribir();
-		joelRecomendaciones.escribir();
 	}
 	
 	public Estrategia darEstrategia(IdEstrategia id)
@@ -294,10 +229,22 @@ public class SistemaJoel extends SistemaEstrategias
 		{
 			return joel;
 		}
-		if(id == IdEstrategia.JOELRECOMENDACIONES)
-		{
-			return joelRecomendaciones;
-		}
 		return null;
+	}
+	
+	public static Collection <String> metodoMeta(SenalEntrada entrada, Senal afectada)
+	{
+		ArrayList <String> lineas = new ArrayList <String> ();
+		if(entrada.getTipo().equals(TipoSenal.HIT))
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+			{
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
+			}
+		else
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+			{
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + afectada.getPrecioEntrada());
+			}
+		return lineas;
 	}
 }

@@ -3,6 +3,7 @@ package control;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,8 @@ import control.conexion.ConexionServidor;
 
 public class SistemaDailyFX extends SistemaEstrategias
 {
+	Escritor escritorBreakout2;
+	Escritor escritorOtros;
 	Estrategia breakout1;
 	Estrategia breakout2;
 	Estrategia range1;
@@ -25,43 +28,44 @@ public class SistemaDailyFX extends SistemaEstrategias
 	
 	public void cargarEstrategias()
 	{
-		escritor = new Escritor("dailyFX/experts/files/");
+		escritorBreakout2 = new Escritor("dailyFX/experts/files/", SistemaDailyFX.class);
+		escritorOtros = new Escritor("dailyOtros/experts/files/", SistemaDailyFX.class);
 		breakout1 = Estrategia.leer(IdEstrategia.BREAKOUT1);
 		if(breakout1 == null)
 		{
 			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
 		}
-		breakout1.escritor = escritor;
+		breakout1.escritor = escritorOtros;
 		breakout2 = Estrategia.leer(IdEstrategia.BREAKOUT2);
 		if(breakout2 == null)
 		{
 			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
 		}
-		breakout2.escritor = escritor;
+		breakout2.escritor = escritorBreakout2;
 		range1 = Estrategia.leer(IdEstrategia.RANGE1);
 		if(range1 == null)
 		{
 			range1 = new Estrategia(IdEstrategia.RANGE1);
 		}
-		range1.escritor = escritor;
+		range1.escritor = escritorOtros;
 		range2 = Estrategia.leer(IdEstrategia.RANGE2);
 		if(range2 == null)
 		{
 			range2 = new Estrategia(IdEstrategia.RANGE2);
 		}
-		range2.escritor = escritor;
+		range2.escritor = escritorOtros;
 		momentum1 = Estrategia.leer(IdEstrategia.MOMENTUM1);
 		if(momentum1 == null)
 		{
 			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
 		}
-		momentum1.escritor = escritor;
+		momentum1.escritor = escritorOtros;
 		momentum2 = Estrategia.leer(IdEstrategia.MOMENTUM2);
 		if(momentum2 == null)
 		{
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
-		momentum2.escritor = escritor;
+		momentum2.escritor = escritorOtros;
 		estrategias = new ArrayList <Estrategia> ();
 		estrategias.add(breakout1);
 		estrategias.add(breakout2);
@@ -105,8 +109,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 						verificarConsistencia();
 						Thread.sleep(10000);
 						iniciarProcesamiento();
-					    escritor.escribir();
-						escritor.leerMagicos();
+					    escritorBreakout2.escribir();
+						escritorBreakout2.leerMagicos();
+					    escritorOtros.escribir();
+						escritorOtros.leerMagicos();
 						verificarConsistencia();
 						persistir();
 					}
@@ -347,5 +353,21 @@ public class SistemaDailyFX extends SistemaEstrategias
 			case MOMENTUM2 : return momentum2;
 			default : return null;
 		}
+	}
+	
+	public static Collection <String> metodoMeta(SenalEntrada entrada, Senal afectada)
+	{
+		ArrayList <String> lineas = new ArrayList <String> ();
+		if(entrada.getTipo().equals(TipoSenal.HIT))
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+			{
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
+			}
+		else
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+			{
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + (afectada.getEstrategia().equals(IdEstrategia.BREAKOUT2) ? "1" : "0"));
+			}
+		return lineas;
 	}
 }

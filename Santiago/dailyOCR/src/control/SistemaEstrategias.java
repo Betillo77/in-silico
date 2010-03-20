@@ -10,8 +10,6 @@ public abstract class SistemaEstrategias
 {
 	static final String pathPersistencia = "";
 	
-	Escritor escritor;
-	
 	Method metodoLectura;
 	
 	public abstract void cargarEstrategias();
