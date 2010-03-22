@@ -2,7 +2,6 @@ package control;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +12,6 @@ import java.util.Scanner;
 import modelo.Estrategia;
 import modelo.Senal;
 import modelo.SenalEntrada;
-
-// TODO Cambiar por escritor especifico de cada clase
 
 public class Escritor
 {	
