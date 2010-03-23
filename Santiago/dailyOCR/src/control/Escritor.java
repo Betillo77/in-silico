@@ -18,7 +18,7 @@ public class Escritor
 	private ArrayList <String> lineas = new ArrayList <String> ();
 	private ArrayList <Senal> senales = new ArrayList <Senal> ();
 	private String pathMeta;
-	public Method metodoMeta;
+	private Method metodoMeta;
 	
 	public Escritor(String path, Class <?> clase)
 	{
@@ -184,16 +184,13 @@ public class Escritor
 		}
 		if(estrategia.darActivo(entrada.getPar()))
 		{
-			if(estrategia.darActivo(entrada.getPar()))
+			try 
 			{
-				try 
-				{
-					lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, nueva));
-				} 
-				catch (Exception e) 
-				{
-					Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
-				}
+				lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, nueva));
+			} 
+			catch (Exception e) 
+			{
+				Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
 			}
 			senales.add(nueva);
 		}

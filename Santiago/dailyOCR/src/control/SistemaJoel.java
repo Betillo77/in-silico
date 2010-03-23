@@ -154,12 +154,12 @@ public class SistemaJoel extends SistemaEstrategias
     			String sinAt = conAt.substring(1);
     			precioDeEntrada = Double.parseDouble(sinAt);
     		}
-    		if(!recomendado && precioDeEntrada > 0)
-    			precioDeEntrada = -1;
-    		else
-    			return null;
     		if(par != null && precioDeEntrada > 0)
     		{
+        		if(!recomendado && precioDeEntrada > 0)
+        			precioDeEntrada = -1;
+        		else if(recomendado && precioDeEntrada < 0)
+        			return null;
     	    	Senal nueva = new Senal(IdEstrategia.JOEL, compra, par, 1, precioDeEntrada); 
     			return nueva;
     		}
@@ -236,15 +236,9 @@ public class SistemaJoel extends SistemaEstrategias
 	{
 		ArrayList <String> lineas = new ArrayList <String> ();
 		if(entrada.getTipo().equals(TipoSenal.HIT))
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
-			{
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
-			}
+			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";CLOSE;" + afectada.getMagico()[0]);
 		else
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
-			{
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + afectada.getPrecioEntrada());
-			}
+			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;" + afectada.getPrecioEntrada());
 		return lineas;
 	}
 }

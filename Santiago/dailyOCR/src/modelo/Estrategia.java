@@ -101,8 +101,14 @@ public class Estrategia
 			}
 		}
 		if(!dejarLista)
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
-				ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
+		{
+			if(afectada.getLotesCerradosManualmente() > 0)
+				for(int i = 0; i < afectada.getLotesCerradosManualmente(); i++)
+					ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
+			else
+				for(int i = 0; i < entrada.getNumeroLotes(); i++)
+					ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
+		}
 	}
 	
 	private void trade(SenalEntrada entrada, boolean dejarLista) 
