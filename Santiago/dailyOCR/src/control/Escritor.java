@@ -188,7 +188,7 @@ public class Escritor
 			{
 				try 
 				{
-					lineas.addAll((Collection <String>) metodoMeta.invoke(entrada, nueva));
+					lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, nueva));
 				} 
 				catch (Exception e) 
 				{
