@@ -17,7 +17,7 @@ public class dailyOCR
 	public static ArrayList <BidAsk> preciosActuales;
 	static ArrayList <SistemaEstrategias> sistemas;
 	static Class <?> [] clasesSistemas = {
-											SistemaDailyFX.class,
+										    SistemaDailyFX.class,
 											SistemaJoel.class//,
 										  //SistemaTechnical
 	};

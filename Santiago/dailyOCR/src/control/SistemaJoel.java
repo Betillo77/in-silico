@@ -114,15 +114,15 @@ public class SistemaJoel extends SistemaEstrategias
     	double precioDeEntrada = -1;
     	if(subject.contains("@") || subject.contains("at"))
     	{
-    		if(subject.contains("RECOMMENDATION"))
+    		if(subject.toUpperCase().contains("RECOMMENDATION"))
     		{
     			recomendado = true;	
     		}
-    		if(subject.contains("BUY")||subject.contains("BOUGHT")||subject.contains("LONG"))
+    		if(subject.toUpperCase().contains("BUY")||subject.toUpperCase().contains("BOUGHT")||subject.toUpperCase().contains("LONG"))
     		{
     			compra = true;	
     		}
-    		else if(subject.contains("SELL")||subject.contains("SOLD")||subject.contains("SHORT"))
+    		else if(subject.toUpperCase().contains("SELL")||subject.toUpperCase().contains("SOLD")||subject.toUpperCase().contains("SHORT"))
     		{
     			compra = false;
     		}
