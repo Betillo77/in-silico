@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Sun Mar 14 21:14:23 COT 2010
+#Sun Mar 28 18:45:54 COT 2010
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
 jarname=dailyOCR.jar
 manifest.mergeall=true
-manifest.mainclass=control.dailyOCR
+manifest.mainclass=vista.AnalisisGrafico
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=

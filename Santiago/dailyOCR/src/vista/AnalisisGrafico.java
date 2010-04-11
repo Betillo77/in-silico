@@ -466,7 +466,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	
 	public static void main(String [] args)
 	{
-		new AnalisisGrafico(IdEstrategia.values()[JOptionPane.showOptionDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)]);
+		new AnalisisGrafico(IdEstrategia.values()[((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)).ordinal()]);
 	}
 }  //  @jve:decl-index=0:visual-constraint="5,7"
 

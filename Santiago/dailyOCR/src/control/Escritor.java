@@ -162,7 +162,7 @@ public class Escritor
 		}
 		try 
 		{
-			lineas.addAll((Collection <String>) metodoMeta.invoke(entrada, afectada));
+			lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, afectada));
 		} 
 		catch (Exception e) 
 		{

@@ -64,7 +64,7 @@ public class SistemaJoel extends SistemaEstrategias
 						Thread.sleep(1200000);
 						iniciarProcesamiento();
 					    escritor.escribir();
-					  //escritor.leerMagicos();
+					    escritor.leerMagicos();
 						verificarConsistencia();
 						persistir();
 					}
@@ -112,7 +112,7 @@ public class SistemaJoel extends SistemaEstrategias
     	boolean compra = false;
     	Par par = null;
     	double precioDeEntrada = -1;
-    	if(subject.contains("@"))
+    	if(subject.contains("@") || subject.contains("at"))
     	{
     		if(subject.contains("RECOMMENDATION"))
     		{
@@ -148,11 +148,23 @@ public class SistemaJoel extends SistemaEstrategias
     		}
     		Pattern At = Pattern.compile("@\\d+.?\\d*");
     		Matcher match1 = At.matcher(subject);
+    		Pattern At1 = Pattern.compile("at \\d+.?\\d*");
+    		Matcher match2 = At1.matcher(subject);
     		if(match1.find())
     		{
     			String conAt = match1.group();
     			String sinAt = conAt.substring(1);
     			precioDeEntrada = Double.parseDouble(sinAt);
+    		}
+    		else if(match2.find())
+    		{
+    			String conAt = match2.group();
+    			String sinAt = conAt.substring(3);
+    			precioDeEntrada = Double.parseDouble(sinAt);
+    		}
+    		else
+    		{
+    			return null;
     		}
     		if(par != null && precioDeEntrada > 0)
     		{
