@@ -22,6 +22,8 @@ NET "leds_out<4>"  LOC = "F11"  ;
 NET "leds_out<5>"  LOC = "E11"  ;
 NET "leds_out<6>"  LOC = "E12"  ;
 NET "leds_out<7>"  LOC = "F12"  ;
+NET "dac_clr" LOC = "P8"  ;
+NET "switch" LOC = "L13"   ;
 
 #PACE: Start of PACE Area Constraints
 
