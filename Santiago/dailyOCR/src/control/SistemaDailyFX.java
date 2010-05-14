@@ -106,6 +106,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				{
 					try
 					{
+						System.gc();
 						verificarConsistencia();
 						Thread.sleep(10000);
 						iniciarProcesamiento();
@@ -120,9 +121,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{	
 						try
 						{
+							System.gc();
 							numeroErrores++;
 				    		Error.agregar(e.getMessage() + " Error en el ciclo dailyFX");
-				    		Thread.sleep(60000);
+				    		Thread.sleep(600000);
 							if(numeroErrores == 60)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
