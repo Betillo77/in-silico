@@ -2,6 +2,7 @@ package control;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import modelo.Estrategia;
 import modelo.Senal;
@@ -24,6 +25,14 @@ public abstract class SistemaEstrategias
 	{
 		try
 		{
+			Calendar c = Calendar.getInstance();
+			int hora = c.get(Calendar.HOUR_OF_DAY);
+			int minuto = c.get(Calendar.MINUTE);
+			if((hora == 5 || hora == 11 || hora == 17 || hora == 23) && minuto < 10)
+			{
+				Error.agregar(this.getClass().getCanonicalName() + " OK");
+				Thread.sleep(600000);
+			}
 			procesar(leer((String[]) metodoLectura.invoke(null)));
 		}
 		catch(Exception e)

@@ -7,7 +7,7 @@ import control.conexion.ConexionServidorMensajes;
 
 public class Error 
 {
-	public static void agregar(String error)
+	public static synchronized void agregar(String error)
 	{
 		try
 		{
