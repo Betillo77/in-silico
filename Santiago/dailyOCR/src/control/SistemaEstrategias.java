@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import control.conexion.ConexionServidorMensajes;
+
 import modelo.Estrategia;
 import modelo.Senal;
 
@@ -39,6 +41,32 @@ public abstract class SistemaEstrategias
 		{
     		Error.agregar(e.getMessage() + "Error en Iniciar procesamiento al procesar en: " + getClass().getCanonicalName());
 		}
+	}
+	
+	public void vivo()
+	{
+		new Thread(
+		new Runnable()
+		{
+			public void run()
+			{
+				ConexionServidorMensajes.enviarMensaje("Status del programa", "Estoy vivo "+this.getClass());
+				try {
+					Thread.sleep(21600000);//6 horas
+				} catch (InterruptedException e) {
+
+					Error.agregar("hilo interrumpido"+e.getMessage());
+				}
+				
+				
+			}
+			
+			
+		}
+		);
+		
+		
+		
 	}
 
 	public abstract void persistir();
