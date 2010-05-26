@@ -95,7 +95,6 @@ Trabajamos en este momento en el desarrollo de una aplicación, usando distintas 
 		} else {
 			echo "Incorrecto";				
 		}
-		echo "<br />$user - $passwd";
 		mysql_close($cnn);
 	}
 ?>

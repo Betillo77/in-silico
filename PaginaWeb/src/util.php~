@@ -32,7 +32,7 @@
 		while ($row = mysql_fetch_array($rs)) {
 			$last = count($row)-1;
 			for ( $i=0; $i<$last; $i++) {
-				echo $row[i], ",";
+				echo $row[$i], ",";
 			}
 			echo $row[$last],"\n";
 		}
@@ -40,4 +40,30 @@
 		return $def;
 	}
 	
+	/*
+	 * Genera una tabla HTML con el encabezado dado mostrando los datos
+	 * generados por la consulta. No retorna nada, solo imprime datos al usuario.
+	 * headList es una lista (Cadena separada por comas que debe tener la misma 
+	 * longitud que campos el query SQL) y contiene los nombres de las columnas.
+	 */
+	function genTable($query, $headList) {
+		echo "<table>\n<tr>\n";
+		$tok = strtok($headList,",");
+		$cols=0;
+		while ($tok !== false) {
+			echo "<td>$tok</td>\n";
+			$tok = strtok(",");
+			$cols++;
+		}
+		echo "</tr>\n";
+		$rs = mysql_query($query);
+		while ($row = mysql_fetch_array($rs)) {
+			echo "<tr>\n";
+			for ( $i=0; $i<$cols; $i++) {
+				echo "<td>$row[$i]</td>\n";
+			}
+			echo "</tr>\n";
+		}
+		echo "</table>\n";
+	}
 ?>

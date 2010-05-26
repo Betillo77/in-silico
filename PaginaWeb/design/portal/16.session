@@ -1,11 +1,14 @@
-window_sizes 1200 700 300 894 501 120
+window_sizes 1274 724 300 968 525 120
 diagrams
-  active  usecasediagram_ref 128016 // use_case
-    715 400 100 4 0 0
+  usecasediagram_ref 128016 // use_case
+    974 527 100 4 0 0
+  active  deploymentdiagram_ref 129168 // Client-server
+    774 420 100 4 0 0
 end
 show_stereotypes
-selected usecase_ref 128528 // Edit documents
+selected deploymentdiagram_ref 129168 // Client-server
 open
   usecaseview_ref 128016 // use case
+  deploymentview_ref 128016 // despliege
 end
 end

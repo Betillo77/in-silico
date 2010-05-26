@@ -27,7 +27,7 @@ if(c==4)
 c=0;
 }
 
-t=setTimeout("timedCount()",2000);
+t=setTimeout("timedCount()",10000);
 }
 
 function doTimer()
