@@ -7,8 +7,19 @@ Cada subcaja tiene la siguiente entidad:
            spi_mosi : out  STD_LOGIC;
 		   spi_clk : out STD_LOGIC;
 		   spi_cs : out STD_LOGIC;
-		   ready : out  STD_LOGIC			  
+		   ready : out  STD_LOGIC;
+		   clk : in STD_LOGIC			  
     );
+    
+configIn:
+	3-0: Comando
+	4: Ad_conv
+
+spi_cs:
+Señal de habilitación del dispositivo, algunas son activo alta y otras activo bajo. Solo se debe habilitar si el comando es el adecuado.
+
+clk:
+Reloj de la FPGA
     
 Comandos:
 	0000: Ninguno
