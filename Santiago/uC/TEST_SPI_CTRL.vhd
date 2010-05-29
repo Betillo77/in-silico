@@ -19,7 +19,7 @@ entity TEST_SPI_CTRL is
 
 end TEST_SPI_CTRL;
 
-architecture arq_test_spi_ctrl of SPI_CTRL is
+architecture arq_test_spi_ctrl of TEST_SPI_CTRL is
 
 	component SPI_CTRL is
 	
@@ -74,14 +74,14 @@ begin
 		if rising_edge(clk) then
 			estado <= estado + 1;
 			if estado = 0 then
-				configIn <= "00010001"; // Amplificador
-				dataIn <= "00000000000000000000000000010001"; // Configuracion de ganancia
+				configIn <= "00010001"; -- Amplificador
+				dataIn <= "00000000000000000000000000010001"; -- Configuracion de ganancia
 			elsif estado = 1 then
 				if ready = '0' then
 					estado <= 1;
 				end if;
 			elsif estado = 2 then
-				configIn <= "00010011"; // ADC
+				configIn <= "00010011"; -- ADC
 			elsif estado = 3 then
 				if ready = '0' then
 					estado <= 3;
@@ -89,7 +89,7 @@ begin
 					lectura <= dataOut (11 downto 0) + aumento;
 				end if;
 			elsif estado = 4 then
-				configIn <= "00010011"; // DAC
+				configIn <= "00010011"; -- DAC
 				dataIn <= "00000000" & "0011" & "0000" & lectura & "0000";
 			elsif estado = 5 then
 				if ready = '0' then
@@ -100,5 +100,7 @@ begin
 			end if;
 		end if;
 	end process;
-			 
+	
+	
+end arq_test_spi_ctrl;
 				
