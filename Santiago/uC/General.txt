@@ -13,7 +13,7 @@ Cada subcaja tiene la siguiente entidad:
     
 configIn:
 	3-0: Comando
-	4: Ad_conv o Da_conv
+	4: Start
 	
 
 spi_cs:

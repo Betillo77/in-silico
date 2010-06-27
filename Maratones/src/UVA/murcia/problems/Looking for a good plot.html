@@ -1,0 +1,154 @@
+
+<!-- saved from url=(0059)http://uva.onlinejudge.org/contests/250-0601c47b/11791.html -->
+<HTML><HEAD><META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<TITLE>Looking for a good plot</TITLE>
+</HEAD><BODY bgcolor="#FFFFFF" lang="EN">
+<DIV align="center"><CENTER>
+
+<TABLE border="0" bgcolor="#0060F0" summary="Table used for layout (ugh)">
+<TBODY>
+  <TR>
+    <TD><B><FONT color="#C0FFFF" size="5">&nbsp;F - Looking for a Good Plot&nbsp;</FONT></B></TD>
+  </TR>
+</TBODY>
+</TABLE>
+</CENTER></DIV>
+
+<H2><FONT color="#0070E8">Background</FONT></H2>
+
+<P>A rich guy wants to buy some land to build a house. He is a bit eccentric and wants his 
+parcel to have rectangular shape, with the sides aligned with earth's meridians and 
+parallels. Ideally, he would like a plot of land with a lake and, most importantly, with 
+easy access by car.</P>
+
+<P>He does not care very much about money, hence he wants to buy the largest rectangular 
+plot of land available which has access by car and contains a lake or is crossed by a 
+river. If he cannot find a plot with both water and a road, he prefers one with only 
+access by car rather than one with only water. However, he will conform with a plot 
+without either one if nothing better is available.</P>
+
+<P>He has hired you to help him in his search.</P>
+
+<H2><FONT color="#0070E8">The Problem</FONT></H2>
+
+<P>Your program will receive a map of an area. The map will be oriented with the north at 
+the top.</P>
+
+<P>It will have to output the coordinates of the best plot available in the map, according 
+to the following rules: 
+
+</P><OL>
+  <LI>The plot must contain at least one square of available land, and may contain squares of 
+    water.</LI>
+  <LI>The plot must not contain any square of road or unavailable land.</LI>
+  <LI>The plot will be rectangular, with two sides aligned from north to south, and the other 
+    two sides aligned from west to east.</LI>
+  <LI>A plot which is adjacent to at least one square of road is considered to have easy 
+    access by car. We will consider that each square in the map has eight adjacent squares 
+    (that is: to the north, north-east, east, south-east, south, south-west, west and 
+    north-west). A plot with easy access by car is always better than another plot without it.</LI>
+  <LI>A plot that contains at least a square of water is better than a plot without water, 
+    unless the second plot has easy access by car and the first one doesn't.</LI>
+  <LI>All the previous considerations being equal, the plot with the larger area is better 
+    than the smaller plot.</LI>
+  <LI>If the areas of two plots are the same and both have the same characteristics with 
+    respect to roads and water, the plot whose upper left corner is located more to the west 
+    is preferred; and if the upper left corners of both plots have the same longitude, the one 
+    more to the north is preferred. If both plots have the same area and the same coordinates 
+    for their upper left corners, the one which has its bottom right corner more to the east 
+    is preferred.</LI>
+</OL>
+
+<H2><FONT color="#0070E8">The Input</FONT></H2>
+
+<P>The input format is as follows:</P>
+
+<P>An integer in a single line which indicates the number of maps that your program will 
+have to process. Then, for each map there will be: 
+
+</P><UL>
+  <LI>Two integers (<I>w</I> and <I>h</I>, both less than or equal to 500) in a single line 
+    which denote the width and height of the map.</LI>
+  <LI><I>h</I> lines of <I>w</I> characters each. Each character represents a square of land, 
+    using the following notation:</LI>
+  <TABLE border="1pt">
+<THEAD>
+    <TR>
+      <TD>Character:</TD>
+      <TD>Meaning:</TD>
+</TR></THEAD>
+<TBODY>
+    
+    <TR>
+      <TD><TT>#</TT></TD>
+      <TD>Unavailable land</TD>
+    </TR>
+    <TR>
+      <TD><TT>-</TT></TD>
+      <TD>Available land</TD>
+    </TR>
+    <TR>
+      <TD><TT>W</TT></TD>
+      <TD>Water</TD>
+    </TR>
+    <TR>
+      <TD><TT>R</TT></TD>
+      <TD>Road</TD>
+    </TR>
+</TBODY>
+  </TABLE>
+</UL>
+
+<H2><FONT color="#0070E8">The Output</FONT></H2>
+
+<P>The output consists of one line for each map:</P>
+
+<P>If at least a plot of land has been found, the program will output four integers 
+separated by one space: the <I>x</I> and <I>y</I> coordinates of the upper left corner of 
+the best plot and its width and height, in this order. If no suitable plot can be found, 
+the line will contain just the string "<CODE>No good places.</CODE>".</P>
+
+<P>Coordinates start at zero and grow southwards and eastwards.</P>
+
+<H2><FONT color="#0070E8">Sample Input</FONT></H2>
+
+<PRE>3
+4 4
+----
+###-
+-###
+----
+10 10
+####R-----
+####R-----
+####R--WW-
+#####R--W-
+----##R---
+-----##RRR
+------##--
+------WWWW
+----WWWWWW
+----WWWWWW
+3 3
+WWW
+WWW
+WWW
+</PRE>
+
+<H2><FONT color="#0070E8">Sample Output</FONT></H2>
+
+<PRE>0 0 4 1
+6 0 4 4
+No good places.
+</PRE>
+
+<HR>
+
+<P align="right"><FONT color="#000040"><SMALL><SMALL><A href="http://dis.um.es/contest" target="_blank">OMP'10</A><BR>
+<A href="http://www.um.es/informatica" target="_blank">Facultad de Informatica<BR>
+</A><A href="http://www.um.es/" target="_blank">Universidad de Murcia (SPAIN)</A></SMALL></SMALL></FONT></P><FONT color="#000040">
+</FONT>
+
+
+</BODY></HTML>
