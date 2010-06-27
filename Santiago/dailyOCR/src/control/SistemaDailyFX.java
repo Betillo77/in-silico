@@ -108,7 +108,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{
 						System.gc();
 						verificarConsistencia();
-						Thread.sleep(10000);
+						Thread.sleep(1000);
 						iniciarProcesamiento();
 					    escritorBreakout2.escribir();
 						escritorBreakout2.leerMagicos();
@@ -125,7 +125,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 							numeroErrores++;
 				    		Error.agregar(e.getMessage() + " Error en el ciclo dailyFX");
 				    		Thread.sleep(600000);
-							if(numeroErrores == 60)
+							if(numeroErrores == 30)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
 								Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
@@ -135,7 +135,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 									{
 										try 
 										{
-											Runtime.getRuntime().exec("java -jar dailyOCR.jar");
+											Runtime.getRuntime().exec("java -jar dailyOCR.jar mx1024m -Xms512m");
 										} 
 										catch (IOException e)
 										{
@@ -148,7 +148,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 						}
 						catch(Exception e1)
 						{
-				    		Error.agregar(e.getMessage() + " Error en el ciclo dailyFX");
+				    		Error.agregar(e.getMessage() + " Error en el ciclo de error DailyFX");
 						}
 					}
 				}
@@ -360,16 +360,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 	public static Collection <String> metodoMeta(SenalEntrada entrada, Senal afectada)
 	{
 		ArrayList <String> lineas = new ArrayList <String> ();
-		if(entrada.getTipo().equals(TipoSenal.HIT))
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
-			{
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
-			}
-		else
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
-			{
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + (afectada.getEstrategia().equals(IdEstrategia.BREAKOUT2) ? "1" : "0"));
-			}
+		if(entrada.getTipo().equals(TipoSenal.HIT) && afectada.getNumeroLotes() == 0)
+			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[0]);
+		else if(entrada.getTipo().equals(TipoSenal.TRADE))
+			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + (afectada.getEstrategia().equals(IdEstrategia.BREAKOUT2) ? "1" : "0"));
 		return lineas;
 	}
 }

@@ -115,6 +115,7 @@ public class Escritor
 				} 
 				catch (InterruptedException e1)
 				{
+					Error.agregar("Error de interrupcion al leer magicos en path: " + pathMeta);
 				}
 			try 
 			{
@@ -128,7 +129,7 @@ public class Escritor
 					sc2.useDelimiter("\\Q;\\E");
 					int magico = sc2.nextInt();
 					actual.getMagico()[numeroActual++] = magico;
-					if(numeroActual == actual.getNumeroLotes())
+					if(numeroActual == 1)
 					{
 						numeroActual = 0;
 						if(it.hasNext())
@@ -160,6 +161,7 @@ public class Escritor
 		{
     		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
 		}
+		afectada.setNumeroLotes(afectada.getNumeroLotes() - entrada.getNumeroLotes());
 		try 
 		{
 			lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, afectada));
@@ -168,10 +170,9 @@ public class Escritor
 		{
 			Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
 		}
-		afectada.setNumeroLotes(afectada.getNumeroLotes() - entrada.getNumeroLotes());
 		if(afectada.getNumeroLotes() <= 0)
 			return;
-		afectada.setMagico(Arrays.copyOfRange(afectada.getMagico(), entrada.getNumeroLotes(), afectada.getMagico().length));
+		afectada.setMagico(Arrays.copyOfRange(afectada.getMagico(), 0, afectada.getMagico().length - entrada.getNumeroLotes()));
 	}
 
 	@SuppressWarnings("unchecked")
