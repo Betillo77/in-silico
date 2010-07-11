@@ -51,7 +51,7 @@ void multv(double *res, double *v, double scalar) {
 }
 
 double vect_ang(double *a, double *b) {
-    double r = acos( dotp(a,b)/(norm(a),norm(b)) );
+    double r = acos( dotp(a,b)/(norm(a)*norm(b)) );
     r = r*180/PI;
     r = round(100*r)/100.0;
     if (r < 0) r+=180;
