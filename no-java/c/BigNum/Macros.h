@@ -8,4 +8,5 @@
 #define MAX(x,y) ( ((x)>(y)) ? (x) : (y) )
 
 #define REP(i,N) for((i)=0; (i)<(N); (i)++)
+#define REPB(i,N) for((i)=(N)-1; (i)>=0; (i)--)
 
