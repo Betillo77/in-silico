@@ -28,7 +28,9 @@ OBJECTDIR=build/Release/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/BigInt.o
+	${OBJECTDIR}/bnUtils.o \
+	${OBJECTDIR}/BigInt.o \
+	${OBJECTDIR}/test_lib.o
 
 # C Compiler Flags
 CFLAGS=
@@ -51,10 +53,20 @@ dist/Release/${PLATFORM}/bignum: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/${PLATFORM}
 	${LINK.c} -o dist/Release/${PLATFORM}/bignum ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/bnUtils.o: bnUtils.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/bnUtils.o bnUtils.c
+
 ${OBJECTDIR}/BigInt.o: BigInt.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BigInt.o BigInt.c
+
+${OBJECTDIR}/test_lib.o: test_lib.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/test_lib.o test_lib.c
 
 # Subprojects
 .build-subprojects:
