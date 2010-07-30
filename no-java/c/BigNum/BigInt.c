@@ -19,7 +19,7 @@ void printHex(BigInt *a) {
 
 //Removes leading ceros
 void bnRemCeros(BigInt *a) {
-    while (a->size > 0 && a->d[ a->size-1 ] == 0)
+    while (a->size > 1 && a->d[ a->size-1 ] == 0)
         a->size--;
 }
 
@@ -69,11 +69,11 @@ void bnUSubInt(BigInt *res, BigInt *a, BigInt *b) {
  */
 int bnCompareInt(BigInt* a, BigInt* b) {
     if (a->size != b->size)
-        return a->size - b->size;
-    int i, r;
+        return ((int)a->size) - ((int)b->size);
+    int i;
     REPB(i,a->size) {
-        r = a->d[i] - b->d[i];
-        if (r!=0) return r;
+        if (a->d[i] > b->d[i]) return 1;
+        else if (a->d[i] < b->d[i]) return -1;
     }
     return 0;
 }
@@ -192,7 +192,7 @@ void bnDivIntWord(BigInt* ans, BigInt* a, word b, word *res) {
     }
     ans->size = a->size; bnRemCeros(a);
     ans->sign = a->sign;
-    *res = carry;
+    if (res != 0) *res = carry;
 }
 
 void bnIntToStr(char* ans, BigInt* a) {
@@ -203,4 +203,50 @@ void bnIntToStr(char* ans, BigInt* a) {
     }
     ans[i] = '\0';
     invStr(ans, i);
+}
+
+void bnCopyInt(BigInt* res, BigInt* a) {
+    copyw(res->d,a->d,a->size);
+    res->size = a->size;
+    res->sign = a->sign;
+}
+
+void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
+    BigInt *tmp=0, *cos=0;
+    int i,j,bit;
+    char sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
+
+    cos = bnNewBigInt(a->size,0); tmp=bnNewBigInt(a->size, 0);
+    tmp->sign=sign;  cos->sign = sign;
+
+    if (b->size == 1) {
+        bnDivIntWord(cos,a,b->d[0],&(tmp->d[0]));
+        tmp->size=1;
+    } else {
+        if (bnCompareInt(a,b) < 0) {
+            cos->d[0]=0; cos->size=1; tmp->size=a->size;
+            copyw(tmp->d,a->d,a->size);
+        } else {
+            REPB(i,b->size-1) {
+                tmp->d[i] = a->d[a->size-i-1];
+            }
+            tmp->size = b->size-1; cos->d[0]=0; cos->size=1;
+            REPB(i,a->size - b->size + 1) {
+                REPB(j,WBITS) {
+                    bit = (a->d[i]>>j) & 1;
+                    bnShiftLBits(tmp,tmp,1);
+                    tmp->d[0] |= bit;
+                    bnShiftLBits(cos,cos,1);
+                    if (bnCompareInt(tmp,b) >= 0) {
+                        cos->d[0] |= 1;
+                        bnSubInt(tmp,tmp,b);
+                    }                    
+                }
+            }
+            bnRemCeros(tmp); bnRemCeros(cos);
+        }
+    }
+    if (ans != 0) bnCopyInt(ans, cos);
+    if (res != 0) bnCopyInt(res, tmp);
+    bnDelBigInt(tmp); bnDelBigInt(cos);
 }

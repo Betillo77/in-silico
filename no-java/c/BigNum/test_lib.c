@@ -34,6 +34,8 @@ void testSum() {
     printf("a*a: "); printHex(b);
     bnMulInt(b,b,b);
     printf("a^4: "); printHex(b);
+    bnDivInt(b,b,a,0);
+    printf("a^4/a: "); printHex(b);
     bnDelBigInt(a);
     bnDelBigInt(b);
 }
@@ -55,9 +57,10 @@ void fac(int n) {
  */
 int main(int argc, char** argv) {
     clock_t t = clock();
-    fac(256);
+    //fac(500);test_lib
+    testSum();
     t = clock()-t;
-    printf("Time elapsed: %i tks\n", t);
+    printf("Time elapsed: %i ms\n",(t*1000/CLOCKS_PER_SEC));
     return (EXIT_SUCCESS);
 }
 
