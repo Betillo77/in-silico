@@ -5,8 +5,6 @@
  * Created on 25 de junio de 2010, 02:59 PM
  */
 
-#include "io_utils.h"
-#include "features.h"
 #ifndef ANDROID
 #include <ml.h>
 #endif
@@ -133,7 +131,7 @@ void printf1(const char *m, char a) {
 	respuesta = m;
 }
 
-IplImage* cvQueryFrameAndroid() {
+IplImage* cvQueryFrame() {
 	return cvLoadImage("R1.jpg");
 }
 #endif
@@ -150,15 +148,15 @@ void predict() {
         if (c == 27) break;
         if (c == '\n') {
 #else
-	frame = cvQueryFrameTest(cap);
+	frame = cvQueryFrame();
 #endif
             CvMat *features = cvCreateMat(1,COLS,CV_32F);
             getFeatures(frame, features->data.fl);
             char p = (char)ptree->predict(features)->value;
-            if (p=='T') printf("Triángulo\n",p);
-            else if (p=='S') printf("Cuadrado\n",p);
-            else if (p=='R') printf("Rectángulo\n",p);
-            else printf("Figura no reconocida\n",p);
+            if (p=='T') printf1("Triángulo\n",p);
+            else if (p=='S') printf1("Cuadrado\n",p);
+            else if (p=='R') printf1("Rectángulo\n",p);
+            else printf1("Figura no reconocida\n",p);
             fflush(stdout);
             cvReleaseMat(&features);
 #ifndef ANDROID

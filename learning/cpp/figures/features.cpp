@@ -136,13 +136,6 @@ void fillMatrix() {
         *fresp = (float)it->fig;
     }
 }
-#ifdef ANDROID
-IplImage* cvLoadImage(const char *filename) {
-    jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
-    virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(filename));
-    return pImage;
-}
-#endif
 
 void getFeaturesFN(char *filename) {
     IplImage *img = cvLoadImage(filename);

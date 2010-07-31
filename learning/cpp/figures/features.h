@@ -4,7 +4,6 @@
  *
  * Created on 15 de julio de 2010, 03:09 PM
  */
-
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
@@ -20,7 +19,7 @@
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/ml/ml.hpp>
 #endif
-#include "lineal.h"
+#include "lineal.cpp"
 #include <list>
 
 #define CAM 1
