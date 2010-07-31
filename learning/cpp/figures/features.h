@@ -4,9 +4,10 @@
  *
  * Created on 15 de julio de 2010, 03:09 PM
  */
-#include <cstring>
+
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
 #ifndef ANDROID
 #include <cxtypes.h>
 #include <highgui.h>
@@ -19,7 +20,9 @@
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/ml/ml.hpp>
 #endif
-#include "lineal.cpp"
+#ifndef ANDROID
+#include "lineal.h"
+#endif
 #include <list>
 
 #define CAM 1
