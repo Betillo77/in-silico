@@ -155,10 +155,10 @@ void predict() {
             CvMat *features = cvCreateMat(1,COLS,CV_32F);
             getFeatures(frame, features->data.fl);
             char p = (char)ptree->predict(features)->value;
-            if (p=='T') printf1("Triángulo\n",p);
-            else if (p=='S') printf1("Cuadrado\n",p);
-            else if (p=='R') printf1("Rectángulo\n",p);
-            else printf1("Figura no reconocida\n",p);
+            if (p=='T') printf("Triángulo\n",p);
+            else if (p=='S') printf("Cuadrado\n",p);
+            else if (p=='R') printf("Rectángulo\n",p);
+            else printf("Figura no reconocida\n",p);
             fflush(stdout);
             cvReleaseMat(&features);
 #ifndef ANDROID
