@@ -22,6 +22,8 @@
 #endif
 #ifndef ANDROID
 #include "lineal.h"
+#else
+#include "lineal.cpp"
 #endif
 #include <list>
 
