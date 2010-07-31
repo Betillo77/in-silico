@@ -22,6 +22,8 @@ void init_params() {
 #ifndef ANDROID 
     if (mostrar) cvNamedWindow(WIN, CV_WINDOW_AUTOSIZE);
     cap = cvCreateCameraCapture(CAM);
+#else
+    cap = 0;
 #endif
     seq = cvCreateMemStorage();
     poly = cvCreateMemStorage();
