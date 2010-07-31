@@ -138,17 +138,12 @@ IplImage* cvQueryFrameAndroid() {
 }
 #endif
 
-
-IplImage* cvQueryFrameTest(CvCapture* df) {
-	return cvLoadImage("./training/R1.jpg");
-}
-
 void predict() {
     training=false;
     IplImage* frame;
 #ifndef ANDROID
     while (1) {
-        frame = cvQueryFrameTest(cap);
+        frame = cvQueryFrame(cap);
         if (!frame) break;
         cvShowImage(WIN, frame);
         char c = cvWaitKey(200);
