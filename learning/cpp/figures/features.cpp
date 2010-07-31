@@ -1,6 +1,5 @@
 
 #include "features.h"
-#include <sstream>
 
 using namespace std;
 
@@ -11,6 +10,8 @@ bool training=false;
 char fig; //figura del test case
 #ifndef ANDROID 
 CvCapture* cap;
+#else
+int cap;
 #endif
 list<Figura> figuras;
 CvMat *t_data; //Training data
@@ -103,6 +104,7 @@ void printFeatures(CvSeq* poly, float *ans=0) {
     double m_lados,m_ang,d_lados,d_ang;
     m_lados=mean(lados,nlados); m_ang=mean(ang,nlados);
     d_lados=desv_est(lados,m_lados,nlados); d_ang=desv_est(ang,m_ang,nlados);
+    
     if ( ! training ) {
         ans[0]=nlados;
         ans[1]=d_lados/m_lados;
