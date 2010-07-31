@@ -6,9 +6,9 @@
  */
 
 #include <cstdlib>
-#include <cstdio>
 #include <cstring>
 #ifndef ANDROID
+#include <cstdio>
 #include <cxtypes.h>
 #include <highgui.h>
 #include <cv.h>

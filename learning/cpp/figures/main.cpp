@@ -135,7 +135,7 @@ void train() {
 #ifdef ANDROID
 const char *respuesta;
 
-void printfAndroid(const char *m) {
+void printf(const char *m) {
 	respuesta = m;
 }
 
@@ -155,6 +155,9 @@ void predict() {
         char c = cvWaitKey(200);
         if (c == 27) break;
         if (c == '\n') {
+#else
+	frame = cvQueryFrameAndroid();
+#endif
             CvMat *features = cvCreateMat(1,COLS,CV_32F);
             getFeatures(frame, features->data.fl);
             char p = (char)ptree->predict(features)->value;
@@ -164,41 +167,22 @@ void predict() {
             else printf("Figura no reconocida\n",p);
             fflush(stdout);
             cvReleaseMat(&features);
+#ifndef ANDROID
         }
     }
-#else
-            frame = cvQueryFrameAndroid();
-            CvMat *features = cvCreateMat(1,COLS,CV_32F);
-            getFeatures(frame, features->data.fl);
-            char p = (char)ptree->predict(features)->value;
-            if (p=='T') printfAndroid("Triángulo prueba\n");
-            else if (p=='S') printfAndroid("Cuadrado\n");
-            else if (p=='R') printfAndroid("Rectángulo\n");
-            else printfAndroid("Figura no reconocida\n");
-            cvReleaseMat(&features);
 #endif
 }
 
 /*
  *
  */
-#ifndef ANDROID
 int main(int argc, char** argv) {
-#else
-const char* mainA() {
-#endif
     //destroy_params();
     init_params();
-#ifndef ANDROID
     argc--; argv++;
-#endif
     train();
     //trainFromTxt();
     predict();
     destroy_params();
-#ifndef ANDROID
     return (EXIT_SUCCESS);
-#else
-    return respuesta;
-#endif
 }

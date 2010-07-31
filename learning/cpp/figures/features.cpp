@@ -77,9 +77,7 @@ double desv_est(double * data, double media, int n) {
     }
     return sqrt(u/n);
 }
-#ifdef ANDROID
-int numc = 0;
-#endif
+
 void printFeatures(CvSeq* poly, float *ans=0) {
     int nlados = poly->total;
 
@@ -110,12 +108,6 @@ void printFeatures(CvSeq* poly, float *ans=0) {
         ans[1]=d_lados/m_lados;
         ans[2]=d_ang/m_ang;
         ans[3]=maxang;
-#ifdef ANDROID
-		std::ostringstream s;
-		s << "sga figura prueba " << ans[0] << " " << ans[1] << " " << ans[2] << " " << ans[3];
-	jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
-	virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(s.str().c_str()));
-#endif
     } else {
         //printf("%c %i %lf %lf %lf\n",fig,nlados,d_lados/m_lados,d_ang/m_ang,maxang);
         Figura inst_fig;
@@ -125,15 +117,6 @@ void printFeatures(CvSeq* poly, float *ans=0) {
         inst_fig.d_ang = d_ang/m_ang;
         inst_fig.max_ang = maxang;
         figuras.push_back(inst_fig);
-#ifdef ANDROID
-	if(numc++ == 0)
-	{
-		std::ostringstream s;
-		s << "sga figura inicial " << inst_fig.fig << " " << inst_fig.lados << " " << inst_fig.d_lados << " " << inst_fig.d_ang << " " << inst_fig.max_ang;
-	jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
-	virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(s.str().c_str()));
-	}
-#endif
     }
 }
 
