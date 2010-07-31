@@ -126,18 +126,6 @@ void train() {
     ptree->train(t_data,CV_ROW_SAMPLE,t_resp,0,0,vartype,0,CvDTreeParams());
 }
 
-#ifdef ANDROID
-const char *respuesta;
-
-void printf1(const char *m, char a) {
-	respuesta = m;
-}
-
-IplImage* cvQueryFrame(int cap) {
-	return cvLoadImage("R1.jpg");
-}
-#endif
-
 void predict() {
     training=false;
     IplImage* frame;
