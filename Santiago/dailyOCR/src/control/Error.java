@@ -2,11 +2,16 @@ package control;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Calendar;
 
 import control.conexion.ConexionServidorMensajes;
 
 public class Error 
 {
+	static int hora = 0;
+	static int numeroErrores = 0;
+	
 	public static synchronized void agregar(String error)
 	{
 		try
@@ -21,9 +26,10 @@ public class Error
 		{
 			System.out.println("Error en el manejador de errores");
 		}
+		chequearHora();
 	}
 
-	public static void agregar(String error, boolean b) 
+	public static synchronized void agregar(String error, boolean b) 
 	{
 		try
 		{
@@ -35,6 +41,34 @@ public class Error
 		catch (Exception e)
 		{
 			System.out.println("Error en el manejador de errores");
+		}
+		chequearHora();
+	}
+	
+	private static void chequearHora() 
+	{
+		Calendar c = Calendar.getInstance();
+		int h = c.get(Calendar.HOUR_OF_DAY);
+		if(hora == h)
+		{
+			numeroErrores++;
+		}
+		else
+		{
+			hora = h;
+			numeroErrores = 1;
+		}
+		if(numeroErrores == 50)
+		{
+			Error.agregar("50 errores en una hora, reiniciando");
+			try 
+			{
+				Runtime.getRuntime().exec("shutdown now -r");
+			} 
+			catch (IOException e) 
+			{
+				Error.agregar(e.getMessage());
+			}
 		}
 	}
 }

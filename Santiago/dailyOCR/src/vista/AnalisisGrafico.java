@@ -155,7 +155,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		desviacionT.setFont(new Font(desviacionT.getFont().getName(), Font.PLAIN, 14));
 		desviacion = new JLabel();
 		desviacion.setBounds(new Rectangle(20, 160, 93, 17));
-		desviacion.setText("Desviaci�n");
+		desviacion.setText("Desviacion");
 		estrategiaActual = new JLabel();
 		estrategiaActual.setBounds(new Rectangle(16, 10, 258, 24));
 		estrategiaActual.setText(manejador.darEstrategia());
@@ -288,7 +288,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getUnaSemana() {
 		if (unaSemana == null) {
 			unaSemana = new JRadioButton();
-			unaSemana.setBounds(new Rectangle(16, 195, 40, 21));
+			unaSemana.setBounds(new Rectangle(16, 195, 50, 21));
 			unaSemana.setText("1s");
 		}
 		return unaSemana;
@@ -302,7 +302,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getDosSemanas() {
 		if (dosSemanas == null) {
 			dosSemanas = new JRadioButton();
-			dosSemanas.setBounds(new Rectangle(56, 195, 40, 21));
+			dosSemanas.setBounds(new Rectangle(56, 195, 50, 21));
 			dosSemanas.setText("2s");
 		}
 		return dosSemanas;
@@ -316,7 +316,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getTresSemanas() {
 		if (tresSemanas == null) {
 			tresSemanas = new JRadioButton();
-			tresSemanas.setBounds(new Rectangle(96, 195, 40, 21));
+			tresSemanas.setBounds(new Rectangle(96, 195, 50, 21));
 			tresSemanas.setText("3s");
 		}
 		return tresSemanas;
@@ -330,7 +330,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getUnMes() {
 		if (unMes == null) {
 			unMes = new JRadioButton();
-			unMes.setBounds(new Rectangle(136, 195, 43, 21));
+			unMes.setBounds(new Rectangle(136, 195, 50, 21));
 			unMes.setText("1m");
 		}
 		return unMes;
@@ -344,7 +344,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getDosMeses() {
 		if (dosMeses == null) {
 			dosMeses = new JRadioButton();
-			dosMeses.setBounds(new Rectangle(181, 195, 43, 21));
+			dosMeses.setBounds(new Rectangle(181, 195, 50, 21));
 			dosMeses.setText("2m");
 		}
 		return dosMeses;
@@ -358,7 +358,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getTresMeses() {
 		if (tresMeses == null) {
 			tresMeses = new JRadioButton();
-			tresMeses.setBounds(new Rectangle(226, 195, 43, 21));
+			tresMeses.setBounds(new Rectangle(226, 195, 50, 21));
 			tresMeses.setText("3m");
 		}
 		return tresMeses;
@@ -372,7 +372,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getSeisMeses() {
 		if (seisMeses == null) {
 			seisMeses = new JRadioButton();
-			seisMeses.setBounds(new Rectangle(16, 215, 43, 21));
+			seisMeses.setBounds(new Rectangle(16, 215, 50, 21));
 			seisMeses.setText("6m");
 		}
 		return seisMeses;
@@ -386,7 +386,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getUnAnho() {
 		if (unAnho == null) {
 			unAnho = new JRadioButton();
-			unAnho.setBounds(new Rectangle(56, 215, 43, 21));
+			unAnho.setBounds(new Rectangle(56, 215, 50, 21));
 			unAnho.setText("1a");
 		}
 		return unAnho;
@@ -400,7 +400,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JRadioButton getTodo() {
 		if (todo == null) {
 			todo = new JRadioButton();
-			todo.setBounds(new Rectangle(96, 215, 43, 21));
+			todo.setBounds(new Rectangle(96, 215, 60, 21));
 			todo.setText("t");
 		}
 		return todo;

@@ -1,7 +1,9 @@
 package control;
 
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -115,7 +117,7 @@ public class dailyOCR
     	}
 	}
 	
-	public static void main(String [] args)
+	public static void main(String [] args) throws IOException
 	{
 		cargarSistemasEstrategias();
 		ParteGrafica pg = new ParteGrafica();
@@ -126,6 +128,8 @@ public class dailyOCR
 		framePrincipal.pack();
 		framePrincipal.setVisible(true);
 		framePrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		Calendar actual = Calendar.getInstance();
+		Error.agregar("Iniciando operaciones automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
 		new Thread(new Runnable()
 					{
 						@Override

@@ -239,4 +239,11 @@ public class SistemaTechnical extends SistemaEstrategias
 			}
 		return lineas;
 	}
+
+	public void chequearSenales(boolean enviarMensaje) 
+	{
+		String mensaje = this.getClass().getCanonicalName() + " OK";
+		if(enviarMensaje)
+			Error.agregar(mensaje);
+	}
 }

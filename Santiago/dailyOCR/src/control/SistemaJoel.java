@@ -253,4 +253,11 @@ public class SistemaJoel extends SistemaEstrategias
 			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;" + afectada.getPrecioEntrada());
 		return lineas;
 	}
+
+	public void chequearSenales(boolean enviarMensaje) 
+	{
+		String mensaje = this.getClass().getCanonicalName() + " OK";
+		if(enviarMensaje)
+			Error.agregar(mensaje);
+	}
 }

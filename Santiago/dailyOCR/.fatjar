@@ -1,14 +1,14 @@
 #Fat Jar Configuration File
-#Sun Apr 11 17:33:50 COT 2010
+#Sat Jul 31 02:06:53 COT 2010
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
-jarname=dailyOCR.jar
+jarname=/home/santiago/Desktop/lastBuilds/dailyOCR.jar
 manifest.mergeall=true
 manifest.mainclass=control.dailyOCR
 manifest.file=<createnew>
-jarname.isextern=false
+jarname.isextern=true
 onejar.expand=
 excludes=
 includes=

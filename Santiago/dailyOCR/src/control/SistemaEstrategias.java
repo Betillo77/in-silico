@@ -11,13 +11,15 @@ import modelo.Senal;
 
 public abstract class SistemaEstrategias
 {
-	static final String pathPersistencia = "";
-	
 	Method metodoLectura;
+	
+	boolean mensajeEnviado = false, chequeoRealizado = false;
 	
 	public abstract void cargarEstrategias();
 
 	public abstract void verificarConsistencia();
+	
+	public abstract void chequearSenales(boolean enviarMensaje);
 	
 	protected abstract ArrayList <Senal> leer(String [] lecturas);
 	
@@ -30,10 +32,34 @@ public abstract class SistemaEstrategias
 			Calendar c = Calendar.getInstance();
 			int hora = c.get(Calendar.HOUR_OF_DAY);
 			int minuto = c.get(Calendar.MINUTE);
-			if((hora == 5 || hora == 11 || hora == 17 || hora == 23) && minuto < 10)
+			int dia = c.get(Calendar.DAY_OF_WEEK);
+			if(minuto > 10)
 			{
-				Error.agregar(this.getClass().getCanonicalName() + " OK");
-				Thread.sleep(600000);
+				mensajeEnviado = chequeoRealizado = false;
+			}
+			else
+			{
+				if(!mensajeEnviado && (hora == 4 || hora == 10 || hora == 16 || hora == 22))
+				{
+					chequearSenales(true);
+					mensajeEnviado = true;
+				}
+				if(!chequeoRealizado)
+				{
+					chequearSenales(false);
+					chequeoRealizado = true;
+				}
+			}
+			if((dia == Calendar.FRIDAY && hora > 16) || (dia == Calendar.SATURDAY))
+			{
+				if(dia == Calendar.FRIDAY)
+					Runtime.getRuntime().exec("/home/santiago/backup");
+				Thread.sleep(60000);
+				Calendar actual = Calendar.getInstance();
+				Error.agregar("Apagando equipo automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
+				Thread.sleep(60000);
+				Runtime.getRuntime().exec("shutdown now -P");
+				System.exit(0);
 			}
 			procesar(leer((String[]) metodoLectura.invoke(null)));
 		}
@@ -41,32 +67,6 @@ public abstract class SistemaEstrategias
 		{
     		Error.agregar(e.getMessage() + "Error en Iniciar procesamiento al procesar en: " + getClass().getCanonicalName());
 		}
-	}
-	
-	public void vivo()
-	{
-		new Thread(
-		new Runnable()
-		{
-			public void run()
-			{
-				ConexionServidorMensajes.enviarMensaje("Status del programa", "Estoy vivo "+this.getClass());
-				try {
-					Thread.sleep(21600000);//6 horas
-				} catch (InterruptedException e) {
-
-					Error.agregar("hilo interrumpido"+e.getMessage());
-				}
-				
-				
-			}
-			
-			
-		}
-		);
-		
-		
-		
 	}
 
 	public abstract void persistir();

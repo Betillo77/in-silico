@@ -15,7 +15,7 @@ import modelo.SenalEntrada;
 
 public class Escritor
 {	
-	private ArrayList <String> lineas = new ArrayList <String> ();
+	public ArrayList <String> lineas = new ArrayList <String> ();
 	private ArrayList <Senal> senales = new ArrayList <Senal> ();
 	private String pathMeta;
 	private Method metodoMeta;
@@ -38,16 +38,22 @@ public class Escritor
 		try
 		{
 			File archivoEscritura = new File(pathMeta + "ordenes.txt");
+			File archivoEscritura1 = new File(pathMeta + "log.txt");
 			if(!lineas.isEmpty())
 			{
 				if(!archivoEscritura.exists())
 					archivoEscritura.createNewFile();
+				if(!archivoEscritura1.exists())
+					archivoEscritura1.createNewFile();
 				FileWriter fw = new FileWriter(archivoEscritura, true);
+				FileWriter fw1 = new FileWriter(archivoEscritura1, true);
 				for(String linea : lineas)
 				{
 					fw.write(linea + ";");
+					fw1.write(linea + ";\n");
 				}
 				fw.close();
+				fw1.close();
 			}
 			lineas = new ArrayList <String> ();
 		}
@@ -154,6 +160,94 @@ public class Escritor
 		senales = new ArrayList <Senal> ();
 	}
 
+	public ArrayList <String> chequearSenales() 
+	{
+		ArrayList <String> leidos = new ArrayList <String> (14);
+		try
+		{
+			File archivoEscritura = new File(pathMeta + "ordenes.txt");
+			if(!archivoEscritura.exists())
+				archivoEscritura.createNewFile();
+			FileWriter fw = new FileWriter(archivoEscritura, true);
+			fw.write("GBPCHF;LIST;CLOSE;0;");
+			fw.close();
+		}
+		catch(Exception e)
+		{
+			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
+		}
+		boolean termino = false;
+		try 
+		{
+			Thread.sleep(30000);
+		}
+		catch (InterruptedException e)
+		{
+    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos en path: " + pathMeta);
+		}
+		int numeroVeces = 0;
+		try
+		{
+			while(true)
+			{
+				numeroVeces++;
+				if(numeroVeces == 100)
+				{
+					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
+					return leidos;
+				}
+				File archivoLista = new File(pathMeta + "lista.txt");
+				if(!archivoLista.exists())
+				{
+					Thread.sleep(30000);
+				}
+				else
+					break;
+			}
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
+			return leidos;
+		}
+		for(int i = 0; i < 60 && !termino; i++)
+		{
+			Scanner sc = new Scanner("1");
+			if(i != 0)
+				try 
+				{
+					Thread.sleep(60000);
+				} 
+				catch (InterruptedException e1)
+				{
+					Error.agregar("Error de interrupcion al leer magicos en path: " + pathMeta);
+				}
+			try 
+			{
+				sc = new Scanner(new File(pathMeta + "lista.txt"));
+				while(sc.hasNext())
+				{
+					leidos.add(sc.next());
+				}
+				sc.close();
+				termino = true;
+			} 
+			catch (Exception e)
+			{
+	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos, en path: " + pathMeta);
+			}
+			finally
+			{
+				sc.close();
+			}
+		}
+		if(new File(pathMeta + "lista.txt").canWrite())
+			new File(pathMeta + "lista.txt").delete();
+		if(new File(pathMeta + "magicos.txt").canWrite())
+			new File(pathMeta + "magicos.txt").delete();
+		return leidos;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void cerrar(SenalEntrada entrada, Senal afectada)
 	{
@@ -162,13 +256,16 @@ public class Escritor
     		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
 		}
 		afectada.setNumeroLotes(afectada.getNumeroLotes() - entrada.getNumeroLotes());
-		try 
+		if(afectada.getMagico()[0] != 0)
 		{
-			lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, afectada));
-		} 
-		catch (Exception e) 
-		{
-			Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
+			try 
+			{
+				lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, afectada));
+			} 
+			catch (Exception e) 
+			{
+				Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
+			}
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;

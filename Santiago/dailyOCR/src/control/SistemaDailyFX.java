@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,6 +95,182 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 	}
 	
+	public void chequearSenales(boolean enviarMensaje) 
+	{
+		try
+		{
+			ArrayList <Senal> senalesBreakout2 = new ArrayList <Senal> (breakout2.getSenales());
+			ArrayList <Senal> senalesOtros = new ArrayList <Senal> (breakout1.getSenales());
+			senalesOtros.addAll(range1.getSenales());
+			senalesOtros.addAll(range2.getSenales());
+			senalesOtros.addAll(momentum1.getSenales());
+			senalesOtros.addAll(momentum2.getSenales());
+			String mensaje = this.getClass().getCanonicalName() + " OK";
+			
+			class ParMagico
+			{
+				Par par;
+				int magico;
+				IdEstrategia id;
+				double precioEntrada;
+				boolean esCompra;
+				
+				public ParMagico(Par p, int m)
+				{
+					par = p;
+					magico = m;
+				}
+				
+				public ParMagico(Par p, int m, IdEstrategia i, double pE, boolean eC)
+				{
+					par = p;
+					magico = m;
+					id = i;
+					precioEntrada = pE;
+					esCompra = eC;
+				}
+	
+				public boolean equals(Object obj) 
+				{
+					ParMagico otro = (ParMagico) obj;
+					return par.equals(otro.par) && magico == otro.magico;
+				}
+			}
+			
+			ArrayList <ParMagico> parMagicosBreakout2 = new ArrayList <ParMagico> (14);
+			ArrayList <ParMagico> parMagicosOtros = new ArrayList <ParMagico> (70);
+			ArrayList <ParMagico> parMagicosBreakout2NoAbiertos = new ArrayList <ParMagico> (14);
+			ArrayList <ParMagico> parMagicosOtrosNoAbiertos = new ArrayList <ParMagico> (70);
+			for(Senal s : senalesBreakout2)
+			{
+				if(s.getMagico()[0] != 0)
+					parMagicosBreakout2.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+				else
+					parMagicosBreakout2NoAbiertos.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+			}
+			for(Senal s : senalesOtros)
+			{
+				if(s.getMagico()[0] != 0)
+					parMagicosOtros.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+				else
+					parMagicosOtrosNoAbiertos.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+			}
+			ArrayList <ParMagico> parMagicosRealesBreakout2 = new ArrayList <ParMagico> (14);
+			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (14);
+			for(String s : breakout2.escritor.chequearSenales())
+			{
+				Scanner sc = new Scanner(s);
+				sc.useDelimiter("\\Q;\\E");
+				Par par = Par.convertirPar(sc.next());
+				int magico = sc.nextInt();
+				sc.close();
+				parMagicosRealesBreakout2.add(new ParMagico(par, magico));
+			}
+			for(String s : breakout1.escritor.chequearSenales())
+			{
+				Scanner sc = new Scanner(s);
+				sc.useDelimiter("\\Q;\\E");
+				Par par = Par.convertirPar(sc.next());
+				int magico = sc.nextInt();
+				sc.close();
+				parMagicosRealesOtros.add(new ParMagico(par, magico));
+			}
+			ArrayList <ParMagico> parMagicosBreakout2Copia = new ArrayList <ParMagico> (parMagicosBreakout2);
+			ArrayList <ParMagico> parMagicosOtrosCopia = new ArrayList <ParMagico> (parMagicosOtros);
+			for(ParMagico pm : parMagicosRealesBreakout2)
+			{
+				parMagicosBreakout2Copia.remove(pm);
+			}
+			for(ParMagico pm : parMagicosRealesOtros)
+			{
+				parMagicosOtrosCopia.remove(pm);
+			}
+			for(ParMagico pm : parMagicosBreakout2)
+			{
+				if(parMagicosRealesBreakout2.remove(pm))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
+				}
+			}
+			for(ParMagico pm : parMagicosOtros)
+			{
+				if(parMagicosRealesOtros.remove(pm))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
+				}
+			}
+			for(ParMagico pm : parMagicosBreakout2Copia)
+			{
+				if(darEstrategia(pm.id).darActivo(pm.par))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
+				}
+			}
+			for(ParMagico pm : parMagicosOtrosCopia)
+			{
+				if(darEstrategia(pm.id).darActivo(pm.par))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
+				}
+			}
+			for(ParMagico pm : parMagicosBreakout2NoAbiertos)
+			{
+				if(darEstrategia(pm.id).darActivo(pm.par))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
+				}
+			}
+			for(ParMagico pm : parMagicosOtrosNoAbiertos)
+			{
+				if(darEstrategia(pm.id).darActivo(pm.par))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
+				}
+			}
+			String mensaje2 = "";
+			breakout2.escritor.lineas = new ArrayList <String> ();
+			for(ParMagico pm : parMagicosRealesBreakout2)
+			{
+				breakout2.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+				mensaje2 += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";
+			}
+			breakout2.escritor.escribir();
+			for(ParMagico pm : parMagicosRealesOtros)
+			{
+				breakout1.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+				mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";
+			}
+			breakout1.escritor.escribir();
+			mensaje += mensaje2;
+			if(!mensaje2.equals(""))
+				Error.agregar(mensaje2);
+			if(enviarMensaje)
+				Error.agregar(mensaje);
+		}
+		catch(Exception e)
+		{
+			Error.agregar("Error en el metodo " + e.getMessage());
+		}
+	}
+	
 	public void iniciarHilo() 
 	{
 		new Thread(new Runnable()
@@ -135,7 +312,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 									{
 										try 
 										{
-											Runtime.getRuntime().exec("java -jar dailyOCR.jar mx1024m -Xms512m");
+											Runtime.getRuntime().exec("java -jar dailyOCR.jar -Xmx1024m -Xms512m");
 										} 
 										catch (IOException e)
 										{
@@ -243,7 +420,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), Par.convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
 				nuevasSenales.add(actual);
 			}
-			ArrayList <BidAsk> precio = new ArrayList <BidAsk>();
+			ArrayList <BidAsk> precio = new ArrayList <BidAsk> ();
 			for(int i=0; i < bid.size(); i++)
 			{
 				if(Par.convertirPar(currency.get(i)) == null)
