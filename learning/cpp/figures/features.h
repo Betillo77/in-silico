@@ -5,10 +5,10 @@
  * Created on 15 de julio de 2010, 03:09 PM
  */
 
-#include <cstdlib>
 #include <cstring>
-#ifndef ANDROID
+#include <cstdlib>
 #include <cstdio>
+#ifndef ANDROID
 #include <cxtypes.h>
 #include <highgui.h>
 #include <cv.h>

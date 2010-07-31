@@ -137,7 +137,7 @@ void fillMatrix() {
     }
 }
 #ifdef ANDROID
-IplImage* cvLoadImageAndroid(const char *filename) {
+IplImage* cvLoadImage(const char *filename) {
     jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
     virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(filename));
     return pImage;
@@ -145,11 +145,7 @@ IplImage* cvLoadImageAndroid(const char *filename) {
 #endif
 
 void getFeaturesFN(char *filename) {
-#ifndef ANDROID
     IplImage *img = cvLoadImage(filename);
-#else
-    IplImage *img = cvLoadImageAndroid(filename);
-#endif
     getFeatures(img);
 }
 

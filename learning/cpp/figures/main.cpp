@@ -5,11 +5,9 @@
  * Created on 25 de junio de 2010, 02:59 PM
  */
 
-
-
-#ifndef ANDROID
 #include "io_utils.h"
 #include "features.h"
+#ifndef ANDROID
 #include <ml.h>
 #endif
 
@@ -88,17 +86,13 @@ bool str_ends_with(const char *cad, const char *end) {
     const char *end2 = cad+(n-m);
     return ( strcmp(end,end2)==0 );
 }
-int cuenta = 0;
+
 void training_image(const char *filename) {
     char fname[256];
     if (str_ends_with(filename,".jpg")) {
         fig = filename[0];
-#ifndef ANDROID
         strcpy(fname,DIR_TR);
         strcat(fname, filename);
-#else
-	strcpy(fname, filename);
-#endif
         getFeaturesFN( fname );
     }
 }
@@ -135,36 +129,41 @@ void train() {
 #ifdef ANDROID
 const char *respuesta;
 
-void printf(const char *m) {
+void printf1(const char *m, char a) {
 	respuesta = m;
 }
 
 IplImage* cvQueryFrameAndroid() {
-	return cvLoadImageAndroid("R1.jpg");
+	return cvLoadImage("R1.jpg");
 }
 #endif
+
+
+IplImage* cvQueryFrameTest(CvCapture* df) {
+	return cvLoadImage("./training/R1.jpg");
+}
 
 void predict() {
     training=false;
     IplImage* frame;
 #ifndef ANDROID
     while (1) {
-        frame = cvQueryFrame(cap);
+        frame = cvQueryFrameTest(cap);
         if (!frame) break;
         cvShowImage(WIN, frame);
         char c = cvWaitKey(200);
         if (c == 27) break;
         if (c == '\n') {
 #else
-	frame = cvQueryFrameAndroid();
+	frame = cvQueryFrameTest(cap);
 #endif
             CvMat *features = cvCreateMat(1,COLS,CV_32F);
             getFeatures(frame, features->data.fl);
             char p = (char)ptree->predict(features)->value;
-            if (p=='T') printf("Triángulo\n",p);
-            else if (p=='S') printf("Cuadrado\n",p);
-            else if (p=='R') printf("Rectángulo\n",p);
-            else printf("Figura no reconocida\n",p);
+            if (p=='T') printf1("Triángulo\n",p);
+            else if (p=='S') printf1("Cuadrado\n",p);
+            else if (p=='R') printf1("Rectángulo\n",p);
+            else printf1("Figura no reconocida\n",p);
             fflush(stdout);
             cvReleaseMat(&features);
 #ifndef ANDROID
