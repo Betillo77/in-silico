@@ -6,6 +6,8 @@
  */
 
 #ifndef ANDROID
+#include "io_utils.h"
+#include "features.h"
 #include <ml.h>
 #endif
 
@@ -131,7 +133,7 @@ void printf1(const char *m, char a) {
 	respuesta = m;
 }
 
-IplImage* cvQueryFrame() {
+IplImage* cvQueryFrame(int cap) {
 	return cvLoadImage("R1.jpg");
 }
 #endif
@@ -139,7 +141,6 @@ IplImage* cvQueryFrame() {
 void predict() {
     training=false;
     IplImage* frame;
-#ifndef ANDROID
     while (1) {
         frame = cvQueryFrame(cap);
         if (!frame) break;
@@ -147,19 +148,22 @@ void predict() {
         char c = cvWaitKey(200);
         if (c == 27) break;
         if (c == '\n') {
-#else
-	frame = cvQueryFrame();
-#endif
             CvMat *features = cvCreateMat(1,COLS,CV_32F);
             getFeatures(frame, features->data.fl);
             char p = (char)ptree->predict(features)->value;
+#ifndef ANDROID
+            if (p=='T') printf("Triángulo\n",p);
+            else if (p=='S') printf("Cuadrado\n",p);
+            else if (p=='R') printf("Rectángulo\n",p);
+            else printf("Figura no reconocida\n",p);
+#else
             if (p=='T') printf1("Triángulo\n",p);
             else if (p=='S') printf1("Cuadrado\n",p);
             else if (p=='R') printf1("Rectángulo\n",p);
-            else printf1("Figura no reconocida\n",p);
+            else printf1("Figura no reconocida\n",p);	
+#endif
             fflush(stdout);
             cvReleaseMat(&features);
-#ifndef ANDROID
         }
     }
 #endif

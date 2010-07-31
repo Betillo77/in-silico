@@ -39,6 +39,8 @@ extern bool training;
 extern char fig; //figura del test case
 #ifndef ANDROID 
 extern CvCapture* cap;
+#else
+extern int cap;
 #endif
 extern CvMat *t_data; //Training data
 extern CvMat *t_resp; //Training responses
