@@ -1,5 +1,6 @@
 
 #include "features.h"
+#include <sstream>
 
 using namespace std;
 
@@ -8,22 +9,28 @@ bool mostrar=false;
 
 bool training=false;
 char fig; //figura del test case
+#ifndef ANDROID 
 CvCapture* cap;
+#endif
 list<Figura> figuras;
 CvMat *t_data; //Training data
 CvMat *t_resp; //Training responses
 
 
 void init_params() {
+#ifndef ANDROID 
     if (mostrar) cvNamedWindow(WIN, CV_WINDOW_AUTOSIZE);
     cap = cvCreateCameraCapture(CAM);
+#endif
     seq = cvCreateMemStorage();
     poly = cvCreateMemStorage();
 }
 
 void destroy_params() {
+#ifndef ANDROID
     cvReleaseCapture(&cap);
     //cvDestroyWindow(WIN);
+#endif
     cvReleaseMemStorage(&seq);
     cvReleaseMemStorage(&poly);
 }
@@ -33,21 +40,24 @@ IplImage* captureAndFilter(IplImage *predict=0) {
     IplImage* frame = 0;
     if (predict != 0)
         frame = predict;
-    
+#ifndef ANDROID
     if (mostrar) {
         cvShowImage(WIN, frame);
         cvWaitKey();
     }
+#endif
     IplImage *img = cvCreateImage(cvSize(frame->width,frame->height),IPL_DEPTH_8U,1);
     cvCvtColor(frame,img,CV_RGB2GRAY);
     cvSmooth(img,img);
     cvAdaptiveThreshold(img, img, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY,15);
     cvDilate(img,img);
     cvErode(img,img);
+#ifndef ANDROID  
     if (mostrar) {
         cvShowImage(WIN, img);
         cvWaitKey();
     }
+#endif
     return img;
 }
 
@@ -67,7 +77,9 @@ double desv_est(double * data, double media, int n) {
     }
     return sqrt(u/n);
 }
-
+#ifdef ANDROID
+int numc = 0;
+#endif
 void printFeatures(CvSeq* poly, float *ans=0) {
     int nlados = poly->total;
 
@@ -93,12 +105,17 @@ void printFeatures(CvSeq* poly, float *ans=0) {
     double m_lados,m_ang,d_lados,d_ang;
     m_lados=mean(lados,nlados); m_ang=mean(ang,nlados);
     d_lados=desv_est(lados,m_lados,nlados); d_ang=desv_est(ang,m_ang,nlados);
-
     if ( ! training ) {
         ans[0]=nlados;
         ans[1]=d_lados/m_lados;
         ans[2]=d_ang/m_ang;
         ans[3]=maxang;
+#ifdef ANDROID
+		std::ostringstream s;
+		s << "sga figura prueba " << ans[0] << " " << ans[1] << " " << ans[2] << " " << ans[3];
+	jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
+	virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(s.str().c_str()));
+#endif
     } else {
         //printf("%c %i %lf %lf %lf\n",fig,nlados,d_lados/m_lados,d_ang/m_ang,maxang);
         Figura inst_fig;
@@ -108,6 +125,15 @@ void printFeatures(CvSeq* poly, float *ans=0) {
         inst_fig.d_ang = d_ang/m_ang;
         inst_fig.max_ang = maxang;
         figuras.push_back(inst_fig);
+#ifdef ANDROID
+	if(numc++ == 0)
+	{
+		std::ostringstream s;
+		s << "sga figura inicial " << inst_fig.fig << " " << inst_fig.lados << " " << inst_fig.d_lados << " " << inst_fig.d_ang << " " << inst_fig.max_ang;
+	jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
+	virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(s.str().c_str()));
+	}
+#endif
     }
 }
 
@@ -127,9 +153,41 @@ void fillMatrix() {
         *fresp = (float)it->fig;
     }
 }
+#ifdef ANDROID
+void getSourceImage(IplImage *pImage) {
+	int x, y;
+	int width = pImage->width;
+	int height = pImage->height;
+	int* image = new int[width * height];
+	int* base = (int*) (pImage->imageData);
+	int* ptr; 
+	int i = 0;
+	for (y = 0; y < height; y++) {
+		ptr = base + y * width;
+		for (x = 0; x < width; x++) {
+			image[i++] = ptr[x];
+		} 
+	}
+	jintArray bytes = virtualMachine->NewIntArray(width * height);
+	virtualMachine->SetIntArrayRegion(bytes, 0, width * height, (jint*) image);
+	jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setBitmap", "([I)V");
+	virtualMachine->CallStaticVoidMethod(thisClass, mid, bytes);
+	delete[] image;
+}
+
+IplImage* cvLoadImageAndroid(const char *filename) {
+    jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
+    virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(filename));
+    return pImage;
+}
+#endif
 
 void getFeaturesFN(char *filename) {
+#ifndef ANDROID
     IplImage *img = cvLoadImage(filename);
+#else
+    IplImage *img = cvLoadImageAndroid(filename);
+#endif
     getFeatures(img);
 }
 
@@ -147,13 +205,13 @@ void getFeatures(IplImage *predict, float *features) {
 
             int nlados = p2->total;
             if (nlados >= MAXL || nlados <= MINL) continue;
-
+#ifndef ANDROID
             if (mostrar) {
                 cvDrawContours(img,p2,cvScalarAll(255),cvScalarAll(255),0);
                 cvShowImage(WIN,img);
                 cvWaitKey();
             }
-
+#endif
             printFeatures(p2, features);
             if (! training ) break;
         }

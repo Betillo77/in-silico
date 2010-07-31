@@ -10,11 +10,13 @@
 
 #if defined WIN32 || defined _WIN32 || defined WIN64 || defined _WIN64
     #include <windows.h>
-#else
+#else 
+#ifndef ANDROID
     #include <sys/types.h>
     #include <dirent.h>
     #include <errno.h>
     #define LINUX
+#endif
 #endif
 
 //definitions

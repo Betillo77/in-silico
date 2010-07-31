@@ -6,9 +6,12 @@
  */
 
 
+
+#ifndef ANDROID
 #include "io_utils.h"
 #include "features.h"
 #include <ml.h>
+#endif
 
 #define DIR_TR "./training/"
 
@@ -39,6 +42,7 @@ void printMatrix(CvMat * mat, int type=CV_32F) {
     }
 }
 
+#ifndef ANDROID
 void trainFromTxt() {
     FILE* fin = fopen("train.txt","r");
     int N,i;
@@ -76,6 +80,7 @@ void trainFromTxt() {
     ptree->train(data,CV_ROW_SAMPLE,resp,0,0,vartype,0,CvDTreeParams());
     
 }
+#endif
 
 bool str_ends_with(const char *cad, const char *end) {
     int n = strlen(cad), m = strlen(end);
@@ -83,13 +88,17 @@ bool str_ends_with(const char *cad, const char *end) {
     const char *end2 = cad+(n-m);
     return ( strcmp(end,end2)==0 );
 }
-
+int cuenta = 0;
 void training_image(const char *filename) {
     char fname[256];
     if (str_ends_with(filename,".jpg")) {
         fig = filename[0];
+#ifndef ANDROID
         strcpy(fname,DIR_TR);
         strcat(fname, filename);
+#else
+	strcpy(fname, filename);
+#endif
         getFeaturesFN( fname );
     }
 }
@@ -123,9 +132,22 @@ void train() {
     ptree->train(t_data,CV_ROW_SAMPLE,t_resp,0,0,vartype,0,CvDTreeParams());
 }
 
+#ifdef ANDROID
+const char *respuesta;
+
+void printfAndroid(const char *m) {
+	respuesta = m;
+}
+
+IplImage* cvQueryFrameAndroid() {
+	return cvLoadImageAndroid("R1.jpg");
+}
+#endif
+
 void predict() {
     training=false;
     IplImage* frame;
+#ifndef ANDROID
     while (1) {
         frame = cvQueryFrame(cap);
         if (!frame) break;
@@ -144,18 +166,39 @@ void predict() {
             cvReleaseMat(&features);
         }
     }
+#else
+            frame = cvQueryFrameAndroid();
+            CvMat *features = cvCreateMat(1,COLS,CV_32F);
+            getFeatures(frame, features->data.fl);
+            char p = (char)ptree->predict(features)->value;
+            if (p=='T') printfAndroid("Triángulo prueba\n");
+            else if (p=='S') printfAndroid("Cuadrado\n");
+            else if (p=='R') printfAndroid("Rectángulo\n");
+            else printfAndroid("Figura no reconocida\n");
+            cvReleaseMat(&features);
+#endif
 }
 
 /*
  *
  */
+#ifndef ANDROID
 int main(int argc, char** argv) {
+#else
+const char* mainA() {
+#endif
     //destroy_params();
     init_params();
+#ifndef ANDROID
     argc--; argv++;
+#endif
     train();
     //trainFromTxt();
     predict();
     destroy_params();
+#ifndef ANDROID
     return (EXIT_SUCCESS);
+#else
+    return respuesta;
+#endif
 }
