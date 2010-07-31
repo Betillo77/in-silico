@@ -166,7 +166,6 @@ void predict() {
             cvReleaseMat(&features);
         }
     }
-#endif
 }
 
 /*
