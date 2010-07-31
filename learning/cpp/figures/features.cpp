@@ -137,27 +137,6 @@ void fillMatrix() {
     }
 }
 #ifdef ANDROID
-void getSourceImage(IplImage *pImage) {
-	int x, y;
-	int width = pImage->width;
-	int height = pImage->height;
-	int* image = new int[width * height];
-	int* base = (int*) (pImage->imageData);
-	int* ptr; 
-	int i = 0;
-	for (y = 0; y < height; y++) {
-		ptr = base + y * width;
-		for (x = 0; x < width; x++) {
-			image[i++] = ptr[x];
-		} 
-	}
-	jintArray bytes = virtualMachine->NewIntArray(width * height);
-	virtualMachine->SetIntArrayRegion(bytes, 0, width * height, (jint*) image);
-	jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setBitmap", "([I)V");
-	virtualMachine->CallStaticVoidMethod(thisClass, mid, bytes);
-	delete[] image;
-}
-
 IplImage* cvLoadImageAndroid(const char *filename) {
     jmethodID mid = virtualMachine->GetStaticMethodID(thisClass, "setImage", "(Ljava/lang/String;)V");
     virtualMachine->CallStaticVoidMethod(thisClass, mid, (jstring) virtualMachine->NewStringUTF(filename));
