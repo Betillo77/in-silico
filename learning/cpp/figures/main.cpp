@@ -9,16 +9,15 @@
 #include "io_utils.h"
 #include "features.h"
 #include <ml.h>
+
 #define DIR_TR "./training/"
 #else
 #define printf printf1
 #define cvWaitKey cvWaitKey1
 #define cvShowImage cvShowImage1
 #define cvQueryFrame cvQueryFrame1
-#define DIR_TR "/images/"
+#define DIR_TR "/sdcard/images/training/"
 #endif
-
-
 
 
 CvDTree* ptree=0;
