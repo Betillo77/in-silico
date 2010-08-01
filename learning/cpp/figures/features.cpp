@@ -16,13 +16,19 @@ CvMat *t_resp; //Training responses
 
 void init_params() {
     if (mostrar) cvNamedWindow(WIN, CV_WINDOW_AUTOSIZE);
+#ifndef ANDROID
     cap = cvCreateCameraCapture(CAM);
+#else
+    cap = NULL;
+#endif
     seq = cvCreateMemStorage();
     poly = cvCreateMemStorage();
 }
 
 void destroy_params() {
+#ifndef ANDROID
     cvReleaseCapture(&cap);
+#endif
     //cvDestroyWindow(WIN);
     cvReleaseMemStorage(&seq);
     cvReleaseMemStorage(&poly);
