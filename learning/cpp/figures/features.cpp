@@ -33,6 +33,7 @@ IplImage* captureAndFilter(IplImage *predict=0) {
     IplImage* frame = 0;
     if (predict != 0)
         frame = predict;
+
     if (mostrar) {
         cvShowImage(WIN, frame);
         cvWaitKey();
@@ -146,11 +147,13 @@ void getFeatures(IplImage *predict, float *features) {
 
             int nlados = p2->total;
             if (nlados >= MAXL || nlados <= MINL) continue;
+
             if (mostrar) {
                 cvDrawContours(img,p2,cvScalarAll(255),cvScalarAll(255),0);
                 cvShowImage(WIN,img);
                 cvWaitKey();
             }
+
             printFeatures(p2, features);
             if (! training ) break;
         }
