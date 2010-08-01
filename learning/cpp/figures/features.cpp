@@ -8,11 +8,7 @@ bool mostrar=false;
 
 bool training=false;
 char fig; //figura del test case
-#ifndef ANDROID 
 CvCapture* cap;
-#else
-int cap;
-#endif
 list<Figura> figuras;
 CvMat *t_data; //Training data
 CvMat *t_resp; //Training responses
