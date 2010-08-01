@@ -8,17 +8,11 @@
 #ifndef ANDROID
 #include "io_utils.h"
 #include "features.h"
-#include <ml.h>
-
-#define DIR_TR "./training/"
-#else
-#define printf printf1
-#define cvWaitKey cvWaitKey1
-#define cvShowImage cvShowImage1
-#define cvQueryFrame cvQueryFrame1
-#define DIR_TR "/sdcard/images/training/"
 #endif
-
+#include <ml.h>
+#ifndef ANDROID
+#define DIR_TR "./training/"
+#endif
 
 CvDTree* ptree=0;
 
@@ -93,12 +87,16 @@ bool str_ends_with(const char *cad, const char *end) {
 
 void training_image(const char *filename) {
     char fname[256];
+#ifndef ANDROID
     if (str_ends_with(filename,".jpg")) {
+#endif
         fig = filename[0];
         strcpy(fname,DIR_TR);
         strcat(fname, filename);
         getFeaturesFN( fname );
+#ifndef ANDROID
     }
+#endif
 }
 
 
