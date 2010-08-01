@@ -9,9 +9,16 @@
 #include "io_utils.h"
 #include "features.h"
 #include <ml.h>
+#define DIR_TR "./training/"
+#else
+#define printf printf1
+#define cvWaitKey cvWaitKey1
+#define cvShowImage cvShowImage1
+#define cvQueryFrame cvQueryFrame1
+#define DIR_TR "/images/"
 #endif
 
-#define DIR_TR "./training/"
+
 
 
 CvDTree* ptree=0;
@@ -40,7 +47,6 @@ void printMatrix(CvMat * mat, int type=CV_32F) {
     }
 }
 
-#ifndef ANDROID
 void trainFromTxt() {
     FILE* fin = fopen("train.txt","r");
     int N,i;
@@ -78,7 +84,6 @@ void trainFromTxt() {
     ptree->train(data,CV_ROW_SAMPLE,resp,0,0,vartype,0,CvDTreeParams());
     
 }
-#endif
 
 bool str_ends_with(const char *cad, const char *end) {
     int n = strlen(cad), m = strlen(end);
@@ -139,17 +144,10 @@ void predict() {
             CvMat *features = cvCreateMat(1,COLS,CV_32F);
             getFeatures(frame, features->data.fl);
             char p = (char)ptree->predict(features)->value;
-#ifndef ANDROID
             if (p=='T') printf("Triángulo\n",p);
             else if (p=='S') printf("Cuadrado\n",p);
             else if (p=='R') printf("Rectángulo\n",p);
             else printf("Figura no reconocida\n",p);
-#else
-            if (p=='T') printf1("Triángulo\n",p);
-            else if (p=='S') printf1("Cuadrado\n",p);
-            else if (p=='R') printf1("Rectángulo\n",p);
-            else printf1("Figura no reconocida\n",p);	
-#endif
             fflush(stdout);
             cvReleaseMat(&features);
         }
@@ -169,3 +167,10 @@ int main(int argc, char** argv) {
     destroy_params();
     return (EXIT_SUCCESS);
 }
+
+#ifdef ANDROID
+#undef printf
+#undef cvWaitKey
+#undef cvShowImage
+#undef cvQueryFrame
+#endif
