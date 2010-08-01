@@ -15,21 +15,15 @@ CvMat *t_resp; //Training responses
 
 
 void init_params() {
-#ifndef ANDROID 
     if (mostrar) cvNamedWindow(WIN, CV_WINDOW_AUTOSIZE);
     cap = cvCreateCameraCapture(CAM);
-#else
-    cap = 0;
-#endif
     seq = cvCreateMemStorage();
     poly = cvCreateMemStorage();
 }
 
 void destroy_params() {
-#ifndef ANDROID
     cvReleaseCapture(&cap);
     //cvDestroyWindow(WIN);
-#endif
     cvReleaseMemStorage(&seq);
     cvReleaseMemStorage(&poly);
 }
@@ -39,24 +33,20 @@ IplImage* captureAndFilter(IplImage *predict=0) {
     IplImage* frame = 0;
     if (predict != 0)
         frame = predict;
-#ifndef ANDROID
     if (mostrar) {
         cvShowImage(WIN, frame);
         cvWaitKey();
     }
-#endif
     IplImage *img = cvCreateImage(cvSize(frame->width,frame->height),IPL_DEPTH_8U,1);
     cvCvtColor(frame,img,CV_RGB2GRAY);
     cvSmooth(img,img);
     cvAdaptiveThreshold(img, img, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY,15);
     cvDilate(img,img);
     cvErode(img,img);
-#ifndef ANDROID  
     if (mostrar) {
         cvShowImage(WIN, img);
         cvWaitKey();
     }
-#endif
     return img;
 }
 
@@ -156,13 +146,11 @@ void getFeatures(IplImage *predict, float *features) {
 
             int nlados = p2->total;
             if (nlados >= MAXL || nlados <= MINL) continue;
-#ifndef ANDROID
             if (mostrar) {
                 cvDrawContours(img,p2,cvScalarAll(255),cvScalarAll(255),0);
                 cvShowImage(WIN,img);
                 cvWaitKey();
             }
-#endif
             printFeatures(p2, features);
             if (! training ) break;
         }
