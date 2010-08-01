@@ -11,7 +11,11 @@
 #include <cxtypes.h>
 #include <highgui.h>
 #include <cv.h>
+#ifndef ANDROID
+#include "lineal.h"
+#else
 #include "lineal.cpp"
+#endif
 #include <list>
 
 #define CAM 1

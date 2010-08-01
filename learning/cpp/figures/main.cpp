@@ -164,10 +164,3 @@ int main(int argc, char** argv) {
     destroy_params();
     return (EXIT_SUCCESS);
 }
-
-#ifdef ANDROID
-#undef printf
-#undef cvWaitKey
-#undef cvShowImage
-#undef cvQueryFrame
-#endif
