@@ -144,6 +144,7 @@ void predict() {
             if (p=='T') printf("Triángulo\n",p);
             else if (p=='S') printf("Cuadrado\n",p);
             else if (p=='R') printf("Rectángulo\n",p);
+            else if (p=='H') printf("Rombo\n");
             else printf("Figura no reconocida\n",p);
             fflush(stdout);
             cvReleaseMat(&features);
@@ -158,8 +159,11 @@ int main(int argc, char** argv) {
     //destroy_params();
     init_params();
     argc--; argv++;
+    if (argc > 0) {
+        const char *param = argv[0];
+        
+    }
     train();
-    //trainFromTxt();
     predict();
     destroy_params();
     return (EXIT_SUCCESS);

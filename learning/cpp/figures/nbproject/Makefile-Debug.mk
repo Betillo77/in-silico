@@ -28,7 +28,9 @@ OBJECTDIR=build/Debug/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/features.o \
 	${OBJECTDIR}/lineal.o \
+	${OBJECTDIR}/io_utils.o \
 	${OBJECTDIR}/main.o
 
 # C Compiler Flags
@@ -52,10 +54,20 @@ dist/Debug/${PLATFORM}/figures: ${OBJECTFILES}
 	${MKDIR} -p dist/Debug/${PLATFORM}
 	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -o dist/Debug/${PLATFORM}/figures ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/features.o: features.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/features.o features.cpp
+
 ${OBJECTDIR}/lineal.o: lineal.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/lineal.o lineal.cpp
+
+${OBJECTDIR}/io_utils.o: io_utils.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/io_utils.o io_utils.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

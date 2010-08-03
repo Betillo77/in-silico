@@ -1,0 +1,55 @@
+
+\documentclass{article}
+
+\usepackage{mathtools}
+
+\begin{document}
+\title {Shape recognition using machine learning}
+\author {Sebastian Gomez}
+\date {July of 2010}
+\maketitle
+
+	\section{Introduction}
+	When you teach a child how to recognize geometrical figures, such as
+	a triangle, a square or a rectangle; You don't talk about parallel sides of 90
+	degrees angles. The only thing that you usually do is to show him examples
+	of those figures and the child learn by his own how to differentiate 
+	them. One way of making something similar in a computer, is by using
+	machine learning; Even though to make a computer able to differentiate 
+	figures is not a simple task, we are going to illustrate some simple steps
+	to achieve that in this article. The field of computer vision usually
+	propose 3 stages for image recognition.
+	
+	\section{Image filtering}
+	The first stage receives as input an image an outputs an image having only
+	what we need. In order to recognize geometrical figures, we must find the 
+	contour of the figure. But before doing so we turn the image into gray scale.
+	As any signal acquisition, the input has noise and we must filter it; To do
+	so we used a Gaussian filter. We could define now the filtered grayscale image
+	as a function $I_1(x,y)$, that represents the value of the pixel located at
+	$(x,y)$ as an integer between 0 and 255; Where 0 is black, 255 is white and
+	all other values are some kind of gray.\newline
+	As we are interested in finding the contour of the figure, we first binarize
+	the image. That binarization is achieved by choosing a value T, such that any
+	value above it is taken to 255, and any value below it is taken to 0.
+	To choose T as a constant value is not a good idea, since it will make the
+	system too dependent on light conditions. We used an approach called
+	adaptative threshold, that choose the value of T for each pixel by averaging
+	its neighbors. If $I_2(x,y)$ represents the binarized image and $\mu(x,y)$
+	represents the mean in some area $A_2$ arround $(x,y)$; We would have:
+	\[ I_2(x,y) = \left\{ \begin{array}{ll}
+		0   & \mbox{if $I_1(x,y) < u(x,y)$} \\
+		255 & \mbox{otherwise}
+	\end{array} \right. \]
+	
+	\section{Obtaining the features}
+	The second stage receives as input $I_2(x,y)$, the output image of the first
+	stage; and should return to us the features for the recognition stage. We used the 
+	OpenCV library for all the project, this library has an utility to find the
+	contour of a figure once the image is binarized. The contour is a sequence of
+	(x,y) points at the border of an image, that we are going to approximate with a
+	polygon using an algorithm of the library. That algorithm receives a sequence
+	of points, take the farthest points of that sequence as part of the polygon;
+	Then it find the farthest point from the lines of the polygon and 
+
+\end{document}

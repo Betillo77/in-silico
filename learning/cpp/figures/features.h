@@ -18,7 +18,7 @@
 #endif
 #include <list>
 
-#define CAM 1
+#define CAM 0
 #define WIN "Ventana1"
 #define MAXL 10
 #define MINL 2

@@ -46,7 +46,7 @@ int solve() {
 }
 
 int main(int argc, char** argv) {
-    int T,tc;
+    int T,tc=0;
     scanf("%i",&T);
     REP(tc,T) {
         scanf("%i %i %i",&M,&N,&K);

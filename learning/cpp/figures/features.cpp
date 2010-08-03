@@ -161,7 +161,7 @@ void getFeatures(IplImage *predict, float *features) {
             }
 
             printFeatures(p2, features);
-            if (! training ) break;
+            if (!training) break;
         }
         if (training) figuras.pop_back();
     }
