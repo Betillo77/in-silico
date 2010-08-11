@@ -27,12 +27,14 @@ Matrix *loadImage(const char *fn) {
 }
 
 void showMatrix(Matrix *m) {
-    if (debug) return;
     int w=m->getWidth(), h=m->getHeight(), k=m->getChannels();
     IplImage *img = cvCreateImage(cvSize(w,h),IPL_DEPTH_8U, k);
     memcpy(img->imageData, m->getData(), w*h*k);
-    cvShowImage("Test",img);
-    cvWaitKey(0);
+    if (!debug) {
+        cvShowImage("Test",img);
+        cvWaitKey(0);
+    }
+    cvSaveImage("out.png",img);
     cvReleaseImage(&img);
 }
 
@@ -42,8 +44,8 @@ void testTransform(const char *fn) {
     //Matrix out(color->getWidth(), color->getHeight(), 1);
     Transform t;
     t.toGrayScale(&gray,color);
-    showMatrix(color);
-    showMatrix(&gray);
+    //showMatrix(color);
+    //showMatrix(&gray);
     t.binarize(&gray, &gray);
     showMatrix(&gray);
 }

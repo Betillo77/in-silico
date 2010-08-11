@@ -36,11 +36,14 @@ void Transform::binarize(Matrix* res, Matrix* m) {
     float k = this->kfac;
     assert(k >= 0.001 && k<=0.999);
     assert(w>0 && k<1000);
+    assert(m != NULL);
 
     int xmin,ymin,xmax,ymax,area;
     int whalf = w >> 1;
-    int im_w = m->getWidth(), im_h = m->getHeight();    
-    int64 sum[im_h][im_w], sumsq[im_h][im_w];
+    int im_w = m->getWidth(), im_h = m->getHeight();
+    int64* sum = new int64[im_h*im_w];
+    int64* sumsq = new int64[im_h*im_w];
+    //int64 sum[im_h][im_w], sumsq[im_h][im_w];
     int64 row, rowsq;
     double mean, stddev, num, snum, thresh;
     pixel *img = m->getData(), *ires;
@@ -48,22 +51,22 @@ void Transform::binarize(Matrix* res, Matrix* m) {
     row=0; rowsq=0;
     for (int i=0; i<im_h; i++) {
         row += (*img); rowsq += (*img)*(*img);
-        sum[i][0]=row;
-        sumsq[i][0]=rowsq;
+        sum[i*im_w + 0]=row;
+        sumsq[i*im_w + 0]=rowsq;
         img += im_w*sizeof(pixel);
     }
     img = m->getData(); img++;
     for (int j=1; j<im_w; j++) {
-        sum[0][j] = sum[0][j-1] + (*img);
-        sumsq[0][j] = sumsq[0][j-1] + (*img)*(*img);
+        sum[j] = sum[j-1] + (*img);
+        sumsq[j] = sumsq[j-1] + (*img)*(*img);
         img++;
     }
     for (int i=1; i<im_h; i++) {
         row=(*img); rowsq=row*row; img++;
         for (int j=1; j<im_w; j++,img++) {
             row += (*img); rowsq += (*img)*(*img);
-            sum[i][j] = sum[i-1][j] + row;
-            sumsq[i][j] = sumsq[i-1][j] + rowsq;
+            sum[i*im_w + j] = sum[(i-1)*im_w + j] + row;
+            sumsq[i*im_w + j] = sumsq[(i-1)*im_w + j] + rowsq;
         }
     }
 
@@ -84,19 +87,19 @@ void Transform::binarize(Matrix* res, Matrix* m) {
             area = (xmax-xmin+1)*(ymax-ymin+1);
 
             if (xmin==0 && ymin==0) {
-                num = sum[ymax][xmax];
-                snum = sumsq[ymax][xmax];
+                num = sum[ymax*im_w + xmax];
+                snum = sumsq[ymax*im_w + xmax];
             } else if (xmin==0 && ymin>0) {
-                num = sum[ymax][xmax] - sum[ymin-1][xmax];
-                snum = sumsq[ymax][xmax] - sumsq[ymin-1][xmax];
+                num = sum[ymax*im_w + xmax] - sum[(ymin-1)*im_w + xmax];
+                snum = sumsq[ymax*im_w + xmax] - sumsq[(ymin-1)*im_w + xmax];
             } else if (xmin>0 && ymin==0) {
-                num = sum[ymax][xmax] - sum[ymax][xmin-1];
-                snum = sumsq[ymax][xmax] - sumsq[ymax][xmin-1];
+                num = sum[ymax*im_w + xmax] - sum[ymax*im_w + (xmin-1)];
+                snum = sumsq[ymax*im_w + xmax] - sumsq[ymax*im_w + (xmin-1)];
             } else {
-                num = sum[ymax][xmax] + sum[ymin-1][xmin-1];
-                num -= sum[ymax][xmin-1] + sum[ymin-1][xmax];
-                snum = sumsq[ymax][xmax] + sumsq[ymin-1][xmin-1];
-                snum -= sumsq[ymax][xmin-1] + sumsq[ymin-1][xmax] ;
+                num = sum[ymax*im_w + xmax] + sum[(ymin-1)*im_w + (xmin-1)];
+                num -= sum[ymax*im_w + (xmin-1)] + sum[(ymin-1)*im_w + xmax];
+                snum = sumsq[ymax*im_w + xmax] + sumsq[(ymin-1)*im_w + (xmin-1)];
+                snum -= sumsq[ymax*im_w + (xmin-1)] + sumsq[(ymin-1)*im_w + xmax];
             }
             mean = num/area;
             num = snum - (num*num/area);
@@ -110,4 +113,5 @@ void Transform::binarize(Matrix* res, Matrix* m) {
             img++; ires++;
         }
     }
+    delete [] sum; delete [] sumsq;
 }

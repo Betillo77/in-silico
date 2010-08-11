@@ -11,7 +11,7 @@
 namespace MyOCR {
 
     typedef unsigned char pixel;
-    typedef long int64;
+    typedef long long int int64;
 
     class Matrix {
         int width, height;
