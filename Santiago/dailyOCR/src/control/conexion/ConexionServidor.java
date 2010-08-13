@@ -65,65 +65,77 @@ public class ConexionServidor
 	
     public static String [] leerServidorDailyFX()
     {
-    	try
-    	{ 	
-	        DefaultHttpClient clienteHttp = new DefaultHttpClient();
-	        BasicClientCookie galleta  =  new BasicClientCookie("JSESSIONID","292E82337F956A043C63CB80051101BF"); 
-	        BasicClientCookie galleta1 = new BasicClientCookie(" s_cc","true"); 
-	        BasicClientCookie galleta2 = new BasicClientCookie("s_PVnumber", "4"); 
-	        BasicClientCookie galleta3 = new BasicClientCookie("s_sq","%5B%5BB%5D%5D");
-	        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", jsDailyFX);
-	        galleta.setVersion(0);
-	        galleta1.setVersion(0);
-	        galleta2.setVersion(0);
-	        galleta3.setVersion(0);
-	        galleta4.setVersion(0);
-	        galleta.setDomain("plus.dailyfx.com");
-	        galleta1.setDomain("plus.dailyfx.com");
-	        galleta2.setDomain("plus.dailyfx.com");
-	        galleta3.setDomain("plus.dailyfx.com");
-	        galleta4.setDomain("plus.dailyfx.com");
-	        galleta.setPath("/fxsignals");
-	        galleta1.setPath("/");
-	        galleta2.setPath("/");
-	        galleta3.setPath("/");
-	        galleta4.setPath("/");
-	        clienteHttp.getCookieStore().addCookie(galleta);
-	        clienteHttp.getCookieStore().addCookie(galleta1);
-	        clienteHttp.getCookieStore().addCookie(galleta2);
-	        clienteHttp.getCookieStore().addCookie(galleta3);
-	        clienteHttp.getCookieStore().addCookie(galleta4);
-	        HttpGet peticionGet = new HttpGet("https://fxsignals.dailyfx.com/fxsignals-ds/json/all.do");
-	        HttpResponse respuesta = clienteHttp.execute(peticionGet);
-	        HttpEntity entidadHttp = respuesta.getEntity();
-	        respuesta.getStatusLine();
-	        StringBuilder sb = new StringBuilder("");
-	        if (entidadHttp != null)
-	        {
-	        	InputStream instream = entidadHttp.getContent();
-	        	int numeroLeidos;
-	        	byte[] lectura = new byte[2048];
-	        	while ((numeroLeidos = instream.read(lectura)) != -1) 
-	        	{
-	        		for(int i = 0; i < numeroLeidos; i++)
-	        		{
-	        			sb.append((char) lectura[i]);
-	        		}
-	        	}
-	            BufferedWriter bw = new BufferedWriter(new FileWriter("salidaDailyFX.txt"));
-	            bw.write(sb.toString());
-	            bw.close();
-	        }
-	        clienteHttp.getConnectionManager().shutdown();
-	        String [] resultado = new String[1];
-	        resultado[0] = sb.toString();
-	        return resultado;
+    	int j = 0;
+    	while(j++ < 20)
+    	{
+	    	try
+	    	{ 	
+		        DefaultHttpClient clienteHttp = new DefaultHttpClient();
+		        BasicClientCookie galleta  =  new BasicClientCookie("JSESSIONID","292E82337F956A043C63CB80051101BF"); 
+		        BasicClientCookie galleta1 = new BasicClientCookie(" s_cc","true"); 
+		        BasicClientCookie galleta2 = new BasicClientCookie("s_PVnumber", "4"); 
+		        BasicClientCookie galleta3 = new BasicClientCookie("s_sq","%5B%5BB%5D%5D");
+		        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", jsDailyFX);
+		        galleta.setVersion(0);
+		        galleta1.setVersion(0);
+		        galleta2.setVersion(0);
+		        galleta3.setVersion(0);
+		        galleta4.setVersion(0);
+		        galleta.setDomain("plus.dailyfx.com");
+		        galleta1.setDomain("plus.dailyfx.com");
+		        galleta2.setDomain("plus.dailyfx.com");
+		        galleta3.setDomain("plus.dailyfx.com");
+		        galleta4.setDomain("plus.dailyfx.com");
+		        galleta.setPath("/fxsignals");
+		        galleta1.setPath("/");
+		        galleta2.setPath("/");
+		        galleta3.setPath("/");
+		        galleta4.setPath("/");
+		        clienteHttp.getCookieStore().addCookie(galleta);
+		        clienteHttp.getCookieStore().addCookie(galleta1);
+		        clienteHttp.getCookieStore().addCookie(galleta2);
+		        clienteHttp.getCookieStore().addCookie(galleta3);
+		        clienteHttp.getCookieStore().addCookie(galleta4);
+		        HttpGet peticionGet = new HttpGet("https://fxsignals.dailyfx.com/fxsignals-ds/json/all.do");
+		        HttpResponse respuesta = clienteHttp.execute(peticionGet);
+		        HttpEntity entidadHttp = respuesta.getEntity();
+		        respuesta.getStatusLine();
+		        StringBuilder sb = new StringBuilder("");
+		        if (entidadHttp != null)
+		        {
+		        	InputStream instream = entidadHttp.getContent();
+		        	int numeroLeidos;
+		        	byte[] lectura = new byte[2048];
+		        	while ((numeroLeidos = instream.read(lectura)) != -1) 
+		        	{
+		        		for(int i = 0; i < numeroLeidos; i++)
+		        		{
+		        			sb.append((char) lectura[i]);
+		        		}
+		        	}
+		            BufferedWriter bw = new BufferedWriter(new FileWriter("salidaDailyFX.txt"));
+		            bw.write(sb.toString());
+		            bw.close();
+		        }
+		        clienteHttp.getConnectionManager().shutdown();
+		        String [] resultado = new String[1];
+		        resultado[0] = sb.toString();
+		        return resultado;
+	    	}
+	    	catch(Exception e)
+	    	{	
+	    		try 
+	    		{
+					Thread.sleep(15000);
+				} 
+	    		catch (InterruptedException e1) 
+	    		{
+	    			Error.agregar("Error en Thread.sleep en leer del servidor dailyFX " + e1.getMessage());
+				}
+	    	}
     	}
-    	catch(Exception e)
-    	{	
-    		Error.agregar(e.getMessage() + " Error en leer del servidor");
-    		return null;
-    	}
+		Error.agregar("Error en leer del servidor dailyFX");
+		return null;
     }
     
     public static String leerTechnical()
