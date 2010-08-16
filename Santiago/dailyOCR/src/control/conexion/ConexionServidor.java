@@ -65,7 +65,31 @@ public class ConexionServidor
 {
 	private static final String jsDailyFX = "0E6DACB1E886BC4A0DD46EB443DAF7D9";
 	
-	public static BidAsk[] arregloSSI =  new BidAsk[Par.values().length];
+	public static BidAsk[] arregloSSI = new BidAsk[Par.values().length];
+	public static double VIX;
+	
+	static
+	{
+		new Thread(new Runnable()
+		{
+			public void run() 
+			{
+				while(true)
+				{
+					try
+					{
+						cargarVIX();
+						cargarSSI();
+						Thread.sleep(600000);
+					}
+					catch(Exception e)
+					{
+						Error.agregar("Error en el hilo monitor de ConexionServidor");
+					}
+				}
+			}
+		}).start();
+	}
 	
     public static String [] leerServidorDailyFX()
     {
@@ -445,7 +469,7 @@ public class ConexionServidor
 		return aDevolver;
     }
     
-    public static double leerVIX()
+    public static void cargarVIX()
     {
     	try
     	{ 	
@@ -488,18 +512,16 @@ public class ConexionServidor
 			{ 
 				String temp = matcher2.group();
 				temp = temp.substring(0, temp.length() - 1);
-				return Double.parseDouble(temp);
+				VIX = Double.parseDouble(temp);
 			}
 			else
 			{	
 				Error.agregar("Imposible leer el VIX");
-				return 0;
 			}
     	}
     	catch(Exception e)
     	{
 			Error.agregar("Imposible leer el VIX");
-			return 0;
     	}
     }
     
@@ -508,11 +530,29 @@ public class ConexionServidor
     	try
     	{      
     		DefaultHttpClient clienteHttp = new DefaultHttpClient();
-    		BasicClientCookie galleta = new BasicClientCookie("JSESSIONIDSSO", "0D86C163BAA374331AE6860B140E6D55");
-    		galleta.setVersion(0);
-    		galleta.setDomain("plus.dailyfx.com");
-    		galleta.setPath("/");
-    		clienteHttp.getCookieStore().addCookie(galleta);
+	        BasicClientCookie galleta  =  new BasicClientCookie("JSESSIONID","D36DBE9AACF8DD992C28D5ABE1636317"); 
+	        BasicClientCookie galleta1 = new BasicClientCookie("fxsignalsAttr", "1601040403"); 
+	        BasicClientCookie galleta2 = new BasicClientCookie("s_PVnumber", "4"); 
+	        BasicClientCookie galleta3 = new BasicClientCookie("s_sq","%5B%5BB%5D%5D");
+	        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", "9C788543F57F18F964BA9F1827ED2F75");
+	        galleta.setVersion(0);
+	        galleta1.setVersion(0);
+	        galleta2.setVersion(0);
+	        galleta3.setVersion(0);
+	        galleta4.setVersion(0);
+	        galleta.setDomain("plus.dailyfx.com");
+	        galleta1.setDomain("plus.dailyfx.com");
+	        galleta2.setDomain("plus.dailyfx.com");
+	        galleta3.setDomain("plus.dailyfx.com");
+	        galleta4.setDomain("plus.dailyfx.com");
+	        galleta.setPath("/fxcmideas");
+	        galleta1.setPath("/");
+	        galleta2.setPath("/");
+	        galleta3.setPath("/");
+	        galleta4.setPath("/");
+	        clienteHttp.getCookieStore().addCookie(galleta);
+	        clienteHttp.getCookieStore().addCookie(galleta1);
+	        clienteHttp.getCookieStore().addCookie(galleta4);
     		HttpGet peticionGet = new HttpGet(url);
     		HttpResponse respuesta = clienteHttp.execute(peticionGet);
     		HttpEntity entidadHttp = respuesta.getEntity();
@@ -576,15 +616,32 @@ public class ConexionServidor
 
     public static void cargarSSI()
     {
-    	String pagina = leerPagina("https://plus.dailyfx.com/fxcmideas/intraday-list.do");
-    	String direccion = url(pagina);
-    	direccion = "https://plus.dailyfx.com/fxcmideas/" + direccion;
-    	String pagina2 = leerPagina(direccion);
-    	datos(pagina2);
+    	try
+	    {
+	    	String pagina = leerPagina("https://plus.dailyfx.com/fxcmideas/intraday-list.do");
+	    	String direccion = url(pagina);
+	    	direccion = "https://plus.dailyfx.com/fxcmideas/" + direccion;
+	    	String pagina2 = leerPagina(direccion);
+	    	datos(pagina2);
+	    }
+    	catch(Exception e)
+    	{
+    		Error.agregar(e.getMessage() + " Error al leer SSI en cargarSSI");
+    	}
     }
 
 	public static double darSSI(Par par) 
 	{
 		return arregloSSI[par.ordinal()].getBid();
+	}
+	
+    public static double darVIX()
+    {
+    	return VIX;
+    }
+	
+	public static void main(String [] args)
+	{
+		cargarSSI();
 	}
 }

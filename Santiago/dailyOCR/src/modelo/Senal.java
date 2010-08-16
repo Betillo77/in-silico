@@ -15,9 +15,13 @@ public class Senal
 	private int[] magico = {0};
     private boolean manual = false;
     private double limite;
-	private double VIX;
-	private double SSI1;
-	private double SSI2;
+	private double VIX = 0.0d;
+	private double SSI1 = 0.0d;
+	private double SSI2 = 0.0d;
+	
+	public Senal()
+	{
+	}
     
 	public Senal(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada)
 	{
@@ -26,7 +30,7 @@ public class Senal
 		this.par = par;
 		this.numeroLotes = numeroLotes;
 		this.precioEntrada = precioEntrada;
-		this.VIX = ConexionServidor.leerVIX();
+		this.VIX = ConexionServidor.darVIX();
 		this.SSI1 = ConexionServidor.darSSI(Par.padres.get(par.ordinal())[0]);
 		this.SSI2 = ConexionServidor.darSSI(Par.padres.get(par.ordinal())[1]); 
 	}

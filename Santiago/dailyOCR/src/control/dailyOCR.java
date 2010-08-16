@@ -44,7 +44,6 @@ public class dailyOCR
 	
 	public static void iniciarHilos()
 	{
-		ConexionServidor.cargarSSI();
 		for(SistemaEstrategias sistema : sistemas)
 		{
 			sistema.cargarEstrategias();
@@ -138,6 +137,8 @@ public class dailyOCR
 						@Override
 						public void run() 
 						{
+							ConexionServidor.cargarVIX();
+							ConexionServidor.cargarSSI();
 							iniciarHilos();
 						}
 						
