@@ -508,7 +508,7 @@ public class ConexionServidor
     	try
     	{      
     		DefaultHttpClient clienteHttp = new DefaultHttpClient();
-    		BasicClientCookie galleta = new BasicClientCookie("JSESSIONIDSSO", "38329D87F23E02AA2E0B27E47D19BAD7");
+    		BasicClientCookie galleta = new BasicClientCookie("JSESSIONIDSSO", "0D86C163BAA374331AE6860B140E6D55");
     		galleta.setVersion(0);
     		galleta.setDomain("plus.dailyfx.com");
     		galleta.setPath("/");
