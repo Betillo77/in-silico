@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import control.conexion.ConexionServidor;
+
 import modelo.BidAsk;
 import modelo.Estrategia;
 import modelo.Senal;
@@ -42,6 +44,7 @@ public class dailyOCR
 	
 	public static void iniciarHilos()
 	{
+		ConexionServidor.cargarSSI();
 		for(SistemaEstrategias sistema : sistemas)
 		{
 			sistema.cargarEstrategias();

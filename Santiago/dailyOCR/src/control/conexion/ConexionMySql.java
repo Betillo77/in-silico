@@ -2,30 +2,30 @@ package control.conexion;
 
 import java.sql.*;
 
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import modelo.Senal;
+
 import control.AnalisisLogica.Entrada;
 import control.IdEstrategia;
 import control.Par;
 import control.Error;
 
-
 public class ConexionMySql
 {
 	static Connection conexion = dbConnect("jdbc:mysql://localhost:3306/DailyFX", "root", "CalidadIngesis");
 	
-	public synchronized static void agregarEntrada(IdEstrategia id, Par par, long fechaLong, int ganancia) 
+	public synchronized static void agregarEntrada(IdEstrategia id, Senal afectada, long fechaLong, int ganancia) 
 	{
 		try
 		{
 			if(ganancia > 2000)
 			{
-				Error.agregar("Entrada sospechosa: " + id.name() + ", " + par.name() + ", " + fechaLong + ", ¿ganancia: " + ganancia + "?");
+				Error.agregar("Entrada sospechosa: " + id.name() + ", " + afectada.getPar().name() + ", " + fechaLong + ", ï¿½ganancia: " + ganancia + "?");
 				return;
 			}
 			Calendar calendar = Calendar.getInstance();
@@ -37,12 +37,15 @@ public class ConexionMySql
 			fecha += ":" + calendar.get(Calendar.MINUTE);
 			fecha += ":" + calendar.get(Calendar.SECOND);
 			fecha += "'";
+			double VIX = afectada.getVIX();
+			double SSI1 = afectada.getSSI1();
+			double SSI2 = afectada.getSSI2();
 			Statement st = conexion.createStatement();
-		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia) VALUES(" + id.ordinal() + "," + fecha + "," + par.ordinal() + "," + ganancia + ")");
+		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2) VALUES(" + id.ordinal() + "," + fecha + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + ")");
 		}
 		catch (SQLException s)
 		{
-			Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + par.toString() + ", " + fechaLong + ", " + ganancia); 
+			Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + afectada.getPar().toString() + ", " + fechaLong + ", " + ganancia); 
 		}
 	}
 	

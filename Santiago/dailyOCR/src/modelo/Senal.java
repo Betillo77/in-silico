@@ -2,6 +2,7 @@ package modelo;
 
 import control.IdEstrategia;
 import control.Par;
+import control.conexion.ConexionServidor;
 
 public class Senal
 {
@@ -14,10 +15,9 @@ public class Senal
 	private int[] magico = {0};
     private boolean manual = false;
     private double limite;
-	
-    public Senal()
-    {
-    }
+	private double VIX;
+	private double SSI1;
+	private double SSI2;
     
 	public Senal(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada)
 	{
@@ -26,6 +26,9 @@ public class Senal
 		this.par = par;
 		this.numeroLotes = numeroLotes;
 		this.precioEntrada = precioEntrada;
+		this.VIX = ConexionServidor.leerVIX();
+		this.SSI1 = ConexionServidor.darSSI(Par.padres.get(par.ordinal())[0]);
+		this.SSI2 = ConexionServidor.darSSI(Par.padres.get(par.ordinal())[1]); 
 	}
     
 	public IdEstrategia getEstrategia() {
@@ -98,6 +101,30 @@ public class Senal
 
 	public void setLimite(double limite) {
 		this.limite = limite;
+	}
+	
+	public double getVIX() {
+		return VIX;
+	}
+
+	public void setVIX(double vIX) {
+		VIX = vIX;
+	}
+
+	public double getSSI1() {
+		return SSI1;
+	}
+
+	public void setSSI1(double sSI1) {
+		SSI1 = sSI1;
+	}
+
+	public double getSSI2() {
+		return SSI2;
+	}
+
+	public void setSSI2(double sSI2) {
+		SSI2 = sSI2;
 	}
 
 	public String toString()

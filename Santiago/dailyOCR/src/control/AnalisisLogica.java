@@ -7,8 +7,6 @@ import java.util.List;
 
 import control.conexion.ConexionMySql;
 
-
-
 public class AnalisisLogica 
 {
 	public static  ArrayList <Entrada> Buscar(IdEstrategia historialEstrategia, long fecha, Par par)

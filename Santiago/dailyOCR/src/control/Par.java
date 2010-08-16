@@ -1,11 +1,33 @@
 package control;
 
+import java.util.ArrayList;
+
 public enum Par
 {
 	EURUSD, USDJPY, GBPUSD, USDCHF, EURCHF, AUDUSD, USDCAD,
 	NZDUSD, EURJPY, GBPJPY, CHFJPY, GBPCHF, EURAUD, AUDJPY, 
 	TODOS;
+	
+	public static ArrayList <Par[]> padres = new ArrayList<Par[]> (14);
 		
+	static
+	{
+		padres.add(new Par[]{EURUSD, EURUSD});
+		padres.add(new Par[]{USDJPY, USDJPY});
+		padres.add(new Par[]{GBPUSD, GBPUSD});
+		padres.add(new Par[]{USDCHF, USDCHF});
+		padres.add(new Par[]{EURUSD, USDCHF});
+		padres.add(new Par[]{AUDUSD, AUDUSD});
+		padres.add(new Par[]{USDCAD, USDCAD});
+		padres.add(new Par[]{NZDUSD, NZDUSD});
+		padres.add(new Par[]{EURUSD, USDJPY});
+		padres.add(new Par[]{GBPJPY, GBPJPY});
+		padres.add(new Par[]{USDCHF, USDJPY});
+		padres.add(new Par[]{GBPUSD, USDCHF});
+		padres.add(new Par[]{EURUSD, AUDUSD});
+		padres.add(new Par[]{AUDUSD, USDJPY});
+	}
+	
 	@Override
 	public String toString()
 	{

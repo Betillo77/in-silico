@@ -99,6 +99,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 	{
 		try
 		{
+			ConexionServidor.cargarSSI();
 			ArrayList <Senal> senalesBreakout2 = new ArrayList <Senal> (breakout2.getSenales());
 			ArrayList <Senal> senalesOtros = new ArrayList <Senal> (breakout1.getSenales());
 			senalesOtros.addAll(range1.getSenales());

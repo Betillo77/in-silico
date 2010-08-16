@@ -3,7 +3,6 @@ package control.conexion;
  * ====================================================================
  *
  *  Licensed to the Apache Software Foundation (ASF) under one or more
-
  *  contributor license agreements.  See the NOTICE file distributed with
  *  this work for additional information regarding copyright ownership.
  *  The ASF licenses this file to You under the Apache License, Version 2.0
@@ -31,7 +30,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -47,21 +48,24 @@ import javax.mail.URLName;
 import javax.mail.event.StoreEvent;
 import javax.mail.event.StoreListener;
 
+import modelo.BidAsk;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.cookie.params.CookieSpecPNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.params.BasicHttpParams;
 
 import control.Error;
+import control.Par;
 
 public class ConexionServidor
 {
-	
 	private static final String jsDailyFX = "0E6DACB1E886BC4A0DD46EB443DAF7D9";
 	
-	@SuppressWarnings("unused")
-	private static final String jsTechnical = "DD8561C6129E3E909C6E617163A9D5B7";
+	public static BidAsk[] arregloSSI =  new BidAsk[Par.values().length];
 	
     public static String [] leerServidorDailyFX()
     {
@@ -440,4 +444,147 @@ public class ConexionServidor
 		listaSenales.toArray(aDevolver);
 		return aDevolver;
     }
+    
+    public static double leerVIX()
+    {
+    	try
+    	{ 	
+	        DefaultHttpClient clienteHttp = new DefaultHttpClient();
+	        HttpGet peticionGet = new HttpGet(new URI("http://finance.yahoo.com/q?s=%5EVIX"));
+	        BasicHttpParams params = new BasicHttpParams();
+	        params.setParameter(CookieSpecPNames.DATE_PATTERNS, Arrays.asList("EEE, dd MMM-yyyy-HH:mm:ss z", "EEE, dd MMM yyyy HH:mm:ss z"));
+	        peticionGet.setParams(params);
+	        HttpResponse respuesta = clienteHttp.execute(peticionGet);
+	        HttpEntity entidadHttp = respuesta.getEntity();
+	        respuesta.getStatusLine();
+	        StringBuilder sb = new StringBuilder("");
+	        if (entidadHttp != null)
+	        {
+	        	InputStream instream = entidadHttp.getContent();
+	        	int numeroLeidos;
+	        	byte[] lectura = new byte[2048];
+	        	while ((numeroLeidos = instream.read(lectura)) != -1) 
+	        	{
+	        		for(int i = 0; i < numeroLeidos; i++)
+	        		{
+	        			sb.append((char) lectura[i]);
+	        		}
+	        	}
+	            BufferedWriter bw = new BufferedWriter(new FileWriter("salidaDailyFX.txt"));
+	            bw.write(sb.toString());
+	            bw.close();
+	        }
+	        clienteHttp.getConnectionManager().shutdown();
+	        String salida = sb.toString();
+	        Pattern pattern = Pattern.compile("Index Value");
+	        Pattern pattern2 = Pattern.compile("\\d+.\\d+<");
+			Matcher matcher = pattern.matcher(salida);
+			if(matcher.find()) 
+			{  
+				salida = salida.substring(matcher.end());
+			} 
+			Matcher matcher2 = pattern2.matcher(salida);
+			if(matcher2.find()) 
+			{ 
+				String temp = matcher2.group();
+				temp = temp.substring(0, temp.length() - 1);
+				return Double.parseDouble(temp);
+			}
+			else
+			{	
+				Error.agregar("Imposible leer el VIX");
+				return 0;
+			}
+    	}
+    	catch(Exception e)
+    	{
+			Error.agregar("Imposible leer el VIX");
+			return 0;
+    	}
+    }
+    
+    public static String leerPagina(String url)
+    {
+    	try
+    	{      
+    		DefaultHttpClient clienteHttp = new DefaultHttpClient();
+    		BasicClientCookie galleta = new BasicClientCookie("JSESSIONIDSSO", "38329D87F23E02AA2E0B27E47D19BAD7");
+    		galleta.setVersion(0);
+    		galleta.setDomain("plus.dailyfx.com");
+    		galleta.setPath("/");
+    		clienteHttp.getCookieStore().addCookie(galleta);
+    		HttpGet peticionGet = new HttpGet(url);
+    		HttpResponse respuesta = clienteHttp.execute(peticionGet);
+    		HttpEntity entidadHttp = respuesta.getEntity();
+    		respuesta.getStatusLine();
+    		StringBuilder sb = new StringBuilder("");
+    		if (entidadHttp != null)
+    		{
+    			InputStream instream = entidadHttp.getContent();
+    			int numeroLeidos;
+    			byte[] lectura = new byte[2048];
+    			while ((numeroLeidos = instream.read(lectura)) != -1) 
+    			{
+    				for(int i = 0; i < numeroLeidos; i++)
+    				{
+    					sb.append((char) lectura[i]);
+    				}
+    			}
+    		}
+    		clienteHttp.getConnectionManager().shutdown();
+    		return sb.toString();
+    	}
+    	catch(Exception e)
+    	{		
+    		Error.agregar(e.getMessage() + " Error al leer SSI en lectura de la pagina");
+    		return null;
+    	}
+    }
+
+    private static String url(String pagina)
+    {
+    	Pattern pattern = Pattern.compile("href='.*\\.html'");
+    	Matcher matcher = pattern.matcher(pagina);
+    	matcher.find();
+    	String encontrado = matcher.group();
+    	return encontrado.substring(6, encontrado.length() - 1);
+    }
+
+    public static void datos(String pagina)
+    {	
+    	try
+    	{
+	    	String [] constantes = {"EURUSD", "GBPUSD", "GBPJPY", "USDJPY", "USDCHF", "USDCAD", "AUDUSD", "NZDUSD"};
+	    	for(int i = 0 ; i < constantes.length; i++)
+	    	{
+	    		Pattern pattern = Pattern.compile(constantes[i] + " stands at -?\\d+.\\d+");
+	    		Matcher matcher = pattern.matcher(pagina);
+	    		if(matcher.find())
+	    		{
+	    			Par actual = Par.stringToPar(constantes[i]);
+	    			arregloSSI[actual.ordinal()] = new BidAsk(Double.parseDouble(matcher.group().substring(17)), 0, actual);
+	    			pattern = null;
+	    			matcher = null;
+	    		}
+	    	}
+    	}
+    	catch(Exception e)
+    	{
+    		Error.agregar(e.getMessage() + " Error al leer SSI en el parse");
+    	}
+    }
+
+    public static void cargarSSI()
+    {
+    	String pagina = leerPagina("https://plus.dailyfx.com/fxcmideas/intraday-list.do");
+    	String direccion = url(pagina);
+    	direccion = "https://plus.dailyfx.com/fxcmideas/" + direccion;
+    	String pagina2 = leerPagina(direccion);
+    	datos(pagina2);
+    }
+
+	public static double darSSI(Par par) 
+	{
+		return arregloSSI[par.ordinal()].getBid();
+	}
 }

@@ -104,10 +104,10 @@ public class Estrategia
 		{
 			if(afectada.getLotesCerradosManualmente() > 0)
 				for(int i = 0; i < afectada.getLotesCerradosManualmente(); i++)
-					ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
+					ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
 			else
 				for(int i = 0; i < entrada.getNumeroLotes(); i++)
-					ConexionMySql.agregarEntrada(id, afectada.getPar(), System.currentTimeMillis(), resultado);
+					ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
 		}
 	}
 	
