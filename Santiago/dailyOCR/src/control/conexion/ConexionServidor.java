@@ -65,8 +65,8 @@ public class ConexionServidor
 {
 	private static final String jsDailyFX = "0E6DACB1E886BC4A0DD46EB443DAF7D9";
 	
-	public static transient BidAsk[] arregloSSI = new BidAsk[Par.values().length];
-	public static transient double VIX;
+	public static volatile BidAsk[] arregloSSI = new BidAsk[Par.values().length];
+	public static volatile double VIX;
 	
 	static
 	{
@@ -529,12 +529,13 @@ public class ConexionServidor
     {
     	try
     	{      
+    		Scanner sc = new Scanner(new File("js.txt"));
     		DefaultHttpClient clienteHttp = new DefaultHttpClient();
 	        BasicClientCookie galleta  =  new BasicClientCookie("JSESSIONID","D36DBE9AACF8DD992C28D5ABE1636317"); 
 	        BasicClientCookie galleta1 = new BasicClientCookie("fxsignalsAttr", "1601040403"); 
 	        BasicClientCookie galleta2 = new BasicClientCookie("s_PVnumber", "4"); 
 	        BasicClientCookie galleta3 = new BasicClientCookie("s_sq","%5B%5BB%5D%5D");
-	        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", "531EDDD16585D30CA0F67BFE9A32998C");
+	        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", sc.next());
 	        galleta.setVersion(0);
 	        galleta1.setVersion(0);
 	        galleta2.setVersion(0);
