@@ -31,6 +31,38 @@ void Transform::toGrayScale(Matrix* res, Matrix* m) {
     }
 }
 
+void compIntegralImg(Matrix *m, int64 *sum, int64 *sumsq) {
+    int64 row, rowsq;
+    int64 *sump, *sumsp;
+    int im_w = m->getWidth(), im_h = m->getHeight();
+    pixel *img = m->getData();
+
+    row=0; rowsq=0; sump = sum; sumsp = sumsq;
+    for (int i=0; i<im_h; i++) {
+        row += (*img); rowsq += (*img)*(*img); //row +=img[i][0]
+        *sump = row; //sum[i][0] = row
+        *sumsp = rowsq;
+        img += im_w; sump += im_w; sumsp += im_w; //siguiente i
+    }
+    img = m->getData(); img++; sump = sum+1; sumsp = sumsq+1;
+    for (int j=1; j<im_w; j++) {
+        *sump = sump[-1] + (*img); //sum[0][j]=sum[0][j-1]+img[0][j];
+        *sumsp = sumsp[-1] + (*img)*(*img);
+        img++; sump++; sumsp++; //avanzar a la siguiente j
+    }
+    int64 *sumup=sum, *sumsup=sumsq;
+    for (int i=1; i<im_h; i++) {
+        row=(*img); rowsq=row*row; //row=img[i][0]
+        img++; sump++; sumsp++; sumup++; sumsup++; //apuntar (j=1)
+        for (int j=1; j<im_w; j++) {
+            row += (*img); rowsq += (*img)*(*img); //row += img[i][j]
+            *sump = *sumup + row; //sum[i][j] = sum[i-1][j] + row
+            *sumsp = *sumsup + rowsq;
+            img++;sump++;sumsp++;sumup++;sumsup++; //next j
+        }
+    }
+}
+
 void Transform::binarize(Matrix* res, Matrix* m) {
     int w = this->wsize;
     float k = this->kfac;
@@ -43,32 +75,10 @@ void Transform::binarize(Matrix* res, Matrix* m) {
     int im_w = m->getWidth(), im_h = m->getHeight();
     int64* sum = new int64[im_h*im_w];
     int64* sumsq = new int64[im_h*im_w];
-    //int64 sum[im_h][im_w], sumsq[im_h][im_w];
-    int64 row, rowsq;
-    double mean, stddev, num, snum, thresh;
-    pixel *img = m->getData(), *ires;
+    pixel *img, *ires;
+    double mean, stddev, num, snum, thresh;    
 
-    row=0; rowsq=0;
-    for (int i=0; i<im_h; i++) {
-        row += (*img); rowsq += (*img)*(*img);
-        sum[i*im_w + 0]=row;
-        sumsq[i*im_w + 0]=rowsq;
-        img += im_w*sizeof(pixel);
-    }
-    img = m->getData(); img++;
-    for (int j=1; j<im_w; j++) {
-        sum[j] = sum[j-1] + (*img);
-        sumsq[j] = sumsq[j-1] + (*img)*(*img);
-        img++;
-    }
-    for (int i=1; i<im_h; i++) {
-        row=(*img); rowsq=row*row; img++;
-        for (int j=1; j<im_w; j++,img++) {
-            row += (*img); rowsq += (*img)*(*img);
-            sum[i*im_w + j] = sum[(i-1)*im_w + j] + row;
-            sumsq[i*im_w + j] = sumsq[(i-1)*im_w + j] + rowsq;
-        }
-    }
+    compIntegralImg(m,sum,sumsq);
 
     /*for (int i=0; i<5; i++) {
         for (int j=0; j<5; j++) {

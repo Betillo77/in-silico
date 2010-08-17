@@ -15,7 +15,7 @@
 
 using namespace MyOCR;
 
-bool debug=false;
+bool debug=true;
 
 Matrix *loadImage(const char *fn) {
     IplImage *img = cvLoadImage(fn);
@@ -55,7 +55,9 @@ void testTransform(const char *fn) {
  */
 int main(int argc, char** argv) {
     if (!debug) cvNamedWindow("Test");
-    testTransform("text1.png");
+    char *fn = "text2.jpg";
+    if (argc>1) fn=argv[1];
+    testTransform(fn);
     cvDestroyWindow("Test");
     return (EXIT_SUCCESS);
 }

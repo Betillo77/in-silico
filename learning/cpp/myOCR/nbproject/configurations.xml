@@ -18,6 +18,7 @@
         <itemPath>transform.cpp</itemPath>
         <itemPath>transform.h</itemPath>
       </logicalFolder>
+      <itemPath>android.cpp</itemPath>
       <itemPath>test.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -49,6 +50,9 @@
           <commandLine>-I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml</commandLine>
         </linkerTool>
       </compileType>
+      <item path="android.cpp">
+        <itemTool>1</itemTool>
+      </item>
       <item path="matrix.cpp">
         <itemTool>1</itemTool>
       </item>
@@ -77,15 +81,25 @@
         </cCompilerTool>
         <ccCompilerTool>
           <developmentMode>5</developmentMode>
+          <includeDirectories>
+            <directoryPath>/usr/local/include/opencv</directoryPath>
+          </includeDirectories>
         </ccCompilerTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
         <linkerTool>
+          <linkerAddLib>
+            <directoryPath>/usr/include/opencv</directoryPath>
+          </linkerAddLib>
           <linkerLibItems>
           </linkerLibItems>
+          <commandLine>-I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml</commandLine>
         </linkerTool>
       </compileType>
+      <item path="android.cpp">
+        <itemTool>1</itemTool>
+      </item>
       <item path="matrix.cpp">
         <itemTool>1</itemTool>
       </item>
