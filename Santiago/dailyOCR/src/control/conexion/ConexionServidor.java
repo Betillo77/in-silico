@@ -65,8 +65,8 @@ public class ConexionServidor
 {
 	private static final String jsDailyFX = "0E6DACB1E886BC4A0DD46EB443DAF7D9";
 	
-	public static BidAsk[] arregloSSI = new BidAsk[Par.values().length];
-	public static double VIX;
+	public static transient BidAsk[] arregloSSI = new BidAsk[Par.values().length];
+	public static transient double VIX;
 	
 	static
 	{
@@ -469,7 +469,7 @@ public class ConexionServidor
 		return aDevolver;
     }
     
-    public static void cargarVIX()
+    public static synchronized void cargarVIX()
     {
     	try
     	{ 	
@@ -534,7 +534,7 @@ public class ConexionServidor
 	        BasicClientCookie galleta1 = new BasicClientCookie("fxsignalsAttr", "1601040403"); 
 	        BasicClientCookie galleta2 = new BasicClientCookie("s_PVnumber", "4"); 
 	        BasicClientCookie galleta3 = new BasicClientCookie("s_sq","%5B%5BB%5D%5D");
-	        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", "9C788543F57F18F964BA9F1827ED2F75");
+	        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", "531EDDD16585D30CA0F67BFE9A32998C");
 	        galleta.setVersion(0);
 	        galleta1.setVersion(0);
 	        galleta2.setVersion(0);
@@ -614,7 +614,7 @@ public class ConexionServidor
     	}
     }
 
-    public static void cargarSSI()
+    public static synchronized void cargarSSI()
     {
     	try
 	    {
@@ -630,12 +630,12 @@ public class ConexionServidor
     	}
     }
 
-	public static double darSSI(Par par) 
+	public static synchronized double darSSI(Par par) 
 	{
 		return arregloSSI[par.ordinal()].getBid();
 	}
 	
-    public static double darVIX()
+    public static synchronized double darVIX()
     {
     	return VIX;
     }
