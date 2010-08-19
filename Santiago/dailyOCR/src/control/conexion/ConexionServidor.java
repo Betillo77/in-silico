@@ -33,8 +33,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,11 +78,37 @@ public class ConexionServidor
 			{
 				while(true)
 				{
+					boolean diezYMedia = false;
+					boolean diezYNueveYMedia = false;
 					try
 					{
+						Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+						int hora = calendar.get(Calendar.HOUR_OF_DAY);
+						int minuto = calendar.get(Calendar.MINUTE);
+						if(hora == 10 && minuto >= 30)
+						{
+							if(!diezYMedia)
+							{
+								diezYMedia = true;
+								cargarSSI();
+							}
+						}
+						else if(hora == 19 && minuto >= 30)
+						{
+							if(!diezYNueveYMedia)
+							{
+								diezYNueveYMedia = true;
+								cargarSSI();
+							}
+						}
+						else
+						{
+							diezYMedia = false;
+							diezYNueveYMedia = false;
+						}
 						cargarVIX();
-						cargarSSI();
 						Thread.sleep(600000);
+						
 					}
 					catch(Exception e)
 					{
@@ -525,35 +553,29 @@ public class ConexionServidor
     	}
     }
     
+    public static void loggear(DefaultHttpClient clienteHttp)
+    {
+    	try
+    	{
+    		Scanner sc = new Scanner(new File("js.txt"));
+			HttpGet peticionGet1 = new HttpGet("https://plus.dailyfx.com/login/loginForm.jsp");
+			HttpGet peticionGet = new HttpGet("https://plus.dailyfx.com/login/j_security_check?" + sc.next());
+			clienteHttp.execute(peticionGet1);
+			peticionGet1.abort();
+			clienteHttp.execute(peticionGet);
+			peticionGet.abort();
+    	}
+    	catch(Exception e)
+    	{
+    	}
+    }
+    
     public static String leerPagina(String url)
     {
     	try
     	{      
-    		Scanner sc = new Scanner(new File("js.txt"));
     		DefaultHttpClient clienteHttp = new DefaultHttpClient();
-	        BasicClientCookie galleta  =  new BasicClientCookie("JSESSIONID","D36DBE9AACF8DD992C28D5ABE1636317"); 
-	        BasicClientCookie galleta1 = new BasicClientCookie("fxsignalsAttr", "1601040403"); 
-	        BasicClientCookie galleta2 = new BasicClientCookie("s_PVnumber", "4"); 
-	        BasicClientCookie galleta3 = new BasicClientCookie("s_sq","%5B%5BB%5D%5D");
-	        BasicClientCookie galleta4 = new BasicClientCookie("JSESSIONIDSSO", sc.next());
-	        galleta.setVersion(0);
-	        galleta1.setVersion(0);
-	        galleta2.setVersion(0);
-	        galleta3.setVersion(0);
-	        galleta4.setVersion(0);
-	        galleta.setDomain("plus.dailyfx.com");
-	        galleta1.setDomain("plus.dailyfx.com");
-	        galleta2.setDomain("plus.dailyfx.com");
-	        galleta3.setDomain("plus.dailyfx.com");
-	        galleta4.setDomain("plus.dailyfx.com");
-	        galleta.setPath("/fxcmideas");
-	        galleta1.setPath("/");
-	        galleta2.setPath("/");
-	        galleta3.setPath("/");
-	        galleta4.setPath("/");
-	        clienteHttp.getCookieStore().addCookie(galleta);
-	        clienteHttp.getCookieStore().addCookie(galleta1);
-	        clienteHttp.getCookieStore().addCookie(galleta4);
+    		loggear(clienteHttp);
     		HttpGet peticionGet = new HttpGet(url);
     		HttpResponse respuesta = clienteHttp.execute(peticionGet);
     		HttpEntity entidadHttp = respuesta.getEntity();
@@ -640,9 +662,4 @@ public class ConexionServidor
     {
     	return VIX;
     }
-	
-	public static void main(String [] args)
-	{
-		cargarSSI();
-	}
 }
