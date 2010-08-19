@@ -68,7 +68,8 @@ public class ConexionServidor
 	private static final String jsDailyFX = "0E6DACB1E886BC4A0DD46EB443DAF7D9";
 	
 	public static volatile BidAsk[] arregloSSI = new BidAsk[Par.values().length];
-	public static volatile double VIX;
+	public static volatile double VIX = 0;
+	public static volatile String cacheSSI = "";
 	
 	static
 	{
@@ -85,26 +86,19 @@ public class ConexionServidor
 						Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 						int hora = calendar.get(Calendar.HOUR_OF_DAY);
 						int minuto = calendar.get(Calendar.MINUTE);
-						if(hora == 10 && minuto >= 30)
+						if((hora == 8 && minuto >= 30) || (hora > 9 && hora < 17))
 						{
 							if(!diezYMedia)
 							{
-								diezYMedia = true;
-								cargarSSI();
-							}
-						}
-						else if(hora == 19 && minuto >= 30)
-						{
-							if(!diezYNueveYMedia)
-							{
-								diezYNueveYMedia = true;
-								cargarSSI();
+								diezYMedia = cargarSSI();
 							}
 						}
 						else
 						{
-							diezYMedia = false;
-							diezYNueveYMedia = false;
+							if(!diezYNueveYMedia)
+							{
+								 diezYNueveYMedia = cargarSSI();
+							}
 						}
 						cargarVIX();
 						Thread.sleep(600000);
@@ -499,58 +493,60 @@ public class ConexionServidor
     
     public static synchronized void cargarVIX()
     {
-    	try
-    	{ 	
-	        DefaultHttpClient clienteHttp = new DefaultHttpClient();
-	        HttpGet peticionGet = new HttpGet(new URI("http://finance.yahoo.com/q?s=%5EVIX"));
-	        BasicHttpParams params = new BasicHttpParams();
-	        params.setParameter(CookieSpecPNames.DATE_PATTERNS, Arrays.asList("EEE, dd MMM-yyyy-HH:mm:ss z", "EEE, dd MMM yyyy HH:mm:ss z"));
-	        peticionGet.setParams(params);
-	        HttpResponse respuesta = clienteHttp.execute(peticionGet);
-	        HttpEntity entidadHttp = respuesta.getEntity();
-	        respuesta.getStatusLine();
-	        StringBuilder sb = new StringBuilder("");
-	        if (entidadHttp != null)
-	        {
-	        	InputStream instream = entidadHttp.getContent();
-	        	int numeroLeidos;
-	        	byte[] lectura = new byte[2048];
-	        	while ((numeroLeidos = instream.read(lectura)) != -1) 
-	        	{
-	        		for(int i = 0; i < numeroLeidos; i++)
-	        		{
-	        			sb.append((char) lectura[i]);
-	        		}
-	        	}
-	            BufferedWriter bw = new BufferedWriter(new FileWriter("salidaDailyFX.txt"));
-	            bw.write(sb.toString());
-	            bw.close();
-	        }
-	        clienteHttp.getConnectionManager().shutdown();
-	        String salida = sb.toString();
-	        Pattern pattern = Pattern.compile("Index Value");
-	        Pattern pattern2 = Pattern.compile("\\d+.\\d+<");
-			Matcher matcher = pattern.matcher(salida);
-			if(matcher.find()) 
-			{  
-				salida = salida.substring(matcher.end());
-			} 
-			Matcher matcher2 = pattern2.matcher(salida);
-			if(matcher2.find()) 
-			{ 
-				String temp = matcher2.group();
-				temp = temp.substring(0, temp.length() - 1);
-				VIX = Double.parseDouble(temp);
-			}
-			else
-			{	
-				Error.agregar("Imposible leer el VIX");
-			}
-    	}
-    	catch(Exception e)
+    	String error = "";
+    	for(int j = 0; j < 100; j++)
     	{
-			Error.agregar("Imposible leer el VIX");
+	    	try
+	    	{ 	
+		        DefaultHttpClient clienteHttp = new DefaultHttpClient();
+		        HttpGet peticionGet = new HttpGet(new URI("http://finance.yahoo.com/q?s=%5EVIX"));
+		        BasicHttpParams params = new BasicHttpParams();
+		        params.setParameter(CookieSpecPNames.DATE_PATTERNS, Arrays.asList("EEE, dd MMM-yyyy-HH:mm:ss z", "EEE, dd MMM yyyy HH:mm:ss z"));
+		        peticionGet.setParams(params);
+		        HttpResponse respuesta = clienteHttp.execute(peticionGet);
+		        HttpEntity entidadHttp = respuesta.getEntity();
+		        respuesta.getStatusLine();
+		        StringBuilder sb = new StringBuilder("");
+		        if (entidadHttp != null)
+		        {
+		        	InputStream instream = entidadHttp.getContent();
+		        	int numeroLeidos;
+		        	byte[] lectura = new byte[2048];
+		        	while ((numeroLeidos = instream.read(lectura)) != -1) 
+		        	{
+		        		for(int i = 0; i < numeroLeidos; i++)
+		        		{
+		        			sb.append((char) lectura[i]);
+		        		}
+		        	}
+		            BufferedWriter bw = new BufferedWriter(new FileWriter("salidaDailyFX.txt"));
+		            bw.write(sb.toString());
+		            bw.close();
+		        }
+		        clienteHttp.getConnectionManager().shutdown();
+		        String salida = sb.toString();
+		        Pattern pattern = Pattern.compile("Index Value");
+		        Pattern pattern2 = Pattern.compile("\\d+.\\d+<");
+				Matcher matcher = pattern.matcher(salida);
+				if(matcher.find()) 
+				{  
+					salida = salida.substring(matcher.end());
+				} 
+				Matcher matcher2 = pattern2.matcher(salida);
+				if(matcher2.find()) 
+				{ 
+					String temp = matcher2.group();
+					temp = temp.substring(0, temp.length() - 1);
+					VIX = Double.parseDouble(temp);
+					break;
+				}
+	    	}
+	    	catch(Exception e)
+	    	{
+				error = e.getMessage();
+	    	}
     	}
+    	Error.agregar(error + " Imposible leer el VIX");
     }
     
     public static void loggear(DefaultHttpClient clienteHttp)
@@ -637,20 +633,32 @@ public class ConexionServidor
     	}
     }
 
-    public static synchronized void cargarSSI()
+    public static synchronized boolean cargarSSI()
     {
-    	try
-	    {
-	    	String pagina = leerPagina("https://plus.dailyfx.com/fxcmideas/intraday-list.do");
-	    	String direccion = url(pagina);
-	    	direccion = "https://plus.dailyfx.com/fxcmideas/" + direccion;
-	    	String pagina2 = leerPagina(direccion);
-	    	datos(pagina2);
-	    }
-    	catch(Exception e)
+    	String error = "";
+    	for(int i = 0; i < 100; i++)
     	{
-    		Error.agregar(e.getMessage() + " Error al leer SSI en cargarSSI");
+	    	try
+		    {
+		    	String pagina = leerPagina("https://plus.dailyfx.com/fxcmideas/intraday-list.do");
+		    	String direccion = url(pagina);
+		    	if(direccion.equals(cacheSSI))
+		    	{
+		    		return false;
+		    	}
+		    	direccion = "https://plus.dailyfx.com/fxcmideas/" + direccion;
+		    	String pagina2 = leerPagina(direccion);
+		    	datos(pagina2);
+		    	cacheSSI = direccion;
+		    	return true;
+		    }
+	    	catch(Exception e)
+	    	{
+	    		error = e.getMessage();
+	    	}
     	}
+    	Error.agregar(error + " Error al leer SSI en cargarSSI");
+    	return true;
     }
 
 	public static synchronized double darSSI(Par par) 
