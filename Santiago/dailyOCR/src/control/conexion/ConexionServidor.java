@@ -88,6 +88,7 @@ public class ConexionServidor
 						int minuto = calendar.get(Calendar.MINUTE);
 						if((hora == 8 && minuto >= 30) || (hora > 9 && hora < 17))
 						{
+							diezYNueveYMedia = false;
 							if(!diezYMedia)
 							{
 								diezYMedia = cargarSSI();
@@ -95,6 +96,7 @@ public class ConexionServidor
 						}
 						else
 						{
+							diezYMedia = false;
 							if(!diezYNueveYMedia)
 							{
 								 diezYNueveYMedia = cargarSSI();
@@ -563,12 +565,10 @@ public class ConexionServidor
     	}
     }
     
-    public static String leerPagina(String url)
+    public static String leerPagina(String url, DefaultHttpClient clienteHttp)
     {
     	try
-    	{      
-    		DefaultHttpClient clienteHttp = new DefaultHttpClient();
-    		loggear(clienteHttp);
+    	{
     		HttpGet peticionGet = new HttpGet(url);
     		HttpResponse respuesta = clienteHttp.execute(peticionGet);
     		HttpEntity entidadHttp = respuesta.getEntity();
@@ -587,7 +587,7 @@ public class ConexionServidor
     				}
     			}
     		}
-    		clienteHttp.getConnectionManager().shutdown();
+    		peticionGet.abort();
     		return sb.toString();
     	}
     	catch(Exception e)
@@ -619,8 +619,6 @@ public class ConexionServidor
 	    		{
 	    			Par actual = Par.stringToPar(constantes[i]);
 	    			arregloSSI[actual.ordinal()] = new BidAsk(Double.parseDouble(matcher.group().substring(17)), 0, actual);
-	    			pattern = null;
-	    			matcher = null;
 	    		}
 	    	}
     	}
@@ -637,16 +635,19 @@ public class ConexionServidor
     	{
 	    	try
 		    {
-		    	String pagina = leerPagina("https://plus.dailyfx.com/fxcmideas/intraday-list.do");
-		    	String direccion = url(pagina);
+	    		DefaultHttpClient clienteHttp = new DefaultHttpClient();
+	    		loggear(clienteHttp);
+		    	String pagina = leerPagina("https://plus.dailyfx.com/fxcmideas/intraday-list.do", clienteHttp);
+		    	String direccion = "https://plus.dailyfx.com/fxcmideas/" + url(pagina);
 		    	if(direccion.equals(cacheSSI))
 		    	{
+		    		clienteHttp.getConnectionManager().shutdown();
 		    		return false;
 		    	}
-		    	direccion = "https://plus.dailyfx.com/fxcmideas/" + direccion;
-		    	String pagina2 = leerPagina(direccion);
+		    	String pagina2 = leerPagina(direccion, clienteHttp);
 		    	datos(pagina2);
 		    	cacheSSI = direccion;
+	    		clienteHttp.getConnectionManager().shutdown();
 		    	return true;
 		    }
 	    	catch(Exception e)
@@ -666,5 +667,10 @@ public class ConexionServidor
     public static synchronized double darVIX()
     {
     	return VIX;
+    }
+    
+    public static void main(String[] args)
+    {
+    	cargarSSI();
     }
 }
