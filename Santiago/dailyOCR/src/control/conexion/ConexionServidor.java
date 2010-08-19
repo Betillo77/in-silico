@@ -70,48 +70,48 @@ public class ConexionServidor
 	public static volatile BidAsk[] arregloSSI = new BidAsk[Par.values().length];
 	public static volatile double VIX = 0;
 	public static volatile String cacheSSI = "";
-//	
-//	static
-//	{
-//		new Thread(new Runnable()
-//		{
-//			public void run() 
-//			{
-//				while(true)
-//				{
-//					boolean diezYMedia = false;
-//					boolean diezYNueveYMedia = false;
-//					try
-//					{
-//						Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-//						int hora = calendar.get(Calendar.HOUR_OF_DAY);
-//						int minuto = calendar.get(Calendar.MINUTE);
-//						if((hora == 8 && minuto >= 30) || (hora > 9 && hora < 17))
-//						{
-//							if(!diezYMedia)
-//							{
-//								diezYMedia = cargarSSI();
-//							}
-//						}
-//						else
-//						{
-//							if(!diezYNueveYMedia)
-//							{
-//								 diezYNueveYMedia = cargarSSI();
-//							}
-//						}
-//						cargarVIX();
-//						Thread.sleep(600000);
-//						
-//					}
-//					catch(Exception e)
-//					{
-//						Error.agregar("Error en el hilo monitor de ConexionServidor");
-//					}
-//				}
-//			}
-//		}).start();
-//	}
+	
+	static
+	{
+		new Thread(new Runnable()
+		{
+			public void run() 
+			{
+				while(true)
+				{
+					boolean diezYMedia = false;
+					boolean diezYNueveYMedia = false;
+					try
+					{
+						Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+						int hora = calendar.get(Calendar.HOUR_OF_DAY);
+						int minuto = calendar.get(Calendar.MINUTE);
+						if((hora == 8 && minuto >= 30) || (hora > 9 && hora < 17))
+						{
+							if(!diezYMedia)
+							{
+								diezYMedia = cargarSSI();
+							}
+						}
+						else
+						{
+							if(!diezYNueveYMedia)
+							{
+								 diezYNueveYMedia = cargarSSI();
+							}
+						}
+						cargarVIX();
+						Thread.sleep(600000);
+						
+					}
+					catch(Exception e)
+					{
+						Error.agregar("Error en el hilo monitor de ConexionServidor");
+					}
+				}
+			}
+		}).start();
+	}
 	
     public static String [] leerServidorDailyFX()
     {
