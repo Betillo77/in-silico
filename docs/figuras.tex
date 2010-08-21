@@ -2,6 +2,7 @@
 \documentclass{article}
 
 \usepackage{mathtools}
+\usepackage{algorithmic}
 
 \begin{document}
 \title {Shape recognition using machine learning}
@@ -10,33 +11,39 @@
 \maketitle
 
 	\section{Introduction}
-	When you teach a child how to recognize geometrical figures, such as
-	a triangle, a square or a rectangle; You don't talk about parallel sides of 90
-	degrees angles. The only thing that you usually do is to show him examples
-	of those figures and the child learn by his own how to differentiate 
-	them. One way of making something similar in a computer, is by using
-	machine learning; Even though to make a computer able to differentiate 
-	figures is not a simple task, we are going to illustrate some simple steps
-	to achieve that in this article. The field of computer vision usually
-	propose 3 stages for image recognition.
+	When you teach a child how to recognize basic geometrical figures such as
+	a triangle, a square, or a rectangle, you do not tell the child "a square has four
+	equal sides, and four 90-degree angles". Such academic language can be challenging for 
+	a young and still unschooled child. You may more likely show him several examples
+	of shapes and the child, after repeatedly being exposed to the different shapes, may 
+	be able to learn to differentiate them on his own. \newline
+	A similar approach can be used with a computer. One way of training a computer to
+	recognize basic shapes is by using elements from "machine learning", an area of
+	artificial intelligence. To enable a computer to differentiate basic geometrical 
+	figures is not a simple task. However, this is possible by using computer vision 
+	techniques. In this article, we will illustrate how to achieve computer shape 
+	recognition. More specifically, our goal is to show how to design a program using
+	the OpenCV library to recognize geometrical figures drawn by hand, constraining
+	the paper to be white and the pencil to be black. The field of computer vision
+	usually	propose 3 stages for image recognition.
 	
 	\section{Image filtering}
 	The first stage receives as input an image an outputs an image having only
 	what we need. In order to recognize geometrical figures, we must find the 
-	contour of the figure. But before doing so we turn the image into gray scale.
+	contour of the shape. But before doing so we turn the image into gray scale.
 	As any signal acquisition, the input has noise and we must filter it; To do
 	so we used a Gaussian filter. We could define now the filtered grayscale image
 	as a function $I_1(x,y)$, that represents the value of the pixel located at
 	$(x,y)$ as an integer between 0 and 255; Where 0 is black, 255 is white and
 	all other values are some kind of gray.\newline
-	As we are interested in finding the contour of the figure, we first binarize
+	As we are interested in finding the contour of the shape, we first binarize
 	the image. That binarization is achieved by choosing a value T, such that any
 	value above it is taken to 255, and any value below it is taken to 0.
 	To choose T as a constant value is not a good idea, since it will make the
 	system too dependent on light conditions. We used an approach called
 	adaptative threshold, that choose the value of T for each pixel by averaging
 	its neighbors. If $I_2(x,y)$ represents the binarized image and $\mu(x,y)$
-	represents the mean in some area $A_2$ arround $(x,y)$; We would have:
+	represents the mean in some area $A_2$ around $(x,y)$; We would have:
 	\[ I_2(x,y) = \left\{ \begin{array}{ll}
 		0   & \mbox{if $I_1(x,y) < u(x,y)$} \\
 		255 & \mbox{otherwise}
@@ -45,11 +52,111 @@
 	\section{Obtaining the features}
 	The second stage receives as input $I_2(x,y)$, the output image of the first
 	stage; and should return to us the features for the recognition stage. We used the 
-	OpenCV library for all the project, this library has an utility to find the
-	contour of a figure once the image is binarized. The contour is a sequence of
-	(x,y) points at the border of an image, that we are going to approximate with a
-	polygon using an algorithm of the library. That algorithm receives a sequence
-	of points, take the farthest points of that sequence as part of the polygon;
-	Then it find the farthest point from the lines of the polygon and 
-
+	OpenCV library for all the project, this library has a function named
+	\textit{cvFindCountours} to find the contour of a shape once the image is
+	binarized. The contour is a sequence of $(x,y)$ points at the border of an image,
+	that we are going to approximate with polygon using the function 
+	\textit{cvApproxPoly} of the library\footnote {If you want to know how the 
+	functions \textit{cvFindContours} and \textit{cvApproxPoly} do work, please 
+	refer to OpenCV	documentation (See bibliography)}.
+	Now we must compute a set of features from the set of points of our 
+	approximated polygon. Those features must follow the following constrains:
+	\begin{itemize}
+		\item[1.] Using only the chosen features it should be enough to recognize the
+			different kind of shapes.
+		\item[2.] There must be a fixed number of features.
+	\end{itemize}
+	If we choose a vector $\vec{x} \in \mathbf{R}^n$ to store the features, we will
+	ensure the second constraint is satisfied; Because each feature vector would have
+	exactly $n$ features.
+	
+	\subsection{Choosing the geometrical figures and features}
+	Let $C$ be the set of the classes (geometrical figures) to differentiate. That 
+	$C$ would be our goal, lets define it as:
+	\[C = \{ Triangle, Square, Rectangle, Rhombus \} \]
+	For that set of shapes, we found one possible vector of features $\vec{x}$ with
+	$n=4$ that provides enough information to differentiate each of those shapes.
+	\[\vec{x} = <a_1,a_2,a_3,a_4> \]
+	Where:\newline
+	$a_1$ is the number of sides of the polygon\newline
+	$a_2$ is the standard deviation of the sides divided by the perimeter\newline
+	$a_3$ is the standard deviation of the magnitude of the angles\newline
+	$a_4$ is the magnitude of the angle closest to 180 degrees\newline
+	
+	As our goal is to recognize geometrical figures drawn by hand, the formal definitions
+	of the geometrical figures are not really useful. For example, you can't expect that 
+	a square drawn by hand has all its sides with the same length; But you can expect 
+	that the standard deviation of those lengths should be less than in a rectangle.
+	Similarly, you can't expect the all the internal angles of a rectangle are
+	exactly equal among them. But the standard deviation of those angles should be
+	lower than in the rhombus.\newline
+	However, it was observed that the standard deviation of the length of the sides
+	$\sigma_l$ increased with the size of the shape; That make sense but is
+	undesirable. To avoid that, $\sigma_l$ was divided by the perimeter of the shape.
+	The reason to include the magnitude of the angle closest angle to 180 degrees, is
+	that some times one side of the polygon can be recognized as 2 different sides;
+	But with an angle really close to 180 degrees.
+	To be able to recognize between triangles the other quadrilaterals, the number of
+	sides should be enough in the general case.
+	
+	\section{Learning and classification}
+	Before being able to recognize any shape, we must learn; Learning is achieved
+	through a training process.  Lets say there is function $g(\vec{x})$ that 
+	return the class of the object with features $\vec{x}$. 
+	Let $X$ be a set with pairs $<y_i,\vec{x_i}>$ called training set, such that
+	its known that $y_i$ is the class of the object with features $\vec{x}$; That is:
+	\[ \forall <y_i,\vec{x_i}> \in X , y_i=g(\vec{x_i}) \]
+	We can define the system to be trained as a function $f(\vec{x},\vec{p})$,
+	where $\vec{p}$ is a vector containing some parameters and $\vec{x}$ has
+	the same meaning as above. Then, the objective of training is to find the
+	parameters $\vec{p}$ such that the error of $f$ with the data in the training
+	set is minimized. Assuming that a boolean operator return 1 if they are true
+	or 0 if false, we would have:
+	\[ min_{\vec{p}} \left[ E = \sum_{i=1}^{\| X \|}  
+		( y_i \not= f(\vec{x_i},\vec{p}) ) \right] \]
+	To model $f$, we used a binary decision tree. That is a tree which one
+	condition per node; In each node the condition is evaluated and depending
+	on the truth value one of the two children nodes is chosen. This process
+	repeats itself until a leaf is reached, and each leaf has only one class.
+	That class would be the output of $f$. We perform this operation by using the
+	C++ class \textit{CvDTree} of OpenCV. 
+	
+	\section{Conclusions}
+	After the binary decision tree was trained, it was proved against 22 different
+	shapes that were not shown to the training algorithm. Only one of those shapes
+	was not correctly recognized, which means an accuracy of 95.45\%. The accuracy can
+	be improved even more adding more features.
+	The binary decision tree model is almost ideal to solve this problem, because it
+	is easy to solve this problems only using conditions on the input variables. For
+	more complex problems such as optical character recognition or face recognition,
+	it is possible that more complex models such as neural networks or support vector
+	machines are needed.
+	
+	\begin{thebibliography}{9}
+	
+		\bibitem{Bradski08}
+			Gary Bradsi, Adrian Kaehler,
+			\emph{Learning OpenCV: Computer vision with the OpenCV Library}.
+			O'REILLY,
+			First edition,
+			2008.
+			
+		\bibitem{Alpaydin04}
+			Ethem Alpaydin,
+			\emph{Introduction to machine learning}.
+			The MIT press,
+			2004.
+		
+		\bibitem{OpenCV10}
+			"The OpenCV reference",
+			http://opencv.willowgarage.com/wiki/,
+			2010.
+			
+		\bibitem{Cpp2010}
+			"The C++ Resources Network",
+			http://www.cplusplus.com/,
+			2010.
+			
+	\end{thebibliography}
+	
 \end{document}
