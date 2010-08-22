@@ -56,9 +56,20 @@
 	particulares.
 	
 	\subsection{Reconocimiento óptico de caracteres OCR}
-	Una vez se tienen separados los caracteres en el documento, se debe reconocer a que
-	caracter corresponde el grupo de pixeles que entregó la etapa del análisis del
-	documento.
+	Esta etapa se puede super clasificar como un subproblema de reconocimiento de patrones.
+	
+	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones; 
+	modelos inspiradoes en la biologia como los que usan redes neuronales\cite{im_biology}. Otros basados en modelos matematicos
+	como los momentos invariables de hu\cite{art_hu}, o los descriptores de Fourier. El principio fundamental de esta clase de algoritmos son
+	los descriptores invariantes, estos son: funciones para evaluar imagenes, que retornan valores parecidos o identicos cuando se aplican
+	transformaciones afines a estas, como la rotacion, el cambio de escala, la traslacion entre otras.
+	
+	Generalmente lo primero que se hace es tomar muchas imagenes de un solo tipo: sea una letra, un numero o una forma. medir sus caracteristicas aplicando
+	descriptores invariantes, y manualmente etiquetar esta imagen,(una a, un 1, un rombo etc) guardando esta informacion en una base de datos. 
+	
+	Luego cuando el sistema se pone en marcha se obtienen las caracteristicas de la imagen, y se toma la distancia euclideana entre los valores de las caracteristicas
+	y los valores almacenados en la base de datos de caracteristicas, finalmente se etiqueta la imagen con la clase que tenga la menor distancia entre todas.
+		
 	
 	\section{Sistemas de asistencia a personas invidentes}
 	
