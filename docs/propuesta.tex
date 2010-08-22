@@ -64,26 +64,26 @@
 	Desarrollo de un sistema de reconocimiento óptico de caracteres para celulares, que funcione bajo condiciones controladas.
 	\clearpage
 	\section{Breve descripción general del problema}
-	En la actualidad no existe un sistema de reconocimiento de caracteres por un medio óptico que halla sido desarrollado para telefonos inteligentes y que sea de código libre y abierto.
+	En la actualidad no existe un sistema de reconocimiento de caracteres por un medio óptico que halla sido desarrollado para teléfonos inteligentes y que sea de código libre y abierto.
 
-	Si bien se han desarrollado múltiples sistemas de reconocimiento óptico de caracteres de codigo libre, estos estan diseñados exclusivamente para computadores de escritorio.
+	Si bien se han desarrollado múltiples sistemas de reconocimiento óptico de caracteres de código libre, estos están diseñados exclusivamente para computadores de escritorio.
 
 	Existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas podemos encontrar:
 	\begin{itemize}
    \item La memoria y la capacidad de procesamiento son muy reducidas en los teléfonos inteligentes con respecto a los computadores de escritorio.
-   \item En los computadores de escritorio las imágenes se obtienen por medio de un escaner, logrando condiciones de iluminación muy buenas y uniformes. En los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica, haciendo más relevantes diversas variables, como por ejemplo: la inclinación del texto, iluminación no uniforme, deformaciones elásticas del texto debido a la forma del papel en reposo.
-   \item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios megabytes.
+   \item En los computadores de escritorio las imágenes se obtienen por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes. En los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica, haciendo más relevantes diversas variables, como por ejemplo: la inclinación del texto, iluminación no uniforme, deformaciones elásticas del texto debido a la forma del papel en reposo.
+   \item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios Mbytes.
 	\item Un computador de escritorio normalmente tiene instaladas múltiples librerías de propósito general que son utilizadas por distintos programas, un teléfono inteligente, en cambio, solo provee las librerías mas básicas.
 	\end{itemize}
 
 	El hecho de que no exista un sistema de reconocimiento óptico de caracteres de código libre para teléfonos inteligentes imposibilita la creación de un software económico para que las personas invidentes puedan tener acceso rápido a documentos escritos.
 	\clearpage
-	\section{Justificación Inicial o Preeliminar}
-	Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los mas críticos es el del acceso a la información; Esto debido a que la mayoría de la información que recibimos del entorno llega a través de nuestros ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generálmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
+	\section{Justificación Inicial o Preliminar}
+	Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los mas críticos es el del acceso a la información; Esto debido a que la mayoría de la información que recibimos del entorno llega a través de nuestros ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
 
 	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Un sistema que solucionara este problema, le posibilitaría a las personas con discapacidades visuales mejorar enormemente su calidad de vida, ya que les permitiría una mejor educación, al poder acceder a los mismos libros de texto que el resto de la sociedad, y no solo, como actualmente sucede, a los pocos libros que se encuentran disponibles en formato braille.
 
-	Para dar una solución efectiva al problema se requiere de algún sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque ademas del computador, tambien necesitan de un escaner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y lo suficientemente poderoso para hacer el trabajo en un tiempo razonable. Los celulares comunes cumplen las primeras dos características, pero no la tercera, ya que su poder de procesamiento es varias de veces inferior al de un computador comun. Sin embargo, una nueva generación de celulares, que se denomina la de los \textit{celulares inteligentes}, cumple esta tercer característica, ya que su poder de computo es comparable con el de un computador portatil. Así pues, si existiese un sistema de reconocimiento óptico de caracteres diseñado para estos celulares, este podría utilizarse en un sistema que permitiese reconocer texto de imágenes adquiridas por medio de la cámara de estos celulares, que lograría mejorar la capacidad de acceso a la información de las personas con discapacidades visuales.
+	Para dar una solución efectiva al problema se requiere de algún sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y lo suficientemente poderoso para hacer el trabajo en un tiempo razonable. Los celulares comunes cumplen las primeras dos características, pero no la tercera, ya que su poder de procesamiento es varias de veces inferior al de un computador común. Sin embargo, una nueva generación de celulares, que se denomina la de los \textit{celulares inteligentes}, cumple esta tercer característica, ya que su poder de computo es comparable con el de un computador portátil. Así pues, si existiese un sistema de reconocimiento óptico de caracteres diseñado para estos celulares, este podría utilizarse en un sistema que permitiese reconocer texto de imágenes adquiridas por medio de la cámara de estos celulares, que lograría mejorar la capacidad de acceso a la información de las personas con discapacidades visuales.
 	\clearpage
 	\section{Objetivo provisional}
 	Desarrollar un sistema prototipo de reconocimiento óptico de caracteres para celulares inteligentes, que permita el reconocimiento de cierto porcentaje de los caracteres de un texto bajo condiciones especificas.
@@ -97,22 +97,30 @@
 Estudiante Ingeniería de Sistemas y Computación\\
 Universidad Tecnológica de Pereira\\
 Santigutierrez1@hotmail.com
-   \item Sebastian Gomez\\
+   \item Sebastián Gómez\\
 Estudiante Ingeniería de Sistemas y Computación\\
 Universidad Tecnológica de Pereira\\
-sebastiangomez@gmail.com
-   \item Jorge Adrian Martinez\\
+sebasutp@gmail.com
+   \item Jorge Adrián Martinez\\
 Estudiante Ingeniería de Sistemas y Computación\\
 Universidad Tecnológica de Pereira\\
 nogardark@hotmail.com
-   \item Saulo de Jesus Torres\\
-Sebas poner datos aca\\
-saulo@hotmail.com
+   \item Saulo de Jesús Torres\\
+Doctorado en Informática: Ingeniería de Software (Universidad Pontificia de Salamanca)\\
+Universidad Tecnológica de Pereira\\
+saulo.torres@utp.edu.co
 	\end{itemize}
 	\clearpage
+	
 	\section{Recursos disponibles}
-	Poner INCI y otros
+	\begin{itemize}
+		\item Computador portatil Dell Inspiron 1420\\
+			Intel Centrino Duo, 2GB de memoria RAM
+		\item Celular Nexus One, con sistema operativo Andoid\\
+			Procesador ARM ..., 512 MB de memoria RAM, Camara 5 MPixeles
+	\end{itemize}
 	\clearpage
-	\section{Bibliografia}
-	Poner todos los articulos y tesis
+	
+	\section{Bibliografía}
+	Poner todos los artículos y tesis
 \end{document}
