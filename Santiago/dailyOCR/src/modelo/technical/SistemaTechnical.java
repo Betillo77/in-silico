@@ -162,9 +162,9 @@ public class SistemaTechnical extends SistemaEstrategias
 			for(Senal senal : senalesLeidas)
 			{
 				boolean esta = false;
-				synchronized(technical.getSenales())
+				synchronized(technical.getSenalesSync())
 				{
-					for(Senal otra : technical.getSenales())
+					for(Senal otra : technical.getSenalesSync())
 					{
 						if(senal.getPar() == otra.getPar())
 						{
@@ -194,9 +194,9 @@ public class SistemaTechnical extends SistemaEstrategias
 					technical.agregar(nueva, senal, false);
 				}
 			}
-			synchronized(technical.getSenales())
+			synchronized(technical.getSenalesSync())
 			{
-				for(Senal otra : technical.getSenales())
+				for(Senal otra : technical.getSenalesSync())
 				{
 					double precioActual = dailyOCR.precioPar(otra.getPar(), !otra.isCompra());
 					if(otra.isCompra() && otra.getLimite() < precioActual)

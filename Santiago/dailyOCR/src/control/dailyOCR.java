@@ -46,14 +46,6 @@ public class dailyOCR
 	
 	public static void iniciarHilos()
 	{
-		try 
-		{
-			Thread.sleep(120000);
-		}
-		catch (InterruptedException e) 
-		{
-			Error.agregar("Error en Thread.sleep iniciando los hilos");
-		}
 		for(SistemaEstrategias sistema : sistemas)
 		{
 			sistema.cargarEstrategias();
@@ -92,7 +84,7 @@ public class dailyOCR
 	
 	public static synchronized void cerrarSenalManual(Senal senal) 
 	{
-		synchronized(darEstrategiaSenal(senal).getSenales())
+		synchronized(darEstrategiaSenal(senal).getSenalesSync())
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
 			estrategiaSenal.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal, !senal.isManual() && senal.getEstrategia() != IdEstrategia.JOEL);
@@ -103,7 +95,7 @@ public class dailyOCR
 	
 	public static synchronized void abrirSenalManual(Senal senal) 
 	{
-		synchronized(darEstrategiaSenal(senal).getSenales())
+		synchronized(darEstrategiaSenal(senal).getSenalesSync())
 		{
 			Estrategia estrategiaSenal = darEstrategiaSenal(senal);
 			estrategiaSenal.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), senal, true);

@@ -6,11 +6,12 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Scanner;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import modelo.BidAsk;
+import modelo.Par;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,8 +21,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.params.BasicHttpParams;
 
-import modelo.BidAsk;
-import modelo.Par;
 import control.Error;
 import control.conexion.ConexionServidor;
 
@@ -30,50 +29,6 @@ public class ConexionServidorDailyFx extends ConexionServidor
 	private static volatile BidAsk[] arregloSSI = new BidAsk[Par.values().length];
 	private static volatile double VIX = 0;
 	private static volatile String cacheSSI = "";
-	
-	static
-	{
-		new Thread(new Runnable()
-		{
-			public void run() 
-			{
-				while(true)
-				{
-					boolean diezYMedia = false;
-					boolean diezYNueveYMedia = false;
-					try
-					{
-						Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-						int hora = calendar.get(Calendar.HOUR_OF_DAY);
-						int minuto = calendar.get(Calendar.MINUTE);
-						if((hora == 8 && minuto >= 30) || (hora > 9 && hora < 17))
-						{
-							diezYNueveYMedia = false;
-							if(!diezYMedia)
-							{
-								diezYMedia = cargarSSI();
-							}
-						}
-						else
-						{
-							diezYMedia = false;
-							if(!diezYNueveYMedia)
-							{
-								 diezYNueveYMedia = cargarSSI();
-							}
-						}
-						cargarVIX();
-						Thread.sleep(600000);
-						
-					}
-					catch(Exception e)
-					{
-						Error.agregar("Error en el hilo monitor de ConexionServidor");
-					}
-				}
-			}
-		}).start();
-	}
 	
     public static String [] leerServidorDailyFX()
     {
@@ -150,7 +105,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		return null;
     }
     
-    private static synchronized void cargarVIX()
+    public static synchronized void cargarVIX()
     {
     	String error = "";
     	for(int j = 0; j < 100; j++)
@@ -285,7 +240,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
     	}
     }
 
-    private static synchronized boolean cargarSSI()
+    public static synchronized boolean cargarSSI()
     {
     	String error = "";
     	for(int i = 0; i < 100; i++)

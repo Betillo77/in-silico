@@ -2,7 +2,9 @@ package modelo.dailyFx;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -251,7 +253,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
 					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
 					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
+					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
 				}
 			}
 			for(ParMagico pm : parMagicosBreakout2Copia)
@@ -281,7 +283,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
 					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
 					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
+					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
 				}
 			}
 			for(ParMagico pm : parMagicosBreakout2NoAbiertos)
@@ -311,21 +313,51 @@ public class SistemaDailyFX extends SistemaEstrategias
 					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
 					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
 					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
+					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
 				}
 			}
 			String mensaje2 = "";
 			breakout2.escritor.lineas = new ArrayList <String> ();
 			for(ParMagico pm : parMagicosRealesBreakout2)
 			{
-				breakout2.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
-				mensaje2 += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";
+				Senal s;
+				if((s = breakout2.tienePar(pm.par)) != null && breakout2.darActivo(pm.par) && s.getMagico()[0] == 0)
+				{
+					s.getMagico()[0] = pm.magico;
+					Error.agregar("Asignando magico tentativamente: " + breakout2.getId() + " " + s.getPar() + " " + pm.magico);
+				}
+				else
+				{
+					breakout2.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+					mensaje2 += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";	
+				}
 			}
 			breakout2.escritor.escribir();
 			for(ParMagico pm : parMagicosRealesOtros)
 			{
-				breakout1.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
-				mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";
+				boolean cambio = false;
+				for(Estrategia e : estrategias)
+				{
+					if(cambio)
+						break;
+					if(e == breakout2)
+						continue;
+					for(Senal s : e.getSenalesCopy())
+					{
+						if(s.getPar().equals(pm.par) && e.darActivo(s.getPar()) && s.getMagico()[0] == 0)
+						{
+							cambio = true;
+							s.getMagico()[0] = pm.magico;
+							Error.agregar("Asignando magico tentativamente: " + e.getId() + " " + s.getPar() + " " + pm.magico);
+							break;
+						}
+					}
+				}
+				if(!cambio)
+				{
+					breakout1.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+					mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";
+				}
 			}
 			breakout1.escritor.escribir();
 			for(ParMagico pm : parMagicosRealesElite)
@@ -366,6 +398,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 						escritorBreakout2.leerMagicos();
 					    escritorOtros.escribir();
 						escritorOtros.leerMagicos();
+						escritorElite.escribir();
+						escritorElite.leerMagicos();
 						verificarConsistencia();
 						persistir();
 					}
@@ -402,6 +436,46 @@ public class SistemaDailyFX extends SistemaEstrategias
 						{
 				    		Error.agregar(e.getMessage() + " Error en el ciclo de error DailyFX");
 						}
+					}
+				}
+			}
+		}).start();
+		new Thread(new Runnable()
+		{
+			public void run() 
+			{
+				while(true)
+				{
+					boolean diezYMedia = false;
+					boolean diezYNueveYMedia = false;
+					try
+					{
+						Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+						int hora = calendar.get(Calendar.HOUR_OF_DAY);
+						int minuto = calendar.get(Calendar.MINUTE);
+						if((hora == 8 && minuto >= 30) || (hora > 9 && hora < 17))
+						{
+							diezYNueveYMedia = false;
+							if(!diezYMedia)
+							{
+								diezYMedia = ConexionServidorDailyFx.cargarSSI();
+							}
+						}
+						else
+						{
+							diezYMedia = false;
+							if(!diezYNueveYMedia)
+							{
+								 diezYNueveYMedia = ConexionServidorDailyFx.cargarSSI();
+							}
+						}
+						ConexionServidorDailyFx.cargarVIX();
+						Thread.sleep(600000);
+						
+					}
+					catch(Exception e)
+					{
+						Error.agregar("Error en el hilo monitor de ConexionServidor");
 					}
 				}
 			}
@@ -547,14 +621,14 @@ public class SistemaDailyFX extends SistemaEstrategias
 			for(Estrategia actual : estrategias)
 			{
 				Thread.sleep(1000);
-				synchronized(actual.getSenales())
+				synchronized(actual.getSenalesSync())
 				{
-					for(int i = 0; i < actual.getSenales().size(); i++)
+					for(int i = 0; i < actual.getSenalesSync().size(); i++)
 					{
 						Senal senal = null;
 						try
 						{
-							senal = actual.getSenales().get(i);
+							senal = actual.getSenalesSync().get(i);
 						}
 						catch(Exception e)
 						{
@@ -578,7 +652,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 							}
 							if(senal.isManual() && senal.getNumeroLotes() == 0)
 							{
-								actual.getSenales().remove(senal);
+								actual.getSenalesSync().remove(senal);
 								i = -1;
 							}
 						}

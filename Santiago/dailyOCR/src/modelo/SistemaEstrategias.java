@@ -28,6 +28,7 @@ public abstract class SistemaEstrategias
 	{
 		try
 		{
+			procesar(leer((String[]) metodoLectura.invoke(null)));
 			Calendar c = Calendar.getInstance();
 			int hora = c.get(Calendar.HOUR_OF_DAY);
 			int minuto = c.get(Calendar.MINUTE);
@@ -60,7 +61,6 @@ public abstract class SistemaEstrategias
 				Runtime.getRuntime().exec("shutdown now -P");
 				System.exit(0);
 			}
-			procesar(leer((String[]) metodoLectura.invoke(null)));
 		}
 		catch(Exception e)
 		{

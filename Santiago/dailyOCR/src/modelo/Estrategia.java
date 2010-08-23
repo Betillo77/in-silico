@@ -17,17 +17,19 @@ public class Estrategia
 {	
 	protected IdEstrategia id;
 	protected List <Senal> senales;
+	protected List <Senal> senalesNoSync = new ArrayList <Senal> ();
 	private boolean[] activos = new boolean[Par.values().length];
 	public Escritor escritor;
 	
 	public Estrategia()
 	{
+		senales = Collections.synchronizedList(senalesNoSync);
 	}
 	
 	public Estrategia(IdEstrategia id)
 	{
 		this.id = id;
-		senales = Collections.synchronizedList(new ArrayList <Senal> ());
+		senales = Collections.synchronizedList(senalesNoSync);
 	}
 	
 	public synchronized void cambiarActivo(Par par, boolean activo)
@@ -198,6 +200,10 @@ public class Estrategia
 	}
 
 	public List <Senal> getSenales() {
+		return senalesNoSync;
+	}
+	
+	public List <Senal> getSenalesSync() {
 		return senales;
 	}
 	

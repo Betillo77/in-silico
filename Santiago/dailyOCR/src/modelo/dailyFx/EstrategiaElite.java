@@ -1,7 +1,9 @@
 package modelo.dailyFx;
 
 import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import modelo.Estrategia;
 import modelo.Par;
@@ -15,6 +17,11 @@ import control.conexion.ConexionMySql;
 public class EstrategiaElite extends Estrategia 
 {
 	private boolean[][] activosElite = new boolean[6][Par.values().length];
+	
+	public EstrategiaElite()
+	{
+		super();
+	}
 	
 	public EstrategiaElite(IdEstrategia elite) 
 	{
@@ -56,7 +63,24 @@ public class EstrategiaElite extends Estrategia
 			}
 		}
 	}
-
+	
+    public void escribir()
+    {
+    	try
+    	{
+	    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        XMLEncoder encoder = new XMLEncoder(baos);
+	        encoder.writeObject(this);
+	        encoder.close();
+	        String salida = new String(baos.toByteArray());
+	        ConexionMySql.guardarPersistencia(id, salida);
+    	}
+    	catch(Exception e)
+    	{
+    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+    	}
+    }
+    
     public static EstrategiaElite leer(IdEstrategia id)
     {
     	try
@@ -81,6 +105,28 @@ public class EstrategiaElite extends Estrategia
     		Error.agregar("Error de lectura de base de datos: " + id.name());
     		return null;
     	}
+    }
+    
+    public boolean verificarConsistencia() 
+    {
+    	synchronized(senales)
+    	{
+			boolean borro = true;
+			while(borro)
+			{
+				borro = false;
+		    	for(Senal s : senales)
+		    	{
+		    		if(s.getNumeroLotes() == 0)
+		    		{
+		    	    	senales.remove(s);
+		    	    	borro = true;
+		    	    	break;
+		    		}
+		    	}
+			}
+    	}
+    	return super.verificarConsistencia();
     }
 	
 	public synchronized void setActivosElite(boolean[][] activosElite) 
