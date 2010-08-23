@@ -83,12 +83,12 @@ public class EstrategiaElite extends Estrategia
     	}
     }
 	
-	public void setActivosElite(boolean[][] activosElite) 
+	public synchronized void setActivosElite(boolean[][] activosElite) 
 	{
 		this.activosElite = activosElite;
 	}
 
-	public boolean[][] getActivosElite() 
+	public synchronized boolean[][] getActivosElite() 
 	{
 		return activosElite;
 	}
@@ -98,8 +98,8 @@ public class EstrategiaElite extends Estrategia
 		return activosElite[id.ordinal()][par.ordinal()];
 	}
 
-	public void cambiarActivo(Par eurusd, boolean selected, IdEstrategia id) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void cambiarActivo(Par par, boolean selected, IdEstrategia id) 
+	{
+		activosElite[id.ordinal()][par.ordinal()] = selected;
 	}
 }

@@ -220,7 +220,7 @@ public class Estrategia
 		this.senales = Collections.synchronizedList(senales);
 	}
 
-	public boolean[] getActivos() {
+	public synchronized boolean[] getActivos() {
 		return activos;
 	}
 
