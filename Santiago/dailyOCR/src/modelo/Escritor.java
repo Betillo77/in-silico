@@ -1,36 +1,25 @@
-package control;
+package modelo;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Scanner;
 
-import modelo.Estrategia;
-import modelo.Senal;
-import modelo.SenalEntrada;
+import control.Error;
+import control.dailyOCR;
+
 
 public class Escritor
 {	
 	public ArrayList <String> lineas = new ArrayList <String> ();
 	private ArrayList <Senal> senales = new ArrayList <Senal> ();
 	private String pathMeta;
-	private Method metodoMeta;
 	
-	public Escritor(String path, Class <?> clase)
+	public Escritor(String path)
 	{
 		pathMeta = path;
-		try 
-		{
-			metodoMeta = clase.getMethod("metodoMeta", SenalEntrada.class, Senal.class);
-		} 
-		catch(Exception e) 
-		{
-			Error.agregar(e.getMessage() + " Error en metodoMeta de: " + pathMeta);
-		}
 	}
 	
 	public void escribir() 
@@ -247,8 +236,7 @@ public class Escritor
 			new File(pathMeta + "magicos.txt").delete();
 		return leidos;
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public void cerrar(SenalEntrada entrada, Senal afectada)
 	{
 		if(entrada.getNumeroLotes() > 5)
@@ -258,21 +246,14 @@ public class Escritor
 		afectada.setNumeroLotes(afectada.getNumeroLotes() - entrada.getNumeroLotes());
 		if(afectada.getMagico()[0] != 0)
 		{
-			try 
-			{
-				lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, afectada));
-			} 
-			catch (Exception e) 
-			{
-				Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
-			}
+			if(afectada.getNumeroLotes() == 0)
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[0]);
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;
 		afectada.setMagico(Arrays.copyOfRange(afectada.getMagico(), 0, afectada.getMagico().length - entrada.getNumeroLotes()));
 	}
 
-	@SuppressWarnings("unchecked")
 	public void abrir(SenalEntrada entrada, Senal nueva)
 	{
 		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
@@ -282,14 +263,7 @@ public class Escritor
 		}
 		if(estrategia.darActivo(entrada.getPar()))
 		{
-			try 
-			{
-				lineas.addAll((Collection <String>) metodoMeta.invoke(null, entrada, nueva));
-			} 
-			catch (Exception e) 
-			{
-				Error.agregar(e.getMessage() + " Error en metodoMeta en " + pathMeta);
-			}
+			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0");
 			senales.add(nueva);
 		}
 		nueva.setMagico(new int[entrada.getNumeroLotes()]);

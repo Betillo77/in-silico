@@ -1,6 +1,5 @@
 package modelo;
 
-import control.Par;
 
 public class BidAsk
 {

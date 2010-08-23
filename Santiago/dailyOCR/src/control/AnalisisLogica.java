@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import modelo.Par;
+
 import control.conexion.ConexionMySql;
 
 public class AnalisisLogica 

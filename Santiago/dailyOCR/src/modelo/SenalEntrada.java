@@ -1,7 +1,5 @@
 package modelo;
 
-import control.Par;
-import control.TipoSenal;
 
 public class SenalEntrada
 {

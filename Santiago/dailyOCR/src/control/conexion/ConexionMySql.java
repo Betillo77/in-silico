@@ -8,11 +8,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import modelo.Par;
 import modelo.Senal;
 
 import control.AnalisisLogica.Entrada;
 import control.IdEstrategia;
-import control.Par;
 import control.Error;
 
 public class ConexionMySql

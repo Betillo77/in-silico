@@ -1,8 +1,7 @@
 package modelo;
 
 import control.IdEstrategia;
-import control.Par;
-import control.conexion.ConexionServidor;
+import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 public class Senal
 {
@@ -30,9 +29,9 @@ public class Senal
 		this.par = par;
 		this.numeroLotes = numeroLotes;
 		this.precioEntrada = precioEntrada;
-		this.VIX = ConexionServidor.darVIX();
-		this.SSI1 = ConexionServidor.darSSI(Par.padres.get(par.ordinal())[0]);
-		this.SSI2 = ConexionServidor.darSSI(Par.padres.get(par.ordinal())[1]); 
+		this.VIX = ConexionServidorDailyFx.darVIX();
+		this.SSI1 = ConexionServidorDailyFx.darSSI(Par.padres[par.ordinal()][0]);
+		this.SSI2 = ConexionServidorDailyFx.darSSI(Par.padres[par.ordinal()][1]); 
 	}
     
 	public IdEstrategia getEstrategia() {

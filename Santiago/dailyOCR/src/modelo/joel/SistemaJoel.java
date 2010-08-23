@@ -1,19 +1,23 @@
-package control;
+package modelo.joel;
 
 import java.io.BufferedWriter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import modelo.Escritor;
 import modelo.Estrategia;
+import modelo.Par;
 import modelo.Senal;
 import modelo.SenalEntrada;
-import control.conexion.ConexionServidor;
+import modelo.SistemaEstrategias;
+import modelo.TipoSenal;
+import control.Error;
+import control.IdEstrategia;
+import control.conexion.joel.ConexionServidorJoel;
 
 public class SistemaJoel extends SistemaEstrategias 
 {
@@ -22,7 +26,7 @@ public class SistemaJoel extends SistemaEstrategias
 
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("joel/experts/files/", SistemaJoel.class);
+		escritor = new Escritor("joel/experts/files/");
 		joel = Estrategia.leer(IdEstrategia.JOEL);
 		if(joel == null)
 		{
@@ -31,7 +35,7 @@ public class SistemaJoel extends SistemaEstrategias
 		joel.escritor = escritor;
 		try
 		{
-			metodoLectura = ConexionServidor.class.getMethod("leerServidorJoel");
+			metodoLectura = ConexionServidorJoel.class.getMethod("leerServidorJoel");
 		}
 		catch (Exception e)
 		{
@@ -242,16 +246,6 @@ public class SistemaJoel extends SistemaEstrategias
 			return joel;
 		}
 		return null;
-	}
-	
-	public static Collection <String> metodoMeta(SenalEntrada entrada, Senal afectada)
-	{
-		ArrayList <String> lineas = new ArrayList <String> ();
-		if(entrada.getTipo().equals(TipoSenal.HIT))
-			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";CLOSE;" + afectada.getMagico()[0]);
-		else
-			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;" + afectada.getPrecioEntrada());
-		return lineas;
 	}
 
 	public void chequearSenales(boolean enviarMensaje) 

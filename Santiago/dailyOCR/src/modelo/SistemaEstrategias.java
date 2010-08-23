@@ -1,15 +1,16 @@
-package control;
+package modelo;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import modelo.Estrategia;
-import modelo.Senal;
+import control.Error;
+import control.IdEstrategia;
+
 
 public abstract class SistemaEstrategias
 {
-	Method metodoLectura;
+	protected Method metodoLectura;
 	
 	boolean mensajeEnviado = false, chequeoRealizado = false;
 	

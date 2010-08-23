@@ -9,17 +9,14 @@ import java.util.Collections;
 import java.util.List;
 
 import control.Error;
-import control.Escritor;
 import control.IdEstrategia;
-import control.Par;
-import control.TipoSenal;
 import control.dailyOCR;
 import control.conexion.ConexionMySql;
 
 public class Estrategia
 {	
-	private IdEstrategia id;
-	private List <Senal> senales;
+	protected IdEstrategia id;
+	protected List <Senal> senales;
 	private boolean[] activos = new boolean[Par.values().length];
 	public Escritor escritor;
 	
@@ -31,9 +28,6 @@ public class Estrategia
 	{
 		this.id = id;
 		senales = Collections.synchronizedList(new ArrayList <Senal> ());
-		if(id == IdEstrategia.BREAKOUT2)
-			for(int i = 0; i < activos.length; i++)
-				activos[i] = true;
 	}
 	
 	public synchronized void cambiarActivo(Par par, boolean activo)
@@ -70,77 +64,86 @@ public class Estrategia
 	
 	public void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
-		synchronized(senales)
+		if(entrada.getTipo().equals(TipoSenal.HIT))
 		{
-			if(entrada.getTipo().equals(TipoSenal.HIT))
-			{
-				hit(entrada, afectada, dejarLista);
-			}
-			else
-			{
-				trade(entrada, dejarLista);
-			}
+			hit(entrada, afectada, dejarLista);
+		}
+		else
+		{
+			trade(entrada, dejarLista);
 		}
 	}
 	
-	private void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
+	protected void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
-		int lotesAnteriores = afectada.getNumeroLotes();
-		escritor.cerrar(entrada, afectada);
-		double precioActual = dailyOCR.precioPar(afectada.getPar(), afectada.isCompra());
-		double precioParActual = afectada.isCompra() ? precioActual - afectada.getPrecioEntrada() : afectada.getPrecioEntrada() - precioActual;
-		int resultado = afectada.getPrecioEntrada() > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-		if(afectada.getNumeroLotes() <= 0)
+		synchronized(senales)
 		{
-			if(!dejarLista)
-				senales.remove(afectada);
-			else
+			int lotesAnteriores = afectada.getNumeroLotes();
+			escritor.cerrar(entrada, afectada);
+			double precioActual = dailyOCR.precioPar(afectada.getPar(), afectada.isCompra());
+			double precioParActual = afectada.isCompra() ? precioActual - afectada.getPrecioEntrada() : afectada.getPrecioEntrada() - precioActual;
+			int resultado = afectada.getPrecioEntrada() > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+			if(afectada.getNumeroLotes() <= 0)
 			{
-				afectada.setLotesCerradosManualmente(lotesAnteriores);
-				afectada.setMagico(new int[1]);
+				if(!dejarLista)
+					senales.remove(afectada);
+				else
+				{
+					afectada.setLotesCerradosManualmente(lotesAnteriores);
+					afectada.setMagico(new int[1]);
+				}
 			}
-		}
-		if(!dejarLista)
-		{
-			if(afectada.getLotesCerradosManualmente() > 0)
-				for(int i = 0; i < afectada.getLotesCerradosManualmente(); i++)
-					ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
-			else
-				for(int i = 0; i < entrada.getNumeroLotes(); i++)
-					ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
+			if(!dejarLista)
+			{
+				if(afectada.getLotesCerradosManualmente() > 0)
+					for(int i = 0; i < afectada.getLotesCerradosManualmente(); i++)
+						ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
+				else
+					for(int i = 0; i < entrada.getNumeroLotes(); i++)
+						ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
+			}
 		}
 	}
 	
 	private void trade(SenalEntrada entrada, boolean dejarLista) 
 	{
-		Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada());
-		nueva.setLimite(entrada.getLimite());
-		if(dejarLista)
+		synchronized(senales)
 		{
-			nueva.setManual(true);
+			Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada());
+			nueva.setLimite(entrada.getLimite());
+			if(dejarLista)
+			{
+				nueva.setManual(true);
+			}
+			if(tienePar(entrada.getPar()) != null)
+			{
+	    		Error.agregar("Par ya exite en esta estrategia " + id.toString());
+	    		return;
+			}
+			escritor.abrir(entrada, nueva);
+			senales.add(nueva);
 		}
-		if(tienePar(entrada.getPar()) != null)
-		{
-    		Error.agregar("Par ya exite en esta estrategia " + id.toString());
-    		return;
-		}
-		escritor.abrir(entrada, nueva);
-		senales.add(nueva);
 	}
 	
 	public Senal tienePar(Par par) 
 	{
-		for(Senal senal : senales)
+		synchronized(senales)
 		{
-			if(senal.getPar().equals(par))
-				return senal;
+			for(Senal senal : senales)
+			{
+				if(senal.getPar().equals(par))
+					return senal;
+			}
 		}
 		return null;
 	}
 
 	public boolean verificarConsistencia() 
 	{
-		return senales == null || id == null || activos == null || escritor == null;
+		synchronized(senales)
+		{
+			return senales == null || id == null || activos == null || escritor == null;
+		}
 	}
 	
     public void escribir()
@@ -195,12 +198,20 @@ public class Estrategia
 	}
 
 	public List <Senal> getSenales() {
-		if(senales == null)
-			return null;
+		return senales;
+	}
+	
+	public List <Senal> getSenalesCopy() 
+	{
 		ArrayList <Senal> senalesNuevas = new ArrayList <Senal> ();
-		for(Senal s : senales)
+		synchronized(senales)
 		{
-			senalesNuevas.add(s);
+			if(senales == null)
+				return null;
+			for(Senal s : senales)
+			{
+				senalesNuevas.add(s);
+			}
 		}
 		return senalesNuevas;
 	}

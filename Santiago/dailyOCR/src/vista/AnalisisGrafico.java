@@ -28,6 +28,7 @@ import javax.swing.SwingConstants;
 
 
 import modelo.Estrategia;
+import modelo.Par;
 import modelo.Senal;
 
 import org.jfree.chart.ChartFactory;
@@ -39,7 +40,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import control.AnalisisLogica;
 import control.IdEstrategia;
-import control.Par;
 import control.dailyOCR;
 
 import javax.swing.JCheckBox;

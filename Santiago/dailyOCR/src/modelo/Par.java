@@ -1,6 +1,5 @@
-package control;
+package modelo;
 
-import java.util.ArrayList;
 
 public enum Par
 {
@@ -8,24 +7,24 @@ public enum Par
 	NZDUSD, EURJPY, GBPJPY, CHFJPY, GBPCHF, EURAUD, AUDJPY, 
 	TODOS;
 	
-	public static ArrayList <Par[]> padres = new ArrayList<Par[]> (14);
-		
+	public static Par[][] padres = new Par[14][];
+
 	static
 	{
-		padres.add(new Par[]{EURUSD, EURUSD});
-		padres.add(new Par[]{USDJPY, USDJPY});
-		padres.add(new Par[]{GBPUSD, GBPUSD});
-		padres.add(new Par[]{USDCHF, USDCHF});
-		padres.add(new Par[]{EURUSD, USDCHF});
-		padres.add(new Par[]{AUDUSD, AUDUSD});
-		padres.add(new Par[]{USDCAD, USDCAD});
-		padres.add(new Par[]{NZDUSD, NZDUSD});
-		padres.add(new Par[]{EURUSD, USDJPY});
-		padres.add(new Par[]{GBPJPY, GBPJPY});
-		padres.add(new Par[]{USDCHF, USDJPY});
-		padres.add(new Par[]{GBPUSD, USDCHF});
-		padres.add(new Par[]{EURUSD, AUDUSD});
-		padres.add(new Par[]{AUDUSD, USDJPY});
+		padres[EURUSD.ordinal()] = new Par[]{EURUSD, EURUSD};
+		padres[USDJPY.ordinal()] = new Par[]{USDJPY, USDJPY};
+		padres[GBPUSD.ordinal()] = new Par[]{GBPUSD, GBPUSD};
+		padres[USDCHF.ordinal()] = new Par[]{USDCHF, USDCHF};
+		padres[EURCHF.ordinal()] = new Par[]{EURUSD, USDCHF};
+		padres[AUDUSD.ordinal()] = new Par[]{AUDUSD, AUDUSD};
+		padres[USDCAD.ordinal()] = new Par[]{USDCAD, USDCAD};
+		padres[NZDUSD.ordinal()] = new Par[]{NZDUSD, NZDUSD};
+		padres[EURJPY.ordinal()] = new Par[]{EURUSD, USDJPY};
+		padres[GBPJPY.ordinal()] = new Par[]{GBPJPY, GBPJPY};
+		padres[CHFJPY.ordinal()] = new Par[]{USDCHF, USDJPY};
+		padres[GBPCHF.ordinal()] = new Par[]{GBPUSD, USDCHF};
+		padres[EURAUD.ordinal()] = new Par[]{EURUSD, AUDUSD};
+		padres[AUDJPY.ordinal()] = new Par[]{AUDUSD, USDJPY};
 	}
 	
 	@Override

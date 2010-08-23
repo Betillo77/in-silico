@@ -10,11 +10,12 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import modelo.Estrategia;
+import modelo.Par;
 import modelo.Senal;
+import modelo.dailyFx.EstrategiaElite;
 
 
 import control.IdEstrategia;
-import control.Par;
 import control.dailyOCR;
 
 public class FormatoPares extends JDialog {
@@ -36,11 +37,13 @@ public class FormatoPares extends JDialog {
 	private JCheckBox gbpchf = null;
 	private JCheckBox euraud = null;
 	private JCheckBox audjpy = null;
+	private boolean elite = false;
 	/**
 	 * @param owner
 	 */
-	public FormatoPares(Frame owner, IdEstrategia idEstrategia) {
+	public FormatoPares(Frame owner, IdEstrategia idEstrategia, boolean e) {
 		super(owner, idEstrategia.toString());
+		elite = e;
 		id = idEstrategia;
 		initialize();
 	}
@@ -107,7 +110,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.EURUSD, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.EURUSD, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.EURUSD, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -139,7 +150,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.USDJPY, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.USDJPY, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.USDJPY, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -171,7 +190,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.GBPUSD, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.GBPUSD, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.GBPUSD, ((JCheckBox) e.getSource()).isSelected());
+					}				
 				}
 			});
 		}
@@ -203,7 +230,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.USDCHF, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.USDCHF, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.USDCHF, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -235,7 +270,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.EURCHF, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.EURCHF, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.EURCHF, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -267,7 +310,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.AUDUSD, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.AUDUSD, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.AUDUSD, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -299,7 +350,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.USDCAD, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.USDCAD, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.USDCAD, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -331,7 +390,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.NZDUSD, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.NZDUSD, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.NZDUSD, ((JCheckBox) e.getSource()).isSelected());
+					}	
 				}
 			});
 		}
@@ -363,7 +430,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.EURJPY, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.EURJPY, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.EURJPY, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -395,7 +470,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.GBPJPY, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.GBPJPY, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.GBPJPY, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -427,7 +510,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.CHFJPY, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.CHFJPY, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.CHFJPY, ((JCheckBox) e.getSource()).isSelected());
+					}	
 				}
 			});
 		}
@@ -459,7 +550,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.GBPCHF, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.GBPCHF, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.GBPCHF, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}
@@ -491,7 +590,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.EURAUD, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.EURAUD, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.EURAUD, ((JCheckBox) e.getSource()).isSelected());
+					}	
 				}
 			});
 		}
@@ -523,7 +630,15 @@ public class FormatoPares extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(id, false, Par.AUDJPY, 0, 0));
-					estrategia.cambiarActivo(Par.AUDJPY, ((JCheckBox) e.getSource()).isSelected());
+					if(elite)
+					{
+						EstrategiaElite elite = (EstrategiaElite) dailyOCR.darEstrategiaSenal(new Senal(IdEstrategia.ELITE, false, Par.AUDJPY, 0, 0));
+						elite.cambiarActivo(Par.AUDJPY, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());
+					}
+					else
+					{
+						estrategia.cambiarActivo(Par.AUDJPY, ((JCheckBox) e.getSource()).isSelected());
+					}
 				}
 			});
 		}

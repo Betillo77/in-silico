@@ -11,12 +11,12 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 
+import modelo.Par;
 import modelo.Senal;
 
 
 
 import control.IdEstrategia;
-import control.Par;
 import control.dailyOCR;
 
 public class FormatoOrdenar 

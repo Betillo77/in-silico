@@ -3,6 +3,7 @@ package vista;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import control.IdEstrategia;
@@ -19,7 +20,7 @@ public class ParteGrafica extends JPanel {
 	private JButton orden = null;
 	private JButton salir = null;
 	private JButton joel = null;
-	private JButton technical = null;
+	private JButton elite = null;
 	
 	/**
 	 * This is the default constructor
@@ -46,7 +47,7 @@ public class ParteGrafica extends JPanel {
 		this.add(getRange2(), null);
 		this.add(getMomentum1(), null);
 		this.add(getMomentum2(), null);
-		this.add(getTechnical(), null);
+		this.add(getElite(), null);
 		this.add(getJoel(), null);
 		this.add(getOrden(), null);
 		this.add(getSalir(), null);
@@ -65,7 +66,7 @@ public class ParteGrafica extends JPanel {
 				public void actionPerformed(java.awt.event.ActionEvent e)
 				{
 					new TablaEstrategia(IdEstrategia.BREAKOUT1);
-					new FormatoPares(null, IdEstrategia.BREAKOUT1).setVisible(true);
+					new FormatoPares(null, IdEstrategia.BREAKOUT1, false).setVisible(true);
 				}
 			});
 		}
@@ -84,7 +85,7 @@ public class ParteGrafica extends JPanel {
 			Breakout2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.BREAKOUT2);
-					new FormatoPares(null, IdEstrategia.BREAKOUT2).setVisible(true);
+					new FormatoPares(null, IdEstrategia.BREAKOUT2, false).setVisible(true);
 				}
 			});
 		}
@@ -103,7 +104,7 @@ public class ParteGrafica extends JPanel {
 			Range1.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.RANGE1);
-					new FormatoPares(null, IdEstrategia.RANGE1).setVisible(true);
+					new FormatoPares(null, IdEstrategia.RANGE1, false).setVisible(true);
 				}
 			});
 		}
@@ -122,7 +123,7 @@ public class ParteGrafica extends JPanel {
 			Range2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.RANGE2);
-					new FormatoPares(null, IdEstrategia.RANGE2).setVisible(true);
+					new FormatoPares(null, IdEstrategia.RANGE2, false).setVisible(true);
 				}
 			});
 		}
@@ -141,7 +142,7 @@ public class ParteGrafica extends JPanel {
 			Momentum1.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.MOMENTUM1);
-					new FormatoPares(null, IdEstrategia.MOMENTUM1).setVisible(true);
+					new FormatoPares(null, IdEstrategia.MOMENTUM1, false).setVisible(true);
 				}
 			});
 		}
@@ -160,7 +161,7 @@ public class ParteGrafica extends JPanel {
 			Momentum2.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.MOMENTUM2);
-					new FormatoPares(null, IdEstrategia.MOMENTUM2).setVisible(true);
+					new FormatoPares(null, IdEstrategia.MOMENTUM2, false).setVisible(true);
 				}
 			});
 		}
@@ -215,7 +216,7 @@ public class ParteGrafica extends JPanel {
 			joel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					new TablaEstrategia(IdEstrategia.JOEL);
-					new FormatoPares(null, IdEstrategia.JOEL).setVisible(true);
+					new FormatoPares(null, IdEstrategia.JOEL, false).setVisible(true);
 				}
 			});
 		}
@@ -227,16 +228,18 @@ public class ParteGrafica extends JPanel {
 	 * 	
 	 * @return javax.swing.JButton	
 	 */
-	private JButton getTechnical() {
-		if (technical == null) {
-			technical = new JButton();
-			technical.setText("Technical");
-			technical.addActionListener(new java.awt.event.ActionListener() {
+	private JButton getElite() {
+		if (elite == null) {
+			elite = new JButton();
+			elite.setText("Elite");
+			elite.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
+					new TablaEstrategia(IdEstrategia.ELITE);
+					new FormatoPares(null, ((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Elite", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)), true).setVisible(true);
 				}
 			});
 		}
-		return technical;
+		return elite;
 	}
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+}
   //  @jve:decl-index=0:visual-constraint="189,13"

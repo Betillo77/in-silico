@@ -8,12 +8,14 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import control.conexion.ConexionServidor;
-
 import modelo.BidAsk;
 import modelo.Estrategia;
+import modelo.Par;
 import modelo.Senal;
 import modelo.SenalEntrada;
+import modelo.SistemaEstrategias;
+import modelo.TipoSenal;
+import modelo.dailyFx.SistemaDailyFX;
 import vista.ParteGrafica;
 
 public class dailyOCR
@@ -44,6 +46,14 @@ public class dailyOCR
 	
 	public static void iniciarHilos()
 	{
+		try 
+		{
+			Thread.sleep(120000);
+		}
+		catch (InterruptedException e) 
+		{
+			Error.agregar("Error en Thread.sleep iniciando los hilos");
+		}
 		for(SistemaEstrategias sistema : sistemas)
 		{
 			sistema.cargarEstrategias();
@@ -58,7 +68,7 @@ public class dailyOCR
 			Estrategia posible = se.darEstrategia(estrategia);
 			if(posible != null)
 			{
-				return posible.getSenales();
+				return posible.getSenalesCopy();
 			}
 		}
 		Error.agregar("No se encontraron las senales de: " + estrategia.toString());
@@ -137,8 +147,6 @@ public class dailyOCR
 						@Override
 						public void run() 
 						{
-							ConexionServidor.cargarVIX();
-							ConexionServidor.cargarSSI();
 							iniciarHilos();
 						}
 						

@@ -1,36 +1,44 @@
-package control;
+package modelo.dailyFx;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import modelo.BidAsk;
+import modelo.Escritor;
 import modelo.Estrategia;
+import modelo.Par;
 import modelo.Senal;
 import modelo.SenalEntrada;
-import control.conexion.ConexionServidor;
+import modelo.SistemaEstrategias;
+import modelo.TipoSenal;
+import control.Error;
+import control.IdEstrategia;
+import control.dailyOCR;
+import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 public class SistemaDailyFX extends SistemaEstrategias
 {
 	Escritor escritorBreakout2;
 	Escritor escritorOtros;
+	Escritor escritorElite;
 	Estrategia breakout1;
 	Estrategia breakout2;
 	Estrategia range1;
 	Estrategia range2;
 	Estrategia momentum1;
 	Estrategia momentum2;
+	EstrategiaElite elite;
 	
 	ArrayList <Estrategia> estrategias;
 	
 	public void cargarEstrategias()
 	{
-		escritorBreakout2 = new Escritor("dailyFX/experts/files/", SistemaDailyFX.class);
-		escritorOtros = new Escritor("dailyOtros/experts/files/", SistemaDailyFX.class);
+		escritorBreakout2 = new Escritor("dailyFX/experts/files/");
+		escritorOtros = new Escritor("dailyOtros/experts/files/");
+		escritorElite = new Escritor("dailyElite/experts/files/");
 		breakout1 = Estrategia.leer(IdEstrategia.BREAKOUT1);
 		if(breakout1 == null)
 		{
@@ -67,6 +75,12 @@ public class SistemaDailyFX extends SistemaEstrategias
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
 		momentum2.escritor = escritorOtros;
+		elite = EstrategiaElite.leer(IdEstrategia.ELITE);
+		if(elite == null)
+		{
+			elite = new EstrategiaElite(IdEstrategia.ELITE);
+		}
+		elite.escritor = escritorElite;
 		estrategias = new ArrayList <Estrategia> ();
 		estrategias.add(breakout1);
 		estrategias.add(breakout2);
@@ -76,7 +90,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		estrategias.add(range2);
 		try
 		{
-			metodoLectura = ConexionServidor.class.getMethod("leerServidorDailyFX");
+			metodoLectura = ConexionServidorDailyFx.class.getMethod("leerServidorDailyFX");
 		}
 		catch (Exception e)
 		{
@@ -88,8 +102,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 	public void verificarConsistencia()
 	{
 		if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null ||
-		   breakout1.verificarConsistencia() || breakout2.verificarConsistencia() || range1.verificarConsistencia() ||
-		   range2.verificarConsistencia() || momentum1.verificarConsistencia() || momentum2.verificarConsistencia())
+		   elite == null || breakout1.verificarConsistencia() || breakout2.verificarConsistencia() || range1.verificarConsistencia() ||
+		   range2.verificarConsistencia() || momentum1.verificarConsistencia() || momentum2.verificarConsistencia() || elite.verificarConsistencia())
 		{
 			cargarEstrategias();
 		}
@@ -99,12 +113,13 @@ public class SistemaDailyFX extends SistemaEstrategias
 	{
 		try
 		{
-			ArrayList <Senal> senalesBreakout2 = new ArrayList <Senal> (breakout2.getSenales());
-			ArrayList <Senal> senalesOtros = new ArrayList <Senal> (breakout1.getSenales());
-			senalesOtros.addAll(range1.getSenales());
-			senalesOtros.addAll(range2.getSenales());
-			senalesOtros.addAll(momentum1.getSenales());
-			senalesOtros.addAll(momentum2.getSenales());
+			ArrayList <Senal> senalesBreakout2 = new ArrayList <Senal> (breakout2.getSenalesCopy());
+			ArrayList <Senal> senalesOtros = new ArrayList <Senal> (breakout1.getSenalesCopy());
+			ArrayList <Senal> senalesElite = new ArrayList <Senal> (elite.getSenalesCopy());
+			senalesOtros.addAll(range1.getSenalesCopy());
+			senalesOtros.addAll(range2.getSenalesCopy());
+			senalesOtros.addAll(momentum1.getSenalesCopy());
+			senalesOtros.addAll(momentum2.getSenalesCopy());
 			String mensaje = this.getClass().getCanonicalName() + " OK";
 			
 			class ParMagico
@@ -139,8 +154,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 			
 			ArrayList <ParMagico> parMagicosBreakout2 = new ArrayList <ParMagico> (14);
 			ArrayList <ParMagico> parMagicosOtros = new ArrayList <ParMagico> (70);
+			ArrayList <ParMagico> parMagicosElite = new ArrayList <ParMagico> (84);
 			ArrayList <ParMagico> parMagicosBreakout2NoAbiertos = new ArrayList <ParMagico> (14);
 			ArrayList <ParMagico> parMagicosOtrosNoAbiertos = new ArrayList <ParMagico> (70);
+			ArrayList <ParMagico> parMagicosEliteNoAbiertos = new ArrayList <ParMagico> (70);
 			for(Senal s : senalesBreakout2)
 			{
 				if(s.getMagico()[0] != 0)
@@ -155,8 +172,16 @@ public class SistemaDailyFX extends SistemaEstrategias
 				else
 					parMagicosOtrosNoAbiertos.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
 			}
+			for(Senal s : senalesElite)
+			{
+				if(s.getMagico()[0] != 0)
+					parMagicosElite.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+				else
+					parMagicosEliteNoAbiertos.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+			}
 			ArrayList <ParMagico> parMagicosRealesBreakout2 = new ArrayList <ParMagico> (14);
-			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (14);
+			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (70);
+			ArrayList <ParMagico> parMagicosRealesElite = new ArrayList <ParMagico> (84);
 			for(String s : breakout2.escritor.chequearSenales())
 			{
 				Scanner sc = new Scanner(s);
@@ -175,8 +200,18 @@ public class SistemaDailyFX extends SistemaEstrategias
 				sc.close();
 				parMagicosRealesOtros.add(new ParMagico(par, magico));
 			}
+			for(String s : elite.escritor.chequearSenales())
+			{
+				Scanner sc = new Scanner(s);
+				sc.useDelimiter("\\Q;\\E");
+				Par par = Par.convertirPar(sc.next());
+				int magico = sc.nextInt();
+				sc.close();
+				parMagicosRealesElite.add(new ParMagico(par, magico));
+			}
 			ArrayList <ParMagico> parMagicosBreakout2Copia = new ArrayList <ParMagico> (parMagicosBreakout2);
 			ArrayList <ParMagico> parMagicosOtrosCopia = new ArrayList <ParMagico> (parMagicosOtros);
+			ArrayList <ParMagico> parMagicosEliteCopia = new ArrayList <ParMagico> (parMagicosElite);
 			for(ParMagico pm : parMagicosRealesBreakout2)
 			{
 				parMagicosBreakout2Copia.remove(pm);
@@ -184,6 +219,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 			for(ParMagico pm : parMagicosRealesOtros)
 			{
 				parMagicosOtrosCopia.remove(pm);
+			}
+			for(ParMagico pm : parMagicosRealesElite)
+			{
+				parMagicosEliteCopia.remove(pm);
 			}
 			for(ParMagico pm : parMagicosBreakout2)
 			{
@@ -198,6 +237,16 @@ public class SistemaDailyFX extends SistemaEstrategias
 			for(ParMagico pm : parMagicosOtros)
 			{
 				if(parMagicosRealesOtros.remove(pm))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
+				}
+			}
+			for(ParMagico pm : parMagicosElite)
+			{
+				if(parMagicosRealesElite.remove(pm))
 				{
 					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
 					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
@@ -225,6 +274,16 @@ public class SistemaDailyFX extends SistemaEstrategias
 					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
 				}
 			}
+			for(ParMagico pm : parMagicosEliteCopia)
+			{
+				if(elite.darActivo(pm.id, pm.par))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
+				}
+			}
 			for(ParMagico pm : parMagicosBreakout2NoAbiertos)
 			{
 				if(darEstrategia(pm.id).darActivo(pm.par))
@@ -238,6 +297,16 @@ public class SistemaDailyFX extends SistemaEstrategias
 			for(ParMagico pm : parMagicosOtrosNoAbiertos)
 			{
 				if(darEstrategia(pm.id).darActivo(pm.par))
+				{
+					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
+				}
+			}
+			for(ParMagico pm : parMagicosEliteNoAbiertos)
+			{
+				if(elite.darActivo(pm.id, pm.par))
 				{
 					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
 					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
@@ -259,6 +328,12 @@ public class SistemaDailyFX extends SistemaEstrategias
 				mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";
 			}
 			breakout1.escritor.escribir();
+			for(ParMagico pm : parMagicosRealesElite)
+			{
+				elite.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+				mensaje2 += "\n" + "Elite " + pm.par + " " + pm.magico + " no existe en la bd, eliminado";
+			}
+			elite.escritor.escribir();
 			mensaje += mensaje2;
 			if(!mensaje2.equals(""))
 				Error.agregar(mensaje2);
@@ -454,15 +529,19 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{
 						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes(), 0), afectada, false);
 						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
+						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes(), 0), actual.getId());
+						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
 					}
 					if(afectada.getNumeroLotes() > senal.getNumeroLotes())
 					{
 						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada, false);
+						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), actual.getId());
 					}
 				}
 				else
 				{
 					actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
+					elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
 				}
 			}
 			for(Estrategia actual : estrategias)
@@ -493,7 +572,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 						if(!encontrada)
 						{
 							if(!senal.isManual())
+							{
 								actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal, false);
+								elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
+							}
 							if(senal.isManual() && senal.getNumeroLotes() == 0)
 							{
 								actual.getSenales().remove(senal);
@@ -518,6 +600,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		range2.escribir();
 		momentum1.escribir();
 		momentum2.escribir();
+		elite.escribir();
 	}
 
 	public Estrategia darEstrategia(IdEstrategia id)
@@ -530,17 +613,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 			case RANGE2 : return range2;
 			case MOMENTUM1 : return momentum1;
 			case MOMENTUM2 : return momentum2;
+			case ELITE : return elite;
 			default : return null;
 		}
-	}
-	
-	public static Collection <String> metodoMeta(SenalEntrada entrada, Senal afectada)
-	{
-		ArrayList <String> lineas = new ArrayList <String> ();
-		if(entrada.getTipo().equals(TipoSenal.HIT) && afectada.getNumeroLotes() == 0)
-			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[0]);
-		else if(entrada.getTipo().equals(TipoSenal.TRADE))
-			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;" + (afectada.getEstrategia().equals(IdEstrategia.BREAKOUT2) ? "1" : "0"));
-		return lineas;
 	}
 }

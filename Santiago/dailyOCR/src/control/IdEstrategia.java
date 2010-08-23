@@ -2,7 +2,7 @@ package control;
 
 public enum IdEstrategia
 {
-	BREAKOUT1, BREAKOUT2, RANGE1, RANGE2, MOMENTUM1, MOMENTUM2, TECHNICAL, JOEL;
+	BREAKOUT1, BREAKOUT2, RANGE1, RANGE2, MOMENTUM1, MOMENTUM2, TECHNICAL, JOEL, ELITE;
 	
 	public static IdEstrategia darEstrategia(int id)
 	{

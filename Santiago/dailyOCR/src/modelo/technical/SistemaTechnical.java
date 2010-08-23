@@ -1,13 +1,19 @@
-package control;
+package modelo.technical;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 
+import modelo.Escritor;
 import modelo.Estrategia;
+import modelo.Par;
 import modelo.Senal;
 import modelo.SenalEntrada;
-import control.conexion.ConexionServidor;
+import modelo.SistemaEstrategias;
+import modelo.TipoSenal;
+import control.Error;
+import control.IdEstrategia;
+import control.dailyOCR;
+import control.conexion.technical.ConexionServidorTechnical;
 
 public class SistemaTechnical extends SistemaEstrategias 
 {
@@ -16,7 +22,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("technical/", SistemaTechnical.class);
+		escritor = new Escritor("technical/");
 		technical = Estrategia.leer(IdEstrategia.TECHNICAL);
 		if(technical == null)
 		{
@@ -25,7 +31,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		technical.escritor = escritor;
 		try
 		{
-			metodoLectura = ConexionServidor.class.getMethod("leerServidorTechnical");
+			metodoLectura = ConexionServidorTechnical.class.getMethod("leerServidorTechnical");
 		}
 		catch (Exception e)
 		{
@@ -224,22 +230,6 @@ public class SistemaTechnical extends SistemaEstrategias
 		return null;
 	}
 	
-	public static Collection <String> metodoMeta(SenalEntrada entrada, Senal afectada)
-	{
-		ArrayList <String> lineas = new ArrayList <String> ();
-		if(entrada.getTipo().equals(TipoSenal.HIT))
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
-			{
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[i]);
-			}
-		else
-			for(int i = 0; i < entrada.getNumeroLotes(); i++)
-			{
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "OPEN;0");
-			}
-		return lineas;
-	}
-
 	public void chequearSenales(boolean enviarMensaje) 
 	{
 		String mensaje = this.getClass().getCanonicalName() + " OK";
