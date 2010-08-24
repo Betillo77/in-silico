@@ -19,7 +19,7 @@
 	de reconocimiento de caracteres a nivel mundial, así como mostrar las tesis
 	realizados en la Universidad Tecnológica sobre temas relacionados con la asistencia
 	a personas discapacitadas o reconocimiento de patrones. Cabe anotar que los 3 puntos
-	propuestos en el taller estan resueltos pero de forma dispersa, dandole continuidad
+	propuestos en el taller están resueltos pero de forma dispersa, dándole continuidad
 	al texto para mostrar como las referencias encontradas nos pueden ayudar en el
 	problema particular a tratar (punto 2 del taller), expresando los problemas o
 	limitaciones de algunas de las soluciones planteadas en los artículos (Punto 1) y
@@ -28,34 +28,34 @@
 	personas invidentes (Punto 3).
 	
 	\section{Reconocimiento de caracteres y análisis de documentos}
-	En esta sección hablaremos de algunas investigaciónes realizadas en el área
+	En esta sección hablaremos de algunas investigaciones realizadas en el área
 	de reconocimiento de caracteres y de análisis de documentos.
 	Las etapas necesarias para llevar a cabo el proceso de análisis de documentos
-	y reconocimiento de caracteres son: Binarización de la imágen, análisis y
+	y reconocimiento de caracteres son: Binarización de la imagen, análisis y
 	segmentación del documento y reconocimiento óptico de caracteres (OCR).
 	
-	\subsection{Binarización de imágen}
-	Esto se refiere a tomar una imágen en escala de grises y convertirla a una 
-	imágen en blanco y negro. Pero se puede ver como separar la parte que nos interesa
+	\subsection{Binarización de imagen}
+	Esto se refiere a tomar una imagen en escala de grises y convertirla a una 
+	imagen en blanco y negro. Pero se puede ver como separar la parte que nos interesa
 	(foreground) de la parte que no nos interesa (background).
 	Una técnica que da buen resultado es la binarización de Sauvola \cite{ocropus2},
-	que realiza una binarización basada análisis local de la imágen. El hecho de
+	que realiza una binarización basada análisis local de la imagen. El hecho de
 	ser local brinda una mejor binarización en condiciones de luz variable.
 	
 	\subsection{Análisis del documento}
-	Segun \cite{doc_analysis2}, esta etapa puede ser vista como un análisis sintáctico,
+	Según \cite{doc_analysis2}, esta etapa puede ser vista como un análisis sintáctico,
 	en el que el documento se divide en sus partes estructurales como un árbol de análisis
 	sintáctico. Como todo análisis gramatical, se puede seguir los enfoques
 	\textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde
-	los pixeles y luego los relacionaría en grupos mas grandes (Caracteres, Palabras, Lineas
-	o Parrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imágen de un
+	los píxeles y luego los relacionaría en grupos mas grandes (Caracteres, Palabras, Lineas
+	o Párrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imagen de un
 	documento y comenzaría a dividirla hasta llegar a sus componentes.
 	Cada algoritmo tiene limitaciones, ventajas y distintos requerimientos de máquina.
 	Una investigación realizada sobre diferentes algoritmos \cite{benchmark1}, indica que los
 	mejores resultados sobre diferentes documentos, con distintas estructuras físicas,
-	fueron para Docstrum \cite{docstrum93} y para Voronoi \cite{voronoi1}, con procentajes
+	fueron para Docstrum \cite{docstrum93} y para Voronoi \cite{voronoi1}, con porcentajes
 	de error del 4.3\% y 4.7\% respectivamente. Otro método
-	llamativo es el \textit{RLSA}, que llama la atención por su sencillez y puede bindar
+	llamativo es el \textit{RLSA}, que llama la atención por su sencillez y puede brindar
 	buenos resultados en documentos \textit{Manhattan-Layout}\cite{RLSA1}.
 	Probablemente la mejor solución para nuestra aplicación pueda resultar de la mezcla de
 	varios de los algoritmos existentes, en \cite{voronoi2} se como los se pueden mejorar
@@ -70,19 +70,19 @@
 	basados en modelos matemáticos como los momentos invariables de hu\cite{art_hu}, o los
 	descriptores de Fourier. El principio fundamental de esta clase de algoritmos son
 	los descriptores invariantes, estos son: funciones para evaluar imágenes, que retornan valores 
-	parecidos o identicos cuando se aplican	transformaciones afines a estas, como la rotación,
+	parecidos o idénticos cuando se aplican	transformaciones afines a estas, como la rotación,
 	el cambio de escala, la traslación entre otras \cite{ocrs1}.
 	
 	Generalmente lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
-	numero o una forma. medir sus caracteristicas aplicando
+	numero o una forma. medir sus características aplicando
 	descriptores invariantes, y manualmente etiquetar esta imagen,(una a, un 1, un rombo etc) 
-	guardando esta informacion en una base de datos. 
+	guardando esta información en una base de datos. 
 	
 	Luego cuando el sistema se pone en marcha se obtienen las características de la imagen, y se
 	aplica un algoritmo de aprendizaje sobre dichas características. Uno de los métodos mas
-	sencillos consiste en tomar la distancia euclideana normalizada entre valores de la misma
+	sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma
 	clase y en clases diferentes. Con esto se pueden crear regiones en el hiper-espacio (Un
-	espacio de varias dimensiones) para las diferentes clases, y asi cuando llegue una imagen
+	espacio de varias dimensiones) para las diferentes clases, y así cuando llegue una imagen
 	nueva a clasificar solo se deben tomar las características y ubicar en que que región del
 	hiper-espacio se encuentra este objeto \cite{learn1}.
 		
@@ -98,25 +98,25 @@
 	En el área de acceso al texto, existen sistemas que pasan el texto en ASCII a voz
 	conocidos como sistemas \textit{Text-To-Speech}. Y también sistemas para el computador
 	que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR; Estos funcionan
-	usualmente tomando una imagen de un escanner. Según pruebas de eficacia realizadas por
+	usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por
 	la UNLV, los OCRs libres con mejores resultados son	\textit{Tesseract} y el 
 	\textit{Ocropus}, cuyo funcionamiento general se explica en \cite{tesseract1} y
 	\cite{ocropus1} respectivamente.\newline
-	Cuando el problema cambia de tomar la imagen con un escanner a tomarla con una cámara,
+	Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara,
 	se deben seguir diferentes enfoques, \cite{doc_analysis3} halló los retos mas
-	grandes son la proyección de la imágen en perspectiva en el plano y la resolución
+	grandes son la proyección de la imagen en perspectiva en el plano y la resolución
 	requerida para poder reconocer bien los caracteres.
 	En cuanto a hacer que el OCR sea realizado por un celular, encontramos investigaciones
 	como \cite{mob_smallpic}, en la que se trabajaban con imágenes de muy baja resolución
 	(640x480) y como resultado solo pueden reconocer textos muy cortos como avisos y carteles
 	y no documentos completos.
 	En \cite{mob_withpc}, para tratar de equilibrar el hecho de tener una cámara de baja
-	resolución, toman varias imágenes de baja resolución en lugar de una sola, uniendolas
+	resolución, toman varias imágenes de baja resolución en lugar de una sola, uniéndolas
 	luego para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la
 	carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular.
 	Así que restringieron su solución para que usando Internet se enviaran las imágenes a un
 	servidor, que fuera este quien las procesara y enviara los resultados.\newline
-	Cabe anotar además que ninguna de las teconologías anteriormente mencionadas para hacer
+	Cabe anotar además que ninguna de las tecnologías anteriormente mencionadas para hacer
 	el OCR en el celular, fue diseñada para ser usada por personas invidentes. Ya que el 
 	primero no fue diseñado para reconocer documentos, y el segundo requeriría que la persona
 	invidente supiera con anterioridad como está la estructura del documento para poder mover
