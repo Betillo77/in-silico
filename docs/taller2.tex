@@ -50,13 +50,13 @@
 	\section{Introducción}
 	El problema de reconocimiento de caracteres no es un problema sencillo, pero algunos
 	avances significativos se han hecho en la materia. Escogimos este tema para nuestro
-        proyecto de grado ya que puede contribuir al mejoramiento de la calidad de vida de 
-        las personas invidentes, al proporcionarles una forma de acceder a textos impresos.\newline
+    proyecto de grado ya que puede contribuir al mejoramiento de la calidad de vida de 
+    las personas invidentes, al proporcionarles una forma de acceder a textos impresos.\newline
 	En este taller pretendemos exponer algunos de los avances científicos en el área
 	de reconocimiento de caracteres a nivel mundial, así como discutir las tesis
 	realizadas en la Universidad Tecnológica sobre temas relacionados con la asistencia
 	a personas discapacitadas o reconocimiento de patrones, ya que no encontramos ninguna
-        relacionada directamente con el reconocimiento óptico de caracteres.
+    relacionada directamente con el reconocimiento óptico de caracteres.
 	\newline
         Cabe anotar que los 3 puntos propuestos en el taller están resueltos, pero de forma 
         dispersa, dándole continuidad al texto para indicar como las referencias encontradas 
@@ -108,28 +108,27 @@
         escoger cual de estos algoritmos es ventajoso para una solución particular.
 	
 	\subsection{Reconocimiento óptico de caracteres OCR}
-	Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones.
-
+	Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones.\newline
 	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones; 
 	modelos inspirados en la biología como los que usan redes neuronales\cite{im_biology}. Otros
 	basados en modelos matemáticos como los momentos invariables de hu\cite{art_hu}, o los
 	descriptores de Fourier. El principio fundamental de esta clase de algoritmos son
 	los descriptores invariantes, estos son: funciones para evaluar imágenes, que retornan valores 
 	parecidos o idénticos cuando se aplican	transformaciones afines a estas, como la rotación,
-	el cambio de escala, la traslación, entre otras \cite{ocrs1}.
-	
+	el cambio de escala, la traslación, entre otras \cite{ocrs1}.\newline	
 	Generalmente lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
 	número o una forma. Medir sus características aplicando descriptores invariantes, y manualmente 
-        etiquetar esta imagen, (una a, un 1, un rombo etc) guardando esta información en una base de datos. 
-	
+    etiquetar esta imagen, (una a, un 1, un rombo etc) guardando esta información en una base de
+    datos. \newline	
 	Luego cuando el sistema se pone en marcha se obtienen las características de la imagen, y se
 	aplica un algoritmo de aprendizaje sobre dichas características. Uno de los métodos mas
 	sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma
 	clase y en clases diferentes. Con esto se pueden crear regiones en el hiper-espacio (un
 	espacio de varias dimensiones) para las diferentes clases, y así cuando llegue una imagen
 	nueva a clasificar solo se deben tomar las características y ubicar en que que región del
-	hiper-espacio se encuentra este objeto \cite{learn1}. En los artículos se puede observar como cada 
-        aproximación tiene sus ventajas, dependiendo de las características de las imágenes a procesar.
+	hiper-espacio se encuentra este objeto \cite{learn1}. En los artículos se puede observar como  
+	cada aproximación tiene sus ventajas, dependiendo de las características de las imágenes a
+	procesar.
 		
 	
 	\section{Sistemas de asistencia a personas invidentes}
@@ -139,7 +138,7 @@
 	Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira, permite
 	a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes
 	frecuencias\cite{iris04}; Para ello, usan un guante con imanes permanentes y una matriz
-	de electroimanes conectada al computador por el puerto USB.
+	de electroimanes conectada al computador por el puerto USB.\newline
 	En el área de acceso al texto, existen sistemas que pasan el texto en ASCII a voz
 	conocidos como sistemas \textit{Text-To-Speech}. Y también sistemas para el computador
 	que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR; Estos funcionan
@@ -150,11 +149,11 @@
 	Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara,
 	se deben seguir diferentes enfoques, en\cite{doc_analysis3} se halló que los retos más
 	importantes son la proyección de la imagen en perspectiva en el plano y la resolución
-	requerida para poder reconocer bien los caracteres.
+	requerida para poder reconocer bien los caracteres.\newline
 	En cuanto a hacer que el OCR sea realizado por un celular, encontramos investigaciones
 	como \cite{mob_smallpic}, en la que se trabajaban con imágenes de muy baja resolución
 	(640x480) y como resultado solo pueden reconocer textos muy cortos, tales como avisos
-	y carteles,	pero no documentos completos.
+	y carteles,	pero no documentos completos.\newline
 	En \cite{mob_withpc}, para tratar de equilibrar el hecho de tener una cámara de baja
 	resolución, toman varias imágenes de baja resolución en lugar de una sola, uniéndolas
 	luego para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la
