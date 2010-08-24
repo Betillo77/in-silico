@@ -1,8 +1,45 @@
 
-\documentclass{article}
+\documentclass[a4paper, 11pt, oneside]{article}
 
+
+% idioma
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
+
+%tablas
+\usepackage{booktabs}
+
+%rotar tablas
+\usepackage{rotating}
+
+%color tablas
+\usepackage{colortbl}
+
+%espaciado
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
+
+
+%margenes según n. icontec
+\usepackage{vmargin}
+\setmarginsrb           { 4.0cm}  % left margin
+                        { 4.0cm}  % top margcm
+                        { 2.0cm}  % right margcm
+                        { 3.0cm}  % bottom margcm
+                        {  10pt}  % head height
+                        {0.25cm}  % head sep
+                        {   9pt}  % foot height
+                        { 0.3cm}  % foot sep
+
+
+% inserción url's notas de pie.
+\usepackage{url}
+
+
+% Paquetes de la AMS:
+\usepackage{amsmath, amsthm, amsfonts}
 
 \begin{document}
 \title {Taller 2 - Proyecto de grado I}
@@ -11,21 +48,23 @@
 \maketitle
 
 	\section{Introducción}
-	El problema de reconocimiento de caracteres no es un problema fácil, pero algunos
-	avances significativos se han hecho en la materia; Además de ser un tema que puede
-	contribuir al mejoramiento de la calidad de vida a las personas invidentes al darles
-	una forma de acceder a textos impresos.\newline
-	En este taller pretendemos mostrar algunos de los avances científicos en el área
-	de reconocimiento de caracteres a nivel mundial, así como mostrar las tesis
-	realizados en la Universidad Tecnológica sobre temas relacionados con la asistencia
-	a personas discapacitadas o reconocimiento de patrones. Cabe anotar que los 3 puntos
-	propuestos en el taller están resueltos pero de forma dispersa, dándole continuidad
-	al texto para mostrar como las referencias encontradas nos pueden ayudar en el
-	problema particular a tratar (punto 2 del taller), expresando los problemas o
-	limitaciones de algunas de las soluciones planteadas en los artículos (Punto 1) y
-	comentando algunos de los proyectos de grado previamente realizados en temáticas
-	relacionadas con el problema del reconocimiento de patrones o asistencia a las
-	personas invidentes (Punto 3).
+	El problema de reconocimiento de caracteres no es un problema sencillo, pero algunos
+	avances significativos se han hecho en la materia. Escogimos este tema para nuestro
+        proyecto de grado ya que puede contribuir al mejoramiento de la calidad de vida de 
+        las personas invidentes, al proporcionarles una forma de acceder a textos impresos.\newline
+	En este taller pretendemos exponer algunos de los avances científicos en el área
+	de reconocimiento de caracteres a nivel mundial, así como discutir las tesis
+	realizadas en la Universidad Tecnológica sobre temas relacionados con la asistencia
+	a personas discapacitadas o reconocimiento de patrones, ya que no encontramos ninguna
+        relacionada directamente con el reconocimiento óptico de caracteres.
+	\newline
+        Cabe anotar que los 3 puntos propuestos en el taller están resueltos, pero de forma 
+        dispersa, dándole continuidad al texto para indicar como las referencias encontradas 
+        nos pueden ayudar en el problema particular a tratar (punto 2 del taller), expresando 
+        los problemas que surgen de algunas de las soluciones planteadas en los artículos 
+        (punto 1) y comentando los potenciales aportes de los resultados de algunos de los 
+        proyectos de grado previamente realizados en temáticas relacionadas con el problema,
+        del reconocimiento de patrones o la asistencia a las personas invidentes (punto 3).
 	
 	\section{Reconocimiento de caracteres y análisis de documentos}
 	En esta sección hablaremos de algunas investigaciones realizadas en el área
@@ -36,11 +75,16 @@
 	
 	\subsection{Binarización de imagen}
 	Esto se refiere a tomar una imagen en escala de grises y convertirla a una 
-	imagen en blanco y negro. Pero se puede ver como separar la parte que nos interesa
-	(foreground) de la parte que no nos interesa (background).
-	Una técnica que da buen resultado es la binarización de Sauvola \cite{ocropus2},
-	que realiza una binarización basada análisis local de la imagen. El hecho de
-	ser local brinda una mejor binarización en condiciones de luz variable.
+	imagen en blanco y negro. También se puede ver como separar la parte que nos interesa
+	(foreground o primer plano) de la parte que no nos interesa (background o fondo).
+	Una técnica que da buen resultado es la binarización de Sauvola,
+	que realiza una binarización basada en un análisis local de la imagen. El hecho de
+	que sea local le brinda una mejor binarización en condiciones de luz variable. Los 
+        resultados obtenidos en\cite{ocropus2} nos indican que esta técnica puede ser
+        optimizada para lograr un tiempo de ejecución comparable con las técnicas globales de 
+        binarización (al correr en O(N), siendo N el numero de píxeles de la imagen), conservando
+	las ventajas de ser local, por lo que seria un buen candidato para implementarlo en un 
+        proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
 	
 	\subsection{Análisis del documento}
 	Según \cite{doc_analysis2}, esta etapa puede ser vista como un análisis sintáctico,
@@ -57,34 +101,35 @@
 	de error del 4.3\% y 4.7\% respectivamente. Otro método
 	llamativo es el \textit{RLSA}, que llama la atención por su sencillez y puede brindar
 	buenos resultados en documentos \textit{Manhattan-Layout}\cite{RLSA1}.
-	Probablemente la mejor solución para nuestra aplicación pueda resultar de la mezcla de
-	varios de los algoritmos existentes, en \cite{voronoi2} se como los se pueden mejorar
+	Probablemente la mejor solución para un sistema OCR pueda resultar de la mezcla de
+	varios de los algoritmos existentes, en \cite{voronoi2} se observa como se pueden mejorar
 	los resultados mezclando los beneficios de diferentes algoritmos para soluciones
-	particulares.
+	particulares, y cada uno de los artículos mencionados aporta elementos importantes para
+        escoger cual de estos algoritmos es ventajoso para una solución particular.
 	
 	\subsection{Reconocimiento óptico de caracteres OCR}
-	Esta etapa se puede clasificar como un subproblema de reconocimiento de patrones.
-	
+	Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones.
+
 	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones; 
 	modelos inspirados en la biología como los que usan redes neuronales\cite{im_biology}. Otros
 	basados en modelos matemáticos como los momentos invariables de hu\cite{art_hu}, o los
 	descriptores de Fourier. El principio fundamental de esta clase de algoritmos son
 	los descriptores invariantes, estos son: funciones para evaluar imágenes, que retornan valores 
 	parecidos o idénticos cuando se aplican	transformaciones afines a estas, como la rotación,
-	el cambio de escala, la traslación entre otras \cite{ocrs1}.
+	el cambio de escala, la traslación, entre otras \cite{ocrs1}.
 	
 	Generalmente lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
-	numero o una forma. medir sus características aplicando
-	descriptores invariantes, y manualmente etiquetar esta imagen,(una a, un 1, un rombo etc) 
-	guardando esta información en una base de datos. 
+	número o una forma. Medir sus características aplicando descriptores invariantes, y manualmente 
+        etiquetar esta imagen, (una a, un 1, un rombo etc) guardando esta información en una base de datos. 
 	
 	Luego cuando el sistema se pone en marcha se obtienen las características de la imagen, y se
 	aplica un algoritmo de aprendizaje sobre dichas características. Uno de los métodos mas
 	sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma
-	clase y en clases diferentes. Con esto se pueden crear regiones en el hiper-espacio (Un
+	clase y en clases diferentes. Con esto se pueden crear regiones en el hiper-espacio (un
 	espacio de varias dimensiones) para las diferentes clases, y así cuando llegue una imagen
 	nueva a clasificar solo se deben tomar las características y ubicar en que que región del
-	hiper-espacio se encuentra este objeto \cite{learn1}.
+	hiper-espacio se encuentra este objeto \cite{learn1}. En los artículos se puede observar como cada 
+        aproximación tiene sus ventajas, dependiendo de las características de las imágenes a procesar.
 		
 	
 	\section{Sistemas de asistencia a personas invidentes}
@@ -103,13 +148,13 @@
 	\textit{Ocropus}, cuyo funcionamiento general se explica en \cite{tesseract1} y
 	\cite{ocropus1} respectivamente.\newline
 	Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara,
-	se deben seguir diferentes enfoques, \cite{doc_analysis3} halló los retos mas
-	grandes son la proyección de la imagen en perspectiva en el plano y la resolución
+	se deben seguir diferentes enfoques, en\cite{doc_analysis3} se halló que los retos más
+	importantes son la proyección de la imagen en perspectiva en el plano y la resolución
 	requerida para poder reconocer bien los caracteres.
 	En cuanto a hacer que el OCR sea realizado por un celular, encontramos investigaciones
 	como \cite{mob_smallpic}, en la que se trabajaban con imágenes de muy baja resolución
-	(640x480) y como resultado solo pueden reconocer textos muy cortos como avisos y carteles
-	y no documentos completos.
+	(640x480) y como resultado solo pueden reconocer textos muy cortos, tales como avisos
+	y carteles,	pero no documentos completos.
 	En \cite{mob_withpc}, para tratar de equilibrar el hecho de tener una cámara de baja
 	resolución, toman varias imágenes de baja resolución en lugar de una sola, uniéndolas
 	luego para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la
@@ -120,8 +165,49 @@
 	el OCR en el celular, fue diseñada para ser usada por personas invidentes. Ya que el 
 	primero no fue diseñado para reconocer documentos, y el segundo requeriría que la persona
 	invidente supiera con anterioridad como está la estructura del documento para poder mover
-	la cámara del celular en el orden en el que está el texto en el documento.
+	la cámara del celular en el orden en el que está el texto en el documento.\newline
+
+	\section{Proyectos de grado relacionados en la Universidad Tecnológica de Pereira}
+	Si bien en Ingeniería en la Universidad Tecnológica de Pereira no se ha planteado un proyecto 
+        de grado directamente sobre reconocimiento óptico de caracteres, estudiantes de la maestría en
+        Ingeniería Eléctrica \cite{th2} construyeron un sistema para el reconocimiento de algunos caracteres 
+        y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes:
+	el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de
+	soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes
+        neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran 
+        utilidad en la construcción de un sistema de reconocimiento óptico de caracteres.\newline
+
+	En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por 
+        estudiantes de Ingeniería Eléctrica:\newline 
+
+        En \cite{th3} se utilizaron redes neuronales para reconocimiento de voz en hardware sobre una FPGA. 
+        Si bien la implementación fue en hardware y no en software, sus resultados permiten inferir que es 
+        posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso
+        de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las 
+        misma en un dispositivo móvil. También es de anotar que las redes neuronales demostraron porcentajes 
+        de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
+	\newline
+
+	En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en
+        una imagen utilizando un sistema de visión artificial \cite{th4}. Considerando el bajo nivel de
+	resolución (imágenes de 324 x 240 píxeles a 30 frames por segundo) y el hecho de que la cámara no
+	fue calibrada, se identificaron correctamente muchos transeúntes, de lo que se puede inferir que los 
+        sistemas de visión artificial funcionan correctamente con cámaras económicas. Los resultados muestran que
+	el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de 
+        píxeles. Así mismo, también permiten entender distintos problemas que se pueden presentar a la hora de
+        separar estos componentes correctamente, como por ejemplo la identificación de varios transeúntes como 
+        uno solo. Si bien en el reconocimiento óptico de caracteres se distinguen letras y no personas, problemas 
+        similares a los evidenciados en este proyecto se presentan al separar los caracteres en un sistema de 
+	OCR.\newline
 	
-\bibliographystyle{plain}
+	Finalmente, en el tema de procesamiento de señales, en \cite{th5} se utilizan filtros para adquirir 
+        señales bioeléctricas utilizando filtros análogos y digitales. En este proyecto se lograron filtrar 
+        señales muy pequeñas y finas, como las producidas en el cuerpo humano, mediante filtros digitales, y se
+	obtuvieron errores pequeños. Aunque las señales bioeléctricas son muy diferentes a las imágenes, es posible 
+        convertir estas ultimas en señales y, por tanto, los filtros digitales expuestos en este proyecto podrían 
+        ser de utilidad a la hora de eliminar errores en imágenes tomadas por una cámara, ya que logran filtrar
+	correctamente señales con gran cantidad de ruido.\newline
+
+\bibliographystyle{ieeetr}
 \bibliography{refs}
 \end{document}
