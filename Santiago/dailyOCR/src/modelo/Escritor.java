@@ -45,13 +45,13 @@ public class Escritor
 				fw1.close();
 			}
 			lineas = new ArrayList <String> ();
+			new File(pathMeta + "magicos.txt").delete();
 		}
 		catch(Exception e)
 		{
 			lineas = new ArrayList <String> ();
 			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
 		}
-		new File(pathMeta + "magicos.txt").delete();
 	}
 
 	public void leerMagicos() 
