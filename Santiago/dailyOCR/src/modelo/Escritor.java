@@ -146,6 +146,11 @@ public class Escritor
 		}
 		if(new File(pathMeta + "magicos.txt").canWrite())
 			new File(pathMeta + "magicos.txt").delete();
+		for(Senal s : senales)
+		{
+			if(s.getMagico()[0] == 0)
+				Error.agregar("Error en " + s.getEstrategia() + " al leer el magico de " + s.getPar());
+		}
 		senales = new ArrayList <Senal> ();
 	}
 
