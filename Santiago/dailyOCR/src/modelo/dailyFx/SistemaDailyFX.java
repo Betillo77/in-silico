@@ -620,7 +620,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 			}
 			for(Estrategia actual : estrategias)
 			{
-				Thread.sleep(1000);
 				synchronized(actual.getSenalesSync())
 				{
 					for(int i = 0; i < actual.getSenalesSync().size(); i++)

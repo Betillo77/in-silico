@@ -57,14 +57,12 @@ public class Escritor
 	public void leerMagicos() 
 	{
 		boolean termino = false;
-		int numero = 0;
-		for(Senal s : senales)
-			numero += s.getNumeroLotes();
+		int numero = senales.size();
 		if(senales.size() > 0)
 		{
 			try 
 			{
-				Thread.sleep(60000 + 30000 * numero);
+				Thread.sleep(10000 + 25000 * numero);
 			}
 			catch (InterruptedException e) 
 			{
