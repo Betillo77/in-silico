@@ -32,29 +32,29 @@ public class EstrategiaElite extends Estrategia
 	{
 		if(activosElite[id.ordinal()][entrada.getPar().ordinal()])
 		{
-			if(entrada.getTipo().equals(TipoSenal.HIT))
+			synchronized(senales)
 			{
-				for(Senal s : senales)
+				if(entrada.getTipo().equals(TipoSenal.HIT))
 				{
-					if(s.getEstrategia().equals(id) && s.getPar().equals(entrada.getPar()))
+					for(Senal s : senales)
 					{
-						hit(entrada, s, false);
-						return;
+						if(s.getEstrategia().equals(id) && s.getPar().equals(entrada.getPar()))
+						{
+							hit(entrada, s, false);
+							return;
+						}
 					}
+					Error.agregar("No se pudo encontrar senal en DailyFx-Elite " + id + " " + entrada.getPar());
 				}
-				Error.agregar("No se pudo encontrar senal en DailyFx-Elite " + id + " " + entrada.getPar());
-			}
-			else
-			{
-				synchronized(senales)
+				else
 				{
 					Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada());
 					for(Senal s : senales)
 					{
 						if(s.getEstrategia().equals(id) && s.getPar().equals(nueva.getPar()))
 						{
-				    		Error.agregar("Par ya exite en esta estrategia " + this.id.toString());
-				    		return;
+							Error.agregar("Par ya exite en esta estrategia " + this.id.toString());
+							return;
 						}
 					}
 					escritor.abrir(entrada, nueva);
@@ -64,20 +64,23 @@ public class EstrategiaElite extends Estrategia
 		}
 	}
 	
-    public void escribir()
+    public synchronized void escribir()
     {
-    	try
+    	synchronized(senales)
     	{
-	    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        XMLEncoder encoder = new XMLEncoder(baos);
-	        encoder.writeObject(this);
-	        encoder.close();
-	        String salida = new String(baos.toByteArray());
-	        ConexionMySql.guardarPersistencia(id, salida);
-    	}
-    	catch(Exception e)
-    	{
-    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+	    	try
+	    	{
+		    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		        XMLEncoder encoder = new XMLEncoder(baos);
+		        encoder.writeObject(this);
+		        encoder.close();
+		        String salida = new String(baos.toByteArray());
+		        ConexionMySql.guardarPersistencia(id, salida);
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+	    	}
     	}
     }
     
@@ -107,7 +110,7 @@ public class EstrategiaElite extends Estrategia
     	}
     }
     
-    public boolean verificarConsistencia() 
+    public synchronized boolean verificarConsistencia() 
     {
     	synchronized(senales)
     	{

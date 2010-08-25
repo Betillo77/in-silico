@@ -64,7 +64,7 @@ public class Estrategia
 		return false;
 	}
 	
-	public void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
+	public synchronized void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
 		if(entrada.getTipo().equals(TipoSenal.HIT))
 		{
@@ -76,7 +76,7 @@ public class Estrategia
 		}
 	}
 	
-	protected void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
+	protected synchronized void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
 		synchronized(senales)
 		{
@@ -107,7 +107,7 @@ public class Estrategia
 		}
 	}
 	
-	private void trade(SenalEntrada entrada, boolean dejarLista) 
+	protected synchronized void trade(SenalEntrada entrada, boolean dejarLista) 
 	{
 		synchronized(senales)
 		{
@@ -127,7 +127,7 @@ public class Estrategia
 		}
 	}
 	
-	public Senal tienePar(Par par) 
+	public synchronized Senal tienePar(Par par) 
 	{
 		synchronized(senales)
 		{
@@ -140,7 +140,7 @@ public class Estrategia
 		return null;
 	}
 
-	public boolean verificarConsistencia() 
+	public synchronized boolean verificarConsistencia() 
 	{
 		synchronized(senales)
 		{
@@ -148,20 +148,23 @@ public class Estrategia
 		}
 	}
 	
-    public void escribir()
+    public synchronized void escribir()
     {
-    	try
+    	synchronized(senales)
     	{
-	    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        XMLEncoder encoder = new XMLEncoder(baos);
-	        encoder.writeObject(this);
-	        encoder.close();
-	        String salida = new String(baos.toByteArray());
-	        ConexionMySql.guardarPersistencia(id, salida);
-    	}
-    	catch(Exception e)
-    	{
-    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+	    	try
+	    	{
+		    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		        XMLEncoder encoder = new XMLEncoder(baos);
+		        encoder.writeObject(this);
+		        encoder.close();
+		        String salida = new String(baos.toByteArray());
+		        ConexionMySql.guardarPersistencia(id, salida);
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+	    	}
     	}
     }
     
@@ -191,23 +194,23 @@ public class Estrategia
     	}
     }
 
-	public IdEstrategia getId() {
+	public synchronized IdEstrategia getId() {
 		return id;
 	}
 
-	public void setId(IdEstrategia id) {
+	public synchronized void setId(IdEstrategia id) {
 		this.id = id;
 	}
 
-	public List <Senal> getSenales() {
+	public synchronized List <Senal> getSenales() {
 		return senalesNoSync;
 	}
 	
-	public List <Senal> getSenalesSync() {
+	public synchronized List <Senal> getSenalesSync() {
 		return senales;
 	}
 	
-	public List <Senal> getSenalesCopy() 
+	public synchronized List <Senal> getSenalesCopy() 
 	{
 		ArrayList <Senal> senalesNuevas = new ArrayList <Senal> ();
 		synchronized(senales)
@@ -222,7 +225,7 @@ public class Estrategia
 		return senalesNuevas;
 	}
 
-	public void setSenales(List <Senal> senales) {
+	public synchronized void setSenales(List <Senal> senales) {
 		this.senales = Collections.synchronizedList(senales);
 	}
 
@@ -230,7 +233,7 @@ public class Estrategia
 		return activos;
 	}
 
-	public void setActivos(boolean[] activos) {
+	public synchronized void setActivos(boolean[] activos) {
 		this.activos = activos;
 	}
 }
