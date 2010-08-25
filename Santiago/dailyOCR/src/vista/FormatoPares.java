@@ -305,7 +305,7 @@ public class FormatoPares extends JDialog {
 		}
 		else
 		{
-			box.setSelected(estrategia.getActivos()[par.ordinal()]);
+			box.setSelected(estrategia.darActivo(par));
 		}
 		box.addActionListener(new ActionListener() {
 			@Override

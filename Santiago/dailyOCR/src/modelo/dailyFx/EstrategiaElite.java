@@ -28,11 +28,11 @@ public class EstrategiaElite extends Estrategia
 		super(elite);
 	}
 
-	public synchronized void agregar(SenalEntrada entrada, IdEstrategia id) 
+	public void agregar(SenalEntrada entrada, IdEstrategia id) 
 	{
-		if(activosElite[id.ordinal()][entrada.getPar().ordinal()])
+		synchronized(senales)
 		{
-			synchronized(senales)
+			if(darActivo(id, entrada.getPar()))
 			{
 				if(entrada.getTipo().equals(TipoSenal.HIT))
 				{
@@ -64,23 +64,26 @@ public class EstrategiaElite extends Estrategia
 		}
 	}
 	
-    public synchronized void escribir()
+    public void escribir()
     {
     	synchronized(senales)
     	{
-	    	try
-	    	{
-		    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		        XMLEncoder encoder = new XMLEncoder(baos);
-		        encoder.writeObject(this);
-		        encoder.close();
-		        String salida = new String(baos.toByteArray());
-		        ConexionMySql.guardarPersistencia(id, salida);
-	    	}
-	    	catch(Exception e)
-	    	{
-	    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
-	    	}
+    		synchronized(activosElite)
+    		{
+		    	try
+		    	{
+			    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			        XMLEncoder encoder = new XMLEncoder(baos);
+			        encoder.writeObject(this);
+			        encoder.close();
+			        String salida = new String(baos.toByteArray());
+			        ConexionMySql.guardarPersistencia(id, salida);
+		    	}
+		    	catch(Exception e)
+		    	{
+		    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+		    	}
+    		}
     	}
     }
     
@@ -110,7 +113,7 @@ public class EstrategiaElite extends Estrategia
     	}
     }
     
-    public synchronized boolean verificarConsistencia() 
+    public boolean verificarConsistencia() 
     {
     	synchronized(senales)
     	{
@@ -128,27 +131,33 @@ public class EstrategiaElite extends Estrategia
 		    		}
 		    	}
 			}
+	    	return super.verificarConsistencia();
     	}
-    	return super.verificarConsistencia();
     }
 	
-	public synchronized void setActivosElite(boolean[][] activosElite) 
+	public void setActivosElite(boolean[][] activosElite) 
 	{
 		this.activosElite = activosElite;
 	}
 
-	public synchronized boolean[][] getActivosElite() 
+	public boolean[][] getActivosElite() 
 	{
 		return activosElite;
 	}
 
-	public synchronized boolean darActivo(IdEstrategia id, Par par) 
+	public boolean darActivo(IdEstrategia id, Par par) 
 	{
-		return activosElite[id.ordinal()][par.ordinal()];
+		synchronized(activosElite)
+		{
+			return activosElite[id.ordinal()][par.ordinal()];
+		}
 	}
 
-	public synchronized void cambiarActivo(Par par, boolean selected, IdEstrategia id) 
+	public void cambiarActivo(Par par, boolean selected, IdEstrategia id) 
 	{
-		activosElite[id.ordinal()][par.ordinal()] = selected;
+		synchronized(activosElite)
+		{
+			activosElite[id.ordinal()][par.ordinal()] = selected;
+		}
 	}
 }

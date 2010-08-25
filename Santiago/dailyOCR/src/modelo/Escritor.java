@@ -120,8 +120,17 @@ public class Escritor
 				{
 					Scanner sc2 = new Scanner(sc.next());
 					sc2.useDelimiter("\\Q;\\E");
+					Par par = Par.convertirPar(sc2.next());
 					int magico = sc2.nextInt();
-					actual.getMagico()[numeroActual++] = magico;
+					boolean compra = sc2.nextInt() == 1;
+					if(actual.getPar().equals(par) && actual.isCompra() == compra)
+					{
+						actual.getMagico()[numeroActual++] = magico;
+					}
+					else
+					{
+						numeroActual++;
+					}
 					if(numeroActual == 1)
 					{
 						numeroActual = 0;

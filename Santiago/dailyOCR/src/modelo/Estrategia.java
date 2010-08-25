@@ -32,39 +32,45 @@ public class Estrategia
 		senales = Collections.synchronizedList(senalesNoSync);
 	}
 	
-	public synchronized void cambiarActivo(Par par, boolean activo)
+	public void cambiarActivo(Par par, boolean activo)
 	{
 		if(activos == null)
 			activos = new boolean[Par.values().length];
-		int i = 0;
-		for(Par p : Par.values())
+		synchronized(activos)
 		{
-			if(p.equals(par))
+			int i = 0;
+			for(Par p : Par.values())
 			{
-				activos[i] = activo;
-				return;
+				if(p.equals(par))
+				{
+					activos[i] = activo;
+					return;
+				}
+				i++;
 			}
-			i++;
 		}
 	}
 	
-	public synchronized boolean darActivo(Par par)
+	public boolean darActivo(Par par)
 	{
 		if(activos == null)
 			activos = new boolean[Par.values().length];
-		int i = 0;
-		for(Par p : Par.values())
+		synchronized(activos)
 		{
-			if(p.equals(par))
+			int i = 0;
+			for(Par p : Par.values())
 			{
-				return activos[i];
+				if(p.equals(par))
+				{
+					return activos[i];
+				}
+				i++;
 			}
-			i++;
+			return false;
 		}
-		return false;
 	}
 	
-	public synchronized void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
+	public void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
 		if(entrada.getTipo().equals(TipoSenal.HIT))
 		{
@@ -76,7 +82,7 @@ public class Estrategia
 		}
 	}
 	
-	protected synchronized void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
+	protected void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
 	{
 		synchronized(senales)
 		{
@@ -107,7 +113,7 @@ public class Estrategia
 		}
 	}
 	
-	protected synchronized void trade(SenalEntrada entrada, boolean dejarLista) 
+	protected void trade(SenalEntrada entrada, boolean dejarLista) 
 	{
 		synchronized(senales)
 		{
@@ -127,7 +133,7 @@ public class Estrategia
 		}
 	}
 	
-	public synchronized Senal tienePar(Par par) 
+	public Senal tienePar(Par par) 
 	{
 		synchronized(senales)
 		{
@@ -140,31 +146,37 @@ public class Estrategia
 		return null;
 	}
 
-	public synchronized boolean verificarConsistencia() 
+	public boolean verificarConsistencia() 
 	{
 		synchronized(senales)
 		{
-			return senales == null || id == null || activos == null || escritor == null;
+			synchronized(activos)
+			{
+				return senales == null || id == null || activos == null || escritor == null;
+			}
 		}
 	}
 	
-    public synchronized void escribir()
+    public void escribir()
     {
     	synchronized(senales)
     	{
-	    	try
-	    	{
-		    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		        XMLEncoder encoder = new XMLEncoder(baos);
-		        encoder.writeObject(this);
-		        encoder.close();
-		        String salida = new String(baos.toByteArray());
-		        ConexionMySql.guardarPersistencia(id, salida);
-	    	}
-	    	catch(Exception e)
-	    	{
-	    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
-	    	}
+    		synchronized(activos)
+    		{
+		    	try
+		    	{
+			    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			        XMLEncoder encoder = new XMLEncoder(baos);
+			        encoder.writeObject(this);
+			        encoder.close();
+			        String salida = new String(baos.toByteArray());
+			        ConexionMySql.guardarPersistencia(id, salida);
+		    	}
+		    	catch(Exception e)
+		    	{
+		    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+		    	}
+    		}
     	}
     }
     
@@ -194,29 +206,35 @@ public class Estrategia
     	}
     }
 
-	public synchronized IdEstrategia getId() {
+	public IdEstrategia getId() {
 		return id;
 	}
 
-	public synchronized void setId(IdEstrategia id) {
+	public void setId(IdEstrategia id) {
 		this.id = id;
 	}
 
-	public synchronized List <Senal> getSenales() {
-		return senalesNoSync;
-	}
-	
-	public synchronized List <Senal> getSenalesSync() {
-		return senales;
-	}
-	
-	public synchronized List <Senal> getSenalesCopy() 
-	{
-		ArrayList <Senal> senalesNuevas = new ArrayList <Senal> ();
+	public List <Senal> getSenales() {
 		synchronized(senales)
 		{
-			if(senales == null)
-				return null;
+			return senalesNoSync;
+		}
+	}
+	
+	public List <Senal> getSenalesSync() {
+		synchronized(senales)
+		{
+			return senales;
+		}
+	}
+	
+	public List <Senal> getSenalesCopy() 
+	{
+		ArrayList <Senal> senalesNuevas = new ArrayList <Senal> ();
+		if(senales == null)
+			return null;
+		synchronized(senales)
+		{
 			for(Senal s : senales)
 			{
 				senalesNuevas.add(s);
@@ -225,15 +243,18 @@ public class Estrategia
 		return senalesNuevas;
 	}
 
-	public synchronized void setSenales(List <Senal> senales) {
+	public void setSenales(List <Senal> senales) {
 		this.senales = Collections.synchronizedList(senales);
 	}
 
-	public synchronized boolean[] getActivos() {
-		return activos;
+	public boolean[] getActivos() {
+		synchronized(activos)
+		{
+			return activos;
+		}
 	}
 
-	public synchronized void setActivos(boolean[] activos) {
+	public void setActivos(boolean[] activos) {
 		this.activos = activos;
 	}
 }
