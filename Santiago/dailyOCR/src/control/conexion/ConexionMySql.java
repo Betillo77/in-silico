@@ -41,7 +41,7 @@ public class ConexionMySql
 			double SSI1 = afectada.getSSI1();
 			double SSI2 = afectada.getSSI2();
 			Statement st = conexion.createStatement();
-		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2) VALUES(" + id.ordinal() + "," + fecha + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + ")");
+		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra) VALUES(" + id.ordinal() + "," + fecha + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + ")");
 		}
 		catch (SQLException s)
 		{

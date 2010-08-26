@@ -141,6 +141,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				{
 					elite.escritor.lineas.add(s.getPar() + ";SELL;CLOSE;" + s.getMagico()[0]);
 					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.getMagico()[0] + " no existe, eliminando");
+					elite.cerrar(s.getPar(), s.getEstrategia());
 				}
 			}
 			String mensaje = this.getClass().getCanonicalName() + " OK";

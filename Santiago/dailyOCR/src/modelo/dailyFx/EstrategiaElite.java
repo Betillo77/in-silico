@@ -4,6 +4,7 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Iterator;
 
 import modelo.Estrategia;
 import modelo.Par;
@@ -160,5 +161,18 @@ public class EstrategiaElite extends Estrategia
 		{
 			activosElite[id.ordinal()][par.ordinal()] = selected;
 		}
+	}
+
+	public void cerrar(Par par, IdEstrategia estrategia) 
+	{
+    	synchronized(senales)
+    	{
+    		for(Iterator <Senal> it = senales.iterator(); it.hasNext();)
+    		{
+    			Senal s = it.next();
+    			if(s.getEstrategia().equals(estrategia)  && s.getPar().equals(par))
+    				it.remove();
+    		}
+    	}
 	}
 }
