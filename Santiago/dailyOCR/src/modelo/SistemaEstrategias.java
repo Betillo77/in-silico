@@ -41,12 +41,18 @@ public abstract class SistemaEstrategias
 			{
 				if(!mensajeEnviado && (hora == 4 || hora == 10 || hora == 16 || hora == 22))
 				{
-					chequearSenales(true);
+					synchronized(este())
+					{
+						chequearSenales(true);
+					}
 					mensajeEnviado = true;
 				}
 				if(!chequeoRealizado)
 				{
-					chequearSenales(false);
+					synchronized(este())
+					{
+						chequearSenales(false);
+					}
 					chequeoRealizado = true;
 				}
 			}
