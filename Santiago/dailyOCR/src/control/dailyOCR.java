@@ -121,6 +121,25 @@ public class dailyOCR
     	}
 	}
 	
+	public static void salir()
+	{
+		if(sistemas != null)
+			salir(0);
+	}
+	
+	private static void salir(int n)
+	{
+		if(n == sistemas.size())
+			System.exit(0);
+		else
+		{
+			synchronized(sistemas.get(n))
+			{
+				salir(n + 1);
+			}
+		}	
+	}
+	
 	public static void main(String [] args) throws IOException
 	{
 		cargarSistemasEstrategias();

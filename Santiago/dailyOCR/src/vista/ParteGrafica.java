@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import control.IdEstrategia;
+import control.dailyOCR;
 
 public class ParteGrafica extends JPanel {
 
@@ -197,7 +198,7 @@ public class ParteGrafica extends JPanel {
 			salir.setText("Salir");
 			salir.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					System.exit(0);
+					dailyOCR.salir();
 				}
 			});
 		}

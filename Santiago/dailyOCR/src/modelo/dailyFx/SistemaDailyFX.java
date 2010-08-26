@@ -412,14 +412,17 @@ public class SistemaDailyFX extends SistemaEstrategias
 						verificarConsistencia();
 						Thread.sleep(1000);
 						iniciarProcesamiento();
-					    escritorBreakout2.escribir();
-						escritorBreakout2.leerMagicos();
-					    escritorOtros.escribir();
-						escritorOtros.leerMagicos();
-						escritorElite.escribir();
-						escritorElite.leerMagicos();
-						verificarConsistencia();
-						persistir();
+						synchronized(este())
+						{
+						    escritorBreakout2.escribir();
+							escritorBreakout2.leerMagicos();
+						    escritorOtros.escribir();
+							escritorOtros.leerMagicos();
+							escritorElite.escribir();
+							escritorElite.leerMagicos();
+							verificarConsistencia();
+							persistir();
+						}
 					}
 					catch(Exception e)
 					{	

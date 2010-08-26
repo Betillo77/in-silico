@@ -67,6 +67,11 @@ public abstract class SistemaEstrategias
     		Error.agregar(e.getMessage() + "Error en Iniciar procesamiento al procesar en: " + getClass().getCanonicalName());
 		}
 	}
+	
+	protected SistemaEstrategias este()
+	{
+		return this;
+	}
 
 	public abstract void persistir();
 

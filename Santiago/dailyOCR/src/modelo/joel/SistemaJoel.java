@@ -67,10 +67,13 @@ public class SistemaJoel extends SistemaEstrategias
 						verificarConsistencia();
 						Thread.sleep(1200000);
 						iniciarProcesamiento();
-					    escritor.escribir();
-					    escritor.leerMagicos();
-						verificarConsistencia();
-						persistir();
+						synchronized(este())
+						{
+						    escritor.escribir();
+						    escritor.leerMagicos();
+							verificarConsistencia();
+							persistir();
+						}
 					}
 					catch(Exception e)
 					{	
