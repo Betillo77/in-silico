@@ -273,7 +273,14 @@ public class ConexionServidorDailyFx extends ConexionServidor
 
 	public static synchronized double darSSI(Par par) 
 	{
-		return arregloSSI[par.ordinal()].getBid();
+		try
+		{
+			return arregloSSI[par.ordinal()].getBid();
+		}
+		catch(Exception e)
+		{
+			return -1000;
+		}
 	}
 	
     public static synchronized double darVIX()
