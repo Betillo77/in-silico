@@ -64,6 +64,7 @@ public class Error
 			try 
 			{
 				Runtime.getRuntime().exec("shutdown now -r");
+				System.exit(0);
 			} 
 			catch (IOException e) 
 			{
