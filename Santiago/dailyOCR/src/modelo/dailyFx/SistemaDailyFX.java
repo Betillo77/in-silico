@@ -122,6 +122,27 @@ public class SistemaDailyFX extends SistemaEstrategias
 			senalesOtros.addAll(range2.getSenalesCopy());
 			senalesOtros.addAll(momentum1.getSenalesCopy());
 			senalesOtros.addAll(momentum2.getSenalesCopy());
+			for(Senal s : senalesElite)
+			{
+				Senal encontrada;
+				boolean bien = true;
+				if((encontrada = darEstrategia(s.getEstrategia()).tienePar(s.getPar())) != null)
+				{
+					if(encontrada.isCompra() != s.isCompra() || encontrada.getNumeroLotes() != s.getNumeroLotes())
+					{
+						bien = false;
+					}
+				}
+				else
+				{
+					bien = false;
+				}
+				if(!bien)
+				{
+					elite.escritor.lineas.add(s.getPar() + ";SELL;CLOSE;" + s.getMagico()[0]);
+					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.getMagico()[0] + " no existe, eliminando");
+				}
+			}
 			String mensaje = this.getClass().getCanonicalName() + " OK";
 			
 			class ParMagico

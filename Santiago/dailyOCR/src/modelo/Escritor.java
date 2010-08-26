@@ -83,7 +83,7 @@ public class Escritor
 				if(numeroVeces == 100)
 				{
 					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
-					chequarOrdenes();
+					chequearOrdenes();
 					return;
 				}
 				File archivoMagicos = new File(pathMeta + "magicos.txt");
@@ -106,7 +106,7 @@ public class Escritor
 			if(i != 0)
 				try 
 				{
-					Thread.sleep(60000);
+					Thread.sleep(3000);
 				} 
 				catch (InterruptedException e1)
 				{
@@ -122,8 +122,8 @@ public class Escritor
 				{
 					Scanner sc2 = new Scanner(sc.next());
 					sc2.useDelimiter("\\Q;\\E");
-					Par par = Par.convertirPar(sc2.next());
 					int magico = sc2.nextInt();
+					Par par = Par.convertirPar(sc2.next());
 					if(actual.getPar().equals(par))
 					{
 						actual.getMagico()[numeroActual++] = magico;
@@ -157,7 +157,10 @@ public class Escritor
 		for(Senal s : senales)
 		{
 			if(s.getMagico()[0] == 0)
+			{
 				Error.agregar("Error en " + s.getEstrategia() + " al leer el magico de " + s.getPar());
+				chequearOrdenes();
+			}
 		}
 		senales = new ArrayList <Senal> ();
 	}
@@ -196,7 +199,7 @@ public class Escritor
 				if(numeroVeces == 100)
 				{
 					Error.agregar("Error de lectura, lista no fue leida, en path: " + pathMeta);
-					chequarOrdenes();
+					chequearOrdenes();
 					return leidos;
 				}
 				File archivoLista = new File(pathMeta + "lista.txt");
@@ -219,7 +222,7 @@ public class Escritor
 			if(i != 0)
 				try 
 				{
-					Thread.sleep(60000);
+					Thread.sleep(3000);
 				} 
 				catch (InterruptedException e1)
 				{
@@ -251,12 +254,14 @@ public class Escritor
 		return leidos;
 	}
 
-	private void chequarOrdenes()
+	private void chequearOrdenes()
 	{
 		if(new File(pathMeta + "ordenes.txt").exists())
 		{
 			try 
 			{
+				if(new File(pathMeta + "ordenes.txt").canWrite())
+					new File(pathMeta + "ordenes.txt").delete();
 				Runtime.getRuntime().exec("shutdown now -r");
 				System.exit(0);
 			} 
