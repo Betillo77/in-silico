@@ -8,7 +8,7 @@ public class RobotInicio
 {
 	public static void main(String [] args) throws AWTException, InterruptedException
 	{
-		Thread.sleep(120000);
+		Thread.sleep(60000);
 		Robot r = new Robot();
 		Thread.sleep(5000);
 		r.mouseMove(85, 239);
@@ -16,33 +16,33 @@ public class RobotInicio
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(48, 60);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(95, 255);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(48, 60);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(83, 172);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(11, 35);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(86, 467);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.keyPress(KeyEvent.VK_S);
 		r.keyRelease(KeyEvent.VK_S);
 		r.keyPress(KeyEvent.VK_U);
@@ -59,7 +59,7 @@ public class RobotInicio
 		r.keyRelease(KeyEvent.VK_U);
 		r.keyPress(KeyEvent.VK_ENTER);
 		r.keyRelease(KeyEvent.VK_ENTER);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.keyPress(KeyEvent.VK_SHIFT);
 		r.keyPress(KeyEvent.VK_C);
 		r.keyRelease(KeyEvent.VK_C);
@@ -94,11 +94,11 @@ public class RobotInicio
 		r.keyRelease(KeyEvent.VK_S);
 		r.keyPress(KeyEvent.VK_ENTER);
 		r.keyRelease(KeyEvent.VK_ENTER);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(112, 187);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
-		Thread.sleep(3000);
+		Thread.sleep(6000);
 		r.mouseMove(121, 241);
 		r.mousePress(InputEvent.BUTTON1_MASK);
 		r.mouseRelease(InputEvent.BUTTON1_MASK);
