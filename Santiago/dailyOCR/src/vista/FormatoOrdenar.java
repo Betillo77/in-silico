@@ -97,10 +97,4 @@ public class FormatoOrdenar
 		c.add(Enviar);
 		frame.setVisible(true);
 	}
-
-	
-	public static void main(String []args)
-	{
-		new FormatoOrdenar();
-	}
 }
