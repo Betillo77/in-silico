@@ -32,7 +32,7 @@ public class AnalisisLogica
 		return new ArrayList <Entrada> (temporal);
 	}
 	
-	public static ArrayList <Object> retornar(IdEstrategia estrategia, Par par,int timeFrame)
+	public static ArrayList <Object> retornar(IdEstrategia estrategia, Par par, int timeFrame)
 	{	
 		double promedio;
 		long [][] datos;
@@ -75,7 +75,7 @@ public class AnalisisLogica
 		temporal1 = temporal1 / temporal.size();
 		temporal1 = Math.sqrt(temporal1);
 		desviacion = temporal1;		
-		ArrayList<Entrada> temporal2 = Buscar(estrategia, 0, par);
+		ArrayList <Entrada> temporal2 = Buscar(estrategia, 0, par);
 		Calendar fecha1 = Calendar.getInstance();
 		fecha1.setTimeInMillis(temporal2.get(0).fecha);
 		Calendar actual = fecha1;
@@ -89,12 +89,10 @@ public class AnalisisLogica
 			{
 				meses.add(acumuladoActual + " " + mesComoString(actual) + " " + actual.get(Calendar.YEAR));
 				actual = temp;
-				acumuladoActual = 0;
+				acumuladoActual = temporal2.get(i).ganancia;
 			}
 			else
-			{
 				acumuladoActual += temporal2.get(i).ganancia;
-			}
 		}
 		meses.add(acumuladoActual + " " + mesComoString(actual) + " " + actual.get(Calendar.YEAR));
 		ArrayList <Object> retornar = new ArrayList <Object> ();
