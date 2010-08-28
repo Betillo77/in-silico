@@ -17,10 +17,20 @@ public class Escritor
 	public ArrayList <String> lineas = new ArrayList <String> ();
 	private ArrayList <Senal> senales = new ArrayList <Senal> ();
 	private String pathMeta;
+	private Proceso proceso;
 	
 	public Escritor(String path)
 	{
-		pathMeta = path;
+		pathMeta = path + "experts/files/";
+		try
+		{
+			proceso = new Proceso(path);
+		}
+		catch(Exception e)
+		{
+			Error.agregar("Error iniciando proceso, reinicando equipo");
+			reiniciarEquipo();
+		}
 	}
 	
 	public void escribir() 
@@ -52,18 +62,18 @@ public class Escritor
 		{
 			lineas = new ArrayList <String> ();
 			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
+			reiniciarEquipo();
 		}
 	}
 
 	public void leerMagicos() 
 	{
 		boolean termino = false;
-		int numero = senales.size();
 		if(senales.size() > 0)
 		{
 			try 
 			{
-				Thread.sleep(10000 + 25000 * numero);
+				Thread.sleep(10000 + 25000 * senales.size());
 			}
 			catch (InterruptedException e) 
 			{
@@ -74,32 +84,7 @@ public class Escritor
 		{
 			return;
 		}
-		int numeroVeces = 0;
-		try
-		{
-			while(true)
-			{
-				numeroVeces++;
-				if(numeroVeces == 100)
-				{
-					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
-					chequearOrdenes();
-					return;
-				}
-				File archivoMagicos = new File(pathMeta + "magicos.txt");
-				if(!archivoMagicos.exists())
-				{
-					Thread.sleep(3000);
-				}
-				else
-					break;
-			}
-		}
-		catch(Exception e)
-		{
-			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
-			return;
-		}
+		chequearArchivo("magicos.txt");
 		for(int i = 0; i < 60 && !termino; i++)
 		{
 			Scanner sc = new Scanner("1");
@@ -146,6 +131,7 @@ public class Escritor
 			catch (Exception e)
 			{
 	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos, en path: " + pathMeta);
+	    		reiniciarEquipo();
 			}
 			finally
 			{
@@ -154,12 +140,16 @@ public class Escritor
 		}
 		if(new File(pathMeta + "magicos.txt").canWrite())
 			new File(pathMeta + "magicos.txt").delete();
+		if(new File(pathMeta + "ordenes.txt").exists())
+			if(new File(pathMeta + "ordenes.txt").canWrite())
+				new File(pathMeta + "ordenes.txt").delete();
 		for(Senal s : senales)
 		{
 			if(s.getMagico()[0] == 0)
 			{
 				Error.agregar("Error en " + s.getEstrategia() + " al leer el magico de " + s.getPar());
-				chequearOrdenes();
+				reiniciarProceso();
+				break;
 			}
 		}
 		senales = new ArrayList <Senal> ();
@@ -180,6 +170,7 @@ public class Escritor
 		catch(Exception e)
 		{
 			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
+			reiniciarEquipo();
 		}
 		boolean termino = false;
 		try 
@@ -190,32 +181,7 @@ public class Escritor
 		{
     		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos en path: " + pathMeta);
 		}
-		int numeroVeces = 0;
-		try
-		{
-			while(true)
-			{
-				numeroVeces++;
-				if(numeroVeces == 100)
-				{
-					Error.agregar("Error de lectura, lista no fue leida, en path: " + pathMeta);
-					chequearOrdenes();
-					return leidos;
-				}
-				File archivoLista = new File(pathMeta + "lista.txt");
-				if(!archivoLista.exists())
-				{
-					Thread.sleep(3000);
-				}
-				else
-					break;
-			}
-		}
-		catch(Exception e)
-		{
-			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
-			return leidos;
-		}
+		chequearArchivo("lista.txt");
 		for(int i = 0; i < 60 && !termino; i++)
 		{
 			Scanner sc = new Scanner("1");
@@ -241,6 +207,7 @@ public class Escritor
 			catch (Exception e)
 			{
 	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos, en path: " + pathMeta);
+	    		reiniciarEquipo();
 			}
 			finally
 			{
@@ -251,24 +218,74 @@ public class Escritor
 			new File(pathMeta + "lista.txt").delete();
 		if(new File(pathMeta + "magicos.txt").canWrite())
 			new File(pathMeta + "magicos.txt").delete();
+		if(new File(pathMeta + "ordenes.txt").exists())
+			if(new File(pathMeta + "ordenes.txt").canWrite())
+				new File(pathMeta + "ordenes.txt").delete();
 		return leidos;
 	}
 
-	private void chequearOrdenes()
+	private void reiniciarProceso()
+	{
+		try
+		{
+			proceso.reiniciar();
+		}
+		catch(Exception e)
+		{
+			Error.agregar("Error reiniciando proceso, reinicando equipo");
+			reiniciarEquipo();
+		}
+	}
+	
+	private void reiniciarEquipo()
 	{
 		if(new File(pathMeta + "ordenes.txt").exists())
+			if(new File(pathMeta + "ordenes.txt").canWrite())
+				new File(pathMeta + "ordenes.txt").delete();
+		try 
 		{
-			try 
+			Runtime.getRuntime().exec("shutdown now -r");
+			System.exit(0);
+		} 
+		catch (IOException e) 
+		{
+			Error.agregar("Error reiniciando equipo " + e.getMessage());
+		}
+	}
+	
+	private void chequearArchivo(String archivo)
+	{
+		int numeroVeces = 0;
+		try
+		{
+			while(true)
 			{
-				if(new File(pathMeta + "ordenes.txt").canWrite())
-					new File(pathMeta + "ordenes.txt").delete();
-				Runtime.getRuntime().exec("shutdown now -r");
-				System.exit(0);
-			} 
-			catch (IOException e) 
-			{
-				Error.agregar(e.getMessage());
+				numeroVeces++;
+				if(numeroVeces == 1000)
+				{
+					Error.agregar("Error de lectura, magicos no fueron leidos, en path, despues de 10 reinicios de proceso: " + pathMeta);
+					reiniciarEquipo();
+				}
+				if(numeroVeces % 100 == 0)
+				{
+					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
+					reiniciarProceso();
+					Thread.sleep(100000 + 25000 * senales.size());
+				}
+				File archivoMagicos = new File(pathMeta + archivo);
+				if(!archivoMagicos.exists())
+				{
+					Thread.sleep(3000);
+				}
+				else
+					break;
 			}
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
+			reiniciarEquipo();
+			return;
 		}
 	}
 	

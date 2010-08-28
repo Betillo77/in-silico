@@ -38,9 +38,9 @@ public class SistemaDailyFX extends SistemaEstrategias
 	
 	public void cargarEstrategias()
 	{
-		escritorBreakout2 = new Escritor("dailyFX/experts/files/");
-		escritorOtros = new Escritor("dailyOtros/experts/files/");
-		escritorElite = new Escritor("dailyElite/experts/files/");
+		escritorBreakout2 = new Escritor("dailyFX/");
+		escritorOtros = new Escritor("dailyOtros/");
+		escritorElite = new Escritor("dailyElite/");
 		breakout1 = Estrategia.leer(IdEstrategia.BREAKOUT1);
 		if(breakout1 == null)
 		{
