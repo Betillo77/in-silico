@@ -82,11 +82,26 @@ public class Senal
 		this.precioEntrada = precioEntrada;
 	}
 
-	public int[] getMagico() {
+	public synchronized int[] getMagico() {
 		return magico;
 	}
+	
+	public synchronized int[] darMagicoCopy() {
+		int[] magicoCopy = new int[magico.length];
+		for(int i = 0; i < magico.length; i++)
+			magicoCopy[i] = magico[i];
+		return magicoCopy;
+	}
+	
+	public synchronized int darMagico(int pos) {
+		return magico[pos];
+	}
 
-	public void setMagico(int[] magico) {
+	public synchronized void ponerMagico(int pos, int m) {
+		magico[pos] = m;
+	}
+	
+	public synchronized void setMagico(int[] magico) {
 		this.magico = magico;
 	}
 

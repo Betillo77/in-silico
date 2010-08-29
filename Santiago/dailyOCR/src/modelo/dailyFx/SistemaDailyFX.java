@@ -138,8 +138,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 				if(!bien)
 				{
-					elite.escritor.agregarLinea(s.getPar() + ";SELL;CLOSE;" + s.getMagico()[0]);
-					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.getMagico()[0] + " no existe, eliminando");
+					elite.escritor.agregarLinea(s.getPar() + ";SELL;CLOSE;" + s.darMagico(0));
+					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.darMagico(0) + " no existe, eliminando");
 					elite.cerrar(s.getPar(), s.getEstrategia());
 				}
 			}
@@ -177,24 +177,24 @@ public class SistemaDailyFX extends SistemaEstrategias
 			ArrayList <ParMagico> parMagicosEliteNoAbiertos = new ArrayList <ParMagico> (70);
 			for(Senal s : senalesBreakout2)
 			{
-				if(s.getMagico()[0] != 0)
-					parMagicosBreakout2.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+				if(s.darMagico(0) != 0)
+					parMagicosBreakout2.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
 				else
-					parMagicosBreakout2NoAbiertos.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+					parMagicosBreakout2NoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
 			}
 			for(Senal s : senalesOtros)
 			{
-				if(s.getMagico()[0] != 0)
-					parMagicosOtros.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+				if(s.darMagico(0) != 0)
+					parMagicosOtros.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
 				else
-					parMagicosOtrosNoAbiertos.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+					parMagicosOtrosNoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
 			}
 			for(Senal s : senalesElite)
 			{
-				if(s.getMagico()[0] != 0)
-					parMagicosElite.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+				if(s.darMagico(0) != 0)
+					parMagicosElite.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
 				else
-					parMagicosEliteNoAbiertos.add(new ParMagico(s.getPar(), s.getMagico()[0], s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
+					parMagicosEliteNoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
 			}
 			ArrayList <ParMagico> parMagicosRealesBreakout2 = new ArrayList <ParMagico> (14);
 			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (70);
@@ -339,9 +339,9 @@ public class SistemaDailyFX extends SistemaEstrategias
 			for(ParMagico pm : parMagicosRealesBreakout2)
 			{
 				Senal s;
-				if((s = breakout2.tienePar(pm.par)) != null && breakout2.darActivo(pm.par) && s.getMagico()[0] == 0 && pm.esCompra == s.isCompra())
+				if((s = breakout2.tienePar(pm.par)) != null && breakout2.darActivo(pm.par) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra())
 				{
-					s.getMagico()[0] = pm.magico;
+					s.ponerMagico(0, pm.magico);
 					Error.agregar("Asignando magico tentativamente: " + breakout2.getId() + " " + s.getPar() + " " + pm.magico);
 				}
 				else
@@ -362,10 +362,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 						continue;
 					for(Senal s : e.getSenalesCopy())
 					{
-						if(s.getPar().equals(pm.par) && e.darActivo(s.getPar()) && s.getMagico()[0] == 0 && pm.esCompra == s.isCompra())
+						if(s.getPar().equals(pm.par) && e.darActivo(s.getPar()) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra())
 						{
 							cambio = true;
-							s.getMagico()[0] = pm.magico;
+							s.ponerMagico(0, pm.magico);
 							Error.agregar("Asignando magico tentativamente: " + e.getId() + " " + s.getPar() + " " + pm.magico);
 							break;
 						}

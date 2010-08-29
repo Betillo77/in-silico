@@ -41,7 +41,7 @@ public class TablaEstrategia extends JFrame
 				mostrar[i][2] = lista.get(i).getPar().toString();
 				mostrar[i][3] = lista.get(i).getNumeroLotes();
 				mostrar[i][4] = lista.get(i).getPrecioEntrada();
-				int [] temp = lista.get(i).getMagico();
+				int [] temp = lista.get(i).darMagicoCopy();
 				String temp2 = "";
 				for(int j=0;j<temp.length-1;j++)
 				{
@@ -132,7 +132,7 @@ public class TablaEstrategia extends JFrame
 						mostrar[i][2] = lista.get(i).getPar().toString();
 						mostrar[i][3] = lista.get(i).getNumeroLotes();
 						mostrar[i][4] = lista.get(i).getPrecioEntrada();
-						int [] temp = lista.get(i).getMagico();
+						int [] temp = lista.get(i).darMagicoCopy();
 						String temp2 = "";
 						for(int j=0;j<temp.length-1;j++)
 						{

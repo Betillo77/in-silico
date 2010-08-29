@@ -121,7 +121,7 @@ public class Escritor
 					Par par = Par.convertirPar(sc2.next());
 					if(actual.getPar().equals(par))
 					{
-						actual.getMagico()[numeroActual++] = magico;
+						actual.ponerMagico(numeroActual++, magico);
 					}
 					else
 					{
@@ -155,7 +155,7 @@ public class Escritor
 				new File(pathMeta + "ordenes.txt").delete();
 		for(Senal s : senales)
 		{
-			if(s.getMagico()[0] == 0)
+			if(s.darMagico(0) == 0)
 			{
 				Error.agregar("Error en " + s.getEstrategia() + " al leer el magico de " + s.getPar());
 				reiniciarProceso();
@@ -306,14 +306,15 @@ public class Escritor
     		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
 		}
 		afectada.setNumeroLotes(afectada.getNumeroLotes() - entrada.getNumeroLotes());
-		if(afectada.getMagico()[0] != 0)
+		if(afectada.darMagico(0) != 0)
 		{
 			if(afectada.getNumeroLotes() == 0)
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico()[0]);
+				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0));
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;
-		afectada.setMagico(Arrays.copyOfRange(afectada.getMagico(), 0, afectada.getMagico().length - entrada.getNumeroLotes()));
+		int[] magicoCopy = afectada.darMagicoCopy();
+		afectada.setMagico(Arrays.copyOfRange(magicoCopy, 0, magicoCopy.length - entrada.getNumeroLotes()));
 	}
 
 	public synchronized void abrir(SenalEntrada entrada, Senal nueva)
