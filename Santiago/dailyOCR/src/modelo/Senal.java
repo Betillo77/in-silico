@@ -17,6 +17,7 @@ public class Senal
 	private double VIX = 0.0d;
 	private double SSI1 = 0.0d;
 	private double SSI2 = 0.0d;
+	private long fechaInicio = 0;
 	
 	public Senal()
 	{
@@ -31,7 +32,8 @@ public class Senal
 		this.precioEntrada = precioEntrada;
 		this.VIX = ConexionServidorDailyFx.darVIX();
 		this.SSI1 = ConexionServidorDailyFx.darSSI(Par.padres[par.ordinal()][0]);
-		this.SSI2 = ConexionServidorDailyFx.darSSI(Par.padres[par.ordinal()][1]); 
+		this.SSI2 = ConexionServidorDailyFx.darSSI(Par.padres[par.ordinal()][1]);
+		this.fechaInicio = System.currentTimeMillis();
 	}
     
 	public IdEstrategia getEstrategia() {
@@ -145,6 +147,14 @@ public class Senal
 		SSI2 = sSI2;
 	}
 
+	public void setFechaInicio(long fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public long getFechaInicio() {
+		return fechaInicio;
+	}
+	
 	public String toString()
 	{
 		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada; 

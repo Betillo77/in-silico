@@ -28,25 +28,30 @@ public class ConexionMySql
 				Error.agregar("Entrada sospechosa: " + id.name() + ", " + afectada.getPar().name() + ", " + fechaLong + ", �ganancia: " + ganancia + "?");
 				return;
 			}
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(fechaLong);
-			String fecha = "'" + calendar.get(Calendar.YEAR);
-			fecha += "-" + (calendar.get(Calendar.MONTH) + 1);
-			fecha += "-" + calendar.get(Calendar.DATE);
-			fecha += " " + calendar.get(Calendar.HOUR);
-			fecha += ":" + calendar.get(Calendar.MINUTE);
-			fecha += ":" + calendar.get(Calendar.SECOND);
-			fecha += "'";
 			double VIX = afectada.getVIX();
 			double SSI1 = afectada.getSSI1();
 			double SSI2 = afectada.getSSI2();
 			Statement st = conexion.createStatement();
-		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra) VALUES(" + id.ordinal() + "," + fecha + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + ")");
+		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra,FechaA) VALUES(" + id.ordinal() + "," + convertirFecha(fechaLong) + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + "," + convertirFecha(afectada.getFechaInicio()) +  ")");
 		}
 		catch (SQLException s)
 		{
 			Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + afectada.getPar().toString() + ", " + fechaLong + ", " + ganancia); 
 		}
+	}
+	
+	private static String convertirFecha(long fechaLong)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(fechaLong);
+		String fecha = "'" + calendar.get(Calendar.YEAR);
+		fecha += "-" + (calendar.get(Calendar.MONTH) + 1);
+		fecha += "-" + calendar.get(Calendar.DATE);
+		fecha += " " + calendar.get(Calendar.HOUR);
+		fecha += ":" + calendar.get(Calendar.MINUTE);
+		fecha += ":" + calendar.get(Calendar.SECOND);
+		fecha += "'";
+		return fecha;
 	}
 	
 	public synchronized static void guardarPersistencia(IdEstrategia id, String xml) 

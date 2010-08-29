@@ -33,6 +33,7 @@ public class Proceso
 				try 
 				{
 					proceso.waitFor();
+					Error.agregar("Reiniciando proceso: " + path);
 					iniciar();
 				} 
 				catch (Exception e)
