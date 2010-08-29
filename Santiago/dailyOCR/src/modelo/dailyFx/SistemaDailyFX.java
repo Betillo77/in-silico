@@ -1,6 +1,5 @@
 package modelo.dailyFx;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -139,7 +138,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 				if(!bien)
 				{
-					elite.escritor.lineas.add(s.getPar() + ";SELL;CLOSE;" + s.getMagico()[0]);
+					elite.escritor.agregarLinea(s.getPar() + ";SELL;CLOSE;" + s.getMagico()[0]);
 					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.getMagico()[0] + " no existe, eliminando");
 					elite.cerrar(s.getPar(), s.getEstrategia());
 				}
@@ -336,7 +335,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 			}
 			String mensaje2 = "";
-			breakout2.escritor.lineas = new ArrayList <String> ();
+			breakout2.escritor.limpiarLineas();
 			for(ParMagico pm : parMagicosRealesBreakout2)
 			{
 				Senal s;
@@ -347,7 +346,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 				else
 				{
-					breakout2.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+					breakout2.escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
 					mensaje2 += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";	
 				}
 			}
@@ -374,14 +373,14 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 				if(!cambio)
 				{
-					breakout1.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+					breakout1.escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
 					mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";
 				}
 			}
 			breakout1.escritor.escribir();
 			for(ParMagico pm : parMagicosRealesElite)
 			{
-				elite.escritor.lineas.add(pm.par + ";SELL;CLOSE;" + pm.magico);
+				elite.escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
 				mensaje2 += "\n" + "Elite " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";
 			}
 			elite.escritor.escribir();
@@ -401,7 +400,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 	{
 		new Thread(new Runnable()
 		{
-			@Override
+			volatile boolean terminoBreakout2 = false;
+			volatile boolean terminoOtros = false;
+			volatile boolean terminoElite = false;
+			
 			public void run() 
 			{
 				int numeroErrores = 0;
@@ -416,11 +418,40 @@ public class SistemaDailyFX extends SistemaEstrategias
 						synchronized(este())
 						{
 						    escritorBreakout2.escribir();
-							escritorBreakout2.leerMagicos();
 						    escritorOtros.escribir();
-							escritorOtros.leerMagicos();
 							escritorElite.escribir();
-							escritorElite.leerMagicos();
+							terminoBreakout2 = false;
+							terminoOtros = false;
+							terminoElite = false;
+							new Thread(new Runnable() 
+							{
+								public void run() 
+								{
+									escritorBreakout2.leerMagicos();
+									terminoBreakout2 = true;
+								}
+							}).start();
+							new Thread(new Runnable() 
+							{
+								public void run() 
+								{
+									escritorOtros.leerMagicos();
+									terminoOtros = true;
+								}
+							}).start();
+							new Thread(new Runnable() 
+							{
+								public void run() 
+								{
+									escritorElite.leerMagicos();
+									terminoElite = true;
+								}
+							}).start();
+							while(!terminoBreakout2 || !terminoOtros || !terminoElite)
+								Thread.sleep(1000);
+							terminoBreakout2 = false;
+							terminoOtros = false;
+							terminoElite = false;
 							verificarConsistencia();
 							persistir();
 						}
@@ -432,25 +463,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 							System.gc();
 							numeroErrores++;
 				    		Error.agregar(e.getMessage() + " Error en el ciclo dailyFX");
-				    		Thread.sleep(600000);
+				    		Thread.sleep(60000);
 							if(numeroErrores == 30)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
-								Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
-								{
-									@Override
-									public void run() 
-									{
-										try 
-										{
-											Runtime.getRuntime().exec("java -jar dailyOCR.jar -Xmx1024m -Xms512m");
-										} 
-										catch (IOException e)
-										{
-								    		Error.agregar(e.getMessage() + " Error reiniciando");
-										}
-									}
-								}));
+								Runtime.getRuntime().exec("shutdown now -r");
 								System.exit(0);
 							}
 						}

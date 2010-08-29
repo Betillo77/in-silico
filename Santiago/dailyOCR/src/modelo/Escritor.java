@@ -14,7 +14,7 @@ import control.dailyOCR;
 
 public class Escritor
 {	
-	public ArrayList <String> lineas = new ArrayList <String> ();
+	private ArrayList <String> lineas = new ArrayList <String> ();
 	private ArrayList <Senal> senales = new ArrayList <Senal> ();
 	private String pathMeta;
 	private Proceso proceso;
@@ -33,7 +33,17 @@ public class Escritor
 		}
 	}
 	
-	public void escribir() 
+	public synchronized void limpiarLineas()
+	{
+		lineas = new ArrayList <String> ();
+	}
+	
+	public synchronized void agregarLinea(String linea)
+	{
+		lineas.add(linea);
+	}
+	
+	public synchronized void escribir() 
 	{
 		try
 		{
@@ -66,7 +76,7 @@ public class Escritor
 		}
 	}
 
-	public void leerMagicos() 
+	public synchronized void leerMagicos() 
 	{
 		boolean termino = false;
 		if(senales.size() > 0)
@@ -155,7 +165,7 @@ public class Escritor
 		senales = new ArrayList <Senal> ();
 	}
 
-	public ArrayList <String> chequearSenales() 
+	public synchronized ArrayList <String> chequearSenales() 
 	{
 		ArrayList <String> leidos = new ArrayList <String> (14);
 		try
@@ -228,7 +238,7 @@ public class Escritor
 	{
 		try
 		{
-			proceso.reiniciar();
+			proceso.cerrar();
 		}
 		catch(Exception e)
 		{
@@ -289,7 +299,7 @@ public class Escritor
 		}
 	}
 	
-	public void cerrar(SenalEntrada entrada, Senal afectada)
+	public synchronized void cerrar(SenalEntrada entrada, Senal afectada)
 	{
 		if(entrada.getNumeroLotes() > 5)
 		{
@@ -306,7 +316,7 @@ public class Escritor
 		afectada.setMagico(Arrays.copyOfRange(afectada.getMagico(), 0, afectada.getMagico().length - entrada.getNumeroLotes()));
 	}
 
-	public void abrir(SenalEntrada entrada, Senal nueva)
+	public synchronized void abrir(SenalEntrada entrada, Senal nueva)
 	{
 		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
 		if(entrada.getNumeroLotes() > 5)
