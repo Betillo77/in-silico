@@ -113,7 +113,7 @@ public class Escritor
 			enConstruccion = new ArrayList <EntradaEscritor> ();
 			synchronized(entradas)
 			{
-				entradas.notify();
+				entradas.notifyAll();
 			}
 		}
 	}
