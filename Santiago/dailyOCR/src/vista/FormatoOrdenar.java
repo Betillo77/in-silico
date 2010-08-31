@@ -2,22 +2,12 @@ package vista;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
-
-import modelo.Par;
-import modelo.Senal;
-
-
-
-import control.IdEstrategia;
-import control.dailyOCR;
 
 public class FormatoOrdenar 
 {		
@@ -38,54 +28,6 @@ public class FormatoOrdenar
 		group.add(Comprar);
 		group.add(NoComprar);
 		JButton Enviar = new JButton("Enviar");
-		Enviar.addActionListener(new ActionListener() 
-								{
-								    public void actionPerformed(ActionEvent e)
-								    {
-								    	IdEstrategia temp = IdEstrategia.BREAKOUT1;
-								    	
-								    	switch(estrategia.getSelectedIndex())
-								    	{
-									    	case 0:
-									    		temp = IdEstrategia.BREAKOUT1;
-									    		break;
-									    	case 1:
-									    		temp = IdEstrategia.BREAKOUT2;
-									    		break;
-									    	case 2:
-												temp = IdEstrategia.RANGE1;
-									    		break;
-									    	case 3:     
-									    		temp = IdEstrategia.RANGE2;
-									    		break;
-									    	case 4:
-									    		temp = IdEstrategia.MOMENTUM1;
-									    		break;
-									        case 5:
-									        	temp = IdEstrategia.MOMENTUM2;
-									        	break;
-								    	}
-								    	boolean temp2 = false;
-								    	if(Comprar.isSelected())
-								    	{
-								    		temp2 = true;
-								    	}
-								    	else
-								    	{
-								    		temp2 = false;
-								    	}
-								    	
-								    	Par temp3 = Par.convertirPar(Par1.getSelectedItem().toString());
-								    	
-								    	int temp4 = NumeroDeLotes.getSelectedIndex()+1;
-								    	
-								    	Senal nueva = new Senal(temp, temp2, temp3, temp4, dailyOCR.precioPar(temp3, temp2));
-								    	synchronized(dailyOCR.darEstrategiaSenal(nueva).getSenalesSync())
-								    	{
-								    		Thread.yield();
-								    	}
-								    }
-								});      
 		Container c = frame.getContentPane();
 		c.setLayout(new FlowLayout());
 		c.add(estrategia);

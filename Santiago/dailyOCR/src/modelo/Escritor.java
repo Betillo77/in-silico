@@ -91,7 +91,7 @@ public class Escritor
 					}
 					catch(Exception e)
 					{
-						
+						Error.agregar("Error en el hilo de escritura en path: " + pathMeta);
 					}
 				}
 			}
@@ -111,7 +111,10 @@ public class Escritor
 				Error.agregar("Error de interrupcion en path: " + pathMeta);
 			}
 			enConstruccion = new ArrayList <EntradaEscritor> ();
-			entradas.notifyAll();
+			synchronized(entradas)
+			{
+				entradas.notify();
+			}
 		}
 	}
 	
@@ -158,6 +161,8 @@ public class Escritor
 	{
 		try
 		{
+			new File(pathMeta + "magicos.txt").delete();
+			new File(pathMeta + "lista.txt").delete();
 			File archivoEscritura = new File(pathMeta + "ordenes.txt");
 			File archivoEscritura1 = new File(pathMeta + "log.txt");
 			if(!archivoEscritura.exists())
@@ -174,8 +179,7 @@ public class Escritor
 			}
 			fw.close();
 			fw1.close();
-			new File(pathMeta + "magicos.txt").delete();
-			new File(pathMeta + "lista.txt").delete();
+
 		}
 		catch(Exception e)
 		{
@@ -274,6 +278,7 @@ public class Escritor
 			try
 			{
 				entradas = cargarEntradas("magicos.txt", trabajoActual, i == 0 ? 0 : 90000);
+				break;
 			}
 			catch(FileNotFoundException e)
 			{
@@ -324,6 +329,7 @@ public class Escritor
 			try
 			{
 				entradas = cargarEntradas("lista.txt", trabajoActual, i == 0 ? 0 : 90000);
+				break;
 			}
 			catch(FileNotFoundException e)
 			{

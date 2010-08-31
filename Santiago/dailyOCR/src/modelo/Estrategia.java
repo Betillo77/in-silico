@@ -247,6 +247,7 @@ public class Estrategia
 	}
 
 	public void setSenales(List <Senal> senales) {
+		this.senalesNoSync = senales;
 		this.senales = Collections.synchronizedList(senales);
 	}
 
