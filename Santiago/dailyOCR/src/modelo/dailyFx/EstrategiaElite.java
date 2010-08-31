@@ -175,4 +175,18 @@ public class EstrategiaElite extends Estrategia
     		}
     	}
 	}
+
+	public Senal tienePar(IdEstrategia id, Par par) 
+	{
+    	synchronized(senales)
+    	{
+    		for(Iterator <Senal> it = senales.iterator(); it.hasNext();)
+    		{
+    			Senal s = it.next();
+    			if(s.getEstrategia().equals(id) && s.getPar().equals(par))
+    				return s;
+    		}
+    	}
+    	return null;
+	}
 }

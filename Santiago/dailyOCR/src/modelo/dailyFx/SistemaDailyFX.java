@@ -15,6 +15,7 @@ import modelo.Senal;
 import modelo.SenalEntrada;
 import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
+import modelo.Escritor.EntradaEscritor;
 import control.Error;
 import control.IdEstrategia;
 import control.dailyOCR;
@@ -37,51 +38,72 @@ public class SistemaDailyFX extends SistemaEstrategias
 	
 	public void cargarEstrategias()
 	{
-		escritorBreakout2 = new Escritor("dailyFX/");
-		escritorOtros = new Escritor("dailyOtros/");
-		escritorElite = new Escritor("dailyElite/");
 		breakout1 = Estrategia.leer(IdEstrategia.BREAKOUT1);
 		if(breakout1 == null)
 		{
 			breakout1 = new Estrategia(IdEstrategia.BREAKOUT1);
+			escritorOtros = new Escritor("dailyOtros/", new ArrayList < ArrayList <EntradaEscritor> > ());
 		}
-		breakout1.escritor = escritorOtros;
+		else
+		{
+			if(breakout1.getEntradasEscritor() != null)
+				escritorOtros = new Escritor("dailyOtros/", breakout1.getEntradasEscritor());
+			else
+				escritorOtros = new Escritor("dailyOtros/", new ArrayList < ArrayList <EntradaEscritor> > ());
+		}
+		breakout1.ponerEscritor(escritorOtros);
 		breakout2 = Estrategia.leer(IdEstrategia.BREAKOUT2);
 		if(breakout2 == null)
 		{
 			breakout2 = new Estrategia(IdEstrategia.BREAKOUT2);
+			escritorBreakout2 = new Escritor("dailyFX/", new ArrayList < ArrayList <EntradaEscritor> > ());
 		}
-		breakout2.escritor = escritorBreakout2;
+		else
+		{
+			if(breakout2.getEntradasEscritor() != null)
+				escritorBreakout2 = new Escritor("dailyFX/", breakout2.getEntradasEscritor());
+			else
+				escritorBreakout2 = new Escritor("dailyFX/", new ArrayList < ArrayList <EntradaEscritor> > ());
+		}
+		breakout2.ponerEscritor(escritorBreakout2);
+		elite = EstrategiaElite.leer(IdEstrategia.ELITE);
+		if(elite == null)
+		{
+			elite = new EstrategiaElite(IdEstrategia.ELITE);
+			escritorElite = new EscritorElite("dailyElite/", new ArrayList < ArrayList <EntradaEscritor> > ());
+		}
+		else
+		{
+			if(elite.getEntradasEscritor() != null)
+				escritorElite = new EscritorElite("dailyElite/", elite.getEntradasEscritor());
+			else
+				escritorElite = new EscritorElite("dailyElite/", new ArrayList < ArrayList <EntradaEscritor> > ());
+		}
+		elite.ponerEscritor(escritorElite);
 		range1 = Estrategia.leer(IdEstrategia.RANGE1);
 		if(range1 == null)
 		{
 			range1 = new Estrategia(IdEstrategia.RANGE1);
 		}
-		range1.escritor = escritorOtros;
+		range1.ponerEscritor(escritorOtros);
 		range2 = Estrategia.leer(IdEstrategia.RANGE2);
 		if(range2 == null)
 		{
 			range2 = new Estrategia(IdEstrategia.RANGE2);
 		}
-		range2.escritor = escritorOtros;
+		range2.ponerEscritor(escritorOtros);
 		momentum1 = Estrategia.leer(IdEstrategia.MOMENTUM1);
 		if(momentum1 == null)
 		{
 			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
 		}
-		momentum1.escritor = escritorOtros;
+		momentum1.ponerEscritor(escritorOtros);
 		momentum2 = Estrategia.leer(IdEstrategia.MOMENTUM2);
 		if(momentum2 == null)
 		{
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
-		momentum2.escritor = escritorOtros;
-		elite = EstrategiaElite.leer(IdEstrategia.ELITE);
-		if(elite == null)
-		{
-			elite = new EstrategiaElite(IdEstrategia.ELITE);
-		}
-		elite.escritor = escritorElite;
+		momentum2.ponerEscritor(escritorOtros);
 		estrategias = new ArrayList <Estrategia> ();
 		estrategias.add(breakout1);
 		estrategias.add(breakout2);
@@ -138,7 +160,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 				if(!bien)
 				{
-					elite.escritor.agregarLinea(s.getPar() + ";SELL;CLOSE;" + s.darMagico(0));
+					escritorElite.agregarLinea(s.getPar() + ";SELL;CLOSE;" + s.darMagico(0));
 					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.darMagico(0) + " no existe, eliminando");
 					elite.cerrar(s.getPar(), s.getEstrategia());
 				}
@@ -199,7 +221,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 			ArrayList <ParMagico> parMagicosRealesBreakout2 = new ArrayList <ParMagico> (14);
 			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (70);
 			ArrayList <ParMagico> parMagicosRealesElite = new ArrayList <ParMagico> (84);
-			for(String s : breakout2.escritor.chequearSenales())
+			for(String s : escritorBreakout2.chequearSenales())
 			{
 				Scanner sc = new Scanner(s);
 				sc.useDelimiter("\\Q;\\E");
@@ -209,7 +231,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				sc.close();
 				parMagicosRealesBreakout2.add(new ParMagico(par, magico, null, 0.0d, compra));
 			}
-			for(String s : breakout1.escritor.chequearSenales())
+			for(String s : escritorOtros.chequearSenales())
 			{
 				Scanner sc = new Scanner(s);
 				sc.useDelimiter("\\Q;\\E");
@@ -219,7 +241,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				sc.close();
 				parMagicosRealesOtros.add(new ParMagico(par, magico, null, 0.0d, compra));
 			}
-			for(String s : elite.escritor.chequearSenales())
+			for(String s : escritorElite.chequearSenales())
 			{
 				Scanner sc = new Scanner(s);
 				sc.useDelimiter("\\Q;\\E");
@@ -335,7 +357,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 			}
 			String mensaje2 = "";
-			breakout2.escritor.limpiarLineas();
 			for(ParMagico pm : parMagicosRealesBreakout2)
 			{
 				Senal s;
@@ -346,11 +367,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 				else
 				{
-					breakout2.escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
+					escritorBreakout2.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
 					mensaje2 += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";	
 				}
 			}
-			breakout2.escritor.escribir();
+			escritorBreakout2.terminarCiclo();
 			for(ParMagico pm : parMagicosRealesOtros)
 			{
 				boolean cambio = false;
@@ -373,17 +394,17 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 				if(!cambio)
 				{
-					breakout1.escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
+					escritorOtros.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
 					mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";
 				}
 			}
-			breakout1.escritor.escribir();
+			escritorOtros.terminarCiclo();
 			for(ParMagico pm : parMagicosRealesElite)
 			{
-				elite.escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
+				escritorElite.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
 				mensaje2 += "\n" + "Elite " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";
 			}
-			elite.escritor.escribir();
+			escritorElite.terminarCiclo();
 			mensaje += mensaje2;
 			if(!mensaje2.equals(""))
 				Error.agregar(mensaje2);
@@ -400,10 +421,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 	{
 		new Thread(new Runnable()
 		{
-			volatile boolean terminoBreakout2 = false;
-			volatile boolean terminoOtros = false;
-			volatile boolean terminoElite = false;
-			
 			public void run() 
 			{
 				int numeroErrores = 0;
@@ -417,41 +434,9 @@ public class SistemaDailyFX extends SistemaEstrategias
 						iniciarProcesamiento();
 						synchronized(este())
 						{
-						    escritorBreakout2.escribir();
-						    escritorOtros.escribir();
-							escritorElite.escribir();
-							terminoBreakout2 = false;
-							terminoOtros = false;
-							terminoElite = false;
-							new Thread(new Runnable() 
-							{
-								public void run() 
-								{
-									escritorBreakout2.leerMagicos();
-									terminoBreakout2 = true;
-								}
-							}).start();
-							new Thread(new Runnable() 
-							{
-								public void run() 
-								{
-									escritorOtros.leerMagicos();
-									terminoOtros = true;
-								}
-							}).start();
-							new Thread(new Runnable() 
-							{
-								public void run() 
-								{
-									escritorElite.leerMagicos();
-									terminoElite = true;
-								}
-							}).start();
-							while(!terminoBreakout2 || !terminoOtros || !terminoElite)
-								Thread.sleep(1000);
-							terminoBreakout2 = false;
-							terminoOtros = false;
-							terminoElite = false;
+							escritorBreakout2.terminarCiclo();
+							escritorOtros.terminarCiclo();
+							escritorElite.terminarCiclo();
 							verificarConsistencia();
 							persistir();
 						}
@@ -706,12 +691,15 @@ public class SistemaDailyFX extends SistemaEstrategias
 
 	public void persistir() 
 	{
+		breakout1.setEntradasEscritor(escritorOtros.darCopiaEntradas());
 		breakout1.escribir();
+		breakout2.setEntradasEscritor(escritorBreakout2.darCopiaEntradas());
 		breakout2.escribir();
 		range1.escribir();
 		range2.escribir();
 		momentum1.escribir();
 		momentum2.escribir();
+		elite.setEntradasEscritor(escritorElite.darCopiaEntradas());
 		elite.escribir();
 	}
 

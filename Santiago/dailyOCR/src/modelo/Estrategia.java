@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import modelo.Escritor.EntradaEscritor;
+
 import control.Error;
 import control.IdEstrategia;
 import control.dailyOCR;
@@ -19,8 +21,9 @@ public class Estrategia
 	protected List <Senal> senales;
 	protected List <Senal> senalesNoSync = new ArrayList <Senal> ();
 	private boolean[] activos = new boolean[Par.values().length];
-	public Escritor escritor;
-	
+	protected Escritor escritor;
+	protected ArrayList < ArrayList <EntradaEscritor> > entradasEscritor = null;
+
 	public Estrategia()
 	{
 		senales = Collections.synchronizedList(senalesNoSync);
@@ -256,5 +259,17 @@ public class Estrategia
 
 	public void setActivos(boolean[] activos) {
 		this.activos = activos;
+	}
+	
+	public ArrayList < ArrayList <EntradaEscritor> > getEntradasEscritor() {
+		return entradasEscritor;
+	}
+
+	public void setEntradasEscritor(ArrayList < ArrayList <EntradaEscritor> > entradasEscritor) {
+		this.entradasEscritor = entradasEscritor;
+	}
+	
+	public void ponerEscritor(Escritor e) {
+		escritor = e;
 	}
 }

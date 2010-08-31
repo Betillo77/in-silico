@@ -26,13 +26,13 @@ public class SistemaJoel extends SistemaEstrategias
 
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("joel/experts/files/");
+		escritor = new Escritor("joel/experts/files/", null);
 		joel = Estrategia.leer(IdEstrategia.JOEL);
 		if(joel == null)
 		{
 			joel = new Estrategia(IdEstrategia.JOEL);
 		}
-		joel.escritor = escritor;
+		joel.ponerEscritor(escritor);
 		try
 		{
 			metodoLectura = ConexionServidorJoel.class.getMethod("leerServidorJoel");
@@ -69,8 +69,7 @@ public class SistemaJoel extends SistemaEstrategias
 						iniciarProcesamiento();
 						synchronized(este())
 						{
-						    escritor.escribir();
-						    escritor.leerMagicos();
+						    escritor.terminarCiclo();
 							verificarConsistencia();
 							persistir();
 						}

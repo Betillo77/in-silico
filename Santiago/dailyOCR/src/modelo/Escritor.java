@@ -1,27 +1,68 @@
 package modelo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import control.Error;
+import control.IdEstrategia;
 import control.dailyOCR;
 
 
 public class Escritor
 {	
-	private ArrayList <String> lineas = new ArrayList <String> ();
-	private ArrayList <Senal> senales = new ArrayList <Senal> ();
+	private final LinkedBlockingQueue < ArrayList <EntradaEscritor> > entradas;
+	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
 	
-	public Escritor(String path)
+	private void reiniciarProceso()
+	{
+		try
+		{
+			proceso.cerrar();
+		}
+		catch(Exception e)
+		{
+			Error.agregar("Error reiniciando proceso, reinicando equipo");
+			reiniciarEquipo();
+		}
+	}
+	
+	private void reiniciarEquipo()
+	{
+		new File(pathMeta + "ordenes.txt").delete();
+		try 
+		{
+			Runtime.getRuntime().exec("shutdown now -r");
+			System.exit(0);
+		} 
+		catch (IOException e) 
+		{
+			Error.agregar("Error reiniciando equipo " + e.getMessage());
+			System.exit(0);
+		}
+	}
+	
+	public Escritor(String path, ArrayList < ArrayList <EntradaEscritor> > iniciales)
 	{
 		pathMeta = path + "experts/files/";
+		entradas = new LinkedBlockingQueue <ArrayList <EntradaEscritor> > ();
+		try
+		{
+			for(ArrayList <EntradaEscritor> entrada : iniciales)
+				entradas.put(entrada);
+		}
+		catch(Exception e)
+		{
+			Error.agregar("Error inicializando escritor en path: " + pathMeta);
+		}
 		try
 		{
 			proceso = new Proceso(path);
@@ -31,167 +72,131 @@ public class Escritor
 			Error.agregar("Error iniciando proceso, reinicando equipo");
 			reiniciarEquipo();
 		}
+		enConstruccion = new ArrayList <EntradaEscritor> ();
+		new Thread(new Runnable()
+		{
+			public void run() 
+			{
+				while(true)
+				{
+					try
+					{
+						synchronized(entradas)
+						{
+							while(entradas.size() == 0)
+								entradas.wait();
+						}
+						procesar(entradas.peek());
+						entradas.take();
+					}
+					catch(Exception e)
+					{
+						
+					}
+				}
+			}
+		}).start();
 	}
 	
-	public synchronized void limpiarLineas()
+	public void terminarCiclo()
 	{
-		lineas = new ArrayList <String> ();
+		if(enConstruccion.size() != 0)
+		{
+			try 
+			{
+				entradas.put(enConstruccion);
+			} 
+			catch (InterruptedException e)
+			{
+				Error.agregar("Error de interrupcion en path: " + pathMeta);
+			}
+			enConstruccion = new ArrayList <EntradaEscritor> ();
+			entradas.notifyAll();
+		}
 	}
 	
-	public synchronized void agregarLinea(String linea)
+	private void chequearArchivo(String archivo, long tiempoEspera) throws FileNotFoundException
 	{
-		lineas.add(linea);
+		int numeroVeces = 0;
+		try
+		{
+			while(true)
+			{
+				numeroVeces++;
+				if(numeroVeces == 1000)
+				{
+					Error.agregar("Error de lectura, magicos no fueron leidos, en path, despues de 10 reinicios de proceso: " + pathMeta);
+					reiniciarEquipo();
+				}
+				if(numeroVeces % 100 == 0)
+				{
+					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
+					reiniciarProceso();
+					if(!new File(pathMeta + "ordenes.txt").exists())
+						throw(new FileNotFoundException("Archivo no encontrado " + pathMeta + "ordenes.txt"));
+					else
+						Thread.sleep(tiempoEspera + 90000);
+				}
+				File archivoMagicos = new File(pathMeta + archivo);
+				if(!archivoMagicos.exists())
+				{
+					Thread.sleep(2000);
+				}
+				else
+					break;
+			}
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
+			reiniciarEquipo();
+			return;
+		}
 	}
 	
-	public synchronized void escribir() 
+	private void escribir(ArrayList <EntradaEscritor> trabajoActual) 
 	{
 		try
 		{
 			File archivoEscritura = new File(pathMeta + "ordenes.txt");
 			File archivoEscritura1 = new File(pathMeta + "log.txt");
-			if(!lineas.isEmpty())
-			{
-				if(!archivoEscritura.exists())
-					archivoEscritura.createNewFile();
-				if(!archivoEscritura1.exists())
-					archivoEscritura1.createNewFile();
-				FileWriter fw = new FileWriter(archivoEscritura, true);
-				FileWriter fw1 = new FileWriter(archivoEscritura1, true);
-				for(String linea : lineas)
-				{
-					fw.write(linea + ";");
-					fw1.write(linea + ";\n");
-				}
-				fw.close();
-				fw1.close();
-			}
-			lineas = new ArrayList <String> ();
-			new File(pathMeta + "magicos.txt").delete();
-		}
-		catch(Exception e)
-		{
-			lineas = new ArrayList <String> ();
-			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
-			reiniciarEquipo();
-		}
-	}
-
-	public synchronized void leerMagicos() 
-	{
-		boolean termino = false;
-		if(senales.size() > 0)
-		{
-			try 
-			{
-				Thread.sleep(10000 + 25000 * senales.size());
-			}
-			catch (InterruptedException e) 
-			{
-	    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos en path: " + pathMeta);
-			}
-		}
-		else
-		{
-			return;
-		}
-		chequearArchivo("magicos.txt");
-		for(int i = 0; i < 60 && !termino; i++)
-		{
-			Scanner sc = new Scanner("1");
-			if(i != 0)
-				try 
-				{
-					Thread.sleep(3000);
-				} 
-				catch (InterruptedException e1)
-				{
-					Error.agregar("Error de interrupcion al leer magicos en path: " + pathMeta);
-				}
-			try 
-			{
-				sc = new Scanner(new File(pathMeta + "magicos.txt"));
-				Iterator <Senal> it = senales.iterator();
-				Senal actual = it.next();
-				int numeroActual = 0;
-				while(sc.hasNext())
-				{
-					Scanner sc2 = new Scanner(sc.next());
-					sc2.useDelimiter("\\Q;\\E");
-					int magico = sc2.nextInt();
-					Par par = Par.convertirPar(sc2.next());
-					if(actual.getPar().equals(par))
-					{
-						actual.ponerMagico(numeroActual++, magico);
-					}
-					else
-					{
-						numeroActual++;
-					}
-					if(numeroActual == 1)
-					{
-						numeroActual = 0;
-						if(it.hasNext())
-							actual = it.next();
-					}
-					sc2.close();
-				}
-				sc.close();
-				termino = true;
-			} 
-			catch (Exception e)
-			{
-	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos, en path: " + pathMeta);
-	    		reiniciarEquipo();
-			}
-			finally
-			{
-				sc.close();
-			}
-		}
-		if(new File(pathMeta + "magicos.txt").canWrite())
-			new File(pathMeta + "magicos.txt").delete();
-		if(new File(pathMeta + "ordenes.txt").exists())
-			if(new File(pathMeta + "ordenes.txt").canWrite())
-				new File(pathMeta + "ordenes.txt").delete();
-		for(Senal s : senales)
-		{
-			if(s.darMagico(0) == 0)
-			{
-				Error.agregar("Error en " + s.getEstrategia() + " al leer el magico de " + s.getPar());
-				reiniciarProceso();
-				break;
-			}
-		}
-		senales = new ArrayList <Senal> ();
-	}
-
-	public synchronized ArrayList <String> chequearSenales() 
-	{
-		ArrayList <String> leidos = new ArrayList <String> (14);
-		try
-		{
-			File archivoEscritura = new File(pathMeta + "ordenes.txt");
 			if(!archivoEscritura.exists())
 				archivoEscritura.createNewFile();
+			if(!archivoEscritura1.exists())
+				archivoEscritura1.createNewFile();
 			FileWriter fw = new FileWriter(archivoEscritura, true);
-			fw.write("GBPCHF;LIST;CLOSE;0;");
+			FileWriter fw1 = new FileWriter(archivoEscritura1, true);
+			for(EntradaEscritor entrada : trabajoActual)
+			{
+				String linea = entrada.linea;
+				fw.write(linea + ";");
+				fw1.write(linea + ";\n");
+			}
 			fw.close();
+			fw1.close();
+			new File(pathMeta + "magicos.txt").delete();
+			new File(pathMeta + "lista.txt").delete();
 		}
 		catch(Exception e)
 		{
 			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
 			reiniciarEquipo();
 		}
+	}
+
+	private ArrayList <String> leer(String archivo, long tiempoEspera) throws FileNotFoundException
+	{
 		boolean termino = false;
 		try 
 		{
-			Thread.sleep(30000);
+			Thread.sleep(tiempoEspera);
 		}
-		catch (InterruptedException e)
+		catch (InterruptedException e) 
 		{
-    		Error.agregar(e.getMessage() + " Error de interrupcion al leer magicos en path: " + pathMeta);
+			Error.agregar(e.getMessage() + " Error de interrupcion al leer archivo: " + archivo + ", en path: " + pathMeta);
 		}
-		chequearArchivo("lista.txt");
+		chequearArchivo(archivo, tiempoEspera);
+		ArrayList <String> leidos = new ArrayList <String> ();
 		for(int i = 0; i < 60 && !termino; i++)
 		{
 			Scanner sc = new Scanner("1");
@@ -202,11 +207,11 @@ public class Escritor
 				} 
 				catch (InterruptedException e1)
 				{
-					Error.agregar("Error de interrupcion al leer magicos en path: " + pathMeta);
+					Error.agregar(e1.getMessage() + " Error de interrupcion al leer archivo: " + archivo + ", en path: " + pathMeta);
 				}
 			try 
 			{
-				sc = new Scanner(new File(pathMeta + "lista.txt"));
+				sc = new Scanner(new File(pathMeta + archivo));
 				while(sc.hasNext())
 				{
 					leidos.add(sc.next());
@@ -224,83 +229,121 @@ public class Escritor
 				sc.close();
 			}
 		}
-		if(new File(pathMeta + "lista.txt").canWrite())
-			new File(pathMeta + "lista.txt").delete();
-		if(new File(pathMeta + "magicos.txt").canWrite())
-			new File(pathMeta + "magicos.txt").delete();
-		if(new File(pathMeta + "ordenes.txt").exists())
-			if(new File(pathMeta + "ordenes.txt").canWrite())
-				new File(pathMeta + "ordenes.txt").delete();
+		new File(pathMeta + archivo).delete();
+		new File(pathMeta + "ordenes.txt").delete();
 		return leidos;
 	}
+	
+	private ArrayList <String> cargarEntradas(String archivo, ArrayList <EntradaEscritor> trabajoActual, long tiempoExtra) throws FileNotFoundException
+	{
+		escribir(trabajoActual);
+		return leer(archivo, 10000 + 25000 * trabajoActual.size() + tiempoExtra);
+	}
+	
+	protected Senal darSenal(EntradaEscritor entrada) 
+	{
+		return dailyOCR.darEstrategia(entrada.id).tienePar(entrada.par);
+	}
+	
+	protected void procesar(EntradaEscritor entrada, String lectura)
+	{
+		Scanner sc = new Scanner(lectura);
+        sc.useDelimiter("\\Q;\\E");
+        int magico = sc.nextInt();
+        Par par = Par.convertirPar(sc.next());
+        if(entrada.getPar().equals(par))
+        {
+        	Senal actual = darSenal(entrada);
+        	if(actual != null)
+        		actual.ponerMagico(0, magico);
+        	else
+        		Error.agregar("Error leyendo magicos en path: " + pathMeta + ", en estrategia: " + entrada.id.toString() + ", no se encuentra par: " + entrada.getPar());
+        }
+        else
+        {
+        	Error.agregar("Error leyendo magicos en path: " + pathMeta + ", no coinciden: " + entrada.getPar() + " y " + par);
+        }
+        sc.close();
+	}
 
-	private void reiniciarProceso()
+	public synchronized void procesar(ArrayList <EntradaEscritor> trabajoActual)
 	{
-		try
+		ArrayList <String> entradas = null;
+		for(int i = 0; i < 11; i++)
 		{
-			proceso.cerrar();
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error reiniciando proceso, reinicando equipo");
-			reiniciarEquipo();
-		}
-	}
-	
-	private void reiniciarEquipo()
-	{
-		if(new File(pathMeta + "ordenes.txt").exists())
-			if(new File(pathMeta + "ordenes.txt").canWrite())
-				new File(pathMeta + "ordenes.txt").delete();
-		try 
-		{
-			Runtime.getRuntime().exec("shutdown now -r");
-			System.exit(0);
-		} 
-		catch (IOException e) 
-		{
-			Error.agregar("Error reiniciando equipo " + e.getMessage());
-		}
-	}
-	
-	private void chequearArchivo(String archivo)
-	{
-		int numeroVeces = 0;
-		try
-		{
-			while(true)
+			try
 			{
-				numeroVeces++;
-				if(numeroVeces == 1000)
+				entradas = cargarEntradas("magicos.txt", trabajoActual, i == 0 ? 0 : 90000);
+			}
+			catch(FileNotFoundException e)
+			{
+				if(i == 10)
 				{
-					Error.agregar("Error de lectura, magicos no fueron leidos, en path, despues de 10 reinicios de proceso: " + pathMeta);
+					Error.agregar(e.getMessage() + " despues de diez intentos, reiniciando");
 					reiniciarEquipo();
 				}
-				if(numeroVeces % 100 == 0)
-				{
-					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
-					reiniciarProceso();
-					Thread.sleep(100000 + 25000 * senales.size());
-				}
-				File archivoMagicos = new File(pathMeta + archivo);
-				if(!archivoMagicos.exists())
-				{
-					Thread.sleep(3000);
-				}
 				else
-					break;
+				{
+					Error.agregar(e.getMessage());
+				}
 			}
 		}
-		catch(Exception e)
+		if(trabajoActual.size() != entradas.size())
 		{
-			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
-			reiniciarEquipo();
+			Error.agregar("Error procesando magicos en path: " + pathMeta + ", tamanos distintos");
 			return;
+		}
+		else
+		{
+			try
+			{
+				Iterator <String> it = entradas.iterator();
+				String actual;
+				for(EntradaEscritor entrada : trabajoActual)
+				{
+					if(entrada.cierre)
+						continue;
+					actual = it.next();
+					procesar(entrada, actual);
+				}
+			}
+			catch(Exception e)
+			{
+				Error.agregar("Error procesando magicos en path: " + pathMeta + ", " + e.getMessage());
+			}
 		}
 	}
 	
-	public synchronized void cerrar(SenalEntrada entrada, Senal afectada)
+	public synchronized ArrayList <String> chequearSenales() 
 	{
+		ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
+		trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
+		ArrayList <String> entradas = null;
+		for(int i = 0; i < 11; i++)
+		{
+			try
+			{
+				entradas = cargarEntradas("lista.txt", trabajoActual, i == 0 ? 0 : 90000);
+			}
+			catch(FileNotFoundException e)
+			{
+				if(i == 10)
+				{
+					Error.agregar(e.getMessage() + " despues de diez intentos, reiniciando");
+					reiniciarEquipo();
+				}
+				else
+				{
+					Error.agregar(e.getMessage());
+				}
+			}
+		}
+		return entradas;
+	}
+	
+	public void cerrar(SenalEntrada entrada, Senal afectada)
+	{
+		Estrategia estrategia = dailyOCR.darEstrategiaSenal(afectada);
 		if(entrada.getNumeroLotes() > 5)
 		{
     		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
@@ -309,7 +352,7 @@ public class Escritor
 		if(afectada.darMagico(0) != 0)
 		{
 			if(afectada.getNumeroLotes() == 0)
-				lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0));
+				enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true));
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;
@@ -317,7 +360,7 @@ public class Escritor
 		afectada.setMagico(Arrays.copyOfRange(magicoCopy, 0, magicoCopy.length - entrada.getNumeroLotes()));
 	}
 
-	public synchronized void abrir(SenalEntrada entrada, Senal nueva)
+	public void abrir(SenalEntrada entrada, Senal nueva)
 	{
 		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
 		if(entrada.getNumeroLotes() > 5)
@@ -326,9 +369,75 @@ public class Escritor
 		}
 		if(estrategia.darActivo(entrada.getPar()))
 		{
-			lineas.add(entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0");
-			senales.add(nueva);
+			enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false)); 
 		}
 		nueva.setMagico(new int[entrada.getNumeroLotes()]);
+	}
+	
+	public void agregarLinea(String linea)
+	{
+		enConstruccion.add(new EntradaEscritor(null, null, linea, true));
+	}
+	
+	public ArrayList < ArrayList <EntradaEscritor> > darCopiaEntradas() 
+	{
+		ArrayList < ArrayList <EntradaEscritor> > entradasNuevas = new ArrayList < ArrayList <EntradaEscritor> > ();
+		for(ArrayList <EntradaEscritor> actual : entradas)
+		{
+			entradasNuevas.add(actual);
+		}
+		return entradasNuevas;
+	}
+	
+	public class EntradaEscritor
+	{
+		private IdEstrategia id;
+		private Par par;
+		private String linea;
+		private boolean cierre;
+
+		public EntradaEscritor()
+		{
+		}
+		
+		public EntradaEscritor(IdEstrategia i, Par p, String l, boolean c) 
+		{
+			id = i;
+			par = p;
+			linea = l;
+			cierre = c;
+		}
+
+		public IdEstrategia getId() {
+			return id;
+		}
+		
+		public void setId(IdEstrategia id) {
+			this.id = id;
+		}
+		
+		public Par getPar() {
+			return par;
+		}
+		
+		public void setPar(Par par) {
+			this.par = par;
+		}
+
+		public void setLinea(String linea) {
+			this.linea = linea;
+		}
+
+		public String getLinea() {
+			return linea;
+		}
+		
+		public boolean isCierre() {
+			return cierre;
+		}
+
+		public void setCierre(boolean cierre) {
+			this.cierre = cierre;
+		}
 	}
 }

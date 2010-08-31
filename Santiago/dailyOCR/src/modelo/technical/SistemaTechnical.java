@@ -22,13 +22,13 @@ public class SistemaTechnical extends SistemaEstrategias
 	
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("technical/");
+		escritor = new Escritor("technical/", null);
 		technical = Estrategia.leer(IdEstrategia.TECHNICAL);
 		if(technical == null)
 		{
 			technical = new Estrategia(IdEstrategia.TECHNICAL);
 		}
-		technical.escritor = escritor;
+		technical.ponerEscritor(escritor);
 		try
 		{
 			metodoLectura = ConexionServidorTechnical.class.getMethod("leerServidorTechnical");
@@ -65,8 +65,7 @@ public class SistemaTechnical extends SistemaEstrategias
 						iniciarProcesamiento();
 						synchronized(este())
 						{
-						    escritor.escribir();
-							escritor.leerMagicos();
+						    escritor.terminarCiclo();
 							verificarConsistencia();
 							persistir();
 						}

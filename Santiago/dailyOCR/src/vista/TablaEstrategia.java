@@ -2,12 +2,9 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -57,21 +54,6 @@ public class TablaEstrategia extends JFrame
 	        ListSelectionModel listMod = table.getSelectionModel();
 	        listMod.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	        listMod.addListSelectionListener(table);
-	        table.addMouseListener(new MouseAdapter()
-							        {
-							        	public void mouseClicked(MouseEvent e)
-							        	{
-							        		if (e.getClickCount() == 2)
-							        		{
-							        			JTable tabla = (JTable) e.getSource();
-							        			int temp = JOptionPane.showConfirmDialog(table, "En realidad desea cerrar esta se�al?", "Cerrar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-							        			if(temp == 0)
-							        			{
-							        				dailyOCR.cerrarSenalManual(lista.get(tabla.getSelectedRow()));
-							        			}
-							        		}
-							        	}
-							        });
 	        table.setModel(new AbstractTableModel()
 					        {
 					        	private static final long serialVersionUID = 1L;

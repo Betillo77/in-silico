@@ -83,7 +83,6 @@ public class FormatoOrdenar
 								    	synchronized(dailyOCR.darEstrategiaSenal(nueva).getSenalesSync())
 								    	{
 								    		Thread.yield();
-								    		dailyOCR.abrirSenalManual(nueva);
 								    	}
 								    }
 								});      
