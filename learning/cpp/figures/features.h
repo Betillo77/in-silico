@@ -32,12 +32,13 @@ typedef struct {
 } Figura;
 
 extern bool training;
+extern bool mostrar;
 extern char fig; //figura del test case
 extern CvCapture* cap;
 extern CvMat *t_data; //Training data
 extern CvMat *t_resp; //Training responses
 
-void init_params();
+void init_params(int cam=CAM);
 
 void destroy_params();
 

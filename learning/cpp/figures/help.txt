@@ -1,0 +1,9 @@
+
+Use: figures [Options]
+Show a window with the video being taken by the webcab. When you have the
+image of the shape that you want to recognize press enter.
+
+Options
+    -s  Show step by step what is being done in the recognition process
+
+    -t  Show also the recognition process in the learning stage

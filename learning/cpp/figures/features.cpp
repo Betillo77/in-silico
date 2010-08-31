@@ -14,10 +14,10 @@ CvMat *t_data; //Training data
 CvMat *t_resp; //Training responses
 
 
-void init_params() {
+void init_params(int cam) {
 #ifndef ANDROID
     if (mostrar) cvNamedWindow(WIN, CV_WINDOW_AUTOSIZE);
-    cap = cvCreateCameraCapture(CAM);
+    cap = cvCreateCameraCapture(cam);
 #else
     cap = NULL;
 #endif

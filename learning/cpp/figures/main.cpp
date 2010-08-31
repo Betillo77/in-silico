@@ -8,13 +8,19 @@
 #ifndef ANDROID
 #include "io_utils.h"
 #include "features.h"
+#include <cstring>
 #endif
 #include <ml.h>
 #ifndef ANDROID
 #define DIR_TR "./training/"
 #endif
 
+#define SH_P 1 //Show process on prediction
+#define SH_T 2 //Show process on training
+
 CvDTree* ptree=0;
+int flags;
+int cam=0; //Default camera
 
 void printMatrix(CvMat * mat, int type=CV_32F) {
     int N = mat->rows;
@@ -107,6 +113,7 @@ void training_image(const char *filename) {
  */
 void train() {
     training = true;
+    mostrar = (flags & SH_T) != 0;
     listFiles(DIR_TR,training_image);
     fillMatrix();
 
@@ -130,6 +137,7 @@ void train() {
 
 void predict() {
     training=false;
+    mostrar = (flags & SH_P) != 0;
     IplImage* frame;
     while (1) {
         frame = cvQueryFrame(cap);
@@ -137,7 +145,7 @@ void predict() {
         cvShowImage(WIN, frame);
         char c = cvWaitKey(200);
         if (c == 27) break;
-        if (c == '\n') {
+        else if (c == '\n') {
             CvMat *features = cvCreateMat(1,COLS,CV_32F);
             getFeatures(frame, features->data.fl);
             char p = (char)ptree->predict(features)->value;
@@ -148,6 +156,31 @@ void predict() {
             else printf("Figura no reconocida\n",p);
             fflush(stdout);
             cvReleaseMat(&features);
+        } else if (c=='s') {
+            cvSaveImage("snap.jpg",frame);
+        }
+    }
+}
+
+void readParams(int argc, char** argv) {
+    char *param; int len;
+    for (int i=0; i<argc; i++) {
+        param = argv[i]; len = strlen(param);
+        if (len>1 && param[0]=='-' && param[1]!='-') {
+            for (char *c=(param+1); *c!='\0'; c++) {
+                switch (*c) {
+                    case 's':
+                        flags |= SH_P;
+                        break;
+                    case 't':
+                        flags |= SH_T;
+                        break;
+                    default:
+                        printf("Opción no reconocida %c\n",*c);
+                }
+            }
+        } else if (len>1 && param[0]=='c') {
+            cam = atoi(param+1);
         }
     }
 }
@@ -157,12 +190,13 @@ void predict() {
  */
 int main(int argc, char** argv) {
     //destroy_params();
-    init_params();
     argc--; argv++;
+    flags = 0;
     if (argc > 0) {
-        const char *param = argv[0];
-        
+        readParams(argc, argv);
     }
+    init_params(cam);    
+    
     train();
     predict();
     destroy_params();
