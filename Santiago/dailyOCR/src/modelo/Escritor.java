@@ -125,6 +125,9 @@ public class Escritor
 		{
 			while(true)
 			{
+				File archivoMagicos = new File(pathMeta + archivo);
+				if(archivoMagicos.exists())
+					break;
 				numeroVeces++;
 				if(numeroVeces == 1000)
 				{
@@ -140,7 +143,6 @@ public class Escritor
 					else
 						Thread.sleep(tiempoEspera + 90000);
 				}
-				File archivoMagicos = new File(pathMeta + archivo);
 				if(!archivoMagicos.exists())
 				{
 					Thread.sleep(2000);
