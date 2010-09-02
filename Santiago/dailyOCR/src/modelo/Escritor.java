@@ -11,7 +11,6 @@ import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import control.Error;
-import control.IdEstrategia;
 import control.dailyOCR;
 
 
@@ -21,6 +20,7 @@ public class Escritor
 	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
+	public volatile boolean debug = true;
 	
 	private void reiniciarProceso()
 	{
@@ -86,6 +86,16 @@ public class Escritor
 							while(entradas.size() == 0)
 								entradas.wait();
 						}
+						if(debug)
+						{
+							Error.agregar("Notificado " + pathMeta);
+							try {
+								Thread.sleep(10000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 						procesar(entradas.peek());
 						entradas.take();
 					}
@@ -102,9 +112,12 @@ public class Escritor
 	{
 		if(enConstruccion.size() != 0)
 		{
+			String mensaje = "";
 			try 
 			{
 				entradas.put(enConstruccion);
+				for(EntradaEscritor e : enConstruccion)
+					mensaje += e.getLinea() + ";";
 			} 
 			catch (InterruptedException e)
 			{
@@ -113,6 +126,16 @@ public class Escritor
 			enConstruccion = new ArrayList <EntradaEscritor> ();
 			synchronized(entradas)
 			{
+				if(debug)
+				{
+					Error.agregar("Encolando y notificando " + pathMeta + " " + mensaje);
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				entradas.notifyAll();
 			}
 		}
@@ -173,15 +196,18 @@ public class Escritor
 				archivoEscritura1.createNewFile();
 			FileWriter fw = new FileWriter(archivoEscritura, true);
 			FileWriter fw1 = new FileWriter(archivoEscritura1, true);
+			String mensaje = "";
 			for(EntradaEscritor entrada : trabajoActual)
 			{
-				String linea = entrada.linea;
+				String linea = entrada.getLinea();
 				fw.write(linea + ";");
 				fw1.write(linea + ";\n");
+				mensaje += entrada.getLinea() + ";";
 			}
 			fw.close();
 			fw1.close();
-
+			if(debug)
+				Error.agregar("Escribiendo " + mensaje);
 		}
 		catch(Exception e)
 		{
@@ -248,7 +274,7 @@ public class Escritor
 	
 	protected Senal darSenal(EntradaEscritor entrada) 
 	{
-		return dailyOCR.darEstrategia(entrada.id).tienePar(entrada.par);
+		return dailyOCR.darEstrategia(entrada.getId()).tienePar(entrada.getPar());
 	}
 	
 	protected void procesar(EntradaEscritor entrada, String lectura)
@@ -261,9 +287,21 @@ public class Escritor
         {
         	Senal actual = darSenal(entrada);
         	if(actual != null)
+        	{
         		actual.ponerMagico(0, magico);
+        		if(debug)
+        		{
+        			Error.agregar("Procesado " + entrada.getId().toString() + " " + par.toString() + " " + magico);
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
+        	}
         	else
-        		Error.agregar("Error leyendo magicos en path: " + pathMeta + ", en estrategia: " + entrada.id.toString() + ", no se encuentra par: " + entrada.getPar());
+        		Error.agregar("Error leyendo magicos en path: " + pathMeta + ", en estrategia: " + entrada.getId().toString() + ", no se encuentra par: " + entrada.getPar());
         }
         else
         {
@@ -295,7 +333,11 @@ public class Escritor
 				}
 			}
 		}
-		if(trabajoActual.size() != entradas.size())
+		int cuentaReal = 0;
+		for(EntradaEscritor entrada : trabajoActual)
+			if(!entrada.isCierre())
+				cuentaReal++;
+		if(cuentaReal != entradas.size())
 		{
 			Error.agregar("Error procesando magicos en path: " + pathMeta + ", tamanos distintos");
 			return;
@@ -308,8 +350,11 @@ public class Escritor
 				String actual;
 				for(EntradaEscritor entrada : trabajoActual)
 				{
-					if(entrada.cierre)
+					if(entrada.isCierre())
+					{
+						Error.agregar("Procesado " + entrada.getLinea());
 						continue;
+					}
 					actual = it.next();
 					procesar(entrada, actual);
 				}
@@ -323,6 +368,7 @@ public class Escritor
 	
 	public synchronized ArrayList <String> chequearSenales() 
 	{
+		debug = false;
 		ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
 		trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
 		ArrayList <String> entradas = null;
@@ -346,6 +392,7 @@ public class Escritor
 				}
 			}
 		}
+		debug = true;
 		return entradas;
 	}
 	
@@ -360,7 +407,16 @@ public class Escritor
 		if(afectada.darMagico(0) != 0)
 		{
 			if(afectada.getNumeroLotes() == 0)
+			{
 				enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true));
+				Error.agregar("Cerrado: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0));
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;
@@ -378,6 +434,13 @@ public class Escritor
 		if(estrategia.darActivo(entrada.getPar()))
 		{
 			enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false)); 
+			Error.agregar("Abierto: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0");
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		nueva.setMagico(new int[entrada.getNumeroLotes()]);
 	}
@@ -395,57 +458,5 @@ public class Escritor
 			entradasNuevas.add(actual);
 		}
 		return entradasNuevas;
-	}
-	
-	public class EntradaEscritor
-	{
-		private IdEstrategia id;
-		private Par par;
-		private String linea;
-		private boolean cierre;
-
-		public EntradaEscritor()
-		{
-		}
-		
-		public EntradaEscritor(IdEstrategia i, Par p, String l, boolean c) 
-		{
-			id = i;
-			par = p;
-			linea = l;
-			cierre = c;
-		}
-
-		public IdEstrategia getId() {
-			return id;
-		}
-		
-		public void setId(IdEstrategia id) {
-			this.id = id;
-		}
-		
-		public Par getPar() {
-			return par;
-		}
-		
-		public void setPar(Par par) {
-			this.par = par;
-		}
-
-		public void setLinea(String linea) {
-			this.linea = linea;
-		}
-
-		public String getLinea() {
-			return linea;
-		}
-		
-		public boolean isCierre() {
-			return cierre;
-		}
-
-		public void setCierre(boolean cierre) {
-			this.cierre = cierre;
-		}
 	}
 }

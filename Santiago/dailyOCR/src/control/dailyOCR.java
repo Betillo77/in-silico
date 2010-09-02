@@ -125,6 +125,7 @@ public class dailyOCR
 		{
 			synchronized(sistemas.get(n))
 			{
+				sistemas.get(n).persistir();
 				salir(n + 1);
 			}
 		}	

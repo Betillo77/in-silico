@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import modelo.BidAsk;
+import modelo.EntradaEscritor;
 import modelo.Escritor;
 import modelo.Estrategia;
 import modelo.Par;
@@ -15,7 +17,6 @@ import modelo.Senal;
 import modelo.SenalEntrada;
 import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
-import modelo.Escritor.EntradaEscritor;
 import control.Error;
 import control.IdEstrategia;
 import control.dailyOCR;
@@ -33,7 +34,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 	Estrategia momentum1;
 	Estrategia momentum2;
 	EstrategiaElite elite;
-	
+	private AtomicBoolean cambio = new AtomicBoolean(false);
+	 
 	ArrayList <Estrategia> estrategias;
 	
 	public void cargarEstrategias()
@@ -136,6 +138,9 @@ public class SistemaDailyFX extends SistemaEstrategias
 	{
 		try
 		{
+			escritorBreakout2.debug = false;
+			escritorOtros.debug = false;
+			escritorElite.debug = false;
 			ArrayList <Senal> senalesBreakout2 = new ArrayList <Senal> (breakout2.getSenalesCopy());
 			ArrayList <Senal> senalesOtros = new ArrayList <Senal> (breakout1.getSenalesCopy());
 			ArrayList <Senal> senalesElite = new ArrayList <Senal> (elite.getSenalesCopy());
@@ -410,6 +415,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 				Error.agregar(mensaje2);
 			if(enviarMensaje)
 				Error.agregar(mensaje);
+
+			escritorBreakout2.debug = true;
+			escritorOtros.debug = true;
+			escritorElite.debug = true;
 		}
 		catch(Exception e)
 		{
@@ -431,14 +440,19 @@ public class SistemaDailyFX extends SistemaEstrategias
 						System.gc();
 						verificarConsistencia();
 						Thread.sleep(1000);
-						iniciarProcesamiento();
 						synchronized(este())
 						{
+							cambio.set(false);
+							iniciarProcesamiento();
 							escritorBreakout2.terminarCiclo();
 							escritorOtros.terminarCiclo();
 							escritorElite.terminarCiclo();
 							verificarConsistencia();
-							persistir();
+							if(cambio.get())
+								synchronized(cambio)
+								{
+									cambio.notifyAll();
+								}
 						}
 					}
 					catch(Exception e)
@@ -463,6 +477,39 @@ public class SistemaDailyFX extends SistemaEstrategias
 					}
 				}
 			}
+		}).start();
+		new Thread(new Runnable()
+		{
+			public void run() 
+			{
+				while(true)
+				{
+					synchronized(cambio)
+					{
+						long tiempoAnterior = System.currentTimeMillis();
+						cambio.set(false);
+						while(!cambio.get() && ((System.currentTimeMillis() - tiempoAnterior) < 30000))
+						{
+							try 
+							{	
+								cambio.wait(60000);
+							} 
+							catch (InterruptedException e) 
+							{
+								Error.agregar("Excepcion de interrupcion esperando para grabar en: " + este().getClass().getCanonicalName());
+							}
+						}
+						if((System.currentTimeMillis() - tiempoAnterior) > 300000)
+							Error.agregar("Error, ultima persistencia fue hace mas de 5 minutos");
+						if(cambio.get())
+						{
+							Error.agregar("Persistiendo cambio");
+						}
+					}
+					persistir();
+				}
+			}
+			
 		}).start();
 		new Thread(new Runnable()
 		{
@@ -629,17 +676,23 @@ public class SistemaDailyFX extends SistemaEstrategias
 						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
 						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, 0, 0), actual.getId());
 						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
+						cambio.set(true);
+						Error.agregar("cambio");
 					}
 					if(afectada.getNumeroLotes() > senal.getNumeroLotes())
 					{
 						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada, false);
 						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
+						cambio.set(true);
+						Error.agregar("cambio");
 					}
 				}
 				else
 				{
 					actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
 					elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
+					cambio.set(true);
+					Error.agregar("cambio");
 				}
 			}
 			for(Estrategia actual : estrategias)
@@ -672,6 +725,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 							{
 								actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal, false);
 								elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
+								cambio.set(true);
+								Error.agregar("cambio");
 							}
 							if(senal.isManual() && senal.getNumeroLotes() == 0)
 							{
@@ -691,16 +746,19 @@ public class SistemaDailyFX extends SistemaEstrategias
 
 	public void persistir() 
 	{
-		breakout1.setEntradasEscritor(escritorOtros.darCopiaEntradas());
-		breakout1.escribir();
-		breakout2.setEntradasEscritor(escritorBreakout2.darCopiaEntradas());
-		breakout2.escribir();
-		range1.escribir();
-		range2.escribir();
-		momentum1.escribir();
-		momentum2.escribir();
-		elite.setEntradasEscritor(escritorElite.darCopiaEntradas());
-		elite.escribir();
+		synchronized(este())
+		{
+			breakout1.setEntradasEscritor(escritorOtros.darCopiaEntradas());
+			breakout1.escribir();
+			breakout2.setEntradasEscritor(escritorBreakout2.darCopiaEntradas());
+			breakout2.escribir();
+			range1.escribir();
+			range2.escribir();
+			momentum1.escribir();
+			momentum2.escribir();
+			elite.setEntradasEscritor(escritorElite.darCopiaEntradas());
+			elite.escribir();
+		}
 	}
 
 	public Estrategia darEstrategia(IdEstrategia id)

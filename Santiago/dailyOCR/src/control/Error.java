@@ -58,7 +58,7 @@ public class Error
 			hora = h;
 			numeroErrores = 1;
 		}
-		if(numeroErrores == 50)
+		if(numeroErrores == 200)
 		{
 			Error.agregar("50 errores en una hora, reiniciando");
 			try 

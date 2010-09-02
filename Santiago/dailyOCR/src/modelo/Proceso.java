@@ -32,8 +32,10 @@ public class Proceso
 			{
 				try 
 				{
+					Thread.sleep(30000);
 					proceso.waitFor();
 					Error.agregar("Reiniciando proceso: " + path);
+					Thread.sleep(10000);
 					iniciar();
 				} 
 				catch (Exception e)

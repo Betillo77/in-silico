@@ -2,8 +2,10 @@ package modelo.dailyFx;
 
 import java.util.ArrayList;
 
+import modelo.EntradaEscritor;
 import modelo.Escritor;
 import modelo.Senal;
+import control.IdEstrategia;
 import control.dailyOCR;
 
 public class EscritorElite extends Escritor
@@ -16,6 +18,6 @@ public class EscritorElite extends Escritor
 
 	protected Senal darSenal(EntradaEscritor entrada) 
 	{
-		return ((EstrategiaElite) dailyOCR.darEstrategia(entrada.getId())).tienePar(entrada.getId(), entrada.getPar());
+		return ((EstrategiaElite) dailyOCR.darEstrategia(IdEstrategia.ELITE)).tienePar(entrada.getId(), entrada.getPar());
 	}
 }

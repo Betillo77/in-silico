@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import modelo.Escritor.EntradaEscritor;
-
 import control.Error;
 import control.IdEstrategia;
 import control.dailyOCR;
