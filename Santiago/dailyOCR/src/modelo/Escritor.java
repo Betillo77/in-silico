@@ -255,7 +255,7 @@ public class Escritor
 	{
 		if(entrada.isCierre())
 		{
-			if(lectura.equals("OK;0"))
+			if(lectura.equals("0;OK"))
 				return true;
 			else
 			{

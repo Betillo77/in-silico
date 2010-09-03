@@ -33,7 +33,7 @@ public abstract class SistemaEstrategias
 			int hora = c.get(Calendar.HOUR_OF_DAY);
 			int minuto = c.get(Calendar.MINUTE);
 			int dia = c.get(Calendar.DAY_OF_WEEK);
-			if(minuto > 50)
+			if(minuto > 10)
 			{
 				mensajeEnviado = chequeoRealizado = false;
 			}
@@ -43,7 +43,7 @@ public abstract class SistemaEstrategias
 				{
 					synchronized(este())
 					{
-						chequearSenales(false);
+						chequearSenales(true);
 					}
 					mensajeEnviado = true;
 				}
