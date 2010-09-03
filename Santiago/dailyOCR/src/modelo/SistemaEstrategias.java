@@ -33,7 +33,7 @@ public abstract class SistemaEstrategias
 			int hora = c.get(Calendar.HOUR_OF_DAY);
 			int minuto = c.get(Calendar.MINUTE);
 			int dia = c.get(Calendar.DAY_OF_WEEK);
-			if(minuto > 20)
+			if(minuto > 50)
 			{
 				mensajeEnviado = chequeoRealizado = false;
 			}

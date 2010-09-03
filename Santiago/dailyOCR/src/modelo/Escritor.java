@@ -1,9 +1,14 @@
 package modelo;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -20,6 +25,9 @@ public class Escritor
 	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
+	private Socket socket = null;
+	private PrintWriter socketOut;
+	private BufferedReader socketIn;
 	public volatile boolean debug = true;
 	
 	private void reiniciarProceso()
@@ -27,6 +35,15 @@ public class Escritor
 		try
 		{
 			proceso.cerrar();
+			try 
+			{
+				Thread.sleep(100000);
+			} 
+			catch (InterruptedException e1) 
+			{
+				Error.agregar("Error de interrupcion en path: " + pathMeta);
+			}
+			iniciarSocket();
 		}
 		catch(Exception e)
 		{
@@ -52,8 +69,8 @@ public class Escritor
 	
 	public Escritor(String path, ArrayList < ArrayList <EntradaEscritor> > iniciales)
 	{
-		pathMeta = path + "experts/files/";
-		entradas = new LinkedBlockingQueue <ArrayList <EntradaEscritor> > ();
+		pathMeta = path;
+		entradas = new LinkedBlockingQueue < ArrayList <EntradaEscritor> > ();
 		try
 		{
 			for(ArrayList <EntradaEscritor> entrada : iniciales)
@@ -72,6 +89,7 @@ public class Escritor
 			Error.agregar("Error iniciando proceso, reinicando equipo");
 			reiniciarEquipo();
 		}
+		iniciarSocket();
 		enConstruccion = new ArrayList <EntradaEscritor> ();
 		new Thread(new Runnable()
 		{
@@ -84,7 +102,7 @@ public class Escritor
 						synchronized(entradas)
 						{
 							while(entradas.size() == 0)
-								entradas.wait();
+								entradas.wait(100000);
 						}
 						if(debug)
 						{
@@ -141,135 +159,91 @@ public class Escritor
 		}
 	}
 	
-	private void chequearArchivo(String archivo, long tiempoEspera) throws FileNotFoundException
+	public synchronized void iniciarSocket()
 	{
-		int numeroVeces = 0;
-		try
-		{
-			while(true)
-			{
-				File archivoMagicos = new File(pathMeta + archivo);
-				if(archivoMagicos.exists())
-					break;
-				numeroVeces++;
-				if(numeroVeces == 1000)
-				{
-					Error.agregar("Error de lectura, magicos no fueron leidos, en path, despues de 10 reinicios de proceso: " + pathMeta);
-					reiniciarEquipo();
-				}
-				if(numeroVeces % 100 == 0)
-				{
-					Error.agregar("Error de lectura, magicos no fueron leidos, en path: " + pathMeta);
-					reiniciarProceso();
-					if(!new File(pathMeta + "ordenes.txt").exists())
-						throw(new FileNotFoundException("Archivo no encontrado " + pathMeta + "ordenes.txt"));
-					else
-						Thread.sleep(tiempoEspera + 90000);
-				}
-				if(!archivoMagicos.exists())
-				{
-					Thread.sleep(2000);
-				}
-				else
-					break;
-			}
-		}
-		catch(Exception e)
-		{
-			Error.agregar(e.getMessage() + " Error en la lectura del archivo magico, en path: " + pathMeta);
-			reiniciarEquipo();
-			return;
-		}
+		 String s = null;
+		 try
+		 {
+			 Thread.sleep(100000);
+			 Scanner sc = new Scanner(new File(pathMeta + "port.txt"));
+		     socket = new Socket(s, sc.nextInt());
+		     socketOut = new PrintWriter(socket.getOutputStream(), true);
+		     socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		 }
+		 catch(Exception e)
+		 {
+			 Error.agregar(e.getMessage() + " error iniciando socket, " + pathMeta);
+			 reiniciarEquipo();
+		 }
 	}
 	
 	private void escribir(ArrayList <EntradaEscritor> trabajoActual) 
 	{
 		try
 		{
-			new File(pathMeta + "magicos.txt").delete();
-			new File(pathMeta + "lista.txt").delete();
-			File archivoEscritura = new File(pathMeta + "ordenes.txt");
-			File archivoEscritura1 = new File(pathMeta + "log.txt");
+			File archivoEscritura = new File(pathMeta + "log.txt");
 			if(!archivoEscritura.exists())
 				archivoEscritura.createNewFile();
-			if(!archivoEscritura1.exists())
-				archivoEscritura1.createNewFile();
 			FileWriter fw = new FileWriter(archivoEscritura, true);
-			FileWriter fw1 = new FileWriter(archivoEscritura1, true);
 			String mensaje = "";
+			String lineaEnvio = "";
 			for(EntradaEscritor entrada : trabajoActual)
 			{
 				String linea = entrada.getLinea();
-				fw.write(linea + ";");
-				fw1.write(linea + ";\n");
+				lineaEnvio += linea + ";" + "-";
+				fw.write(linea + ";\n");
 				mensaje += entrada.getLinea() + ";";
 			}
+			lineaEnvio = lineaEnvio.substring(0, lineaEnvio.length() - 1);
 			fw.close();
-			fw1.close();
+			socketOut.println(lineaEnvio);
 			if(debug)
 				Error.agregar("Escribiendo " + mensaje);
 		}
 		catch(Exception e)
 		{
-			Error.agregar("No se pudo escribir en el archivo: " + pathMeta + "ordenes.txt");
+			Error.agregar(e.getMessage() + " error escribiendo en el socket " + pathMeta);
 			reiniciarEquipo();
 		}
 	}
 
-	private ArrayList <String> leer(String archivo, long tiempoEspera) throws FileNotFoundException
+	private ArrayList <String> leer(int tiempoEspera) throws FileNotFoundException
 	{
-		boolean termino = false;
-		try 
-		{
-			Thread.sleep(tiempoEspera);
-		}
-		catch (InterruptedException e) 
-		{
-			Error.agregar(e.getMessage() + " Error de interrupcion al leer archivo: " + archivo + ", en path: " + pathMeta);
-		}
-		chequearArchivo(archivo, tiempoEspera);
 		ArrayList <String> leidos = new ArrayList <String> ();
-		for(int i = 0; i < 60 && !termino; i++)
+		for(int i = 0; i < 6; i++)
 		{
-			Scanner sc = new Scanner("1");
-			if(i != 0)
-				try 
-				{
-					Thread.sleep(3000);
-				} 
-				catch (InterruptedException e1)
-				{
-					Error.agregar(e1.getMessage() + " Error de interrupcion al leer archivo: " + archivo + ", en path: " + pathMeta);
-				}
-			try 
+			try
 			{
-				sc = new Scanner(new File(pathMeta + archivo));
-				while(sc.hasNext())
-				{
-					leidos.add(sc.next());
-				}
-				sc.close();
-				termino = true;
-			} 
-			catch (Exception e)
-			{
-	    		Error.agregar(e.getMessage() + " Error en el scanner en leer magicos, en path: " + pathMeta);
-	    		reiniciarEquipo();
+				socket.setSoTimeout(tiempoEspera);
+				String magicos = socketIn.readLine();
+				String [] magicosPartidos = magicos.split("-");
+				for(String s : magicosPartidos)
+					leidos.add(s);
+				return leidos;
 			}
-			finally
+			catch(SocketTimeoutException e)
 			{
-				sc.close();
+				if(i == 5)
+				{
+					Error.agregar(e.getMessage() + " error leyendo en el socket: " + pathMeta + ", no se recibio nada en 5 intentos");
+					throw(new FileNotFoundException("Socket no responde"));
+				}
+				else
+					Error.agregar("Socket no respondio en " + tiempoEspera + " esperando");
+			}
+			catch(Exception e)
+			{
+				Error.agregar(e.getMessage() + " error escribiendo en el socket");
+				throw(new FileNotFoundException("Error en el socket"));
 			}
 		}
-		new File(pathMeta + archivo).delete();
-		new File(pathMeta + "ordenes.txt").delete();
-		return leidos;
+		return null;
 	}
 	
-	private ArrayList <String> cargarEntradas(String archivo, ArrayList <EntradaEscritor> trabajoActual, long tiempoExtra) throws FileNotFoundException
+	private ArrayList <String> cargarEntradas(ArrayList <EntradaEscritor> trabajoActual, int tiempoExtra) throws FileNotFoundException
 	{
 		escribir(trabajoActual);
-		return leer(archivo, 10000 + 25000 * trabajoActual.size() + tiempoExtra);
+		return leer(10000 + 20000 * trabajoActual.size() + tiempoExtra);
 	}
 	
 	protected Senal darSenal(EntradaEscritor entrada) 
@@ -277,8 +251,18 @@ public class Escritor
 		return dailyOCR.darEstrategia(entrada.getId()).tienePar(entrada.getPar());
 	}
 	
-	protected void procesar(EntradaEscritor entrada, String lectura)
+	protected boolean procesar(EntradaEscritor entrada, String lectura)
 	{
+		if(entrada.isCierre())
+		{
+			if(lectura.equals("OK;0"))
+				return true;
+			else
+			{
+				Error.agregar("Error, resultado de un cierre no fue OK, fue: " + lectura);
+				return false;
+			}
+		}
 		Scanner sc = new Scanner(lectura);
         sc.useDelimiter("\\Q;\\E");
         int magico = sc.nextInt();
@@ -308,6 +292,7 @@ public class Escritor
         	Error.agregar("Error leyendo magicos en path: " + pathMeta + ", no coinciden: " + entrada.getPar() + " y " + par);
         }
         sc.close();
+        return true;
 	}
 
 	public synchronized void procesar(ArrayList <EntradaEscritor> trabajoActual)
@@ -317,7 +302,7 @@ public class Escritor
 		{
 			try
 			{
-				entradas = cargarEntradas("magicos.txt", trabajoActual, i == 0 ? 0 : 90000);
+				entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
 				break;
 			}
 			catch(FileNotFoundException e)
@@ -330,14 +315,11 @@ public class Escritor
 				else
 				{
 					Error.agregar(e.getMessage());
+					reiniciarProceso();
 				}
 			}
 		}
-		int cuentaReal = 0;
-		for(EntradaEscritor entrada : trabajoActual)
-			if(!entrada.isCierre())
-				cuentaReal++;
-		if(cuentaReal != entradas.size())
+		if(trabajoActual.size() != entradas.size())
 		{
 			Error.agregar("Error procesando magicos en path: " + pathMeta + ", tamanos distintos");
 			return;
@@ -347,16 +329,12 @@ public class Escritor
 			try
 			{
 				Iterator <String> it = entradas.iterator();
-				String actual;
+				String actual = it.next();
 				for(EntradaEscritor entrada : trabajoActual)
 				{
-					if(entrada.isCierre())
-					{
-						Error.agregar("Procesado " + entrada.getLinea());
-						continue;
-					}
-					actual = it.next();
-					procesar(entrada, actual);
+					Error.agregar("Procesado " + entrada.getLinea());
+					if(procesar(entrada, actual))
+						actual = it.next();
 				}
 			}
 			catch(Exception e)
@@ -371,12 +349,13 @@ public class Escritor
 		debug = false;
 		ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
 		trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
+		trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
 		ArrayList <String> entradas = null;
 		for(int i = 0; i < 11; i++)
 		{
 			try
 			{
-				entradas = cargarEntradas("lista.txt", trabajoActual, i == 0 ? 0 : 90000);
+				entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
 				break;
 			}
 			catch(FileNotFoundException e)
@@ -389,6 +368,7 @@ public class Escritor
 				else
 				{
 					Error.agregar(e.getMessage());
+					reiniciarProceso();
 				}
 			}
 		}
@@ -417,6 +397,26 @@ public class Escritor
 					e.printStackTrace();
 				}
 			}
+			else
+			{
+				Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta);
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else
+		{
+			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta);
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;
@@ -435,6 +435,16 @@ public class Escritor
 		{
 			enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false)); 
 			Error.agregar("Abierto: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0");
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta);
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
