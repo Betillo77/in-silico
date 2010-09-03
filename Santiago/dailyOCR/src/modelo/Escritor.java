@@ -275,7 +275,7 @@ public class Escritor
         		actual.ponerMagico(0, magico);
         		if(debug)
         		{
-        			Error.agregar("Procesado " + entrada.getId().toString() + " " + par.toString() + " " + magico);
+        			Error.agregar("Procesado " + lectura + " -> " + entrada.getId().toString() + " " + par.toString() + " " + magico);
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
@@ -332,9 +332,13 @@ public class Escritor
 				String actual = it.next();
 				for(EntradaEscritor entrada : trabajoActual)
 				{
-					Error.agregar("Procesado " + entrada.getLinea());
 					if(procesar(entrada, actual))
-						actual = it.next();
+					{
+						if(it.hasNext())
+							actual = it.next();
+						else
+							actual = null;
+					}
 				}
 			}
 			catch(Exception e)
