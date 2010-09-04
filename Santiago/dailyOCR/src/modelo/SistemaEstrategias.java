@@ -9,7 +9,7 @@ import control.IdEstrategia;
 
 
 public abstract class SistemaEstrategias
-{
+{	
 	protected Method metodoLectura;
 	
 	boolean mensajeEnviado = false, chequeoRealizado = false;

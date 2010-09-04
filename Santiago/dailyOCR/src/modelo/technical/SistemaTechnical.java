@@ -12,7 +12,6 @@ import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
 import control.Error;
 import control.IdEstrategia;
-import control.dailyOCR;
 import control.conexion.technical.ConexionServidorTechnical;
 
 public class SistemaTechnical extends SistemaEstrategias 
@@ -173,16 +172,16 @@ public class SistemaTechnical extends SistemaEstrategias
 							esta = true;
 							if(senal.isCompra() != otra.isCompra())
 							{
-								technical.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, 1, 0), otra, false);
+								technical.agregar(new SenalEntrada(technical.getId(), senal.getPar(), TipoSenal.HIT, false, 1, 0), otra);
 							}
 						}
 					}
 				}
 				if(!esta)
 				{
-			    	SenalEntrada nueva = new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), 1, dailyOCR.precioPar(senal.getPar(), senal.isCompra()));
+			    	SenalEntrada nueva = new SenalEntrada(technical.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), 1, senal.getPar().darPrecioActual(senal.isCompra()));
 			    	nueva.setLimite(senal.getPrecioEntrada());
-					double precioActual = dailyOCR.precioPar(senal.getPar(), !senal.isCompra());
+					double precioActual = senal.getPar().darPrecioActual(!senal.isCompra());
 			    	double cambio = nueva.getLimite() > 10 ?	0.8 : 0.08;
 			    	double anteriorLimite;
 			    	if(senal.isCompra())
@@ -193,21 +192,21 @@ public class SistemaTechnical extends SistemaEstrategias
 			    		continue;
 			    	if(!senal.isCompra() && precioActual < anteriorLimite)
 			    		continue;
-					technical.agregar(nueva, senal, false);
+					technical.agregar(nueva, senal);
 				}
 			}
 			synchronized(technical.getSenalesSync())
 			{
 				for(Senal otra : technical.getSenalesSync())
 				{
-					double precioActual = dailyOCR.precioPar(otra.getPar(), !otra.isCompra());
+					double precioActual = otra.getPar().darPrecioActual(!otra.isCompra());
 					if(otra.isCompra() && otra.getLimite() < precioActual)
 					{
-						technical.agregar(new SenalEntrada(otra.getPar(), TipoSenal.HIT, false, 1, 0), otra, false);
+						technical.agregar(new SenalEntrada(technical.getId(), otra.getPar(), TipoSenal.HIT, false, 1, 0), otra);
 					}
 					if(!otra.isCompra() && otra.getLimite() > precioActual)
 					{
-						technical.agregar(new SenalEntrada(otra.getPar(), TipoSenal.HIT, false, 1, 0), otra, false);
+						technical.agregar(new SenalEntrada(technical.getId(), otra.getPar(), TipoSenal.HIT, false, 1, 0), otra);
 					}
 				}
 			}

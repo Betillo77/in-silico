@@ -10,7 +10,6 @@ import java.util.List;
 
 import control.Error;
 import control.IdEstrategia;
-import control.dailyOCR;
 import control.conexion.ConexionMySql;
 
 public class Estrategia
@@ -71,59 +70,36 @@ public class Estrategia
 		}
 	}
 	
-	public void agregar(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
+	public void agregar(SenalEntrada entrada, Senal afectada) 
 	{
 		if(entrada.getTipo().equals(TipoSenal.HIT))
 		{
-			hit(entrada, afectada, dejarLista);
+			hit(entrada, afectada);
 		}
 		else
 		{
-			trade(entrada, dejarLista);
+			trade(entrada);
 		}
 	}
 	
-	protected void hit(SenalEntrada entrada, Senal afectada, boolean dejarLista) 
+	protected void hit(SenalEntrada entrada, Senal afectada) 
 	{
 		synchronized(senales)
 		{
-			int lotesAnteriores = afectada.getNumeroLotes();
 			escritor.cerrar(entrada, afectada);
-			double precioActual = dailyOCR.precioPar(afectada.getPar(), afectada.isCompra());
-			double precioParActual = afectada.isCompra() ? precioActual - afectada.getPrecioEntrada() : afectada.getPrecioEntrada() - precioActual;
-			int resultado = afectada.getPrecioEntrada() > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
 			if(afectada.getNumeroLotes() <= 0)
 			{
-				if(!dejarLista)
-					senales.remove(afectada);
-				else
-				{
-					afectada.setLotesCerradosManualmente(lotesAnteriores);
-					afectada.setMagico(new int[1]);
-				}
-			}
-			if(!dejarLista)
-			{
-				if(afectada.getLotesCerradosManualmente() > 0)
-					for(int i = 0; i < afectada.getLotesCerradosManualmente(); i++)
-						ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
-				else
-					for(int i = 0; i < entrada.getNumeroLotes(); i++)
-						ConexionMySql.agregarEntrada(id, afectada, System.currentTimeMillis(), resultado);
+				senales.remove(afectada);
 			}
 		}
 	}
 	
-	protected void trade(SenalEntrada entrada, boolean dejarLista) 
+	protected void trade(SenalEntrada entrada) 
 	{
 		synchronized(senales)
 		{
 			Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada());
 			nueva.setLimite(entrada.getLimite());
-			if(dejarLista)
-			{
-				nueva.setManual(true);
-			}
 			if(tienePar(entrada.getPar()) != null)
 			{
 	    		Error.agregar("Par ya exite en esta estrategia " + id.toString());

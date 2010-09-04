@@ -42,7 +42,7 @@ public class EstrategiaElite extends Estrategia
 						if(s.getEstrategia().equals(id) && s.getPar().equals(entrada.getPar()))
 						{
 							entrada.setNumeroLotes(s.getNumeroLotes() - entrada.getNumeroLotes());
-							hit(entrada, s, false);
+							hit(entrada, s);
 							return;
 						}
 					}

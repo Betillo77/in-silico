@@ -10,7 +10,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import modelo.BidAsk;
 import modelo.Par;
 
 import org.apache.http.HttpEntity;
@@ -26,7 +25,6 @@ import control.conexion.ConexionServidor;
 
 public class ConexionServidorDailyFx extends ConexionServidor
 {
-	private static volatile BidAsk[] arregloSSI = new BidAsk[Par.values().length];
 	private static volatile double VIX = 0;
 	private static volatile String cacheSSI = "";
 	
@@ -230,7 +228,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 	    		if(matcher.find())
 	    		{
 	    			Par actual = Par.stringToPar(constantes[i]);
-	    			arregloSSI[actual.ordinal()] = new BidAsk(Double.parseDouble(matcher.group().substring(17)), 0, actual);
+	    			actual.ponerSSI(Double.parseDouble(matcher.group().substring(17)));
 	    		}
 	    	}
     	}
@@ -240,7 +238,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
     	}
     }
 
-    public static synchronized boolean cargarSSI()
+    public static boolean cargarSSI()
     {
     	String error = "";
     	for(int i = 0; i < 100; i++)
@@ -271,18 +269,6 @@ public class ConexionServidorDailyFx extends ConexionServidor
     	return true;
     }
 
-	public static synchronized double darSSI(Par par) 
-	{
-		try
-		{
-			return arregloSSI[par.ordinal()].getBid();
-		}
-		catch(Exception e)
-		{
-			return -1000;
-		}
-	}
-	
     public static synchronized double darVIX()
     {
     	return VIX;

@@ -1,5 +1,7 @@
 package modelo;
 
+import control.IdEstrategia;
+
 
 public class SenalEntrada
 {
@@ -9,9 +11,11 @@ public class SenalEntrada
 	private int numeroLotes = 1;
 	private double precioEntrada;
 	private double limite;
+	private IdEstrategia estrategia;
 	
-	public SenalEntrada(Par par, TipoSenal tipo, boolean compra, int numeroLotes, double precioEntrada) 
+	public SenalEntrada(IdEstrategia estrategia, Par par, TipoSenal tipo, boolean compra, int numeroLotes, double precioEntrada) 
 	{
+		this.estrategia = estrategia;
 		this.par = par;
 		this.tipo = tipo;
 		this.compra = compra;
@@ -72,5 +76,13 @@ public class SenalEntrada
 	{
 		SenalEntrada otra = (SenalEntrada) otra1;
 		return par == otra.par && tipo == otra.tipo && compra == otra.compra;
+	}
+
+	public void setEstrategia(IdEstrategia estrategia) {
+		this.estrategia = estrategia;
+	}
+
+	public IdEstrategia getEstrategia() {
+		return estrategia;
 	}
 }

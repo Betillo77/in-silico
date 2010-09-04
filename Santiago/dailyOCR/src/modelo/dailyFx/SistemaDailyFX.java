@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import modelo.BidAsk;
 import modelo.EntradaEscritor;
 import modelo.Escritor;
 import modelo.Estrategia;
@@ -19,7 +18,6 @@ import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
 import control.Error;
 import control.IdEstrategia;
-import control.dailyOCR;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 public class SistemaDailyFX extends SistemaEstrategias
@@ -136,294 +134,294 @@ public class SistemaDailyFX extends SistemaEstrategias
 	
 	public void chequearSenales(boolean enviarMensaje) 
 	{
-		try
-		{
-			escritorBreakout2.debug = false;
-			escritorOtros.debug = false;
-			escritorElite.debug = false;
-			ArrayList <Senal> senalesBreakout2 = new ArrayList <Senal> (breakout2.getSenalesCopy());
-			ArrayList <Senal> senalesOtros = new ArrayList <Senal> (breakout1.getSenalesCopy());
-			ArrayList <Senal> senalesElite = new ArrayList <Senal> (elite.getSenalesCopy());
-			senalesOtros.addAll(range1.getSenalesCopy());
-			senalesOtros.addAll(range2.getSenalesCopy());
-			senalesOtros.addAll(momentum1.getSenalesCopy());
-			senalesOtros.addAll(momentum2.getSenalesCopy());
-			for(Senal s : senalesElite)
-			{
-				Senal encontrada;
-				boolean bien = true;
-				if((encontrada = darEstrategia(s.getEstrategia()).tienePar(s.getPar())) != null)
-				{
-					if(encontrada.isCompra() != s.isCompra() || encontrada.getNumeroLotes() != s.getNumeroLotes())
-					{
-						bien = false;
-					}
-				}
-				else
-				{
-					bien = false;
-				}
-				if(!bien)
-				{
-					escritorElite.agregarLinea(s.getPar() + ";SELL;CLOSE;" + s.darMagico(0));
-					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.darMagico(0) + " no existe, eliminando");
-					elite.cerrar(s.getPar(), s.getEstrategia());
-				}
-			}
-			String mensaje = this.getClass().getCanonicalName() + " OK";
-			
-			class ParMagico
-			{
-				Par par;
-				int magico;
-				IdEstrategia id;
-				double precioEntrada;
-				boolean esCompra;
-				
-				public ParMagico(Par p, int m, IdEstrategia i, double pE, boolean eC)
-				{
-					par = p;
-					magico = m;
-					id = i;
-					precioEntrada = pE;
-					esCompra = eC;
-				}
-	
-				public boolean equals(Object obj) 
-				{
-					ParMagico otro = (ParMagico) obj;
-					return par.equals(otro.par) && magico == otro.magico && esCompra == otro.esCompra;
-				}
-			}
-			
-			ArrayList <ParMagico> parMagicosBreakout2 = new ArrayList <ParMagico> (14);
-			ArrayList <ParMagico> parMagicosOtros = new ArrayList <ParMagico> (70);
-			ArrayList <ParMagico> parMagicosElite = new ArrayList <ParMagico> (84);
-			ArrayList <ParMagico> parMagicosBreakout2NoAbiertos = new ArrayList <ParMagico> (14);
-			ArrayList <ParMagico> parMagicosOtrosNoAbiertos = new ArrayList <ParMagico> (70);
-			ArrayList <ParMagico> parMagicosEliteNoAbiertos = new ArrayList <ParMagico> (70);
-			for(Senal s : senalesBreakout2)
-			{
-				if(s.darMagico(0) != 0)
-					parMagicosBreakout2.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
-				else
-					parMagicosBreakout2NoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
-			}
-			for(Senal s : senalesOtros)
-			{
-				if(s.darMagico(0) != 0)
-					parMagicosOtros.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
-				else
-					parMagicosOtrosNoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
-			}
-			for(Senal s : senalesElite)
-			{
-				if(s.darMagico(0) != 0)
-					parMagicosElite.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
-				else
-					parMagicosEliteNoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra()));
-			}
-			ArrayList <ParMagico> parMagicosRealesBreakout2 = new ArrayList <ParMagico> (14);
-			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (70);
-			ArrayList <ParMagico> parMagicosRealesElite = new ArrayList <ParMagico> (84);
-			for(String s : escritorBreakout2.chequearSenales())
-			{
-				Scanner sc = new Scanner(s);
-				sc.useDelimiter("\\Q;\\E");
-				Par par = Par.convertirPar(sc.next());
-				int magico = sc.nextInt();
-				boolean compra = sc.nextInt() == 1;
-				sc.close();
-				parMagicosRealesBreakout2.add(new ParMagico(par, magico, null, 0.0d, compra));
-			}
-			for(String s : escritorOtros.chequearSenales())
-			{
-				Scanner sc = new Scanner(s);
-				sc.useDelimiter("\\Q;\\E");
-				Par par = Par.convertirPar(sc.next());
-				int magico = sc.nextInt();
-				boolean compra = sc.nextInt() == 1;
-				sc.close();
-				parMagicosRealesOtros.add(new ParMagico(par, magico, null, 0.0d, compra));
-			}
-			for(String s : escritorElite.chequearSenales())
-			{
-				Scanner sc = new Scanner(s);
-				sc.useDelimiter("\\Q;\\E");
-				Par par = Par.convertirPar(sc.next());
-				int magico = sc.nextInt();
-				boolean compra = sc.nextInt() == 1;
-				sc.close();
-				parMagicosRealesElite.add(new ParMagico(par, magico, null, 0.0d, compra));
-			}
-			ArrayList <ParMagico> parMagicosBreakout2Copia = new ArrayList <ParMagico> (parMagicosBreakout2);
-			ArrayList <ParMagico> parMagicosOtrosCopia = new ArrayList <ParMagico> (parMagicosOtros);
-			ArrayList <ParMagico> parMagicosEliteCopia = new ArrayList <ParMagico> (parMagicosElite);
-			for(ParMagico pm : parMagicosRealesBreakout2)
-			{
-				parMagicosBreakout2Copia.remove(pm);
-			}
-			for(ParMagico pm : parMagicosRealesOtros)
-			{
-				parMagicosOtrosCopia.remove(pm);
-			}
-			for(ParMagico pm : parMagicosRealesElite)
-			{
-				parMagicosEliteCopia.remove(pm);
-			}
-			for(ParMagico pm : parMagicosBreakout2)
-			{
-				if(parMagicosRealesBreakout2.remove(pm))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
-				}
-			}
-			for(ParMagico pm : parMagicosOtros)
-			{
-				if(parMagicosRealesOtros.remove(pm))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
-				}
-			}
-			for(ParMagico pm : parMagicosElite)
-			{
-				if(parMagicosRealesElite.remove(pm))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK";
-				}
-			}
-			for(ParMagico pm : parMagicosBreakout2Copia)
-			{
-				if(darEstrategia(pm.id).darActivo(pm.par))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
-				}
-			}
-			for(ParMagico pm : parMagicosOtrosCopia)
-			{
-				if(darEstrategia(pm.id).darActivo(pm.par))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
-				}
-			}
-			for(ParMagico pm : parMagicosEliteCopia)
-			{
-				if(elite.darActivo(pm.id, pm.par))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE";
-				}
-			}
-			for(ParMagico pm : parMagicosBreakout2NoAbiertos)
-			{
-				if(darEstrategia(pm.id).darActivo(pm.par))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
-				}
-			}
-			for(ParMagico pm : parMagicosOtrosNoAbiertos)
-			{
-				if(darEstrategia(pm.id).darActivo(pm.par))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
-				}
-			}
-			for(ParMagico pm : parMagicosEliteNoAbiertos)
-			{
-				if(elite.darActivo(pm.id, pm.par))
-				{
-					double precioActual = dailyOCR.precioPar(pm.par, pm.esCompra);
-					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual;
-					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
-					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO";
-				}
-			}
-			String mensaje2 = "";
-			for(ParMagico pm : parMagicosRealesBreakout2)
-			{
-				Senal s;
-				if((s = breakout2.tienePar(pm.par)) != null && breakout2.darActivo(pm.par) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra())
-				{
-					s.ponerMagico(0, pm.magico);
-					Error.agregar("Asignando magico tentativamente: " + breakout2.getId() + " " + s.getPar() + " " + pm.magico);
-				}
-				else
-				{
-					escritorBreakout2.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
-					mensaje2 += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";	
-				}
-			}
-			escritorBreakout2.terminarCiclo();
-			for(ParMagico pm : parMagicosRealesOtros)
-			{
-				boolean cambio = false;
-				for(Estrategia e : estrategias)
-				{
-					if(cambio)
-						break;
-					if(e == breakout2)
-						continue;
-					for(Senal s : e.getSenalesCopy())
-					{
-						if(s.getPar().equals(pm.par) && e.darActivo(s.getPar()) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra())
-						{
-							cambio = true;
-							s.ponerMagico(0, pm.magico);
-							Error.agregar("Asignando magico tentativamente: " + e.getId() + " " + s.getPar() + " " + pm.magico);
-							break;
-						}
-					}
-				}
-				if(!cambio)
-				{
-					escritorOtros.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
-					mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";
-				}
-			}
-			escritorOtros.terminarCiclo();
-			for(ParMagico pm : parMagicosRealesElite)
-			{
-				escritorElite.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico);
-				mensaje2 += "\n" + "Elite " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";
-			}
-			escritorElite.terminarCiclo();
-			mensaje += mensaje2;
-			if(!mensaje2.equals(""))
-				Error.agregar(mensaje2);
-			if(enviarMensaje)
-				Error.agregar(mensaje);
+		try 
+		{ 
+			escritorBreakout2.debug = false; 
+			escritorOtros.debug = false; 
+			escritorElite.debug = false; 
+			ArrayList <Senal> senalesBreakout2 = new ArrayList <Senal> (breakout2.getSenalesCopy()); 
+			ArrayList <Senal> senalesOtros = new ArrayList <Senal> (breakout1.getSenalesCopy()); 
+			ArrayList <Senal> senalesElite = new ArrayList <Senal> (elite.getSenalesCopy()); 
+			senalesOtros.addAll(range1.getSenalesCopy()); 
+			senalesOtros.addAll(range2.getSenalesCopy()); 
+			senalesOtros.addAll(momentum1.getSenalesCopy()); 
+			senalesOtros.addAll(momentum2.getSenalesCopy()); 
+			for(Senal s : senalesElite) 
+			{ 
+				Senal encontrada; 
+				boolean bien = true; 
+				if((encontrada = darEstrategia(s.getEstrategia()).tienePar(s.getPar())) != null) 
+				{ 
+					if(encontrada.isCompra() != s.isCompra() || encontrada.getNumeroLotes() != s.getNumeroLotes()) 
+					{ 
+						bien = false; 
+					} 
+				} 
+				else 
+				{ 
+					bien = false; 
+				} 
+				if(!bien) 
+				{ 
+					escritorElite.agregarLinea(s.getPar() + ";SELL;CLOSE;" + s.darMagico(0)); 
+					Error.agregar("Inconsistencia en Elite: " + s.getEstrategia() + " " + s.getPar() + " " + s.darMagico(0) + " no existe, eliminando"); 
+					elite.cerrar(s.getPar(), s.getEstrategia()); 
+				} 
+			} 
+			String mensaje = this.getClass().getCanonicalName() + " OK"; 
 
-			escritorBreakout2.debug = true;
-			escritorOtros.debug = true;
-			escritorElite.debug = true;
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error en el metodo " + e.getMessage());
-		}
+			class ParMagico 
+			{ 
+				Par par; 
+				int magico; 
+				IdEstrategia id; 
+				double precioEntrada; 
+				boolean esCompra; 
+
+				public ParMagico(Par p, int m, IdEstrategia i, double pE, boolean eC) 
+				{ 
+					par = p; 
+					magico = m; 
+					id = i; 
+					precioEntrada = pE; 
+					esCompra = eC; 
+				} 
+
+				public boolean equals(Object obj)  
+				{ 
+					ParMagico otro = (ParMagico) obj; 
+					return par.equals(otro.par) && magico == otro.magico && esCompra == otro.esCompra; 
+				} 
+			} 
+
+			ArrayList <ParMagico> parMagicosBreakout2 = new ArrayList <ParMagico> (14); 
+			ArrayList <ParMagico> parMagicosOtros = new ArrayList <ParMagico> (70); 
+			ArrayList <ParMagico> parMagicosElite = new ArrayList <ParMagico> (84); 
+			ArrayList <ParMagico> parMagicosBreakout2NoAbiertos = new ArrayList <ParMagico> (14); 
+			ArrayList <ParMagico> parMagicosOtrosNoAbiertos = new ArrayList <ParMagico> (70); 
+			ArrayList <ParMagico> parMagicosEliteNoAbiertos = new ArrayList <ParMagico> (70); 
+			for(Senal s : senalesBreakout2) 
+			{ 
+				if(s.darMagico(0) != 0) 
+					parMagicosBreakout2.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra())); 
+				else 
+					parMagicosBreakout2NoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra())); 
+			} 
+			for(Senal s : senalesOtros) 
+			{ 
+				if(s.darMagico(0) != 0) 
+					parMagicosOtros.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra())); 
+				else 
+					parMagicosOtrosNoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra())); 
+			} 
+			for(Senal s : senalesElite) 
+			{ 
+				if(s.darMagico(0) != 0) 
+					parMagicosElite.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra())); 
+				else 
+					parMagicosEliteNoAbiertos.add(new ParMagico(s.getPar(), s.darMagico(0), s.getEstrategia(), s.getPrecioEntrada(), s.isCompra())); 
+			} 
+			ArrayList <ParMagico> parMagicosRealesBreakout2 = new ArrayList <ParMagico> (14); 
+			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (70); 
+			ArrayList <ParMagico> parMagicosRealesElite = new ArrayList <ParMagico> (84); 
+			for(String s : escritorBreakout2.chequearSenales()) 
+			{ 
+				Scanner sc = new Scanner(s); 
+				sc.useDelimiter("\\Q;\\E"); 
+				Par par = Par.convertirPar(sc.next()); 
+				int magico = sc.nextInt(); 
+				boolean compra = sc.nextInt() == 1; 
+				sc.close(); 
+				parMagicosRealesBreakout2.add(new ParMagico(par, magico, null, 0.0d, compra)); 
+			} 
+			for(String s : escritorOtros.chequearSenales()) 
+			{ 
+				Scanner sc = new Scanner(s); 
+				sc.useDelimiter("\\Q;\\E"); 
+				Par par = Par.convertirPar(sc.next()); 
+				int magico = sc.nextInt(); 
+				boolean compra = sc.nextInt() == 1; 
+				sc.close(); 
+				parMagicosRealesOtros.add(new ParMagico(par, magico, null, 0.0d, compra)); 
+			} 
+			for(String s : escritorElite.chequearSenales()) 
+			{ 
+				Scanner sc = new Scanner(s); 
+				sc.useDelimiter("\\Q;\\E"); 
+				Par par = Par.convertirPar(sc.next()); 
+				int magico = sc.nextInt(); 
+				boolean compra = sc.nextInt() == 1; 
+				sc.close(); 
+				parMagicosRealesElite.add(new ParMagico(par, magico, null, 0.0d, compra)); 
+			} 
+			ArrayList <ParMagico> parMagicosBreakout2Copia = new ArrayList <ParMagico> (parMagicosBreakout2); 
+			ArrayList <ParMagico> parMagicosOtrosCopia = new ArrayList <ParMagico> (parMagicosOtros); 
+			ArrayList <ParMagico> parMagicosEliteCopia = new ArrayList <ParMagico> (parMagicosElite); 
+			for(ParMagico pm : parMagicosRealesBreakout2) 
+			{ 
+				parMagicosBreakout2Copia.remove(pm); 
+			} 
+			for(ParMagico pm : parMagicosRealesOtros) 
+			{ 
+				parMagicosOtrosCopia.remove(pm); 
+			} 
+			for(ParMagico pm : parMagicosRealesElite) 
+			{ 
+				parMagicosEliteCopia.remove(pm); 
+			} 
+			for(ParMagico pm : parMagicosBreakout2) 
+			{ 
+				if(parMagicosRealesBreakout2.remove(pm)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra); 
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosOtros) 
+			{ 
+				if(parMagicosRealesOtros.remove(pm)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra); 
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosElite) 
+			{ 
+				if(parMagicosRealesElite.remove(pm)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra); 
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " OK"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosBreakout2Copia) 
+			{ 
+				if(darEstrategia(pm.id).darActivo(pm.par)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosOtrosCopia) 
+			{ 
+				if(darEstrategia(pm.id).darActivo(pm.par)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosEliteCopia) 
+			{ 
+				if(elite.darActivo(pm.id, pm.par)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " CERRADO_PREMATURAMENTE"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosBreakout2NoAbiertos) 
+			{ 
+				if(darEstrategia(pm.id).darActivo(pm.par)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosOtrosNoAbiertos) 
+			{ 
+				if(darEstrategia(pm.id).darActivo(pm.par)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\n" + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO"; 
+				} 
+			} 
+			for(ParMagico pm : parMagicosEliteNoAbiertos) 
+			{ 
+				if(elite.darActivo(pm.id, pm.par)) 
+				{ 
+					double precioActual = pm.par.darPrecioActual(pm.esCompra);
+					double precioParActual = pm.esCompra ? precioActual - pm.precioEntrada : pm.precioEntrada - precioActual; 
+					int resultado = pm.precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+					mensaje += "\nElite " + pm.id + " " + pm.par + " " + pm.magico + " " + pm.esCompra + " Entrada: " + pm.precioEntrada + " Actual: " + precioActual + " P/L: " + resultado + " NO_ABIERTO"; 
+				} 
+			} 
+			String mensaje2 = ""; 
+			for(ParMagico pm : parMagicosRealesBreakout2) 
+			{ 
+				Senal s; 
+				if((s = breakout2.tienePar(pm.par)) != null && breakout2.darActivo(pm.par) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra()) 
+				{ 
+					s.ponerMagico(0, pm.magico); 
+					Error.agregar("Asignando magico tentativamente: " + breakout2.getId() + " " + s.getPar() + " " + pm.magico); 
+				} 
+				else 
+				{ 
+					escritorBreakout2.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
+					mensaje2 += "\n" + "Breakout2 " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado";       
+				} 
+			} 
+			escritorBreakout2.terminarCiclo(); 
+			for(ParMagico pm : parMagicosRealesOtros) 
+			{ 
+				boolean cambio = false; 
+				for(Estrategia e : estrategias) 
+				{ 
+					if(cambio) 
+						break; 
+					if(e == breakout2) 
+						continue; 
+					for(Senal s : e.getSenalesCopy()) 
+					{ 
+						if(s.getPar().equals(pm.par) && e.darActivo(s.getPar()) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra()) 
+						{ 
+							cambio = true; 
+							s.ponerMagico(0, pm.magico); 
+							Error.agregar("Asignando magico tentativamente: " + e.getId() + " " + s.getPar() + " " + pm.magico); 
+							break; 
+						} 
+					} 
+				} 
+				if(!cambio) 
+				{ 
+					escritorOtros.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
+					mensaje2 += "\n" + "Otros " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado"; 
+				} 
+			} 
+			escritorOtros.terminarCiclo(); 
+			for(ParMagico pm : parMagicosRealesElite) 
+			{ 
+				escritorElite.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
+				mensaje2 += "\n" + "Elite " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado"; 
+			} 
+			escritorElite.terminarCiclo(); 
+			mensaje += mensaje2; 
+			if(!mensaje2.equals("")) 
+				Error.agregar(mensaje2); 
+			if(enviarMensaje) 
+				Error.agregar(mensaje); 
+
+			escritorBreakout2.debug = true; 
+			escritorOtros.debug = true; 
+			escritorElite.debug = true; 
+		} 
+		catch(Exception e) 
+		{ 
+			Error.agregar("Error en el metodo " + e.getMessage()); 
+		} 
 	}
 	
 	public void iniciarHilo() 
@@ -640,17 +638,14 @@ public class SistemaDailyFX extends SistemaEstrategias
 				Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), Par.convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
 				nuevasSenales.add(actual);
 			}
-			ArrayList <BidAsk> precio = new ArrayList <BidAsk> ();
-			for(int i=0; i < bid.size(); i++)
+			for(int i = 0; i < bid.size(); i++)
 			{
-				if(Par.convertirPar(currency.get(i)) == null)
+				Par actual = Par.convertirPar(currency.get(i));
+				if(actual != null)
 				{
-					continue;
+					actual.ponerPrecioActual(bid.get(i), ask.get(i));
 				}
-				BidAsk actual = new BidAsk(bid.get(i), ask.get(i), Par.convertirPar(currency.get(i)));
-				precio.add(actual);
 			}
-			dailyOCR.preciosActuales = precio;
 			return nuevasSenales;
 		}
 		catch(Exception e)
@@ -672,25 +667,25 @@ public class SistemaDailyFX extends SistemaEstrategias
 				{
 					if(senal.isCompra() != afectada.isCompra())
 					{
-						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes(), 0), afectada, false);
-						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
-						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, 0, 0), actual.getId());
-						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
+						actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes(), 0), afectada);
+						actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada);
+						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, 0, 0), actual.getId());
+						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
 						cambio.set(true);
 						Error.agregar("cambio");
 					}
 					if(afectada.getNumeroLotes() > senal.getNumeroLotes())
 					{
-						actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada, false);
-						elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
+						actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada);
+						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
 						cambio.set(true);
 						Error.agregar("cambio");
 					}
 				}
 				else
 				{
-					actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada, false);
-					elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
+					actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada);
+					elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
 					cambio.set(true);
 					Error.agregar("cambio");
 				}
@@ -721,18 +716,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 						}
 						if(!encontrada)
 						{
-							if(!senal.isManual())
-							{
-								actual.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal, false);
-								elite.agregar(new SenalEntrada(senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
-								cambio.set(true);
-								Error.agregar("cambio");
-							}
-							if(senal.isManual() && senal.getNumeroLotes() == 0)
-							{
-								actual.getSenalesSync().remove(senal);
-								i = -1;
-							}
+							actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal);
+							elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
+							cambio.set(true);
+							Error.agregar("cambio");
 						}
 					}
 				}

@@ -222,7 +222,7 @@ public class SistemaJoel extends SistemaEstrategias
 			{
 				try
 				{
-					joel.agregar(new SenalEntrada(senal.getPar(), TipoSenal.TRADE, senal.isCompra(), 1, senal.getPrecioEntrada()), senal, false);
+					joel.agregar(new SenalEntrada(joel.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), 1, senal.getPrecioEntrada()), senal);
 				}
 				catch(Exception e)
 				{

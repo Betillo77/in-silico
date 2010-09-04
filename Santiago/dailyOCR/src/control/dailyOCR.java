@@ -8,9 +8,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import modelo.BidAsk;
 import modelo.Estrategia;
-import modelo.Par;
 import modelo.Senal;
 import modelo.SistemaEstrategias;
 import modelo.dailyFx.SistemaDailyFX;
@@ -18,7 +16,6 @@ import vista.ParteGrafica;
 
 public class dailyOCR
 {
-	public static ArrayList <BidAsk> preciosActuales;
 	static ArrayList <SistemaEstrategias> sistemas;
 	static Class <?> [] clasesSistemas = {
 										    SistemaDailyFX.class//,
@@ -92,23 +89,6 @@ public class dailyOCR
 		}
 		Error.agregar("No se encontro la estrategia: " + id.toString());
 		return null;
-	}
-	
-	public static double precioPar(Par par, boolean compra)
-	{
-    	int i = 0;
-    	while(!(dailyOCR.preciosActuales.get(i).getCurrency().equals(par)))
-    	{
-    		i++;
-    	}
-    	if(compra == true)
-    	{
-    		return dailyOCR.preciosActuales.get(i).getBid();
-    	}
-    	else
-    	{
-    		return dailyOCR.preciosActuales.get(i).getAsk();
-    	}
 	}
 	
 	public static void salir()

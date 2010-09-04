@@ -17,6 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import control.Error;
 import control.dailyOCR;
+import control.conexion.ConexionMySql;
 
 
 public class Escritor
@@ -106,13 +107,7 @@ public class Escritor
 						}
 						if(debug)
 						{
-							Error.agregar("Notificado " + pathMeta);
-							try {
-								Thread.sleep(10000);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							Error.agregar("Notificado " + pathMeta + " " + System.currentTimeMillis());
 						}
 						procesar(entradas.peek());
 						entradas.take();
@@ -146,13 +141,7 @@ public class Escritor
 			{
 				if(debug)
 				{
-					Error.agregar("Encolando y notificando " + pathMeta + " " + mensaje);
-					try {
-						Thread.sleep(10000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					Error.agregar("Encolando y notificando " + pathMeta + " " + mensaje + " " + System.currentTimeMillis());
 				}
 				entradas.notifyAll();
 			}
@@ -216,6 +205,7 @@ public class Escritor
 			{
 				socket.setSoTimeout(tiempoEspera);
 				String magicos = socketIn.readLine();
+				Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
 				String [] magicosPartidos = magicos.split("-");
 				for(String s : magicosPartidos)
 					leidos.add(s);
@@ -255,8 +245,23 @@ public class Escritor
 	{
 		if(entrada.isCierre())
 		{
-			if(lectura.equals("0;OK"))
+			if(lectura.endsWith("_CIERRE"))
+			{
+				Scanner sc = new Scanner(lectura);
+		        sc.useDelimiter("\\Q;\\E");
+		        int gananciaReal = sc.nextInt();
+		        Par par = Par.convertirPar(sc.next().replace("_CIERRE", ""));
+		        if(par == null)
+		        	Error.agregar("Par no encontrado en escritor: " + lectura);
+		        else
+		        {
+		        	Senal actual = darSenal(entrada);
+		        	actual.ponerGananciaReal(gananciaReal);
+		        	for(int i = 0; i < entrada.getNumeroLotes(); i++)
+						ConexionMySql.agregarEntrada(entrada.getId(), actual);
+		        }
 				return true;
+			}
 			else
 			{
 				Error.agregar("Error, resultado de un cierre no fue OK, fue: " + lectura);
@@ -275,13 +280,7 @@ public class Escritor
         		actual.ponerMagico(0, magico);
         		if(debug)
         		{
-        			Error.agregar("Procesado " + lectura + " -> " + entrada.getId().toString() + " " + par.toString() + " " + magico);
-					try {
-						Thread.sleep(10000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+        			Error.agregar("Procesado " + lectura + " -> " + entrada.getId().toString() + " " + par.toString() + " " + magico + " " + System.currentTimeMillis());
         		}
         	}
         	else
@@ -382,7 +381,6 @@ public class Escritor
 	
 	public void cerrar(SenalEntrada entrada, Senal afectada)
 	{
-		Estrategia estrategia = dailyOCR.darEstrategiaSenal(afectada);
 		if(entrada.getNumeroLotes() > 5)
 		{
     		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);
@@ -392,35 +390,19 @@ public class Escritor
 		{
 			if(afectada.getNumeroLotes() == 0)
 			{
-				enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true));
-				Error.agregar("Cerrado: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0));
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				enConstruccion.add(new EntradaEscritor(entrada.getEstrategia(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true, entrada.getNumeroLotes()));
+				Error.agregar("Cerrado: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " " + System.currentTimeMillis());
 			}
 			else
 			{
-				Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta);
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				for(int i = 0; i < entrada.getNumeroLotes(); i++)
+					ConexionMySql.agregarEntrada(entrada.getEstrategia(), afectada);
+				Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta + " " + System.currentTimeMillis());
 			}
 		}
 		else
 		{
-			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta);
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta + " " + System.currentTimeMillis());
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;
@@ -438,23 +420,11 @@ public class Escritor
 		if(estrategia.darActivo(entrada.getPar()))
 		{
 			enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false)); 
-			Error.agregar("Abierto: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0");
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Error.agregar("Abierto: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0" + " " + System.currentTimeMillis());
 		}
 		else
 		{
-			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta);
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta + " " + System.currentTimeMillis());
 		}
 		nueva.setMagico(new int[entrada.getNumeroLotes()]);
 	}

@@ -7,6 +7,7 @@ public class EntradaEscritor
 	private Par par;
 	private String linea;
 	private boolean cierre;
+	private int numeroLotes = 0;
 
 	public EntradaEscritor()
 	{
@@ -20,20 +21,26 @@ public class EntradaEscritor
 		cierre = c;
 	}
 
-	public IdEstrategia getId() {
-		return id;
+	public EntradaEscritor(IdEstrategia i, Par p, String l, boolean c, int nL) 
+	{
+		this(i, p, l, c);
+		numeroLotes = nL;
 	}
 
 	public void setId(IdEstrategia id) {
 		this.id = id;
 	}
-
-	public Par getPar() {
-		return par;
+	
+	public IdEstrategia getId() {
+		return id;
 	}
 
 	public void setPar(Par par) {
 		this.par = par;
+	}
+	
+	public Par getPar() {
+		return par;
 	}
 
 	public void setLinea(String linea) {
@@ -43,12 +50,20 @@ public class EntradaEscritor
 	public String getLinea() {
 		return linea;
 	}
+	
+	public void setCierre(boolean cierre) {
+		this.cierre = cierre;
+	}
 
 	public boolean isCierre() {
 		return cierre;
 	}
 
-	public void setCierre(boolean cierre) {
-		this.cierre = cierre;
+	public void setNumeroLotes(int numeroLotes) {
+		this.numeroLotes = numeroLotes;
+	}
+
+	public int getNumeroLotes() {
+		return numeroLotes;
 	}
 }

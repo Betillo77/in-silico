@@ -4,20 +4,19 @@ import control.IdEstrategia;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 public class Senal
-{
+{	
 	private IdEstrategia estrategia;
 	private boolean compra;
 	private Par par;
 	private int numeroLotes;
-	private int lotesCerradosManualmente = 0;
 	private double precioEntrada;
 	private int[] magico = {0};
-    private boolean manual = false;
     private double limite;
 	private double VIX = 0.0d;
 	private double SSI1 = 0.0d;
 	private double SSI2 = 0.0d;
 	private long fechaInicio = 0;
+	private transient int gananciaReal = Short.MIN_VALUE;
 	
 	public Senal()
 	{
@@ -31,8 +30,8 @@ public class Senal
 		this.numeroLotes = numeroLotes;
 		this.precioEntrada = precioEntrada;
 		this.VIX = ConexionServidorDailyFx.darVIX();
-		this.SSI1 = ConexionServidorDailyFx.darSSI(Par.padres[par.ordinal()][0]);
-		this.SSI2 = ConexionServidorDailyFx.darSSI(Par.padres[par.ordinal()][1]);
+		this.SSI1 = par.darPadreUno().darSSI();
+		this.SSI2 = par.darPadreDos().darSSI();
 		this.fechaInicio = System.currentTimeMillis();
 	}
     
@@ -68,14 +67,6 @@ public class Senal
 		this.numeroLotes = numeroLotes;
 	}
 
-	public int getLotesCerradosManualmente() {
-		return lotesCerradosManualmente;
-	}
-
-	public void setLotesCerradosManualmente(int lotesCerradosManualmente) {
-		this.lotesCerradosManualmente = lotesCerradosManualmente;
-	}
-
 	public double getPrecioEntrada() {
 		return precioEntrada;
 	}
@@ -105,14 +96,6 @@ public class Senal
 	
 	public synchronized void setMagico(int[] magico) {
 		this.magico = magico;
-	}
-
-	public boolean isManual() {
-		return manual;
-	}
-
-	public void setManual(boolean manual) {
-		this.manual = manual;
 	}
 
 	public double getLimite() {
@@ -153,6 +136,14 @@ public class Senal
 
 	public long getFechaInicio() {
 		return fechaInicio;
+	}
+	
+	public synchronized void ponerGananciaReal(int gananciaReal) {
+		this.gananciaReal = gananciaReal;
+	}
+	
+	public synchronized int darGananciaReal() {
+		return gananciaReal;
 	}
 	
 	public String toString()
