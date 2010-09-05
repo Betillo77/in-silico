@@ -16,14 +16,14 @@ import vista.ParteGrafica;
 
 public class dailyOCR
 {
-	static ArrayList <SistemaEstrategias> sistemas;
-	static Class <?> [] clasesSistemas = {
+	private static ArrayList <SistemaEstrategias> sistemas;
+	private static Class <?> [] clasesSistemas = {
 										    SistemaDailyFX.class//,
 											//SistemaJoel.class,
 										  //SistemaTechnical
 	};
 	
-	public static void cargarSistemasEstrategias()
+	private static void cargarSistemasEstrategias()
 	{
 		sistemas = new ArrayList <SistemaEstrategias> ();
 		for(Class <?> clase : clasesSistemas)
@@ -39,7 +39,7 @@ public class dailyOCR
 		}
 	}
 	
-	public static void iniciarHilos()
+	private static void iniciarHilos()
 	{
 		for(SistemaEstrategias sistema : sistemas)
 		{
@@ -95,6 +95,8 @@ public class dailyOCR
 	{
 		if(sistemas != null)
 			salir(0);
+		else
+			System.exit(0);
 	}
 	
 	private static void salir(int n)
@@ -113,6 +115,13 @@ public class dailyOCR
 	
 	public static void main(String [] args) throws IOException
 	{
+		Calendar c = Calendar.getInstance();
+		int dia = c.get(Calendar.DAY_OF_WEEK);
+		if(dia == Calendar.SATURDAY)
+		{
+			Runtime.getRuntime().exec("shutdown now -P");
+			System.exit(0);
+		}
 		cargarSistemasEstrategias();
 		ParteGrafica pg = new ParteGrafica();
 		JFrame framePrincipal = new JFrame();
@@ -124,14 +133,6 @@ public class dailyOCR
 		framePrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		Calendar actual = Calendar.getInstance();
 		Error.agregar("Iniciando operaciones automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
-		new Thread(new Runnable()
-					{
-						@Override
-						public void run() 
-						{
-							iniciarHilos();
-						}
-						
-					}).start();
+		iniciarHilos();
 	}
 }	

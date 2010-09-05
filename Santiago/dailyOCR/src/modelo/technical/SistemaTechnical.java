@@ -10,6 +10,7 @@ import modelo.Senal;
 import modelo.SenalEntrada;
 import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
+import control.AdministradorHilos;
 import control.Error;
 import control.IdEstrategia;
 import control.conexion.technical.ConexionServidorTechnical;
@@ -49,7 +50,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	
 	public void iniciarHilo() 
 	{
-		new Thread(new Runnable()
+		Thread hiloPrincipal = new Thread(new Runnable()
 		{
 			@Override
 			public void run() 
@@ -104,7 +105,9 @@ public class SistemaTechnical extends SistemaEstrategias
 					}
 				}
 			}
-		}).start();
+		});
+		hiloPrincipal.setName("Principal " + getClass().getCanonicalName());
+		AdministradorHilos.agregarHilo(hiloPrincipal);
 	}
 	
 	protected ArrayList <Senal> leer(String[] contenidos)

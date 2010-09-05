@@ -2,7 +2,6 @@ package modelo;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +14,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import control.AdministradorHilos;
 import control.Error;
 import control.dailyOCR;
 import control.conexion.ConexionMySql;
@@ -92,7 +92,7 @@ public class Escritor
 		}
 		iniciarSocket();
 		enConstruccion = new ArrayList <EntradaEscritor> ();
-		new Thread(new Runnable()
+		Thread hiloEscritor = new Thread(new Runnable()
 		{
 			public void run() 
 			{
@@ -118,7 +118,9 @@ public class Escritor
 					}
 				}
 			}
-		}).start();
+		});
+		hiloEscritor.setName("Escritor " + path);
+		AdministradorHilos.agregarHilo(hiloEscritor);
 	}
 	
 	public void terminarCiclo()
@@ -196,41 +198,37 @@ public class Escritor
 		}
 	}
 
-	private ArrayList <String> leer(int tiempoEspera) throws FileNotFoundException
+	private ArrayList <String> leer(int tiempoEspera)
 	{
-		ArrayList <String> leidos = new ArrayList <String> ();
-		for(int i = 0; i < 6; i++)
+		try
 		{
-			try
-			{
-				socket.setSoTimeout(tiempoEspera);
-				String magicos = socketIn.readLine();
-				Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
-				String [] magicosPartidos = magicos.split("-");
-				for(String s : magicosPartidos)
-					leidos.add(s);
-				return leidos;
-			}
-			catch(SocketTimeoutException e)
-			{
-				if(i == 5)
-				{
-					Error.agregar(e.getMessage() + " error leyendo en el socket: " + pathMeta + ", no se recibio nada en 5 intentos");
-					throw(new FileNotFoundException("Socket no responde"));
-				}
-				else
-					Error.agregar("Socket no respondio en " + tiempoEspera + " esperando");
-			}
-			catch(Exception e)
-			{
-				Error.agregar(e.getMessage() + " error escribiendo en el socket");
-				throw(new FileNotFoundException("Error en el socket"));
-			}
+			ArrayList <String> leidos = new ArrayList <String> ();
+			File archivoEscritura = new File(pathMeta + "log.txt");
+			socket.setSoTimeout(tiempoEspera * 5);
+			String magicos = socketIn.readLine();
+			Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
+			if(!archivoEscritura.exists())
+				archivoEscritura.createNewFile();
+			FileWriter fw = new FileWriter(archivoEscritura, true);
+			fw.write(magicos + "\n");
+			fw.close();
+			String [] magicosPartidos = magicos.split("-");
+			for(String s : magicosPartidos)
+				leidos.add(s);
+			return leidos;
+		}
+		catch(SocketTimeoutException e)
+		{
+			Error.agregar("Socket no respondio en " + tiempoEspera + " esperando");
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " error escribiendo en el socket");
 		}
 		return null;
 	}
 	
-	private ArrayList <String> cargarEntradas(ArrayList <EntradaEscritor> trabajoActual, int tiempoExtra) throws FileNotFoundException
+	private ArrayList <String> cargarEntradas(ArrayList <EntradaEscritor> trabajoActual, int tiempoExtra)
 	{
 		escribir(trabajoActual);
 		return leer(10000 + 20000 * trabajoActual.size() + tiempoExtra);
@@ -250,21 +248,48 @@ public class Escritor
 				Scanner sc = new Scanner(lectura);
 		        sc.useDelimiter("\\Q;\\E");
 		        int gananciaReal = sc.nextInt();
-		        Par par = Par.convertirPar(sc.next().replace("_CIERRE", ""));
-		        if(par == null)
-		        	Error.agregar("Par no encontrado en escritor: " + lectura);
+		        String stringMagico = sc.next().replace("_CIERRE", "");
+		        int magico = 0;
+		        boolean error = false;
+		        try
+		        {
+		        	magico = Integer.parseInt(stringMagico);
+		        }
+		        catch(Exception e)
+		        {
+		        	error = true;
+		        }
+		        if(error)
+		        	Error.agregar("Error procesando magico de cierre en escritor: " + pathMeta + ", respuesta: " + lectura);
 		        else
 		        {
-		        	Senal actual = darSenal(entrada);
-		        	actual.ponerGananciaReal(gananciaReal);
-		        	for(int i = 0; i < entrada.getNumeroLotes(); i++)
-						ConexionMySql.agregarEntrada(entrada.getId(), actual);
+		        	Senal actual = entrada.getAfectada();
+		        	if(actual == null)
+		        		return true;
+		        	if(magico == actual.darMagico(0))
+		        	{
+			        	for(int i = 0; i < entrada.getNumeroLotes() - 1; i++)
+							ConexionMySql.agregarEntrada(entrada.getId(), actual);
+			        	actual.ponerGananciaReal(gananciaReal);
+			        	ConexionMySql.agregarEntrada(entrada.getId(), actual);
+		        	}
+		        	else
+		        	{
+		        		Error.agregar("Senal no existia: " + entrada.getLinea() + ", en escritor: " + pathMeta);
+			        	for(int i = 0; i < entrada.getNumeroLotes(); i++)
+							ConexionMySql.agregarEntrada(entrada.getId(), actual);
+			        	return false;
+		        	}
 		        }
 				return true;
 			}
 			else
 			{
-				Error.agregar("Error, resultado de un cierre no fue OK, fue: " + lectura);
+				Error.agregar("Error, resultado de un cierre no fue OK o senal no existia, respuesta fue: " + lectura);
+				Senal actual = entrada.getAfectada();
+				if(actual != null)
+					for(int i = 0; i < entrada.getNumeroLotes(); i++)
+						ConexionMySql.agregarEntrada(entrada.getId(), actual);
 				return false;
 			}
 		}
@@ -299,21 +324,19 @@ public class Escritor
 		ArrayList <String> entradas = null;
 		for(int i = 0; i < 11; i++)
 		{
-			try
-			{
-				entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
+			entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
+			if(entradas != null)
 				break;
-			}
-			catch(FileNotFoundException e)
+			else
 			{
 				if(i == 10)
 				{
-					Error.agregar(e.getMessage() + " despues de diez intentos, reiniciando");
+					Error.agregar("Error en la lecutura del socket, reiniciando despues de diez intentos");
 					reiniciarEquipo();
 				}
 				else
 				{
-					Error.agregar(e.getMessage());
+					Error.agregar("Error en la lecutura del socket, reiniciando proceso");
 					reiniciarProceso();
 				}
 			}
@@ -352,25 +375,22 @@ public class Escritor
 		debug = false;
 		ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
 		trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
-		trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
 		ArrayList <String> entradas = null;
 		for(int i = 0; i < 11; i++)
 		{
-			try
-			{
-				entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
+			entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
+			if(entradas != null)
 				break;
-			}
-			catch(FileNotFoundException e)
+			else
 			{
 				if(i == 10)
 				{
-					Error.agregar(e.getMessage() + " despues de diez intentos, reiniciando");
+					Error.agregar("Error en la lecutura del socket, reiniciando despues de diez intentos");
 					reiniciarEquipo();
 				}
 				else
 				{
-					Error.agregar(e.getMessage());
+					Error.agregar("Error en la lecutura del socket, reiniciando proceso");
 					reiniciarProceso();
 				}
 			}
@@ -390,7 +410,7 @@ public class Escritor
 		{
 			if(afectada.getNumeroLotes() == 0)
 			{
-				enConstruccion.add(new EntradaEscritor(entrada.getEstrategia(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true, entrada.getNumeroLotes()));
+				enConstruccion.add(new EntradaEscritor(entrada.getEstrategia(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true, entrada.getNumeroLotes(), afectada));
 				Error.agregar("Cerrado: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " " + System.currentTimeMillis());
 			}
 			else
@@ -402,6 +422,8 @@ public class Escritor
 		}
 		else
 		{
+			for(int i = 0; i < entrada.getNumeroLotes(); i++)
+				ConexionMySql.agregarEntrada(entrada.getEstrategia(), afectada);
 			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta + " " + System.currentTimeMillis());
 		}
 		if(afectada.getNumeroLotes() <= 0)

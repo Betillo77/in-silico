@@ -13,12 +13,10 @@ public abstract class SistemaEstrategias
 	protected Method metodoLectura;
 	
 	boolean mensajeEnviado = false, chequeoRealizado = false;
-	
-	public abstract void cargarEstrategias();
 
-	public abstract void verificarConsistencia();
+	protected abstract void verificarConsistencia();
 	
-	public abstract void chequearSenales(boolean enviarMensaje);
+	protected abstract void chequearSenales(boolean enviarMensaje);
 	
 	protected abstract ArrayList <Senal> leer(String [] lecturas);
 	
@@ -56,10 +54,9 @@ public abstract class SistemaEstrategias
 					chequeoRealizado = true;
 				}
 			}
-			if((dia == Calendar.FRIDAY && hora > 16) || (dia == Calendar.SATURDAY))
+			if(dia == Calendar.FRIDAY && hora > 16)
 			{
-				if(dia == Calendar.FRIDAY)
-					Runtime.getRuntime().exec("/home/santiago/backup");
+				Runtime.getRuntime().exec("/home/santiago/backup");
 				Thread.sleep(60000);
 				Calendar actual = Calendar.getInstance();
 				Error.agregar("Apagando equipo automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
@@ -78,10 +75,12 @@ public abstract class SistemaEstrategias
 	{
 		return this;
 	}
-
+	
+	public abstract void cargarEstrategias();
+	
+	public abstract void iniciarHilo();
+	
 	public abstract void persistir();
 
 	public abstract Estrategia darEstrategia(IdEstrategia estrategia);
-
-	public abstract void iniciarHilo();
 }

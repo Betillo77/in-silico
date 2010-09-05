@@ -71,18 +71,17 @@ public class SenalEntrada
 		this.limite = limite;
 	}
 
-	@Override
-	public boolean equals(Object otra1)
-	{
-		SenalEntrada otra = (SenalEntrada) otra1;
-		return par == otra.par && tipo == otra.tipo && compra == otra.compra;
-	}
-
 	public void setEstrategia(IdEstrategia estrategia) {
 		this.estrategia = estrategia;
 	}
 
 	public IdEstrategia getEstrategia() {
 		return estrategia;
+	}
+	
+	public boolean equals(Object otra1)
+	{
+		SenalEntrada otra = (SenalEntrada) otra1;
+		return par == otra.par && tipo == otra.tipo && compra == otra.compra;
 	}
 }

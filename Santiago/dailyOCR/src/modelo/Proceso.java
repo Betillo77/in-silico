@@ -2,6 +2,8 @@ package modelo;
 
 import java.io.File;
 import java.io.IOException;
+
+import control.AdministradorHilos;
 import control.Error;
 
 public class Proceso 
@@ -26,7 +28,7 @@ public class Proceso
 		pb.directory(new File("/home/santiago/Desktop/dailyOCR/" + path));
 		pb.command("wine", "terminal.exe");
 		proceso = pb.start();
-		new Thread(new Runnable() 
+		final Thread hiloMonitor = new Thread(new Runnable() 
 		{
 			public void run() 
 			{
@@ -36,6 +38,7 @@ public class Proceso
 					proceso.waitFor();
 					Error.agregar("Reiniciando proceso: " + path);
 					Thread.sleep(10000);
+					AdministradorHilos.eliminarHilo("Monitor proceso " + path);
 					iniciar();
 				} 
 				catch (Exception e)
@@ -43,6 +46,8 @@ public class Proceso
 					Error.agregar(e.getMessage() + " Error en el vigilante del proceso: " + path);
 				}
 			}
-		}).start();
+		});
+		hiloMonitor.setName("Monitor proceso " + path);
+		AdministradorHilos.agregarHilo(hiloMonitor);
 	}
 }

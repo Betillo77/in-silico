@@ -8,6 +8,7 @@ public class EntradaEscritor
 	private String linea;
 	private boolean cierre;
 	private int numeroLotes = 0;
+	private Senal afectada = null;
 
 	public EntradaEscritor()
 	{
@@ -21,10 +22,11 @@ public class EntradaEscritor
 		cierre = c;
 	}
 
-	public EntradaEscritor(IdEstrategia i, Par p, String l, boolean c, int nL) 
+	public EntradaEscritor(IdEstrategia i, Par p, String l, boolean c, int nL, Senal a) 
 	{
 		this(i, p, l, c);
 		numeroLotes = nL;
+		afectada = a;
 	}
 
 	public void setId(IdEstrategia id) {
@@ -65,5 +67,13 @@ public class EntradaEscritor
 
 	public int getNumeroLotes() {
 		return numeroLotes;
+	}
+
+	public void setAfectada(Senal afectada) {
+		this.afectada = afectada;
+	}
+
+	public Senal getAfectada() {
+		return afectada;
 	}
 }

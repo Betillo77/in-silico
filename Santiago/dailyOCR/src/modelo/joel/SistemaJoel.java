@@ -15,6 +15,7 @@ import modelo.Senal;
 import modelo.SenalEntrada;
 import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
+import control.AdministradorHilos;
 import control.Error;
 import control.IdEstrategia;
 import control.conexion.joel.ConexionServidorJoel;
@@ -54,7 +55,7 @@ public class SistemaJoel extends SistemaEstrategias
 	
 	public void iniciarHilo() 
 	{
-		new Thread(new Runnable()
+		Thread hiloPrincipal = new Thread(new Runnable()
 		{
 			@Override
 			public void run() 
@@ -109,7 +110,9 @@ public class SistemaJoel extends SistemaEstrategias
 					}
 				}
 			}
-		}).start();
+		});
+		hiloPrincipal.setName("Principal " + getClass().getCanonicalName());
+		AdministradorHilos.agregarHilo(hiloPrincipal);
 	}
 	
 	public static Senal deducir(String subject)

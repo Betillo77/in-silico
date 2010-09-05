@@ -16,6 +16,7 @@ import modelo.Senal;
 import modelo.SenalEntrada;
 import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
+import control.AdministradorHilos;
 import control.Error;
 import control.IdEstrategia;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
@@ -122,7 +123,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		persistir();
 	}
 
-	public void verificarConsistencia()
+	protected void verificarConsistencia()
 	{
 		if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null ||
 		   elite == null || breakout1.verificarConsistencia() || breakout2.verificarConsistencia() || range1.verificarConsistencia() ||
@@ -132,7 +133,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 	}
 	
-	public void chequearSenales(boolean enviarMensaje) 
+	protected void chequearSenales(boolean enviarMensaje) 
 	{
 		try 
 		{ 
@@ -426,7 +427,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 	
 	public void iniciarHilo() 
 	{
-		new Thread(new Runnable()
+		Thread hiloPrincipal = new Thread(new Runnable()
 		{
 			public void run() 
 			{
@@ -475,8 +476,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 					}
 				}
 			}
-		}).start();
-		new Thread(new Runnable()
+		});
+		hiloPrincipal.setName("Principal " + getClass().getCanonicalName());
+		AdministradorHilos.agregarHilo(hiloPrincipal);
+		Thread hiloPersistencia = new Thread(new Runnable()
 		{
 			public void run() 
 			{
@@ -508,8 +511,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 				}
 			}
 			
-		}).start();
-		new Thread(new Runnable()
+		});
+		hiloPersistencia.setName("Presistencia " + getClass().getCanonicalName());
+		AdministradorHilos.agregarHilo(hiloPersistencia);
+		Thread hiloSSIVix = new Thread(new Runnable()
 		{
 			public void run() 
 			{
@@ -548,7 +553,9 @@ public class SistemaDailyFX extends SistemaEstrategias
 					}
 				}
 			}
-		}).start();
+		});
+		hiloSSIVix.setName("Monitor VIX-SSI");
+		AdministradorHilos.agregarHilo(hiloSSIVix);
 	}
 
 	protected ArrayList <Senal> leer(String [] entradas)
