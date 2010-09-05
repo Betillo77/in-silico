@@ -53,7 +53,7 @@ public class ConexionMySql
 		String fecha = "'" + calendar.get(Calendar.YEAR);
 		fecha += "-" + (calendar.get(Calendar.MONTH) + 1);
 		fecha += "-" + calendar.get(Calendar.DATE);
-		fecha += " " + calendar.get(Calendar.HOUR);
+		fecha += " " + calendar.get(Calendar.HOUR_OF_DAY);
 		fecha += ":" + calendar.get(Calendar.MINUTE);
 		fecha += ":" + calendar.get(Calendar.SECOND);
 		fecha += "'";
