@@ -37,6 +37,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 	 
 	ArrayList <Estrategia> estrategias;
 	
+	@Override
 	public void cargarEstrategias()
 	{
 		breakout1 = Estrategia.leer(IdEstrategia.BREAKOUT1);
@@ -123,6 +124,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		persistir();
 	}
 
+	@Override
 	protected void verificarConsistencia()
 	{
 		if(breakout1 == null || breakout2 == null || range1 == null || range2 == null || momentum1 == null || momentum2 == null ||
@@ -133,6 +135,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 	}
 	
+	@Override
 	protected void chequearSenales(boolean enviarMensaje) 
 	{
 		try 
@@ -425,6 +428,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		} 
 	}
 	
+	@Override
 	public void iniciarHilo() 
 	{
 		Thread hiloPrincipal = new Thread(new Runnable()
@@ -558,6 +562,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		AdministradorHilos.agregarHilo(hiloSSIVix);
 	}
 
+	@Override
 	protected ArrayList <Senal> leer(String [] entradas)
 	{
 		try
@@ -662,6 +667,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 	}
 
+	@Override
 	protected void procesar(ArrayList <Senal> senalesLeidas)
 	{
 		try
@@ -738,6 +744,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 	}
 
+	@Override
 	public void persistir() 
 	{
 		synchronized(este())
@@ -755,6 +762,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 	}
 
+	@Override
 	public Estrategia darEstrategia(IdEstrategia id)
 	{
 		switch(id)
