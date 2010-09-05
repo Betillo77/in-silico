@@ -25,6 +25,7 @@ public class SistemaJoel extends SistemaEstrategias
 	Escritor escritor;
 	Estrategia joel;
 
+	@Override
 	public void cargarEstrategias() 
 	{
 		escritor = new Escritor("joel/experts/files/", null);
@@ -45,6 +46,7 @@ public class SistemaJoel extends SistemaEstrategias
 		persistir();
 	}
 	
+	@Override
 	public void verificarConsistencia() 
 	{
 		if(joel == null || joel.verificarConsistencia())
@@ -53,6 +55,7 @@ public class SistemaJoel extends SistemaEstrategias
 		}
 	}
 	
+	@Override
 	public void iniciarHilo() 
 	{
 		Thread hiloPrincipal = new Thread(new Runnable()
@@ -188,6 +191,7 @@ public class SistemaJoel extends SistemaEstrategias
     	return null;	
     }
 	
+	@Override
 	protected ArrayList <Senal> leer(String[] lecturas) 
 	{
 		if(lecturas.length > 0)
@@ -217,6 +221,7 @@ public class SistemaJoel extends SistemaEstrategias
 		return senalesLeidas;
 	}
 	
+	@Override
 	protected void procesar(ArrayList <Senal> senalesLeidas) 
 	{
 		try
@@ -239,11 +244,13 @@ public class SistemaJoel extends SistemaEstrategias
 		}
 	}
 	
+	@Override
 	public void persistir() 
 	{
 		joel.escribir();
 	}
 	
+	@Override
 	public Estrategia darEstrategia(IdEstrategia id)
 	{
 		if(id == IdEstrategia.JOEL)
@@ -253,6 +260,7 @@ public class SistemaJoel extends SistemaEstrategias
 		return null;
 	}
 
+	@Override
 	public void chequearSenales(boolean enviarMensaje) 
 	{
 		String mensaje = this.getClass().getCanonicalName() + " OK";

@@ -79,6 +79,7 @@ public class SenalEntrada
 		return estrategia;
 	}
 	
+	@Override
 	public boolean equals(Object otra1)
 	{
 		SenalEntrada otra = (SenalEntrada) otra1;

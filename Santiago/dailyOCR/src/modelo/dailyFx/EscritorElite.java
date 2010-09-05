@@ -16,6 +16,7 @@ public class EscritorElite extends Escritor
 		super(path, iniciales);
 	}
 
+	@Override
 	protected Senal darSenal(EntradaEscritor entrada) 
 	{
 		return ((EstrategiaElite) dailyOCR.darEstrategia(IdEstrategia.ELITE)).tienePar(entrada.getId(), entrada.getPar());

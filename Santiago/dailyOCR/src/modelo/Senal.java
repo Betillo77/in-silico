@@ -146,6 +146,7 @@ public class Senal
 		return gananciaReal;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada; 

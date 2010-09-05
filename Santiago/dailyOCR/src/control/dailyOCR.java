@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import modelo.Estrategia;
 import modelo.Senal;
@@ -130,7 +131,7 @@ public class dailyOCR
 		framePrincipal.add(pg);
 		framePrincipal.pack();
 		framePrincipal.setVisible(true);
-		framePrincipal.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		framePrincipal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		Calendar actual = Calendar.getInstance();
 		Error.agregar("Iniciando operaciones automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
 		iniciarHilos();

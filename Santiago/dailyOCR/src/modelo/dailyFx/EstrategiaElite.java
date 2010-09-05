@@ -66,7 +66,8 @@ public class EstrategiaElite extends Estrategia
 		}
 	}
 	
-    public void escribir()
+    @Override
+	public void escribir()
     {
     	synchronized(senales)
     	{
@@ -115,7 +116,8 @@ public class EstrategiaElite extends Estrategia
     	}
     }
     
-    public boolean verificarConsistencia() 
+    @Override
+	public boolean verificarConsistencia() 
     {
     	synchronized(senales)
     	{

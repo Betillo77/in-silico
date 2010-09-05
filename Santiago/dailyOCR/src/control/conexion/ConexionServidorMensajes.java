@@ -47,6 +47,7 @@ public class ConexionServidorMensajes
 		Session session = Session.getDefaultInstance(props, new Authenticator()
 															{
 														
+																@Override
 																public  PasswordAuthentication getPasswordAuthentication() 
 																{
 																	String username = SMTP_AUTH_USER;

@@ -20,6 +20,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	Escritor escritor;
 	Estrategia technical;
 	
+	@Override
 	public void cargarEstrategias() 
 	{
 		escritor = new Escritor("technical/", null);
@@ -40,6 +41,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		persistir();
 	}
 
+	@Override
 	public void verificarConsistencia() 
 	{
 		if(technical == null || technical.verificarConsistencia())
@@ -48,6 +50,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		}
 	}
 	
+	@Override
 	public void iniciarHilo() 
 	{
 		Thread hiloPrincipal = new Thread(new Runnable()
@@ -110,6 +113,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		AdministradorHilos.agregarHilo(hiloPrincipal);
 	}
 	
+	@Override
 	protected ArrayList <Senal> leer(String[] contenidos)
 	{
 		ArrayList <Senal> nuevas = new ArrayList <Senal> (10);
@@ -159,6 +163,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		return nuevas;
 	}
 	
+	@Override
 	protected void procesar(ArrayList <Senal> senalesLeidas)
 	{
 		try
@@ -220,11 +225,13 @@ public class SistemaTechnical extends SistemaEstrategias
 		}
 	}
 	
+	@Override
 	public void persistir() 
 	{
 		technical.escribir();
 	}
 	
+	@Override
 	public Estrategia darEstrategia(IdEstrategia id)
 	{
 		if(id == IdEstrategia.TECHNICAL)
@@ -234,6 +241,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		return null;
 	}
 	
+	@Override
 	public void chequearSenales(boolean enviarMensaje) 
 	{
 		String mensaje = this.getClass().getCanonicalName() + " OK";

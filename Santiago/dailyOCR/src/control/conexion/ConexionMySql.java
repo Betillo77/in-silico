@@ -1,6 +1,10 @@
 package control.conexion;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,10 +14,9 @@ import javax.swing.JOptionPane;
 
 import modelo.Par;
 import modelo.Senal;
-
-import control.AnalisisLogica.Entrada;
-import control.IdEstrategia;
 import control.Error;
+import control.IdEstrategia;
+import control.AnalisisLogica.Entrada;
 
 public class ConexionMySql
 {
@@ -30,6 +33,7 @@ public class ConexionMySql
 		}
 		try
 		{
+			Error.agregar("Agregando entrada a base de datos Par: " + afectada.getPar() + " Es_compra: " + (afectada.isCompra() ? 1 : 0) + " Ganancia: " + ganancia + " Ganancia real: " + afectada.darGananciaReal() + " Precio entrada: " + afectada.getPrecioEntrada() + " Bid: " + afectada.getPar().darPrecioActual(true) + " Ask: " + afectada.getPar().darPrecioActual(false));
 			double VIX = afectada.getVIX();
 			double SSI1 = afectada.getSSI1();
 			double SSI2 = afectada.getSSI2();
