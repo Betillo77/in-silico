@@ -112,6 +112,7 @@ public class AnalisisLogica
 		Calendar fecha = Calendar.getInstance();
 		ArrayList <Entrada> temporal;
 		final long semana = 1000 * 60 * 60 * 24 * 7;
+		final long mes = 1000 * 60 * 60 * 24 * 30;
 		switch(timeFrame)
 		{
 			case 0:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - semana, par);
@@ -120,15 +121,15 @@ public class AnalisisLogica
 					 break;		
 			case 2:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 3 * semana, par);
 					 break;
-			case 3:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 4 * semana, par);
+			case 3:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - mes, par);
 					 break;
-			case 4:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 8 * semana, par);
+			case 4:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 2 * mes, par);
 					 break;
-			case 5:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 13 * semana, par);
+			case 5:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 3 * mes, par);
 					 break;
-			case 6:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 26 * semana, par);
+			case 6:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 6 * mes, par);
 					 break;
-			case 7:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 52 * semana, par);
+			case 7:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - 12 * mes, par);
 					 break;
 			case 8:  temporal = Buscar(historialEstrategia, 0, par);
 					 break;
