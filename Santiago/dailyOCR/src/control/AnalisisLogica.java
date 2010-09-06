@@ -3,10 +3,10 @@ package control;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import modelo.Par;
-
 import control.conexion.ConexionMySql;
 
 public class AnalisisLogica 
@@ -19,14 +19,15 @@ public class AnalisisLogica
 		{
 			indice++;
 			indice *= -1;
-		}	
+		}
+		Collections.sort(temporal);
 		temporal = temporal.subList(indice, temporal.size());
-		for(int i = 0; i < temporal.size(); i++)
+		for(Iterator <Entrada> it = temporal.iterator(); it.hasNext();)
 		{
-			if(temporal.get(i).par.esDistinto(par))
+			Entrada e = it.next();
+			if(e.par.esDistinto(par))
 			{
-				temporal.remove(i);
-				i--;
+				it.remove();
 			}
 		}
 		return new ArrayList <Entrada> (temporal);

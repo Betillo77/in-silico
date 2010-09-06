@@ -5,10 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
@@ -103,12 +101,12 @@ public class ConexionMySql
         }
     }
 
-	public synchronized static List <Entrada> darEntradas(IdEstrategia estrategia) 
+	public synchronized static LinkedList <Entrada> darEntradas(IdEstrategia estrategia) 
 	{
 		try 
 		{
 			ResultSet rs = conexion.createStatement().executeQuery("select * from Historial where IdEstrategia=" + estrategia.ordinal());
-			ArrayList <Entrada> entradasNuevas = new ArrayList <Entrada> ();
+			LinkedList <Entrada> entradasNuevas = new LinkedList <Entrada> ();
 			while(rs.next())
 			{
 				entradasNuevas.add(new Entrada(Par.values()[rs.getInt("Par")], rs.getDate("Fecha").getTime(), rs.getInt("Ganancia")));
@@ -118,7 +116,7 @@ public class ConexionMySql
 		catch (SQLException e) 
 		{
 			JOptionPane.showMessageDialog(null, "Error haciendo la lectura de la base de datos");
-			return new ArrayList <Entrada> ();
+			return new LinkedList <Entrada> ();
 		}
 	}
 }
