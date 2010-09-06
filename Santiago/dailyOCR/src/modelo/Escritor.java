@@ -181,7 +181,7 @@ public class Escritor
 			for(EntradaEscritor entrada : trabajoActual)
 			{
 				String linea = entrada.getLinea();
-				lineaEnvio += linea + ";" + "-";
+				lineaEnvio += linea + "-";
 				fw.write(linea + ";\n");
 				mensaje += entrada.getLinea() + ";";
 			}
@@ -206,7 +206,8 @@ public class Escritor
 			File archivoEscritura = new File(pathMeta + "log.txt");
 			socket.setSoTimeout(tiempoEspera * 5);
 			String magicos = socketIn.readLine();
-			Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
+			if(debug)
+				Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
 			if(!archivoEscritura.exists())
 				archivoEscritura.createNewFile();
 			FileWriter fw = new FileWriter(archivoEscritura, true);
@@ -247,7 +248,12 @@ public class Escritor
 			{
 				Scanner sc = new Scanner(lectura);
 		        sc.useDelimiter("\\Q;\\E");
-		        int gananciaReal = sc.nextInt();
+		        String ganancia = sc.next();
+		        int gananciaReal;
+		        if(ganancia.charAt(0) == '(')
+		        	gananciaReal = Integer.parseInt(ganancia.substring(1)) * -1;
+		        else
+		        	gananciaReal = Integer.parseInt(ganancia);
 		        String stringMagico = sc.next().replace("_CIERRE", "");
 		        int magico = 0;
 		        boolean error = false;
