@@ -112,7 +112,7 @@ public class AnalisisLogica
 		Calendar fecha = Calendar.getInstance();
 		ArrayList <Entrada> temporal;
 		final long semana = 1000 * 60 * 60 * 24 * 7;
-		final long mes = 1000 * 60 * 60 * 24 * 30;
+		final long mes = 1000L * 60 * 60 * 24 * 30;
 		switch(timeFrame)
 		{
 			case 0:  temporal = Buscar(historialEstrategia, fecha.getTimeInMillis() - semana, par);
