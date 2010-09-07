@@ -37,7 +37,9 @@ public class Proceso
 							pb.directory(new File("/home/santiago/Desktop/dailyOCR/" + path));
 							pb.command("wine", "terminal.exe");
 							proceso = pb.start();
+							Error.agregar("Iniciando proceso " + path);
 							iniciarSocket();
+							Error.agregar("Conexion establecida " + path);
 							Thread.sleep(30000);
 							proceso.waitFor();
 							Error.agregar("Reiniciando proceso y socket: " + path);
