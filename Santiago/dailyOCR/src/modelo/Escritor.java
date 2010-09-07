@@ -36,6 +36,7 @@ public class Escritor
 		try
 		{
 			proceso.cerrar();
+			socket.close();
 			try 
 			{
 				Thread.sleep(100000);
