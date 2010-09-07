@@ -365,15 +365,12 @@ public class Escritor
 			else
 			{
 				for(int i = 0; i < entrada.getNumeroLotes(); i++)
-					ConexionMySql.agregarEntrada(entrada.getEstrategia(), afectada);
-				Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta + " " + System.currentTimeMillis());
-			}
+					ConexionMySql.agregarEntrada(entrada.getEstrategia(), afectada);			}
 		}
 		else
 		{
 			for(int i = 0; i < entrada.getNumeroLotes(); i++)
 				ConexionMySql.agregarEntrada(entrada.getEstrategia(), afectada);
-			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta + " " + System.currentTimeMillis());
 		}
 		if(afectada.getNumeroLotes() <= 0)
 			return;
@@ -392,10 +389,6 @@ public class Escritor
 		{
 			enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false)); 
 			Error.agregar("Abierto: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0" + " " + System.currentTimeMillis());
-		}
-		else
-		{
-			Error.agregar("Cambio sin consecuencias " + entrada.getPar().toString() + " " + pathMeta + " " + System.currentTimeMillis());
 		}
 		nueva.setMagico(new int[entrada.getNumeroLotes()]);
 	}

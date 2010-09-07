@@ -128,7 +128,7 @@ public class Proceso
 				{
 					Thread.sleep(30000);
 					proceso.waitFor();
-					Error.agregar("Reiniciando proceso: " + path);
+					Error.agregar("Reiniciando proceso y socket: " + path);
 					try
 					{
 						cerrarSocket();
