@@ -122,14 +122,6 @@ public class SistemaDailyFX extends SistemaEstrategias
     		Error.agregar(e.getMessage() + " Error en metodo lectura de sistemaDailyFx");
 		}
 		persistir();
-		try
-		{
-			Thread.sleep(120000);
-		}
-		catch(InterruptedException e)
-		{
-			Error.agregar("Error de interrupcion en " + getClass().getCanonicalName());
-		}
 	}
 
 	@Override
@@ -443,6 +435,15 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			public void run() 
 			{
+				try
+				{
+					Thread.sleep(120000);
+					Error.agregar("Iniciando hilo " + este().getClass().getCanonicalName());
+				}
+				catch(InterruptedException e)
+				{
+					Error.agregar("Error de interrupcion en " + getClass().getCanonicalName());
+				}
 				int numeroErrores = 0;
 				while(true)
 				{
