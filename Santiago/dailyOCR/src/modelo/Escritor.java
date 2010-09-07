@@ -26,6 +26,14 @@ public class Escritor
 	private void reiniciarProceso()
 	{
 		proceso.cerrar();
+		try
+		{
+			Thread.sleep(100000);
+		}
+		catch(InterruptedException e)
+		{
+			Error.agregar("Error de interrupcion en: " + pathMeta);
+		}
 	}
 	
 	private void reiniciarEquipo()

@@ -25,7 +25,42 @@ public class Proceso
 		try
 		{
 			path = p;
-			iniciar();
+			Thread hiloMonitor = new Thread(new Runnable() 
+			{
+				public void run() 
+				{
+					try 
+					{
+						while(true)
+						{
+							ProcessBuilder pb = new ProcessBuilder("");
+							pb.directory(new File("/home/santiago/Desktop/dailyOCR/" + path));
+							pb.command("wine", "terminal.exe");
+							proceso = pb.start();
+							iniciarSocket();
+							Thread.sleep(30000);
+							proceso.waitFor();
+							Error.agregar("Reiniciando proceso y socket: " + path);
+							try
+							{
+								cerrarSocket();
+							}
+							catch(Exception e)
+							{
+								Error.agregar("Error reiniciando proceso, reinicando equipo");
+								reiniciarEquipo();
+							}
+							Thread.sleep(10000);
+						}
+					} 
+					catch (Exception e)
+					{
+						Error.agregar(e.getMessage() + " Error en el vigilante del proceso: " + path);
+					}
+				}
+			});
+			hiloMonitor.setName("Monitor proceso " + path);
+			AdministradorHilos.agregarHilo(hiloMonitor);
 		}
 		catch(Exception e)
 		{
@@ -34,7 +69,7 @@ public class Proceso
 		}
 	}
 
-	public synchronized void iniciarSocket()
+	private synchronized void iniciarSocket()
 	{
 		 String s = null;
 		 try
@@ -94,63 +129,6 @@ public class Proceso
 	public synchronized void cerrar()
 	{
 		proceso.destroy();
-		try
-		{
-			cerrarSocket();
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error reiniciando proceso, reinicando equipo");
-			reiniciarEquipo();
-		}
-		try 
-		{
-			Thread.sleep(100000);
-		} 
-		catch (InterruptedException e1) 
-		{
-			Error.agregar("Error de interrupcion en path: " + path);
-		}
-		iniciarSocket();
-	}
-	
-	private synchronized void iniciar() throws IOException
-	{
-		ProcessBuilder pb = new ProcessBuilder("");
-		pb.directory(new File("/home/santiago/Desktop/dailyOCR/" + path));
-		pb.command("wine", "terminal.exe");
-		proceso = pb.start();
-		final Thread hiloMonitor = new Thread(new Runnable() 
-		{
-			public void run() 
-			{
-				try 
-				{
-					Thread.sleep(30000);
-					proceso.waitFor();
-					Error.agregar("Reiniciando proceso y socket: " + path);
-					try
-					{
-						cerrarSocket();
-					}
-					catch(Exception e)
-					{
-						Error.agregar("Error reiniciando proceso, reinicando equipo");
-						reiniciarEquipo();
-					}
-					Thread.sleep(10000);
-					AdministradorHilos.eliminarHilo("Monitor proceso " + path);
-					iniciar();
-				} 
-				catch (Exception e)
-				{
-					Error.agregar(e.getMessage() + " Error en el vigilante del proceso: " + path);
-				}
-			}
-		});
-		hiloMonitor.setName("Monitor proceso " + path);
-		AdministradorHilos.agregarHilo(hiloMonitor);
-		iniciarSocket();
 	}
 	
 	private void reiniciarEquipo()
