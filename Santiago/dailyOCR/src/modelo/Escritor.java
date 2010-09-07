@@ -1,13 +1,8 @@
 package modelo;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -26,37 +21,15 @@ public class Escritor
 	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
-	private Socket socket = null;
-	private PrintWriter socketOut;
-	private BufferedReader socketIn;
 	public volatile boolean debug = true;
 	
 	private void reiniciarProceso()
 	{
-		try
-		{
-			proceso.cerrar();
-			socket.close();
-			try 
-			{
-				Thread.sleep(100000);
-			} 
-			catch (InterruptedException e1) 
-			{
-				Error.agregar("Error de interrupcion en path: " + pathMeta);
-			}
-			iniciarSocket();
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error reiniciando proceso, reinicando equipo");
-			reiniciarEquipo();
-		}
+		proceso.cerrar();
 	}
 	
 	private void reiniciarEquipo()
 	{
-		new File(pathMeta + "ordenes.txt").delete();
 		try 
 		{
 			Runtime.getRuntime().exec("shutdown now -r");
@@ -82,16 +55,7 @@ public class Escritor
 		{
 			Error.agregar("Error inicializando escritor en path: " + pathMeta);
 		}
-		try
-		{
-			proceso = new Proceso(path);
-		}
-		catch(Exception e)
-		{
-			Error.agregar("Error iniciando proceso, reinicando equipo");
-			reiniciarEquipo();
-		}
-		iniciarSocket();
+		proceso = new Proceso(path);
 		enConstruccion = new ArrayList <EntradaEscritor> ();
 		Thread hiloEscritor = new Thread(new Runnable()
 		{
@@ -151,24 +115,6 @@ public class Escritor
 		}
 	}
 	
-	public synchronized void iniciarSocket()
-	{
-		 String s = null;
-		 try
-		 {
-			 Thread.sleep(100000);
-			 Scanner sc = new Scanner(new File(pathMeta + "port.txt"));
-		     socket = new Socket(s, sc.nextInt());
-		     socketOut = new PrintWriter(socket.getOutputStream(), true);
-		     socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		 }
-		 catch(Exception e)
-		 {
-			 Error.agregar(e.getMessage() + " error iniciando socket, " + pathMeta);
-			 reiniciarEquipo();
-		 }
-	}
-	
 	private void escribir(ArrayList <EntradaEscritor> trabajoActual) 
 	{
 		try
@@ -188,7 +134,7 @@ public class Escritor
 			}
 			lineaEnvio = lineaEnvio.substring(0, lineaEnvio.length() - 1);
 			fw.close();
-			socketOut.println(lineaEnvio);
+			proceso.escribir(lineaEnvio);
 			if(debug)
 				Error.agregar("Escribiendo " + mensaje);
 		}
@@ -205,8 +151,7 @@ public class Escritor
 		{
 			ArrayList <String> leidos = new ArrayList <String> ();
 			File archivoEscritura = new File(pathMeta + "log.txt");
-			socket.setSoTimeout(tiempoEspera * 5);
-			String magicos = socketIn.readLine();
+			String magicos = proceso.leer(tiempoEspera * 5);
 			if(debug)
 				Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
 			if(!archivoEscritura.exists())
@@ -219,13 +164,10 @@ public class Escritor
 				leidos.add(s);
 			return leidos;
 		}
-		catch(SocketTimeoutException e)
-		{
-			Error.agregar("Socket no respondio en " + tiempoEspera + " esperando");
-		}
 		catch(Exception e)
 		{
 			Error.agregar(e.getMessage() + " error escribiendo en el socket");
+			reiniciarProceso();
 		}
 		return null;
 	}
