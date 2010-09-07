@@ -506,10 +506,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 						}
 						if((System.currentTimeMillis() - tiempoAnterior) > 300000)
 							Error.agregar("Error, ultima persistencia fue hace mas de 5 minutos");
-						if(cambio.get())
-						{
-							Error.agregar("Persistiendo cambio");
-						}
 					}
 					persistir();
 				}
@@ -685,14 +681,12 @@ public class SistemaDailyFX extends SistemaEstrategias
 						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, 0, 0), actual.getId());
 						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
 						cambio.set(true);
-						Error.agregar("cambio");
 					}
 					if(afectada.getNumeroLotes() > senal.getNumeroLotes())
 					{
 						actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada);
 						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
 						cambio.set(true);
-						Error.agregar("cambio");
 					}
 				}
 				else
@@ -700,7 +694,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 					actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), afectada);
 					elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.TRADE, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada()), actual.getId());
 					cambio.set(true);
-					Error.agregar("cambio");
 				}
 			}
 			for(Estrategia actual : estrategias)
@@ -732,7 +725,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 							actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), senal);
 							elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
 							cambio.set(true);
-							Error.agregar("cambio");
 						}
 					}
 				}
