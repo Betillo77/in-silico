@@ -131,6 +131,7 @@ public class EstrategiaElite extends Estrategia
 		    		if(s.getNumeroLotes() == 0)
 		    		{
 		    	    	senales.remove(s);
+		    	    	s.getPar().eliminarSenal(s);
 		    	    	borro = true;
 		    	    	break;
 		    		}

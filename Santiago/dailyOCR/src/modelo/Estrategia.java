@@ -90,6 +90,7 @@ public class Estrategia
 			if(afectada.getNumeroLotes() <= 0)
 			{
 				senales.remove(afectada);
+				afectada.getPar().eliminarSenal(afectada);
 			}
 		}
 	}
