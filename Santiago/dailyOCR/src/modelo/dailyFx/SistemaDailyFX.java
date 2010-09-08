@@ -574,6 +574,27 @@ public class SistemaDailyFX extends SistemaEstrategias
 		});
 		hiloSSIVix.setName("Monitor VIX-SSI");
 		AdministradorHilos.agregarHilo(hiloSSIVix);
+		Thread hiloPares = new Thread(new Runnable()
+		{
+			public void run() 
+			{
+				while(true)
+				{
+					try
+					{
+						Thread.sleep(60000);
+						for(Par p : Par.values())
+							p.procesarSenales();
+					}
+					catch(Exception e)
+					{
+						Error.agregar("Error en el monitor de pares " + e.getMessage());
+					}
+				}
+			}
+		});
+		hiloPares.setName("Monitor pares");
+		AdministradorHilos.agregarHilo(hiloPares);
 	}
 
 	@Override

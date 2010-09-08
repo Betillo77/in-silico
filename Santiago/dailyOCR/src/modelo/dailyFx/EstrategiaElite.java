@@ -61,6 +61,7 @@ public class EstrategiaElite extends Estrategia
 					}
 					escritor.abrir(entrada, nueva);
 					senales.add(nueva);
+					nueva.getPar().agregarSenal(nueva);
 				}
 			}
 		}

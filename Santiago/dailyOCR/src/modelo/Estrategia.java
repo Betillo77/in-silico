@@ -107,6 +107,7 @@ public class Estrategia
 			}
 			escritor.abrir(entrada, nueva);
 			senales.add(nueva);
+			nueva.getPar().agregarSenal(nueva);
 		}
 	}
 	
@@ -246,5 +247,7 @@ public class Estrategia
 	
 	public void ponerEscritor(Escritor e) {
 		escritor = e;
+		for(Senal s : senales)
+			s.getPar().agregarSenal(s);
 	}
 }

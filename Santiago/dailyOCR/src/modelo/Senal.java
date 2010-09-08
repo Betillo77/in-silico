@@ -17,6 +17,8 @@ public class Senal
 	private double SSI2 = 0.0d;
 	private long fechaInicio = 0;
 	private transient int gananciaReal = Short.MIN_VALUE;
+	private int low = Short.MAX_VALUE;
+	private int high = Short.MIN_VALUE;
 	
 	public Senal()
 	{
@@ -144,6 +146,22 @@ public class Senal
 	
 	public synchronized int darGananciaReal() {
 		return gananciaReal;
+	}
+
+	public synchronized void setLow(int low) {
+		this.low = low;
+	}
+
+	public synchronized int getLow() {
+		return low;
+	}
+
+	public synchronized void setHigh(int high) {
+		this.high = high;
+	}
+
+	public synchronized int getHigh() {
+		return high;
 	}
 	
 	@Override
