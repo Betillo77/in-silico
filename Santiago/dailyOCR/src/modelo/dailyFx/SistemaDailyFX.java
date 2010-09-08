@@ -420,7 +420,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 				escritorElite.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
 				mensaje2 += "\n" + "Elite " + pm.par + " " + pm.magico + " " + pm.esCompra + " no existe en la bd, eliminado"; 
 			} 
-			escritorElite.terminarCiclo(); 
+			escritorElite.terminarCiclo();
+			for(Par p : Par.values())
+			{
+				mensaje += p.debugSenales();
+			}
 			mensaje += mensaje2; 
 			if(!mensaje2.equals("")) 
 				Error.agregar(mensaje2); 

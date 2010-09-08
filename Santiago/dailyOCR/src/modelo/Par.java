@@ -129,11 +129,23 @@ public enum Par
 	
 	public synchronized void procesarSenales()
 	{
+		if(darPrecioActual(true) == 0 || darPrecioActual(false) == 0)
+			return;
 		for(Senal s : senales)
 		{
 			s.setLow(Math.min(s.getLow(), diferenciaPips(s)));
 			s.setHigh(Math.max(s.getHigh(), diferenciaPips(s)));
 		}
+	}
+	
+	public synchronized String debugSenales()
+	{
+		String debug = "";
+		for(Senal s : senales)
+		{
+			debug += "\n" + s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh();
+		}
+		return debug;
 	}
 	
 	public static Par stringToPar(String string) 
