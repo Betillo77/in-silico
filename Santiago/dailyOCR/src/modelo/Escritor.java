@@ -65,6 +65,7 @@ public class Escritor
 		}
 		proceso = new Proceso(path);
 		enConstruccion = new ArrayList <EntradaEscritor> ();
+		final Escritor este = this;
 		Thread hiloEscritor = new Thread(new Runnable()
 		{
 			public void run() 
@@ -82,8 +83,11 @@ public class Escritor
 						{
 							Error.agregar("Notificado " + pathMeta + " " + System.currentTimeMillis());
 						}
-						procesar(entradas.peek());
-						entradas.take();
+						synchronized(este)
+						{
+							procesar(entradas.peek());
+							entradas.take();
+						}
 					}
 					catch(Exception e)
 					{

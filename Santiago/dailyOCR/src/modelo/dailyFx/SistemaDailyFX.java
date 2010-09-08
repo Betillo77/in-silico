@@ -228,36 +228,45 @@ public class SistemaDailyFX extends SistemaEstrategias
 			ArrayList <ParMagico> parMagicosRealesBreakout2 = new ArrayList <ParMagico> (14); 
 			ArrayList <ParMagico> parMagicosRealesOtros = new ArrayList <ParMagico> (70); 
 			ArrayList <ParMagico> parMagicosRealesElite = new ArrayList <ParMagico> (84); 
-			for(String s : escritorBreakout2.chequearSenales()) 
-			{ 
-				Scanner sc = new Scanner(s); 
-				sc.useDelimiter("\\Q;\\E"); 
-				Par par = Par.convertirPar(sc.next()); 
-				int magico = sc.nextInt(); 
-				boolean compra = sc.nextInt() == 1; 
-				sc.close(); 
-				parMagicosRealesBreakout2.add(new ParMagico(par, magico, null, 0.0d, compra)); 
-			} 
-			for(String s : escritorOtros.chequearSenales()) 
-			{ 
-				Scanner sc = new Scanner(s); 
-				sc.useDelimiter("\\Q;\\E"); 
-				Par par = Par.convertirPar(sc.next()); 
-				int magico = sc.nextInt(); 
-				boolean compra = sc.nextInt() == 1; 
-				sc.close(); 
-				parMagicosRealesOtros.add(new ParMagico(par, magico, null, 0.0d, compra)); 
-			} 
-			for(String s : escritorElite.chequearSenales()) 
-			{ 
-				Scanner sc = new Scanner(s); 
-				sc.useDelimiter("\\Q;\\E"); 
-				Par par = Par.convertirPar(sc.next()); 
-				int magico = sc.nextInt(); 
-				boolean compra = sc.nextInt() == 1; 
-				sc.close(); 
-				parMagicosRealesElite.add(new ParMagico(par, magico, null, 0.0d, compra)); 
-			} 
+			synchronized(escritorBreakout2)
+			{
+				for(String s : escritorBreakout2.chequearSenales()) 
+				{ 
+					Scanner sc = new Scanner(s); 
+					sc.useDelimiter("\\Q;\\E"); 
+					Par par = Par.convertirPar(sc.next()); 
+					int magico = sc.nextInt(); 
+					boolean compra = sc.nextInt() == 1; 
+					sc.close(); 
+					parMagicosRealesBreakout2.add(new ParMagico(par, magico, null, 0.0d, compra)); 
+				}
+			}
+			synchronized(escritorOtros)
+			{
+				for(String s : escritorOtros.chequearSenales()) 
+				{ 
+					Scanner sc = new Scanner(s); 
+					sc.useDelimiter("\\Q;\\E"); 
+					Par par = Par.convertirPar(sc.next()); 
+					int magico = sc.nextInt(); 
+					boolean compra = sc.nextInt() == 1; 
+					sc.close(); 
+					parMagicosRealesOtros.add(new ParMagico(par, magico, null, 0.0d, compra)); 
+				}
+			}
+			synchronized(escritorElite)
+			{
+				for(String s : escritorElite.chequearSenales()) 
+				{ 
+					Scanner sc = new Scanner(s); 
+					sc.useDelimiter("\\Q;\\E"); 
+					Par par = Par.convertirPar(sc.next()); 
+					int magico = sc.nextInt(); 
+					boolean compra = sc.nextInt() == 1; 
+					sc.close(); 
+					parMagicosRealesElite.add(new ParMagico(par, magico, null, 0.0d, compra)); 
+				}
+			}
 			ArrayList <ParMagico> parMagicosBreakout2Copia = new ArrayList <ParMagico> (parMagicosBreakout2); 
 			ArrayList <ParMagico> parMagicosOtrosCopia = new ArrayList <ParMagico> (parMagicosOtros); 
 			ArrayList <ParMagico> parMagicosEliteCopia = new ArrayList <ParMagico> (parMagicosElite); 

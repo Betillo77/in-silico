@@ -22,7 +22,7 @@ public class ConexionServidorMensajes
 	private static String SMTP_AUTH_PWD = "";
 	private static final String emailFromAddress = "dailyfxstatus@gmail.com";
 	public static final String passwordRoute = "clave.txt";
-	private static final String[] emailList = {"nogardark@hotmail.com" , "santigutierrez1@hotmail.com"};
+	private static final String[] emailList = {"nogardark@hotmail.com" , "santigutierrez1@gmail.com"};
 	
 	public static void enviarMensaje(String subject, String message)
 	{
