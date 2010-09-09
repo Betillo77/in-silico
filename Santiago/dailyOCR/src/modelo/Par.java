@@ -86,7 +86,7 @@ public enum Par
 			else
 				mensaje += "\nError en Par inicializando " + toString() + ", bid anterior: " + bidActual + " bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask;
 			numeroIniciados++;
-			if(numeroIniciados >= values().length)
+			if(numeroIniciados >= values().length - 1)
 				Error.agregar(mensaje);
 		}
 		else
