@@ -79,6 +79,7 @@ public enum Par
 			{
 				bidActual = bid;
 				askActual = ask;
+				Error.agregar("Inicializando par " + toString() + ", bid nuevo: " + bid + ", ask nuevo: " + ask);
 			}
 			else
 			{
@@ -87,7 +88,7 @@ public enum Par
 		}
 		else
 		{
-			if(Math.abs(diferenciaPips(bid, true)) <= 500 && Math.abs(diferenciaPips(ask, false)) <= 500)
+			if(Math.abs(diferenciaPips(bid, true)) <= 200 && Math.abs(diferenciaPips(ask, false)) <= 200)
 			{
 				bidActual = bid;
 				askActual = ask;
