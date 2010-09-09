@@ -3,7 +3,6 @@ package control;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class AdministradorHilos 
@@ -60,19 +59,5 @@ public class AdministradorHilos
 			hilos.add(hilo);
 		}
 		hilo.start();
-	}
-
-	public static synchronized void eliminarHilo(String nombreHilo) 
-	{
-		synchronized(hilos)
-		{
-			Iterator <Thread> it = hilos.iterator();
-			while(it.hasNext())
-			{
-				Thread actual = it.next();
-				if(actual.getName().equals(nombreHilo))
-					it.remove();
-			}
-		}
 	}
 }

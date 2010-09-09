@@ -249,6 +249,8 @@ public class Estrategia
 	public void ponerEscritor(Escritor e) {
 		escritor = e;
 		for(Senal s : senales)
+		{
 			s.getPar().agregarSenal(s);
+		}
 	}
 }

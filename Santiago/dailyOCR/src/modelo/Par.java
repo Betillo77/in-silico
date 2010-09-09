@@ -129,7 +129,7 @@ public enum Par
 	
 	public synchronized void procesarSenales()
 	{
-		if(darPrecioActual(true) == 0 || darPrecioActual(false) == 0)
+		if(Math.abs(darPrecioActual(true) - 0.0d) < 10e-4d  || Math.abs(darPrecioActual(false) - 0.0d) < 10e-4d)
 			return;
 		for(Senal s : senales)
 		{

@@ -582,11 +582,19 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			public void run() 
 			{
+				try
+				{
+					Thread.sleep(180000);
+				}
+				catch(InterruptedException e)
+				{
+					System.out.println("Error de interrupcion en hilo pares");
+				}
 				while(true)
 				{
 					try
 					{
-						Thread.sleep(60000);
+						Thread.sleep(30000);
 						for(Par p : Par.values())
 							p.procesarSenales();
 					}
