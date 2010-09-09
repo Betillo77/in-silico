@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import control.Error;
 
 public enum Par
 {
@@ -79,13 +80,21 @@ public enum Par
 				bidActual = bid;
 				askActual = ask;
 			}
+			else
+			{
+				Error.agregar("Error en Par inicializando " + toString() + ", bid anterior: " + bidActual + " bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask);
+			}
 		}
 		else
 		{
-			if(Math.abs(diferenciaPips(bid, true)) <= 500 || Math.abs(diferenciaPips(ask, false)) <= 500)
+			if(Math.abs(diferenciaPips(bid, true)) <= 500 && Math.abs(diferenciaPips(ask, false)) <= 500)
 			{
 				bidActual = bid;
 				askActual = ask;
+			}
+			else
+			{
+				Error.agregar("Error en Par " + toString() + ", bid anterior: " + bidActual + " bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask);
 			}
 		}
 	}
