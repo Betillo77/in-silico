@@ -19,6 +19,8 @@ public enum Par
 	private double askActual = 0;
 	private double ssiActual = 0;
 	private LinkedList <Senal> senales = new LinkedList <Senal> ();
+	private static String mensaje = "";
+	private static int numeroIniciados = 0;
 	
 	private Par()
 	{
@@ -79,12 +81,13 @@ public enum Par
 			{
 				bidActual = bid;
 				askActual = ask;
-				Error.agregar("Inicializando par " + toString() + ", bid nuevo: " + bid + ", ask nuevo: " + ask);
+				mensaje += "\nInicializando par " + toString() + ", bid nuevo: " + bid + ", ask nuevo: " + ask;
 			}
 			else
-			{
-				Error.agregar("Error en Par inicializando " + toString() + ", bid anterior: " + bidActual + " bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask);
-			}
+				mensaje += "\nError en Par inicializando " + toString() + ", bid anterior: " + bidActual + " bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask;
+			numeroIniciados++;
+			if(numeroIniciados >= values().length)
+				Error.agregar(mensaje);
 		}
 		else
 		{
@@ -92,10 +95,6 @@ public enum Par
 			{
 				bidActual = bid;
 				askActual = ask;
-			}
-			else
-			{
-				Error.agregar("Error en Par " + toString() + ", bid anterior: " + bidActual + " bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask);
 			}
 		}
 	}
@@ -152,9 +151,7 @@ public enum Par
 	{
 		String debug = "";
 		for(Senal s : senales)
-		{
 			debug += "\n" + s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh();
-		}
 		return debug;
 	}
 	
