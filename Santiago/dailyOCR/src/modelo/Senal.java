@@ -19,6 +19,7 @@ public class Senal
 	private transient int gananciaReal = Short.MIN_VALUE;
 	private int low = Short.MAX_VALUE;
 	private int high = Short.MIN_VALUE;
+	private transient double[] stops;
 	
 	public Senal()
 	{
@@ -168,5 +169,13 @@ public class Senal
 	public String toString()
 	{
 		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada; 
+	}
+
+	public void ponerStops(double[] stops) {
+		this.stops = stops;
+	}
+
+	public double[] darStops() {
+		return stops;
 	}
 }
