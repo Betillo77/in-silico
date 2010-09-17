@@ -9,6 +9,7 @@ public class RobotInicio
 	
 	public static void escribir(String s, Robot r)
 	{
+		s = s.toUpperCase();
 		for(char c : s.toCharArray())
 		{
 			if(c == '/')
