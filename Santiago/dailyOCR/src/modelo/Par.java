@@ -77,24 +77,28 @@ public enum Par
 	{
 		if(bidActual == 0)
 		{
-			if(estaBien(bid) && estaBien(ask))
+			if(estaBien(bid) && estaBien(ask) && spread(bid, ask, this) <= 75)
 			{
 				bidActual = bid;
 				askActual = ask;
 				mensaje += "\nInicializando par " + toString() + ", bid nuevo: " + bid + ", ask nuevo: " + ask;
 			}
 			else
-				mensaje += "\nError en Par inicializando " + toString() + ", bid anterior: " + bidActual + " bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask;
+				mensaje += "\nError en Par inicializando " + toString() + ", bid anterior: " + bidActual + ", bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask;
 			numeroIniciados++;
 			if(numeroIniciados >= values().length - 1)
 				Error.agregar(mensaje);
 		}
 		else
 		{
-			if(Math.abs(diferenciaPips(bid, true)) <= 200 && Math.abs(diferenciaPips(ask, false)) <= 200)
+			if(Math.abs(diferenciaPips(bid, true)) <= 200 && Math.abs(diferenciaPips(ask, false)) <= 200 && spread(bid, ask, this) <= 75)
 			{
 				bidActual = bid;
 				askActual = ask;
+			}
+			else
+			{
+				Error.agregar("Error en par " + toString() + ", bid anterior: " + bidActual + ", bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask);
 			}
 		}
 	}
@@ -153,6 +157,17 @@ public enum Par
 		for(Senal s : senales)
 			debug += "\n" + s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh();
 		return debug;
+	}
+	
+	public int spread()
+	{
+		return spread(bidActual, askActual, this);
+	}
+	
+	public static int spread(double bid, double ask, Par par)
+	{
+		double precioParActual = ask - bid;
+		return par.esCruceYen() ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
 	}
 	
 	public static Par stringToPar(String string) 
