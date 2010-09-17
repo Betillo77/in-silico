@@ -390,7 +390,6 @@ public class Escritor
 				{
 					enConstruccion.add(new EntradaEscritor(entrada.getEstrategia(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true, entrada.getNumeroLotes(), afectada));
 					mensaje += entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " ";
-					Error.agregar("Cerrado: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " " + System.currentTimeMillis());
 				}
 			}
 			else
@@ -431,7 +430,6 @@ public class Escritor
 		{
 			enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false)); 
 			mensaje += entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0 ";
-			Error.agregar("Abierto: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0" + " " + System.currentTimeMillis());
 		}
 		nueva.setMagico(new int[entrada.getNumeroLotes()]);
 	}
