@@ -75,6 +75,14 @@ public class Escritor
 				{
 					try
 					{
+						Thread.sleep(160000);
+					}
+					catch(InterruptedException e)
+					{
+						Error.agregar("Error de interrupcion en: " + pathMeta);
+					}
+					try
+					{
 						synchronized(entradas)
 						{
 							while(entradas.size() == 0)
