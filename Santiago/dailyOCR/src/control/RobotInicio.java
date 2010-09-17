@@ -3,19 +3,23 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Locale;
 
 public class RobotInicio 
 {
 	
 	public static void escribir(String s, Robot r)
 	{
-		s = s.toUpperCase();
+		s = s.toUpperCase().replace("7", "/").replace("6", "&");
 		for(char c : s.toCharArray())
 		{
 			if(c == '/')
 			{
-				r.keyPress(KeyEvent.VK_SLASH);
-				r.keyRelease(KeyEvent.VK_SLASH);
+				r.keyPress(KeyEvent.VK_SHIFT);
+				r.keyPress(KeyEvent.VK_7);
+				r.keyRelease(KeyEvent.VK_7);
+				r.keyRelease(KeyEvent.VK_SHIFT);
+				
 			}
 			else if(c == '.')
 			{
@@ -91,17 +95,13 @@ public class RobotInicio
 		r.keyPress(KeyEvent.VK_ENTER);
 		r.keyRelease(KeyEvent.VK_ENTER);
 		Thread.sleep(6000);
-		escribir("sudo su", r);
-		r.keyPress(KeyEvent.VK_SEMICOLON);
-		r.keyRelease(KeyEvent.VK_SEMICOLON);
-		r.keyPress(KeyEvent.VK_ENTER);
-		r.keyRelease(KeyEvent.VK_ENTER);
-		Thread.sleep(6000);
 		escribir("/home/santiago/Desktop/inicio.sh", r);
 		r.keyPress(KeyEvent.VK_SPACE);
 		r.keyRelease(KeyEvent.VK_SPACE);
-		r.keyPress(KeyEvent.VK_AMPERSAND);
-		r.keyRelease(KeyEvent.VK_AMPERSAND);
+		r.keyPress(KeyEvent.VK_SHIFT);
+		r.keyPress(KeyEvent.VK_6);
+		r.keyRelease(KeyEvent.VK_6);
+		r.keyRelease(KeyEvent.VK_SHIFT);
 		r.keyPress(KeyEvent.VK_ENTER);
 		r.keyRelease(KeyEvent.VK_ENTER);
 		Thread.sleep(5000);
