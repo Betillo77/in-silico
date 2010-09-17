@@ -21,7 +21,7 @@ public class Escritor
 	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
-	private String mensaje;
+	private String mensaje = "";
 	public volatile boolean debug = true;
 	
 	private void reiniciarProceso()
