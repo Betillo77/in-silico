@@ -21,6 +21,7 @@ public class Escritor
 	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
+	private String mensaje;
 	public volatile boolean debug = true;
 	
 	private void reiniciarProceso()
@@ -104,12 +105,12 @@ public class Escritor
 	{
 		if(enConstruccion.size() != 0)
 		{
-			String mensaje = "";
+			String men = "";
 			try 
 			{
 				entradas.put(enConstruccion);
 				for(EntradaEscritor e : enConstruccion)
-					mensaje += e.getLinea() + ";";
+					men += e.getLinea() + ";";
 			} 
 			catch (InterruptedException e)
 			{
@@ -120,10 +121,16 @@ public class Escritor
 			{
 				if(debug)
 				{
-					Error.agregar("Encolando y notificando " + pathMeta + " " + mensaje + " " + System.currentTimeMillis());
+					Error.agregar("Encolando y notificando " + pathMeta + " " + men + ", se encolaron: " + mensaje + " " + System.currentTimeMillis());
 				}
 				entradas.notifyAll();
 			}
+			mensaje = "";
+		}
+		else if(!mensaje.equals(""))
+		{
+			Error.agregar("Se encolaron: " + mensaje + " y no se procesaron");
+			mensaje = "";
 		}
 	}
 	
@@ -371,13 +378,18 @@ public class Escritor
 		{
 			if(afectada.getNumeroLotes() == 0)
 			{
-				enConstruccion.add(new EntradaEscritor(entrada.getEstrategia(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true, entrada.getNumeroLotes(), afectada));
-				Error.agregar("Cerrado: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " " + System.currentTimeMillis());
+				if(!afectada.isTocoStop())
+				{
+					enConstruccion.add(new EntradaEscritor(entrada.getEstrategia(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true, entrada.getNumeroLotes(), afectada));
+					mensaje += entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " ";
+					Error.agregar("Cerrado: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " " + System.currentTimeMillis());
+				}
 			}
 			else
 			{
 				for(int i = 0; i < entrada.getNumeroLotes(); i++)
-					ConexionMySql.agregarEntrada(entrada.getEstrategia(), afectada);			}
+					ConexionMySql.agregarEntrada(entrada.getEstrategia(), afectada);			
+			}
 		}
 		else
 		{
@@ -388,6 +400,16 @@ public class Escritor
 			return;
 		int[] magicoCopy = afectada.darMagicoCopy();
 		afectada.setMagico(Arrays.copyOfRange(magicoCopy, 0, magicoCopy.length - entrada.getNumeroLotes()));
+	}
+	
+	public void cerrarStop(Senal afectada)
+	{
+		if(afectada.darMagico(0) != 0)
+		{
+			enConstruccion.add(new EntradaEscritor(afectada.getEstrategia(), afectada.getPar(), afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0), true, afectada.getNumeroLotes(), afectada));
+			mensaje += afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " ";
+			Error.agregar("Cerrado: " + afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.darMagico(0) + " toco stop en: " + System.currentTimeMillis());
+		}
 	}
 
 	public void abrir(SenalEntrada entrada, Senal nueva)
@@ -400,6 +422,7 @@ public class Escritor
 		if(estrategia.darActivo(entrada.getPar()))
 		{
 			enConstruccion.add(new EntradaEscritor(estrategia.getId(), entrada.getPar(), entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false)); 
+			mensaje += entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0 ";
 			Error.agregar("Abierto: " + entrada.getPar() + ";" + (entrada.isCompra() ? "BUY" : "SELL") + ";OPEN;0" + " " + System.currentTimeMillis());
 		}
 		nueva.setMagico(new int[entrada.getNumeroLotes()]);
@@ -408,6 +431,7 @@ public class Escritor
 	public void agregarLinea(String linea)
 	{
 		enConstruccion.add(new EntradaEscritor(null, null, linea, true));
+		mensaje += linea + " ";
 	}
 	
 	public ArrayList < ArrayList <EntradaEscritor> > darCopiaEntradas() 

@@ -99,7 +99,7 @@ public class Estrategia
 	{
 		synchronized(senales)
 		{
-			Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada());
+			Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada(), 0);
 			nueva.setLimite(entrada.getLimite());
 			if(tienePar(entrada.getPar()) != null)
 			{
@@ -112,6 +112,15 @@ public class Estrategia
 		}
 	}
 	
+	public void tocoStop(Senal afectada) 
+	{
+		if(!afectada.isTocoStop())
+		{
+			afectada.setTocoStop(true);
+			escritor.cerrarStop(afectada);
+		}
+	}
+
 	public Senal tienePar(Par par) 
 	{
 		synchronized(senales)

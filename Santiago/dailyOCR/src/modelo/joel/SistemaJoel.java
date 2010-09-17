@@ -184,7 +184,7 @@ public class SistemaJoel extends SistemaEstrategias
         			precioDeEntrada = -1;
         		else if(recomendado && precioDeEntrada < 0)
         			return null;
-    	    	Senal nueva = new Senal(IdEstrategia.JOEL, compra, par, 1, precioDeEntrada); 
+    	    	Senal nueva = new Senal(IdEstrategia.JOEL, compra, par, 1, precioDeEntrada, 0); 
     			return nueva;
     		}
     	}

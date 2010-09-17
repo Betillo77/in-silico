@@ -1,7 +1,6 @@
 package vista;
 
 import java.awt.Choice;
-
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -18,6 +17,7 @@ import java.util.Scanner;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,11 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
-
-
 import modelo.Estrategia;
 import modelo.Par;
-import modelo.Senal;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -41,8 +38,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 import control.AnalisisLogica;
 import control.IdEstrategia;
 import control.dailyOCR;
-
-import javax.swing.JCheckBox;
 
 public class AnalisisGrafico extends JFrame implements ActionListener, ItemListener {
 
@@ -411,7 +406,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		int numero;
 		if(e.getSource() instanceof JCheckBox)
 		{
-			Estrategia estrategia = dailyOCR.darEstrategiaSenal(new Senal(manejador.estrategia, false, Par.AUDJPY, 0, 0));
+			Estrategia estrategia = dailyOCR.darEstrategia(manejador.estrategia);
 			estrategia.cambiarActivo(manejador.divisaActual, ((JCheckBox) e.getSource()).isSelected());
 			return;
 		}

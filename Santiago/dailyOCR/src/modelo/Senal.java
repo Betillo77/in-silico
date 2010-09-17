@@ -19,13 +19,15 @@ public class Senal
 	private transient int gananciaReal = Short.MIN_VALUE;
 	private int low = Short.MAX_VALUE;
 	private int high = Short.MIN_VALUE;
-	private transient double[] stops;
+	private boolean tocoStop = false;
+	private transient double stop;
+	
 	
 	public Senal()
 	{
 	}
     
-	public Senal(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada)
+	public Senal(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada, double stop)
 	{
 		this.estrategia = estrategia;
 		this.compra = compra;
@@ -36,6 +38,7 @@ public class Senal
 		this.SSI1 = par.darPadreUno().darSSI();
 		this.SSI2 = par.darPadreDos().darSSI();
 		this.fechaInicio = System.currentTimeMillis();
+		this.stop = stop;
 	}
     
 	public IdEstrategia getEstrategia() {
@@ -165,17 +168,25 @@ public class Senal
 		return high;
 	}
 	
+	public void setTocoStop(boolean tocoStop) {
+		this.tocoStop = tocoStop;
+	}
+
+	public boolean isTocoStop() {
+		return tocoStop;
+	}
+
+	public void ponerStop(double stop) {
+		this.stop = stop;
+	}
+
+	public double darStop() {
+		return stop;
+	}
+	
 	@Override
 	public String toString()
 	{
-		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada; 
-	}
-
-	public void ponerStops(double[] stops) {
-		this.stops = stops;
-	}
-
-	public double[] darStops() {
-		return stops;
+		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada + " Stop: " + stop; 
 	}
 }

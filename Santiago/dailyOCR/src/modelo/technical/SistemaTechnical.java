@@ -148,7 +148,7 @@ public class SistemaTechnical extends SistemaEstrategias
 				try
 				{
 					double limite = valores.get(2);
-					nuevas.add(new Senal(IdEstrategia.TECHNICAL, compra, estePar, 1, limite));
+					nuevas.add(new Senal(IdEstrategia.TECHNICAL, compra, estePar, 1, limite, 0));
 				}
 				catch(Exception e)
 				{

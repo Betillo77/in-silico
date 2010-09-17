@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.12-bin.jar"/>
 	<classpathentry kind="lib" path="libs/pop3.jar"/>
 	<classpathentry kind="lib" path="libs/smtp.jar"/>
+	<classpathentry kind="lib" path="libs/gson-1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

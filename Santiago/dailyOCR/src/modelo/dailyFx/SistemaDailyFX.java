@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import modelo.EntradaEscritor;
 import modelo.Escritor;
@@ -614,98 +612,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 	{
 		try
 		{
-			String entrada = entradas[0];
-			String entrada1 = entrada.substring(entrada.indexOf("\"Signal\":["));
-			ArrayList <Integer> curoplots = new ArrayList <Integer> ();
-			ArrayList <Integer> strategyid = new ArrayList <Integer> ();
-			ArrayList <String> symbol = new ArrayList <String> ();
-			ArrayList <String> direction = new ArrayList <String> ();
-			ArrayList <Double> entryprice = new ArrayList <Double> ();
-			ArrayList <Double> bid = new ArrayList <Double> ();
-			ArrayList <Double> ask = new ArrayList <Double> ();
-			ArrayList <String> currency = new ArrayList <String> ();
-			Pattern pattern = Pattern.compile("\\d+,\"strategyId\":\\d+");
-			Pattern pattern2 = Pattern.compile("\"strategyId\":\\d+");
-			Pattern pattern3 = Pattern.compile("\"symbol\":\"\\w+\"");
-			Pattern pattern4 = Pattern.compile("\"direction\":\"\\w+\"");
-			Pattern pattern5 = Pattern.compile("\"entryPrice\":\\d+.\\d+");
-			Pattern pattern6 = Pattern.compile("\"bid\":\\d+.\\d+");
-			Pattern pattern7 = Pattern.compile("\"ask\":\\d+.\\d+");
-			Pattern pattern8 = Pattern.compile("\"currency\":\"\\w+\"");
-			Matcher matcher = pattern.matcher(entrada1);
-			Matcher matcher2 = pattern2.matcher(entrada1);
-			Matcher matcher3 = pattern3.matcher(entrada1);
-			Matcher matcher4 = pattern4.matcher(entrada1);
-			Matcher matcher5 = pattern5.matcher(entrada1);
-			Matcher matcher6 = pattern6.matcher(entrada);
-			Matcher matcher7 = pattern7.matcher(entrada);
-			Matcher matcher8 = pattern8.matcher(entrada);
-			while(matcher.find()) 
-			{  
-				String S = matcher.group();
-				S = S.substring(0, 1);
-				curoplots.add(Integer.parseInt(S));
-			} 
-			while(matcher2.find())
-			{
-				String S = matcher2.group();
-				S = S.substring(13);
-				strategyid.add(Integer.parseInt(S));  
-			}
-			while(matcher3.find()) 
-			{
-				String S = matcher3.group();
-				S = S.substring(10);
-				S = S.replace("\"", "");
-				symbol.add(S);
-	  		}
-			while(matcher4.find()) 
-			{
-		  		String S = matcher4.group();
-		  		S = S.substring(13);
-		  		S = S.replace("\"", "");
-		  		direction.add(S);
-			}
-			while (matcher5.find()) 
-			{
-				String S = matcher5.group();
-				S = S.substring(13);
-				entryprice.add(Double.parseDouble(S));	
-			}
-			while (matcher6.find())
-			{
-				String S = matcher6.group();
-				S = S.substring(6);
-				bid.add(Double.parseDouble(S));	
-			}
-			while (matcher7.find())
-			{
-				String S = matcher7.group();
-				S = S.substring(6);
-				ask.add(Double.parseDouble(S));	
-			}
-			while (matcher8.find())
-			{
-				String S = matcher8.group();
-				S = S.substring(12);
-		  		S = S.replace("\"", "");
-		  		currency.add(S);
-			}
-			ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
-			for(int i = 0; i<curoplots.size(); i++)
-			{
-				Senal actual = new Senal(IdEstrategia.darEstrategia(strategyid.get(i)), direction.get(i).equals("Buy"), Par.convertirPar(symbol.get(i)), curoplots.get(i), entryprice.get(i));
-				nuevasSenales.add(actual);
-			}
-			for(int i = 0; i < bid.size(); i++)
-			{
-				Par actual = Par.convertirPar(currency.get(i));
-				if(actual != null)
-				{
-					actual.ponerPrecioActual(bid.get(i), ask.get(i));
-				}
-			}
-			return nuevasSenales;
+			return dailyJSON.leer(entradas[0]);
 		}
 		catch(Exception e)
 		{
@@ -738,6 +645,27 @@ public class SistemaDailyFX extends SistemaEstrategias
 						actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada);
 						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
 						cambio.set(true);
+					}
+					else
+					{
+						if(afectada.isCompra())
+						{
+							if(afectada.getPar().darPrecioActual(true) <= senal.darStop())
+							{
+								Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
+								actual.tocoStop(afectada);
+								elite.tocoStop(afectada);
+							}
+						}
+						else
+						{
+							if(afectada.getPar().darPrecioActual(false) >= senal.darStop())
+							{
+								Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
+								actual.tocoStop(afectada);
+								elite.tocoStop(afectada);
+							}
+						}
 					}
 				}
 				else

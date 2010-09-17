@@ -50,7 +50,7 @@ public class EstrategiaElite extends Estrategia
 				}
 				else
 				{
-					Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada());
+					Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada(), 0);
 					for(Senal s : senales)
 					{
 						if(s.getEstrategia().equals(id) && s.getPar().equals(nueva.getPar()))
@@ -64,6 +64,15 @@ public class EstrategiaElite extends Estrategia
 					nueva.getPar().agregarSenal(nueva);
 				}
 			}
+		}
+	}
+	
+	@Override
+	public void tocoStop(Senal afectada) 
+	{
+		if(darActivo(afectada.getEstrategia(), afectada.getPar()))
+		{
+			super.tocoStop(afectada);
 		}
 	}
 	
