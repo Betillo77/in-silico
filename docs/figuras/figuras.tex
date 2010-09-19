@@ -4,6 +4,7 @@
 \usepackage{mathtools}
 \usepackage{algorithmic}
 \usepackage{graphicx}
+\usepackage{subfig}
 
 \begin{document}
 \title {Shape recognition using machine learning}
@@ -122,7 +123,13 @@
 	That class would be the output of $f$. We perform this operation by using the
 	C++ class \textit{CvDTree} of OpenCV. 
 	
-	\section{Resultas and Conclusions}
+	\section{Results and Conclusions}
+	The results of the image processing stage can be seen in \textit{figure 1}. The
+	figure 1-A shows an image of a rectange as it is taken from the camera. The 
+	figure 1-B shows the image after being transformed to gray-scale, filtered and 
+	binarized using	the thresholding method explained. The figure 1-C shows the
+	polygon that aproximates the shape in figure 1-B with an allowed error of 10
+	pixels.\newline
 	After the binary decision tree was trained, it was proved against 22 different
 	shapes that were not shown to the training algorithm. Only one of those shapes
 	was not correctly recognized, which means an accuracy of 95.45\%. The accuracy can
@@ -132,6 +139,15 @@
 	more complex problems such as optical character recognition or face recognition,
 	it is possible that more complex models such as neural networks or support vector
 	machines are needed.
+	\begin{figure}
+	\centering
+		\subfloat[Original]{\label{fig:org}\includegraphics[height=2cm]{img1}}
+		\subfloat[Binarized]{\label{fig:bin}\includegraphics[height=2cm]{img2}}
+		\subfloat[Polygon Aproximation]{\label{fig:shp}\includegraphics[height=2cm]{img3}}
+	\caption{Original image and its transformations}
+	\end{figure}
+	
+	
 	
 	\begin{thebibliography}{9}
 	
