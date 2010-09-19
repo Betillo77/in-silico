@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Fri Sep 17 14:25:53 COT 2010
+#Sun Sep 19 16:15:07 COT 2010
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
-jarname=/home/santiago/Desktop/lastBuilds/robotInicio.jar
+jarname=/home/santiago/Desktop/lastBuilds/dailyOCR.jar
 manifest.mergeall=true
-manifest.mainclass=control.RobotInicio
+manifest.mainclass=control.dailyOCR
 manifest.file=<createnew>
 jarname.isextern=true
 onejar.expand=
