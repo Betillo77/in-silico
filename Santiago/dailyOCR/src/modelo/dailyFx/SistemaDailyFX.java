@@ -650,7 +650,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{
 						if(afectada.isCompra())
 						{
-							if(afectada.getPar().darPrecioActual(true) <= senal.darStop())
+							if(afectada.getPar().darPrecioActual(true) <= senal.darStop() && afectada.getNumeroLotes() < 4)
 							{
 								Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
 								actual.tocoStop(afectada);
@@ -659,7 +659,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 						}
 						else
 						{
-							if(afectada.getPar().darPrecioActual(false) >= senal.darStop())
+							if(afectada.getPar().darPrecioActual(false) >= senal.darStop() && afectada.getNumeroLotes() < 4)
 							{
 								Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
 								actual.tocoStop(afectada);
