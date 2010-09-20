@@ -371,6 +371,11 @@ public class Escritor
 				}
 			}
 		}
+		for(Iterator <String> it = entradas.iterator(); it.hasNext();)
+		{
+			if(it.next().equals(""))
+				it.remove();
+		}
 		debug = true;
 		return entradas;
 	}
