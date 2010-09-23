@@ -1,3 +1,37 @@
+/* flatland.in
+
+6
+2
+20 23
+1 1 0 0 BOB
+3 3 3 0 ALICE
+3
+20 23
+2 2 4 0 ALICE
+4 2 2 0 BOB
+1 3 0 3 CHARLES
+3
+20 20
+2 2 4 0 A
+4 2 2 0 B
+1 3 0 3 C
+4
+20 20
+2 3 2 0 A
+1 2 20 2 B
+3 2 0 2 C
+4 3 4 0 D
+2
+20 20
+1 2 20 2 A
+2 3 2 0 B
+3
+20 20
+1 3 20 3 A
+2 4 2 0 B
+3 3 0 3 C
+
+*/
 
 #include <cstdlib>
 #include <cstring>
