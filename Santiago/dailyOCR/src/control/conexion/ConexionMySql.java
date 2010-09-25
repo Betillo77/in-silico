@@ -81,7 +81,7 @@ public class ConexionMySql
 		} 
 		catch (SQLException e) 
 		{
-			JOptionPane.showMessageDialog(null, "Error haciendo la lectura de la persistencia de la base de datos");
+			Error.agregar("Error haciendo la lectura de la persistencia de la base de datos en estrategia " + id + ": " + e.getMessage());
 			return "";
 		}
 	}
