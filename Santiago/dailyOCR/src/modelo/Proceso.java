@@ -45,6 +45,15 @@ public class Proceso
 							Error.agregar("Reiniciando proceso y socket: " + path);
 							try
 							{
+								proceso.destroy();
+							}
+							catch(Exception e)
+							{
+								Error.agregar("Proceso no se pudo cerrar en: " + path + ", reiniciando");
+								reiniciarEquipo();
+							}
+							try
+							{
 								cerrarSocket();
 							}
 							catch(Exception e)
