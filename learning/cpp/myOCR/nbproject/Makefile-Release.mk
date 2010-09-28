@@ -28,6 +28,7 @@ OBJECTDIR=build/Release/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/android.o \
 	${OBJECTDIR}/test.o \
 	${OBJECTDIR}/matrix.o \
 	${OBJECTDIR}/transform.o
@@ -43,7 +44,7 @@ CXXFLAGS=
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-L/usr/include/opencv
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -51,22 +52,27 @@ LDLIBSOPTIONS=
 
 dist/Release/${PLATFORM}/myocr: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/${PLATFORM}
-	${LINK.cc} -o dist/Release/${PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -o dist/Release/${PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/android.o: android.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
 
 ${OBJECTDIR}/test.o: test.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
 
 ${OBJECTDIR}/matrix.o: matrix.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
 
 ${OBJECTDIR}/transform.o: transform.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
 
 # Subprojects
 .build-subprojects:

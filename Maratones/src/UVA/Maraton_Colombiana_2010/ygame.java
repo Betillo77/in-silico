@@ -33,7 +33,7 @@ public class ygame
 	static boolean zside = false;
 	public static void main(String [] args) throws IOException
 	{
-		System.setIn(new FileInputStream("ygame.in"));
+		//System.setIn(new FileInputStream("ygame.in"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String linea;
 		while((linea = br.readLine()) != null)

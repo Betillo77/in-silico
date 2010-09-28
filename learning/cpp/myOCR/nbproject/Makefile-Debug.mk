@@ -28,6 +28,7 @@ OBJECTDIR=build/Debug/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/android.o \
 	${OBJECTDIR}/test.o \
 	${OBJECTDIR}/matrix.o \
 	${OBJECTDIR}/transform.o
@@ -52,6 +53,11 @@ LDLIBSOPTIONS=-L/usr/include/opencv
 dist/Debug/${PLATFORM}/myocr: ${OBJECTFILES}
 	${MKDIR} -p dist/Debug/${PLATFORM}
 	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -o dist/Debug/${PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/android.o: android.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
 
 ${OBJECTDIR}/test.o: test.cpp 
 	${MKDIR} -p ${OBJECTDIR}
