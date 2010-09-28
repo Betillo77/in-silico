@@ -106,9 +106,15 @@
 
 	\section{Objetivo}
 	\subsection{Objetivo general}
-	Desarrollar un sistema prototipo de reconocimiento óptico de caracteres para celulares inteligentes, usando algún conjunto de algoritmos específicos escogidos con base en resultados de investigaciones previas reconocidas.
+	Desarrollar un sistema prototipo de reconocimiento óptico de caracteres para celulares inteligentes, usando algún conjunto de algoritmos específicos escogidos con base en resultados de investigaciones previas reconocidas e investigaciones propias.
 	\subsection{Objetivos específicos}
-	%aqui van los específicos
+	1. Realizar un estudio acerca de los algoritmos existentes para llevar a cabo las etapas de: binarización, analisis de documento y reconocimiento de caracteres.
+	2. Realizar una comparación tecnica para seleccionar los mejores algoritmos de cada etapa utilizando implementaciones ya existentes de los mismos, cuando esten disponibles para computadores de escritorio. Esta comparación se hara con base en el estudio anterior y en investigaciones previas reconocidas.
+	3. Implementar cada uno de los algoritmos escogidos para que funcionen eficientemente en un celular inteligente, con la posibilidad de adaptar codigo libre ya existente y optimizarlo para este tipo de dispositivos.
+	4. Diseñar una aplicación que integre estos algoritmos y permita el reconocimiento optico de caracteres.
+	5. Implementar la aplicación diseñada.
+	6. Realizar pruebas de la aplicación implementada.
+	7. Comparar el resultado obtenido por nuestra aplicación con el resultado obtenido por aplicaciones para el reconocimiento optico de caracteres, tantos libres, como comerciales.
 	\clearpage
 	
 	\section{Marco referencial}
@@ -271,15 +277,28 @@
 	En esta investigación se utilizará un enfoque cuantitativo.
 	
 	\subsection{Población}
-	
+	Las hojas existentes en lenguaje español, que cumplan con las siguientes restricciones:
+	- Forma rectangular.
+	- Fondo blanco.
+	- Letra de tamaño constante dentro del documento y en color negro.
+	- Maximo dos columnas, sin imagenes.
+	- Inclinación cercana a los 0 grados.
+
+
 	\subsection{Muestra}
-	Se tomará una muestra de $N$ textos con un tamaño y tipo de fuente específicas. Se tomarán
-	fotos con el celular de dichos textos para realizar la medición de variables.
+	Se tomará una muestra de 100 textos con un tamaño y tipo de fuente específicas. Se tomarán
+	fotos con el celular de dichos textos para realizar la medición de variables, estas fotos deben ser
+	tomadas desde un punto perpendicular al papel y el eje central de la camara debe estar paralelo a los 
+	limites del papel.
 	
 	\subsection{Variables}
-	Las variables a tener en cuenta son el porcentaje de caracteres reconocidos, y los recursos
-	computacionales utilizados (Cantidad de memoria y tiempo de CPU) para realizar dicho
-	reconocimiento.
+	Las variables a tener en cuenta para ejecución de la aplicación son:
+	- Cantidad de caracteres reconocidos exitosamente.
+	- Cantidad de memoria utilizada.
+	- Tiempo de CPU utilizado.
+	- Cantidad de letras en el documento impreso.
+	- Tiempo de reconocimiento de una pagina vacia.
+	- Memoria utilizada en el reconocimiento de una pagina vacia.
 	
 	\section{Personas que participan en el proyecto}
 	\begin{itemize}
