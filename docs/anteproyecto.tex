@@ -100,7 +100,7 @@
 	
 	\item Una solución económica que pueda ejecutarse en un dispositivo móvil, sin necesidad de hardware adicional, haría posible que cada invidente pudiera tener su propio sistema de OCR personal, mientras que los otros sistemas usualmente (por su costo) son adquiridos por instituciones en cantidad limitada.
 
-	\item Aportar al conocimiento: Al desarrollar este aplicativo se tendrán que hacer pruebas experiméntales cuyos resultados aporten a otras investigaciones.
+	\item Aportar al conocimiento: Al desarrollar este aplicativo se tendrán que hacer pruebas experimentales cuyos resultados aporten a otras investigaciones.
 	\end{itemize}
 	\clearpage
 
@@ -108,13 +108,15 @@
 	\subsection{Objetivo general}
 	Desarrollar un sistema prototipo de reconocimiento óptico de caracteres para celulares inteligentes, usando algún conjunto de algoritmos específicos escogidos con base en resultados de investigaciones previas reconocidas e investigaciones propias.
 	\subsection{Objetivos específicos}
-	1. Realizar un estudio acerca de los algoritmos existentes para llevar a cabo las etapas de: binarización, analisis de documento y reconocimiento de caracteres.
-	2. Realizar una comparación tecnica para seleccionar los mejores algoritmos de cada etapa utilizando implementaciones ya existentes de los mismos, cuando esten disponibles para computadores de escritorio. Esta comparación se hara con base en el estudio anterior y en investigaciones previas reconocidas.
-	3. Implementar cada uno de los algoritmos escogidos para que funcionen eficientemente en un celular inteligente, con la posibilidad de adaptar codigo libre ya existente y optimizarlo para este tipo de dispositivos.
-	4. Diseñar una aplicación que integre estos algoritmos y permita el reconocimiento optico de caracteres.
-	5. Implementar la aplicación diseñada.
-	6. Realizar pruebas de la aplicación implementada.
-	7. Comparar el resultado obtenido por nuestra aplicación con el resultado obtenido por aplicaciones para el reconocimiento optico de caracteres, tantos libres, como comerciales.
+	\begin{itemize}
+	\item Realizar un estudio acerca de los algoritmos existentes para llevar a cabo las etapas de: binarización, análisis de documento y reconocimiento de caracteres.
+	\item Realizar una comparación técnica para seleccionar los mejores algoritmos de cada etapa utilizando implementaciones ya existentes de los mismos, cuando estén disponibles para computadores de escritorio. Esta comparación se hará con base en el estudio anterior y en investigaciones previas reconocidas.
+	\item Implementar cada uno de los algoritmos escogidos para que funcionen eficientemente en un celular inteligente, con la posibilidad de adaptar código libre ya existente y optimizarlo para este tipo de dispositivos.
+	\item Diseñar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de caracteres.
+	\item Implementar la aplicación diseñada.
+	\item Realizar pruebas de la aplicación implementada.
+	\item Comparar el resultado obtenido por nuestra aplicación con el resultado obtenido por aplicaciones para el reconocimiento óptico de caracteres, tantos libres, como comerciales.
+	\end{itemize}
 	\clearpage
 	
 	\section{Marco referencial}
@@ -197,6 +199,7 @@
 	
 	Finalmente, en el tema de procesamiento de señales, en \cite{th5} se utilizan filtros para adquirir 
     señales bioeléctricas utilizando filtros análogos y digitales. En este proyecto se lograron filtrar 
+
     señales muy pequeñas y finas, como las producidas en el cuerpo humano, mediante filtros digitales, y se
 	obtuvieron errores pequeños. Aunque las señales bioeléctricas son muy diferentes a las imágenes, es posible 
     convertir estas ultimas en señales y, por tanto, los filtros digitales expuestos en este proyecto podrían 
@@ -272,33 +275,41 @@
 	\section{Diseño metodológico preliminar}
 	
 	\subsection{Hipótesis}
+	Es posible desarrollar un sistema de reconocimiento óptico de caracteres, optimizado de manera que su radio de eficacia sobre su eficiencia sea superior a los sistemas disponibles en la actualidad, de código abierto. Cuando procesan el mismo documento sobre un sistema de computo similar.
+En donde su eficacia se define como el radio de caracteres reconocidos correctamente dividido entre el  numero total de caracteres.
+Y la eficiencia es un indicador compuesto de la cantidad de memoria utilizada y tiempo total de ejecución.
 	
 	\subsection{Tipo de investigación}
 	En esta investigación se utilizará un enfoque cuantitativo.
 	
 	\subsection{Población}
 	Las hojas existentes en lenguaje español, que cumplan con las siguientes restricciones:
-	- Forma rectangular.
-	- Fondo blanco.
-	- Letra de tamaño constante dentro del documento y en color negro.
-	- Maximo dos columnas, sin imagenes.
-	- Inclinación cercana a los 0 grados.
+	\begin{itemize}
+	\item Forma rectangular.
+	\item Fondo blanco.
+	\item Letra de tamaño constante dentro del documento y en color negro.
+	\item Máximo dos columnas, sin imágenes.
+	\item Inclinación cercana a los 0 grados.
+	\end{itemize}
 
 
 	\subsection{Muestra}
-	Se tomará una muestra de 100 textos con un tamaño y tipo de fuente específicas. Se tomarán
+	Se tomará una muestra de 30 textos con un tamaño y tipo de fuente específicas. Se tomarán
 	fotos con el celular de dichos textos para realizar la medición de variables, estas fotos deben ser
-	tomadas desde un punto perpendicular al papel y el eje central de la camara debe estar paralelo a los 
-	limites del papel.
+	tomadas desde un punto perpendicular al papel y el eje central de la cámara debe estar paralelo a 
+	los limites del papel.
 	
 	\subsection{Variables}
 	Las variables a tener en cuenta para ejecución de la aplicación son:
-	- Cantidad de caracteres reconocidos exitosamente.
-	- Cantidad de memoria utilizada.
-	- Tiempo de CPU utilizado.
-	- Cantidad de letras en el documento impreso.
-	- Tiempo de reconocimiento de una pagina vacia.
-	- Memoria utilizada en el reconocimiento de una pagina vacia.
+	\begin{itemize}
+	\item Cantidad de caracteres reconocidos exitosamente.
+	\item Cantidad de memoria utilizada.
+	\item Tiempo de CPU utilizado.
+	\item Cantidad de letras en el documento impreso.
+	\item Tiempo de reconocimiento de una pagina vacía.
+	\item Memoria utilizada en el reconocimiento de una pagina vacía.
+	\end{itemize}
+	\clearpage
 	
 	\section{Personas que participan en el proyecto}
 	\begin{itemize}
@@ -334,7 +345,10 @@ saulo.torres@utp.edu.co
 	\clearpage
 	
 	\section{Cronograma}
-	%el cronograma
+	La investigación y desarrollo del proyecto tendrán una duración aproximada de 20 semanas,
+	trabajando 20 horas semanales cada uno de los miembros del grupo. Para un total de 1200
+	horas hombre en total.
+	\clearpage
 	
 \bibliographystyle{plain}
 \bibliography{refs}
