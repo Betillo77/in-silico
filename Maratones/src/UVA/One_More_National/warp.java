@@ -72,7 +72,7 @@ public class warp
 			System.out.println(soluciones.size() + " " + ((ArrayList <Entrada>) entradas[sequencia.length - 1]).get(0).costo);
 			Collections.sort(soluciones);
 			for(String s : soluciones)
-				System.out.println(s);
+				System.out.println(s.substring(0, s.length() - 1));
 			soluciones.clear();
 		}
 	}
