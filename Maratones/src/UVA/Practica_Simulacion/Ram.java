@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.Hashtable;
 
 
-public class ram 
+public class Ram 
 {
 	static class Variable
 	{
