@@ -103,6 +103,17 @@ public enum Par
 		}
 	}
 	
+	public synchronized double darPrecioMenos(int pips, boolean compra)
+	{
+		double precioActual = darPrecioActual(compra);
+		double pipsD = pips;
+		pipsD /= esCruceYen() ? 100 : 10000;
+		if(compra)
+			return precioActual - pipsD;
+		else
+			return precioActual + pipsD;
+	}
+	
 	public synchronized double darPrecioActual(boolean compra)
 	{
     	return compra ? bidActual : askActual;

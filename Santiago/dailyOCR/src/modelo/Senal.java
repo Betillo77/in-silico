@@ -20,7 +20,7 @@ public class Senal
 	private int low = Short.MAX_VALUE;
 	private int high = Short.MIN_VALUE;
 	private boolean tocoStop = false;
-	private transient double stop;
+	private transient volatile double stop;
 	
 	
 	public Senal()

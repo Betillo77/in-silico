@@ -648,22 +648,39 @@ public class SistemaDailyFX extends SistemaEstrategias
 					}
 					else
 					{
+						int ganancia = afectada.getPar().diferenciaPips(afectada.getPrecioEntrada(), afectada.isCompra());
+						if(Math.abs(afectada.darStop()) < 10e-4d)
+							afectada.ponerStop(senal.darStop());
+						else
+						{
+							if(ganancia > 150 && afectada.getPar().diferenciaPips(afectada.darStop(), afectada.isCompra()) > 150)
+								afectada.ponerStop(afectada.getPar().darPrecioMenos(150, afectada.isCompra()));
+						}
 						if(afectada.isCompra())
 						{
-							if(afectada.getPar().darPrecioActual(true) <= senal.darStop() && afectada.getNumeroLotes() < 4)
+							if(afectada.darStop() < senal.darStop())
+								afectada.ponerStop(senal.darStop());
+							if(afectada.getPar().darPrecioActual(true) <= afectada.darStop() && afectada.getNumeroLotes() < 4)
 							{
-								Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
 								actual.tocoStop(afectada);
 								elite.tocoStop(afectada);
+								cambio.set(true);
+								if(!afectada.isTocoStop())
+									Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
 							}
 						}
 						else
 						{
-							if(afectada.getPar().darPrecioActual(false) >= senal.darStop() && afectada.getNumeroLotes() < 4)
+							if(afectada.darStop() > senal.darStop())
+								afectada.ponerStop(senal.darStop());
+							if(afectada.getPar().darPrecioActual(false) >= afectada.darStop() && afectada.getNumeroLotes() < 4)
 							{
-								Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
 								actual.tocoStop(afectada);
 								elite.tocoStop(afectada);
+								cambio.set(true);
+								if(!afectada.isTocoStop())
+									Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(false) + ", stop -> " + senal.darStop());
+
 							}
 						}
 					}

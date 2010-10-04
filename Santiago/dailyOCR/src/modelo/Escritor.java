@@ -172,13 +172,13 @@ public class Escritor
 		}
 	}
 
-	private ArrayList <String> leer(int tiempoEspera)
+	private ArrayList <String> leer()
 	{
 		try
 		{
 			ArrayList <String> leidos = new ArrayList <String> ();
 			File archivoEscritura = new File(pathMeta + "log.txt");
-			String magicos = proceso.leer(tiempoEspera * 5);
+			String magicos = proceso.leer();
 			if(debug)
 				Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
 			if(!archivoEscritura.exists())
@@ -199,10 +199,10 @@ public class Escritor
 		return null;
 	}
 	
-	private ArrayList <String> cargarEntradas(ArrayList <EntradaEscritor> trabajoActual, int tiempoExtra)
+	private ArrayList <String> cargarEntradas(ArrayList <EntradaEscritor> trabajoActual)
 	{
 		escribir(trabajoActual);
-		return leer(10000 + 20000 * trabajoActual.size() + tiempoExtra);
+		return leer();
 	}
 	
 	protected Senal darSenal(EntradaEscritor entrada) 
@@ -300,7 +300,7 @@ public class Escritor
 		ArrayList <String> entradas = null;
 		for(int i = 0; i < 11; i++)
 		{
-			entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
+			entradas = cargarEntradas(trabajoActual);
 			if(entradas != null)
 				break;
 			else
@@ -354,7 +354,7 @@ public class Escritor
 		ArrayList <String> entradas = null;
 		for(int i = 0; i < 11; i++)
 		{
-			entradas = cargarEntradas(trabajoActual, i == 0 ? 0 : 90000);
+			entradas = cargarEntradas(trabajoActual);
 			if(entradas != null)
 				break;
 			else
