@@ -22,7 +22,7 @@ public class ConexionServidorMensajes
 	private static String SMTP_AUTH_PWD = "";
 	private static final String emailFromAddress = "dailyfxstatus@gmail.com";
 	public static final String passwordRoute = "clave.txt";
-	private static final String[] emailList = {"nogardark@hotmail.com" , "santigutierrez1@gmail.com"};
+	private static final String[] emailList = {"santigutierrez1@gmail.com"};
 	
 	public static void enviarMensaje(String subject, String message)
 	{
@@ -30,9 +30,12 @@ public class ConexionServidorMensajes
 		File file = new File(passwordRoute);
 		try
 		{
-			Scanner sc = new Scanner(file);
-			SMTP_AUTH_PWD = sc.next();
-			sc.close();
+			if(SMTP_AUTH_PWD.equals(""))
+			{
+				Scanner sc = new Scanner(file);
+				SMTP_AUTH_PWD = sc.next();
+				sc.close();
+			}
 		} 
 		catch(FileNotFoundException e) 
 		{
@@ -67,7 +70,7 @@ public class ConexionServidorMensajes
 		 	{
 		 		addressTo[i] = new InternetAddress (emailList [i]) ;
 			}
-		 	msg.setRecipients (Message.RecipientType.TO, addressTo) ;
+		 	msg.setRecipients(Message.RecipientType.TO, addressTo) ;
 		 	msg.setSubject(subject);
 			msg.setContent(message, "text/plain");
 			Transport.send(msg);
