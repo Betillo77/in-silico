@@ -17,6 +17,7 @@ public class Senal
 	private double SSI2 = 0.0d;
 	private long fechaInicio = 0;
 	private transient int gananciaReal = Short.MIN_VALUE;
+	public transient int numeroTrailing = 0;
 	private int low = Short.MAX_VALUE;
 	private int high = Short.MIN_VALUE;
 	private boolean tocoStop = false;
