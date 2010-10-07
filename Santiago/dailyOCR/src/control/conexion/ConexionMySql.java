@@ -31,7 +31,6 @@ public class ConexionMySql
 		}
 		try
 		{
-			Error.agregar("Agregando entrada a base de datos Par: " + afectada.getPar() + " Es_compra: " + (afectada.isCompra() ? 1 : 0) + " Ganancia: " + ganancia + " Ganancia real: " + afectada.darGananciaReal() + " Precio entrada: " + afectada.getPrecioEntrada() + " Bid: " + afectada.getPar().darPrecioActual(true) + " Ask: " + afectada.getPar().darPrecioActual(false));
 			double VIX = afectada.getVIX();
 			double SSI1 = afectada.getSSI1();
 			double SSI2 = afectada.getSSI2();
