@@ -22,6 +22,7 @@ public class Senal
 	private int high = Short.MIN_VALUE;
 	private boolean tocoStop = false;
 	private transient volatile double stop;
+	private transient volatile double stopDaily = -1;
 	
 	
 	public Senal()
@@ -183,6 +184,14 @@ public class Senal
 
 	public double darStop() {
 		return stop;
+	}
+	
+	public void ponerStopDaily(double stopDaily) {
+		this.stopDaily = stopDaily;
+	}
+
+	public double darStopDaily() {
+		return stopDaily;
 	}
 	
 	@Override
