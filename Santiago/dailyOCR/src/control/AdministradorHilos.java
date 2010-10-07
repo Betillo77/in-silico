@@ -25,13 +25,13 @@ public class AdministradorHilos
 						{
 							try 
 							{
-								Thread.sleep(60000);
+								Thread.sleep(300000);
 								Calendar c = Calendar.getInstance();
 								int hora = c.get(Calendar.HOUR_OF_DAY);
 								int minuto = c.get(Calendar.MINUTE);
 								synchronized(hilos)
 								{
-									if(minuto > 30)
+									if(minuto > 40)
 									{
 										mensajeEnviado = false;
 									}
@@ -43,10 +43,10 @@ public class AdministradorHilos
 											for(Thread h : hilos)
 											{
 												StackTraceElement[] stack = h.getStackTrace();
-												mensaje += h.getName() + " " + h.getState() + " ";
-												if(stack.length > 0)
-													mensaje += stack[0].toString();
-												
+												mensaje += h.getName() + " " + h.getState() + " Stack:\n";
+												for(StackTraceElement ste : stack)
+													mensaje += ste + " * \n";
+												mensaje += "\n";
 											}
 											Error.agregar(mensaje);
 											mensajeEnviado = true;
