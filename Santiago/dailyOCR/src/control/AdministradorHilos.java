@@ -2,6 +2,7 @@ package control;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,13 +20,38 @@ public class AdministradorHilos
 				{
 					public void run()
 					{
+						boolean mensajeEnviado = false;
 						while(true)
 						{
 							try 
 							{
 								Thread.sleep(60000);
+								Calendar c = Calendar.getInstance();
+								int hora = c.get(Calendar.HOUR_OF_DAY);
+								int minuto = c.get(Calendar.MINUTE);
 								synchronized(hilos)
 								{
+									if(minuto > 30)
+									{
+										mensajeEnviado = false;
+									}
+									else
+									{
+										if(!mensajeEnviado && (hora == 5 || hora == 11 || hora == 17 || hora == 23))
+										{
+											String mensaje = "";
+											for(Thread h : hilos)
+											{
+												StackTraceElement[] stack = h.getStackTrace();
+												mensaje += h.getName() + " " + h.getState() + " ";
+												if(stack.length > 0)
+													mensaje += stack[0].toString();
+												
+											}
+											Error.agregar(mensaje);
+											mensajeEnviado = true;
+										}
+									}
 									for(Thread h : hilos)
 									{
 										if(!h.isAlive())
