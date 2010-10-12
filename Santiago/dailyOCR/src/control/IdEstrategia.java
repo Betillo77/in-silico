@@ -11,7 +11,7 @@ public enum IdEstrategia
 	public Estrategia darEstrategia()
 	{
 		if(esta == null)
-			Error.agregar("Estrategia " + this + ", fue llamada antes de ser registrada.");
+			Error.agregar("Estrategia " + this + " fue llamada antes de ser registrada.");
 		return esta;
 	}
 	
