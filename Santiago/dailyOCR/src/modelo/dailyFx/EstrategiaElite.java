@@ -72,7 +72,11 @@ public class EstrategiaElite extends Estrategia
 	{
 		if(darActivo(afectada.getEstrategia(), afectada.getPar()))
 		{
-			super.tocoStop(afectada);
+			Senal posible = tienePar(afectada.getEstrategia(), afectada.getPar());
+			if(posible != null)
+				super.tocoStop(posible);
+			else
+				Error.agregar("No se pudo encontrar senal en DailyFx-Elite " + afectada.getEstrategia() + " " + afectada.getPar());
 		}
 	}
 	

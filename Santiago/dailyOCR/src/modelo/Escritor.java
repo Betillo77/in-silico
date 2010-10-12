@@ -11,7 +11,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import control.AdministradorHilos;
 import control.Error;
-import control.dailyOCR;
 import control.conexion.ConexionMySql;
 
 
@@ -207,7 +206,7 @@ public class Escritor
 	
 	protected Senal darSenal(EntradaEscritor entrada) 
 	{
-		return dailyOCR.darEstrategia(entrada.getId()).tienePar(entrada.getPar());
+		return entrada.getId().darEstrategia().tienePar(entrada.getPar());
 	}
 	
 	protected boolean procesar(EntradaEscritor entrada, String lectura)
@@ -426,7 +425,7 @@ public class Escritor
 
 	public void abrir(SenalEntrada entrada, Senal nueva)
 	{
-		Estrategia estrategia = dailyOCR.darEstrategiaSenal(nueva);
+		Estrategia estrategia = nueva.getEstrategia().darEstrategia();
 		if(entrada.getNumeroLotes() > 5)
 		{
     		Error.agregar("Mas de cinco lotes abiertos en: " + entrada.getPar().toString() + ", en el path: " + pathMeta);

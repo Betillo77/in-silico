@@ -4,13 +4,10 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import modelo.Estrategia;
-import modelo.Senal;
 import modelo.SistemaEstrategias;
 import modelo.dailyFx.SistemaDailyFX;
 import vista.ParteGrafica;
@@ -47,49 +44,6 @@ public class dailyOCR
 			sistema.cargarEstrategias();
 			sistema.iniciarHilo();
 		}
-	}
-
-	public static List <Senal> darSenalesEstrategia(IdEstrategia estrategia) 
-	{
-		for(SistemaEstrategias se : sistemas)
-		{
-			Estrategia posible = se.darEstrategia(estrategia);
-			if(posible != null)
-			{
-				return posible.getSenalesCopy();
-			}
-		}
-		Error.agregar("No se encontraron las senales de: " + estrategia.toString());
-		return null;
-		
-	}
-
-	public static Estrategia darEstrategiaSenal(Senal senal)
-	{
-		for(SistemaEstrategias se : sistemas)
-		{
-			Estrategia posible = se.darEstrategia(senal.getEstrategia());
-			if(posible != null)
-			{
-				return posible;
-			}
-		}
-		Error.agregar("No se encontro la estrategia: " + senal.getEstrategia().toString());
-		return null;
-	}
-	
-	public static Estrategia darEstrategia(IdEstrategia id)
-	{
-		for(SistemaEstrategias se : sistemas)
-		{
-			Estrategia posible = se.darEstrategia(id);
-			if(posible != null)
-			{
-				return posible;
-			}
-		}
-		Error.agregar("No se encontro la estrategia: " + id.toString());
-		return null;
 	}
 	
 	public static void salir()

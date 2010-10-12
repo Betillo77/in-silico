@@ -52,6 +52,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				escritorOtros = new Escritor("dailyOtros/", new ArrayList < ArrayList <EntradaEscritor> > ());
 		}
 		breakout1.ponerEscritor(escritorOtros);
+		IdEstrategia.BREAKOUT1.registrarEstrategia(breakout1);
 		breakout2 = Estrategia.leer(IdEstrategia.BREAKOUT2);
 		if(breakout2 == null)
 		{
@@ -66,6 +67,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				escritorBreakout2 = new Escritor("dailyFX/", new ArrayList < ArrayList <EntradaEscritor> > ());
 		}
 		breakout2.ponerEscritor(escritorBreakout2);
+		IdEstrategia.BREAKOUT2.registrarEstrategia(breakout2);
 		elite = EstrategiaElite.leer(IdEstrategia.ELITE);
 		if(elite == null)
 		{
@@ -80,30 +82,35 @@ public class SistemaDailyFX extends SistemaEstrategias
 				escritorElite = new EscritorElite("dailyElite/", new ArrayList < ArrayList <EntradaEscritor> > ());
 		}
 		elite.ponerEscritor(escritorElite);
+		IdEstrategia.ELITE.registrarEstrategia(elite);
 		range1 = Estrategia.leer(IdEstrategia.RANGE1);
 		if(range1 == null)
 		{
 			range1 = new Estrategia(IdEstrategia.RANGE1);
 		}
 		range1.ponerEscritor(escritorOtros);
+		IdEstrategia.RANGE1.registrarEstrategia(range1);
 		range2 = Estrategia.leer(IdEstrategia.RANGE2);
 		if(range2 == null)
 		{
 			range2 = new Estrategia(IdEstrategia.RANGE2);
 		}
 		range2.ponerEscritor(escritorOtros);
+		IdEstrategia.RANGE2.registrarEstrategia(range2);
 		momentum1 = Estrategia.leer(IdEstrategia.MOMENTUM1);
 		if(momentum1 == null)
 		{
 			momentum1 = new Estrategia(IdEstrategia.MOMENTUM1);
 		}
 		momentum1.ponerEscritor(escritorOtros);
+		IdEstrategia.MOMENTUM1.registrarEstrategia(momentum1);
 		momentum2 = Estrategia.leer(IdEstrategia.MOMENTUM2);
 		if(momentum2 == null)
 		{
 			momentum2 = new Estrategia(IdEstrategia.MOMENTUM2);
 		}
 		momentum2.ponerEscritor(escritorOtros);
+		IdEstrategia.MOMENTUM2.registrarEstrategia(momentum2);
 		estrategias = new ArrayList <Estrategia> ();
 		estrategias.add(breakout1);
 		estrategias.add(breakout2);
@@ -152,7 +159,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 			{ 
 				Senal encontrada; 
 				boolean bien = true; 
-				if((encontrada = darEstrategia(s.getEstrategia()).tienePar(s.getPar())) != null) 
+				if((encontrada = s.getEstrategia().darEstrategia().tienePar(s.getPar())) != null) 
 				{ 
 					if(encontrada.isCompra() != s.isCompra() || encontrada.getNumeroLotes() != s.getNumeroLotes()) 
 					{ 
@@ -319,12 +326,12 @@ public class SistemaDailyFX extends SistemaEstrategias
 			} 
 			for(ParMagico pm : parMagicosBreakout2Copia) 
 			{ 
-				if(darEstrategia(pm.id).darActivo(pm.par))
+				if(pm.id.darEstrategia().darActivo(pm.par))
 					mensaje += pm + " CERRADO_PREMATURAMENTE\n";
 			} 
 			for(ParMagico pm : parMagicosOtrosCopia) 
 			{ 
-				if(darEstrategia(pm.id).darActivo(pm.par)) 
+				if(pm.id.darEstrategia().darActivo(pm.par)) 
 					mensaje += pm + " CERRADO_PREMATURAMENTE\n";
 			} 
 			for(ParMagico pm : parMagicosEliteCopia) 
@@ -334,12 +341,12 @@ public class SistemaDailyFX extends SistemaEstrategias
 			} 
 			for(ParMagico pm : parMagicosBreakout2NoAbiertos) 
 			{ 
-				if(darEstrategia(pm.id).darActivo(pm.par)) 
+				if(pm.id.darEstrategia().darActivo(pm.par)) 
 					mensaje += pm + " NO_ABIERTO\n";
 			} 
 			for(ParMagico pm : parMagicosOtrosNoAbiertos) 
 			{ 
-				if(darEstrategia(pm.id).darActivo(pm.par)) 
+				if(pm.id.darEstrategia().darActivo(pm.par)) 
 					mensaje += pm + " NO_ABIERTO\n";
 			} 
 			for(ParMagico pm : parMagicosEliteNoAbiertos) 
@@ -604,7 +611,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			for(Senal senal : senalesLeidas)
 			{
-				Estrategia actual = darEstrategia(senal.getEstrategia());
+				Estrategia actual = senal.getEstrategia().darEstrategia();
 				Senal afectada = null;
 				if((afectada = actual.tienePar(senal.getPar())) != null)
 				{
@@ -729,22 +736,6 @@ public class SistemaDailyFX extends SistemaEstrategias
 			momentum2.escribir();
 			elite.setEntradasEscritor(escritorElite.darCopiaEntradas());
 			elite.escribir();
-		}
-	}
-
-	@Override
-	public Estrategia darEstrategia(IdEstrategia id)
-	{
-		switch(id)
-		{
-			case BREAKOUT1 : return breakout1;
-			case BREAKOUT2 : return breakout2;
-			case RANGE1 : return range1;
-			case RANGE2 : return range2;
-			case MOMENTUM1 : return momentum1;
-			case MOMENTUM2 : return momentum2;
-			case ELITE : return elite;
-			default : return null;
 		}
 	}
 }

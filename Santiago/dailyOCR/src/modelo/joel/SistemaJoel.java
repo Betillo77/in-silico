@@ -35,6 +35,7 @@ public class SistemaJoel extends SistemaEstrategias
 			joel = new Estrategia(IdEstrategia.JOEL);
 		}
 		joel.ponerEscritor(escritor);
+		IdEstrategia.JOEL.registrarEstrategia(joel);
 		try
 		{
 			metodoLectura = ConexionServidorJoel.class.getMethod("leerServidorJoel");
@@ -248,16 +249,6 @@ public class SistemaJoel extends SistemaEstrategias
 	public void persistir() 
 	{
 		joel.escribir();
-	}
-	
-	@Override
-	public Estrategia darEstrategia(IdEstrategia id)
-	{
-		if(id == IdEstrategia.JOEL)
-		{
-			return joel;
-		}
-		return null;
 	}
 
 	@Override

@@ -37,7 +37,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import control.AnalisisLogica;
 import control.IdEstrategia;
-import control.dailyOCR;
 
 public class AnalisisGrafico extends JFrame implements ActionListener, ItemListener {
 
@@ -406,7 +405,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		int numero;
 		if(e.getSource() instanceof JCheckBox)
 		{
-			Estrategia estrategia = dailyOCR.darEstrategia(manejador.estrategia);
+			Estrategia estrategia = manejador.estrategia.darEstrategia();
 			estrategia.cambiarActivo(manejador.divisaActual, ((JCheckBox) e.getSource()).isSelected());
 			return;
 		}

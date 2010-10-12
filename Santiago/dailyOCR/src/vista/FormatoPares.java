@@ -13,7 +13,6 @@ import modelo.Estrategia;
 import modelo.Par;
 import modelo.dailyFx.EstrategiaElite;
 import control.IdEstrategia;
-import control.dailyOCR;
 
 public class FormatoPares extends JDialog {
 
@@ -294,8 +293,8 @@ public class FormatoPares extends JDialog {
 	
 	private void configurar(final Par par, JCheckBox box)
 	{
-		Estrategia estrategia = dailyOCR.darEstrategia(id);
-		final EstrategiaElite eElite = (EstrategiaElite) dailyOCR.darEstrategia(IdEstrategia.ELITE);
+		Estrategia estrategia = id.darEstrategia();
+		final EstrategiaElite eElite = (EstrategiaElite) IdEstrategia.ELITE.darEstrategia();
 		if(elite)
 		{
 			box.setSelected(eElite.darActivo(estrategia.getId(), par));
@@ -307,7 +306,7 @@ public class FormatoPares extends JDialog {
 		box.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Estrategia estrategia = dailyOCR.darEstrategia(id);
+				Estrategia estrategia = id.darEstrategia();
 				if(elite)
 				{
 					eElite.cambiarActivo(par, ((JCheckBox) e.getSource()).isSelected(), estrategia.getId());

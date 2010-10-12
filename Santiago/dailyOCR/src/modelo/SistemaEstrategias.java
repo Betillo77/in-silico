@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import control.Error;
-import control.IdEstrategia;
 
 
 public abstract class SistemaEstrategias
@@ -67,7 +66,7 @@ public abstract class SistemaEstrategias
 		}
 		catch(Exception e)
 		{
-    		Error.agregar(e.getMessage() + "Error en Iniciar procesamiento al procesar en: " + getClass().getCanonicalName());
+    		Error.agregar(e.getMessage() + ", error en Iniciar procesamiento al procesar en: " + getClass().getCanonicalName());
 		}
 	}
 	
@@ -81,6 +80,4 @@ public abstract class SistemaEstrategias
 	public abstract void iniciarHilo();
 	
 	public abstract void persistir();
-
-	public abstract Estrategia darEstrategia(IdEstrategia estrategia);
 }

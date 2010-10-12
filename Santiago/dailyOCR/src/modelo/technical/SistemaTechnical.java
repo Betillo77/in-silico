@@ -30,6 +30,7 @@ public class SistemaTechnical extends SistemaEstrategias
 			technical = new Estrategia(IdEstrategia.TECHNICAL);
 		}
 		technical.ponerEscritor(escritor);
+		IdEstrategia.TECHNICAL.registrarEstrategia(technical);
 		try
 		{
 			metodoLectura = ConexionServidorTechnical.class.getMethod("leerServidorTechnical");
@@ -230,17 +231,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	{
 		technical.escribir();
 	}
-	
-	@Override
-	public Estrategia darEstrategia(IdEstrategia id)
-	{
-		if(id == IdEstrategia.TECHNICAL)
-		{
-			return technical;
-		}
-		return null;
-	}
-	
+
 	@Override
 	public void chequearSenales(boolean enviarMensaje) 
 	{

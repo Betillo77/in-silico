@@ -12,7 +12,6 @@ import javax.swing.table.AbstractTableModel;
 
 import modelo.Senal;
 import control.IdEstrategia;
-import control.dailyOCR;
 	
 public class TablaEstrategia extends JFrame
 {
@@ -26,7 +25,7 @@ public class TablaEstrategia extends JFrame
 	public TablaEstrategia(final IdEstrategia estrategia) 
 	{
 		super(estrategia.toString());
-		lista = dailyOCR.darEstrategia(estrategia).getSenalesCopy();
+		lista = estrategia.darEstrategia().getSenalesCopy();
 		final Object[][] mostrar = new Object[lista.size()][6];
 		for(int i = 0; i < lista.size(); i++)
 		{
