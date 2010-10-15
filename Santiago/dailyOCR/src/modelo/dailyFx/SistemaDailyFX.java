@@ -358,7 +358,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 			for(ParMagico pm : parMagicosRealesBreakout2) 
 			{ 
 				Senal s; 
-				if((s = breakout2.tienePar(pm.par)) != null && breakout2.darActivo(pm.par) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra()) 
+				if((s = breakout2.tienePar(pm.par)) != null && breakout2.darActivo(pm.par) && (s.darMagico(0) == 0 || s.darMagico(0) == pm.magico) && pm.esCompra == s.isCompra()) 
 				{ 
 					s.ponerMagico(0, pm.magico); 
 					Error.agregar("Asignando magico tentativamente: " + breakout2.getId() + " " + s.getPar() + " " + pm.magico); 
@@ -381,7 +381,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 						continue; 
 					for(Senal s : e.getSenalesCopy()) 
 					{ 
-						if(s.getPar().equals(pm.par) && e.darActivo(s.getPar()) && s.darMagico(0) == 0 && pm.esCompra == s.isCompra()) 
+						if(s.getPar().equals(pm.par) && e.darActivo(s.getPar()) && (s.darMagico(0) == 0 || s.darMagico(0) == pm.magico) && pm.esCompra == s.isCompra()) 
 						{ 
 							cambio = true; 
 							s.ponerMagico(0, pm.magico); 
@@ -399,8 +399,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 			escritorOtros.terminarCiclo(); 
 			for(ParMagico pm : parMagicosRealesElite) 
 			{ 
-				escritorElite.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
-				mensaje2 += pm + " no existe en la bd, eliminado\n"; 
+				mensaje2 += pm + " no existe en la bd\n"; 
 			} 
 			escritorElite.terminarCiclo();
 			for(Par p : Par.values())

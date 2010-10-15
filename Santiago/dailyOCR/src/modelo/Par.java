@@ -166,7 +166,7 @@ public enum Par
 	{
 		String debug = "";
 		for(Senal s : senales)
-			debug += "\n" + s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh();
+			debug += s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh() + "\n";
 		return debug;
 	}
 	
