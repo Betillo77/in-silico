@@ -658,13 +658,13 @@ public class SistemaDailyFX extends SistemaEstrategias
 							if(afectada.darStop() < senal.darStop())
 								afectada.ponerStop(senal.darStop());
 							afectada.ponerStopDaily(senal.darStop());
-							if(afectada.getPar().darPrecioActual(true) <= afectada.darStop() && afectada.getNumeroLotes() < 4)
+							if(afectada.getPar().darPrecioActual(true) <= afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() > senal.darStop()))
 							{
 								actual.tocoStop(afectada);
 								elite.tocoStop(afectada);
 								cambio.set(true);
 								if(!afectada.isTocoStop())
-									Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + senal.darStop());
+									Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + afectada.darStop());
 							}
 						}
 						else
@@ -672,13 +672,13 @@ public class SistemaDailyFX extends SistemaEstrategias
 							if(afectada.darStop() > senal.darStop())
 								afectada.ponerStop(senal.darStop());
 							afectada.ponerStopDaily(senal.darStop());
-							if(afectada.getPar().darPrecioActual(false) >= afectada.darStop() && afectada.getNumeroLotes() < 4)
+							if(afectada.getPar().darPrecioActual(false) >= afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() < senal.darStop()))
 							{
 								actual.tocoStop(afectada);
 								elite.tocoStop(afectada);
 								cambio.set(true);
 								if(!afectada.isTocoStop())
-									Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(false) + ", stop -> " + senal.darStop());
+									Error.agregar(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(false) + ", stop -> " + afectada.darStop());
 
 							}
 						}
