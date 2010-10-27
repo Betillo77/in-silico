@@ -14,6 +14,8 @@
 %color tablas
 \usepackage{colortbl}
 
+
+
 %espaciado
 \usepackage{setspace}
 \onehalfspacing
@@ -70,7 +72,7 @@
 	\section{Formulación del problema}
 	Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información que recibimos del entorno llega a través de nuestros ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
 	
-	Entre las soluciones que existen en el mercado para este problema, no se encontró un software económico para que las personas invidentes puedan tener acceso rápido a documentos escritos. Esto es debido a que el software tradicionalmente construido para reconocer caracteres ópticamente no esta diseñado para ser usado en dispositivos móviles. Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no encontramos un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para teléfonos inteligentes y que sea de código libre y abierto.
+	Entre las soluciones que existen en el mercado para este problema, no se encontró un software económico para que las personas invidentes puedan tener acceso rápido a documentos escritos. Esto es debido a que el software tradicionalmente construido para reconocer caracteres ópticamente no esta diseñado para ser usado en dispositivos móviles. Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para teléfonos inteligentes y que sea de código libre y abierto.
 
 	Existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas podemos encontrar:
 	\begin{itemize}
@@ -95,7 +97,7 @@
 	\clearpage
 
 	\section{Justificación}
-	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Un sistema que solucionara este problema, le posibilitaría a las personas con discapacidades visuales mejorar enormemente su calidad de vida, ya que les permitiría una mejor educación, al poder acceder a los mismos libros de texto que el resto de la sociedad, y no solo, como actualmente sucede, a los pocos libros que se encuentran disponibles en formato braille.
+	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Un sistema que solucionase este problema, le posibilitaría a las personas con discapacidades visuales mejorar enormemente su calidad de vida, ya que les permitiría una mejor educación, al poder acceder a los mismos libros de texto que el resto de la sociedad, y no solo, como actualmente sucede, a los pocos libros que se encuentran disponibles en formato braille.
 
 	Para dar una solución efectiva al problema se requiere de algún sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y lo suficientemente poderoso para hacer el trabajo en un tiempo razonable. Los celulares comunes cumplen las primeras dos características, pero no la tercera, ya que su poder de procesamiento es varias veces inferior al de un computador común. Sin embargo, una nueva generación de celulares, que se denomina la de los \textit{celulares inteligentes}, cumple esta tercer característica, ya que su poder de computo es comparable con el de un computador portátil. Así pues, si existiese un sistema de reconocimiento óptico de caracteres diseñado para estos celulares, este podría utilizarse en un sistema que permitiese reconocer texto de imágenes adquiridas por medio de la cámara de estos celulares, que lograría mejorar la capacidad de acceso a la información de las personas con discapacidades visuales.
 
@@ -122,7 +124,7 @@
 	\item Diseñar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de caracteres.
 	\item Implementar la aplicación diseñada.
 	\item Realizar pruebas de la aplicación implementada.
-	\item Comparar el resultado obtenido por nuestra aplicación con el resultado obtenido por aplicaciones para el reconocimiento óptico de caracteres, tantos libres, como comerciales.
+	\item Comparar el resultado obtenido por la aplicación implementada con el resultado obtenido por aplicaciones para el reconocimiento óptico de caracteres, tantos libres, como comerciales.
 	\end{itemize}
 	\clearpage
 	
@@ -162,21 +164,21 @@
 	lectores de pantalla, impresoras y sistemas refrescables de Braille, entre otros.
 	Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira, permite
 	a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes
-	frecuencias\cite{iris04}; Para ello, usan un guante con imanes permanentes y una matriz
-	de electroimanes conectada al computador por el puerto USB.\newline
+	frecuencias (Llamado Proyecto IRIS); Para ello, usan un guante con imanes 
+	permanentes y una matriz de electroimanes conectada al computador por el puerto USB.
+	\newline \newline
 	En el área de acceso al texto, existen sistemas que pasan el texto en ASCII a voz
 	conocidos como sistemas \textit{Text-To-Speech}. Y también sistemas para el computador
 	que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR; Estos funcionan
 	usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por
 	la UNLV, los OCRs libres con mejores resultados son	\textit{Tesseract} y el 
-	\textit{Ocropus}, cuyo funcionamiento general se explica en \cite{tesseract1} y
-	\cite{ocropus1} respectivamente.\newline
-	Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara,
-	se deben seguir diferentes enfoques, en\cite{doc_analysis3} se halló que los retos más
-	importantes son la proyección de la imagen en perspectiva en el plano y la resolución
-	requerida para poder reconocer bien los caracteres.\newline
-	En cuanto a hacer que el OCR sea realizado por un celular, encontramos investigaciones
-	como \cite{mob_smallpic}, en la que se trabajaban con imágenes de muy baja resolución
+	\textit{Ocropus}. Cuando el problema cambia de tomar la imagen con un escáner a tomarla
+	con una cámara, se deben seguir diferentes enfoques, en 
+	\footnote{Ray Smith. Progress in camera-based document image analysis.} se halló que los
+	retos más importantes son la proyección de la imagen en perspectiva en el plano y la 
+	resolución requerida para poder reconocer bien los caracteres.
+	En cuanto a hacer que el OCR sea realizado por un celular, se encontraron investigaciones
+	como \footcite{mob_smallpic}, en la que se trabajaban con imágenes de muy baja resolución
 	(640x480) y como resultado solo pueden reconocer textos muy cortos, tales como avisos
 	y carteles,	pero no documentos completos.\newline
 	En \cite{mob_withpc}, para tratar de equilibrar el hecho de tener una cámara de baja
@@ -390,7 +392,7 @@ saulo.torres@utp.edu.co
 	\end{itemize}
 	\clearpage
 	
-\bibliographystyle{alpha}
+\bibliographystyle{plain}
 \bibliography{refs}
 \nocite{*}
 \end{document}
