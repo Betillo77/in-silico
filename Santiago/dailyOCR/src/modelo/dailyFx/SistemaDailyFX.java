@@ -627,6 +627,16 @@ public class SistemaDailyFX extends SistemaEstrategias
 						actual.agregar(new SenalEntrada(actual.getId(), senal.getPar(), TipoSenal.HIT, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), 0), afectada);
 						elite.agregar(new SenalEntrada(elite.getId(), senal.getPar(), TipoSenal.HIT, false, senal.getNumeroLotes(), 0), actual.getId());
 						cambio.set(true);
+						if(afectada.isCompra())
+						{
+							if(afectada.darStop() < afectada.getPrecioEntrada() && afectada.darStop() != afectada.getPrecioEntrada())
+								afectada.ponerStop(0d);
+						}
+						else
+						{
+							if(afectada.darStop() > afectada.getPrecioEntrada() && afectada.darStop() != afectada.getPrecioEntrada())
+								afectada.ponerStop(0d);
+						}
 					}
 					else
 					{
