@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.Scanner;
 
 import control.AdministradorHilos;
@@ -113,60 +112,65 @@ public class Proceso
 	
 	public synchronized String leer()
 	{
-		final Object espera = new Object();
-		final StringBuffer salida = new StringBuffer();
-		new Thread(new Runnable()
+		try
 		{
-			@Override
-			public void run() 
+			final Object espera = new Object();
+			final StringBuffer salida = new StringBuffer();
+			new Thread(new Runnable()
 			{
-				try
+				@Override
+				public void run() 
 				{
-					socket.setSoTimeout(600000);
-					String resultado = socketIn.readLine();
-					if(resultado.equals(""))
-						resultado = " ";
-					salida.append(resultado);
-					synchronized(espera)
+					try
 					{
-						espera.notifyAll();
+						socket.setSoTimeout(600000);
+						String resultado = socketIn.readLine();
+						if(resultado.equals(""))
+							resultado = " ";
+						salida.append(resultado);
+						synchronized(espera)
+						{
+							espera.notifyAll();
+						}
+					}
+					catch(Exception e)
+					{
+						Error.agregar(e.getMessage() + " error leyendo en el socket, " + path + " reiniciando");
+						reiniciarEquipo();
+					}
+				}	
+			}).start();
+			long tiempoInicio = System.currentTimeMillis();
+			while((System.currentTimeMillis() - tiempoInicio < 600000) && salida.length() == 0)
+			{
+				synchronized(espera)
+				{
+					try 
+					{
+						espera.wait(600000);
+					}
+					catch (InterruptedException e) 
+					{
+						Error.agregar("Excepcion de interrupcion, reiniciando");
+						reiniciarEquipo();
 					}
 				}
-				catch(SocketTimeoutException e)
-				{
-					Error.agregar("Socket no respondio en 30 segundos, reiniciando");
-					reiniciarEquipo();
-				}
-				catch(IOException e)
-				{
-					Error.agregar(e.getMessage() + " error leyendo en el socket, " + path + " reiniciando");
-					reiniciarEquipo();
-				}
-			}	
-		}).start();
-		long tiempoInicio = System.currentTimeMillis();
-		while((System.currentTimeMillis() - tiempoInicio < 600000) && salida.length() == 0)
-		{
-			synchronized(espera)
-			{
-				try 
-				{
-					espera.wait(600000);
-				}
-				catch (InterruptedException e) 
-				{
-					Error.agregar("Excepcion de interrupcion, reiniciando");
-					reiniciarEquipo();
-				}
 			}
+			String resultado = salida.toString();
+			if(salida.length() == 0)
+			{
+				Error.agregar("Error de lectura en el socket, " + path + " reiniciando");
+				reiniciarEquipo();
+				resultado = null;
+			}
+			return resultado.equals(" ") ? "" : resultado;
 		}
-		if(salida.length() == 0)
+		catch(Exception e)
 		{
 			Error.agregar("Error de lectura en el socket, " + path + " reiniciando");
 			reiniciarEquipo();
+			return null;
 		}
-		String resultado = salida.toString();
-		return resultado.equals(" ") ? "" : resultado;
 	}
 	
 	private synchronized void cerrarSocket() throws IOException

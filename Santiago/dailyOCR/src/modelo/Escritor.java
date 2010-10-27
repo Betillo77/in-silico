@@ -177,12 +177,15 @@ public class Escritor
 		{
 			ArrayList <String> leidos = new ArrayList <String> ();
 			File archivoEscritura = new File(pathMeta + "log.txt");
-			String magicos = proceso.leer();
-			if(debug)
-				Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
 			if(!archivoEscritura.exists())
 				archivoEscritura.createNewFile();
 			FileWriter fw = new FileWriter(archivoEscritura, true);
+			fw.write("Empezando a leer magicos\n");
+			fw.close();
+			String magicos = proceso.leer();
+			if(debug)
+				Error.agregar("Leido: " + magicos + ", " + System.currentTimeMillis());
+			fw = new FileWriter(archivoEscritura, true);
 			fw.write(magicos + "\n");
 			fw.close();
 			String [] magicosPartidos = magicos.split("-");
@@ -347,36 +350,50 @@ public class Escritor
 	
 	public synchronized ArrayList <String> chequearSenales() 
 	{
-		debug = false;
-		ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
-		trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
-		ArrayList <String> entradas = null;
-		for(int i = 0; i < 11; i++)
+		try
 		{
-			entradas = cargarEntradas(trabajoActual);
-			if(entradas != null)
-				break;
-			else
+			File archivoEscritura = new File(pathMeta + "log.txt");
+			if(!archivoEscritura.exists())
+				archivoEscritura.createNewFile();
+			FileWriter fw = new FileWriter(archivoEscritura, true);
+			fw.write("Chequeando senales\n");
+			fw.close();
+			Error.agregar("Chequeando senales");
+			ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
+			trabajoActual.add(new EntradaEscritor(null, null, "GBPCHF;LIST;CLOSE;0", false));
+			ArrayList <String> entradas = null;
+			for(int i = 0; i < 11; i++)
 			{
-				if(i == 10)
-				{
-					Error.agregar("Error en la lecutura del socket, reiniciando despues de diez intentos");
-					reiniciarEquipo();
-				}
+				entradas = cargarEntradas(trabajoActual);
+				if(entradas != null)
+					break;
 				else
 				{
-					Error.agregar("Error en la lecutura del socket, reiniciando proceso");
-					reiniciarProceso();
+					if(i == 10)
+					{
+						Error.agregar("Error en la lecutura del socket, reiniciando despues de diez intentos");
+						reiniciarEquipo();
+					}
+					else
+					{
+						Error.agregar("Error en la lecutura del socket, reiniciando proceso");
+						reiniciarProceso();
+					}
 				}
 			}
+			for(Iterator <String> it = entradas.iterator(); it.hasNext();)
+			{
+				if(it.next().equals(""))
+					it.remove();
+			}
+			return entradas;
 		}
-		for(Iterator <String> it = entradas.iterator(); it.hasNext();)
+		catch(Exception e)
 		{
-			if(it.next().equals(""))
-				it.remove();
+			Error.agregar("Error en la lecutura del socket, reiniciando despues de diez intentos");
+			reiniciarEquipo();
+			return null;
 		}
-		debug = true;
-		return entradas;
 	}
 	
 	public void cerrar(SenalEntrada entrada, Senal afectada)
