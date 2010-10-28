@@ -7,6 +7,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,7 +40,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
     	{
 	    	try
 	    	{ 	
-		        DefaultHttpClient clienteHttp = new DefaultHttpClient();
+		        final DefaultHttpClient clienteHttp = new DefaultHttpClient();
 		        BasicClientCookie galleta  =  new BasicClientCookie("JSESSIONID","292E82337F956A043C63CB80051101BF"); 
 		        BasicClientCookie galleta1 = new BasicClientCookie(" s_cc","true"); 
 		        BasicClientCookie galleta2 = new BasicClientCookie("s_PVnumber", "4"); 
@@ -61,8 +66,29 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		        clienteHttp.getCookieStore().addCookie(galleta2);
 		        clienteHttp.getCookieStore().addCookie(galleta3);
 		        clienteHttp.getCookieStore().addCookie(galleta4);
-		        HttpGet peticionGet = new HttpGet("https://fxsignals.dailyfx.com/fxsignals-ds/json/all.do");
-		        HttpResponse respuesta = clienteHttp.execute(peticionGet);
+		        final HttpGet peticionGet = new HttpGet("https://fxsignals.dailyfx.com/fxsignals-ds/json/all.do");
+		        ExecutorService executor = Executors.newCachedThreadPool();
+		        Callable <HttpResponse> tarea = new Callable <HttpResponse> ()
+		        {
+
+					@Override
+					public HttpResponse call() throws Exception
+					{
+						return clienteHttp.execute(peticionGet);
+					}
+		        	
+		        };
+		        Future <HttpResponse> future = executor.submit(tarea);
+		        HttpResponse respuesta;
+		        try
+		        {
+		        	respuesta = future.get(5, TimeUnit.SECONDS);
+		        }
+		        catch(Exception e)
+		        {
+		        	Error.agregar("Error en lectura interna servidor DailyFX");
+		        	return new String[] {""};
+		        }
 		        HttpEntity entidadHttp = respuesta.getEntity();
 		        respuesta.getStatusLine();
 		        StringBuilder sb = new StringBuilder("");
