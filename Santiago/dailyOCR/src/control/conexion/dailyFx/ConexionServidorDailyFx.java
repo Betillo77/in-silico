@@ -82,12 +82,21 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		        HttpResponse respuesta;
 		        try
 		        {
-		        	respuesta = future.get(5, TimeUnit.SECONDS);
+		        	respuesta = future.get(10, TimeUnit.SECONDS);
 		        }
 		        catch(Exception e)
 		        {
-		        	Error.agregar("Error en lectura interna servidor DailyFX");
-		        	return new String[] {""};
+		        	if(j == 20)
+		        		Error.agregar("Error en lectura interna servidor DailyFX");
+		    		try 
+		    		{
+						Thread.sleep(10000);
+					} 
+		    		catch (InterruptedException e1) 
+		    		{
+		    			Error.agregar("Error en Thread.sleep en leer del servidor dailyFX " + e1.getMessage());
+					}
+		    		continue;
 		        }
 		        HttpEntity entidadHttp = respuesta.getEntity();
 		        respuesta.getStatusLine();
@@ -117,7 +126,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 	    	{	
 	    		try 
 	    		{
-					Thread.sleep(5000);
+					Thread.sleep(10000);
 				} 
 	    		catch (InterruptedException e1) 
 	    		{
