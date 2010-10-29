@@ -77,6 +77,25 @@ public class dailyOCR
 			Runtime.getRuntime().exec("shutdown now -P");
 			System.exit(0);
 		}
+		else if(dia == Calendar.SUNDAY)
+		{
+			boolean termino = false;
+			while(!termino)
+			{
+				try 
+				{
+					Thread.sleep(600000);
+					c = Calendar.getInstance();
+					int hora = c.get(Calendar.HOUR_OF_DAY);
+					if(hora > 16)
+						termino = true;
+				}
+				catch (InterruptedException e) 
+				{
+					Error.agregar("Excepcion de interrupcion en  metodo main");
+				}
+			}
+		}
 		cargarSistemasEstrategias();
 		ParteGrafica pg = new ParteGrafica();
 		JFrame framePrincipal = new JFrame();
