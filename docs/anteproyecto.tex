@@ -118,13 +118,17 @@
 	Desarrollar un sistema prototipo de reconocimiento óptico de caracteres para celulares inteligentes, usando algún conjunto de algoritmos específicos escogidos con base en resultados de investigaciones previas reconocidas e investigaciones propias.
 	\subsection{Objetivos específicos}
 	\begin{itemize}
-	\item Realizar un estudio acerca de los algoritmos existentes para llevar a cabo las etapas de: binarización, análisis de documento y reconocimiento de caracteres.
-	\item Realizar una comparación técnica para seleccionar los mejores algoritmos de cada etapa utilizando implementaciones ya existentes de los mismos, cuando estén disponibles para computadores de escritorio. Esta comparación se hará con base en el estudio anterior y en investigaciones previas reconocidas.
-	\item Implementar cada uno de los algoritmos escogidos para que funcionen eficientemente en un celular inteligente, con la posibilidad de adaptar código libre ya existente y optimizarlo para este tipo de dispositivos.
-	\item Diseñar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de caracteres.
-	\item Implementar la aplicación diseñada.
+	\item Realizar un estudio acerca de los algoritmos existentes de reconocimiento de caracteres, aprendizaje de máquina y
+	extracción de características de caracteres.
+	\item Realizar la extracción de características de un conjunto de imágenes de caracteres. Las características a extraer serán escogidas
+	en base a investigaciones previas reconocidas, para formar una base de datos de características de caracteres.
+	\item Provar diferentes subconjuntos de características con métodos de aprendizaje no supervisado para determinar cuales 
+	características son	mejores y cuales redundantes.
+	\item Provar diferentes algoritmos de aprendizaje supervisado con la base de datos de características previamente obtenidas. 
+	\item Diseñar e implementar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de caracteres.
 	\item Realizar pruebas de la aplicación implementada.
-	\item Comparar el resultado obtenido por la aplicación implementada con el resultado obtenido por aplicaciones para el reconocimiento óptico de caracteres, tantos libres, como comerciales.
+	\item Comparar el resultado obtenido por la aplicación implementada con el resultado obtenido por aplicaciones libres para
+	el reconocimiento óptico de caracteres.
 	\end{itemize}
 	\clearpage
 	
@@ -340,7 +344,10 @@
 	\item Máximo dos columnas, sin imágenes.
 	\item Inclinación cercana a los 0 grados.
 	\end{itemize}
-
+	
+	\subsection{Unidad de análisis}
+	Fotos de textos con las condiciones mencionadas en la población, con tamaño de letra y fuente 
+	específica.
 
 	\subsection{Muestra}
 	Se tomará una muestra de 30 textos con un tamaño y tipo de fuente específicas. Se tomarán
@@ -357,7 +364,15 @@
 	\item Tiempo de CPU utilizado.
 	\item Cantidad de caracteres en el documento impreso.
 	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
-	\item Memoria utilizada en el reconocimiento de una pagina vacía.
+	\end{itemize}
+		
+	\subsection{Esquema temático}
+	\begin{itemize}
+		\item Algoritmos de reconocimiento de caracteres y aprendizaje de máquinas
+		\item Selección de un buen conjunto de características
+		\item Selección de algortimo de aprendizaje a usar en el OCR
+		\item Diseño e implementación del reconocimiénto óptico de caracteres
+		\item Pruebas y comparación de la aplicación con otras aplicaciones OCR libres
 	\end{itemize}
 	\clearpage
 	
@@ -392,6 +407,15 @@ saulo.torres@utp.edu.co
 		\item Código fuente del OCR experimental de licencia libre Ocropus
 	    \item Recursos bibliográficos de la biblioteca de la Universidad Tecnológica de Pereira y propios en el área de inteligencia artificial, reconocimiento óptico de caracteres y procesamiento digital de imágenes.
 	\end{itemize}
+	
+	\section{Posibilidades de publicación}
+	\begin{itemize}
+		\item Un artículo en la selección de un conjunto de características apropiadas para reconocer caracteres usando algortimos de aprendizaje
+		no supervisado.
+		\item Un artículo en selección de un algoritmo de aprendizaje con sus respectivos parametros, que sea apropiado para el problema
+		del reconocimiento de caracteres.
+	\end{itemize}
+	
 	\clearpage
 	
 	\section{Cronograma}
