@@ -133,28 +133,35 @@
 	\subsection{Marco conceptual}
 	\begin{itemize}
     \item Análisis de documentos: Proceso que consiste en encontrar características de un documento,
-    	y dividirlo en sus componentes básicos ( párrafos, líneas, palabras y caracteres).
+    y dividirlo en sus componentes básicos ( párrafos, líneas, palabras y caracteres).\footnote{
+	BREUEL Thomas M. The OCRopus Open Source OCR System, Proceedings IS\&T/SPIE 20th Annual Symposium, 2008.}
     \item Reconocimiento óptico de caracteres (OCR): Un OCR como proceso de cómputo, es un conjunto de
     algoritmos cuyo resultado esperado es la extracción de información  que este contenida dentro de
     una imágen, que sean parte de un sistema de escritura humano, y que pueda ser codificada
-    posteriormente como texto entendible.
+    posteriormente como texto entendible.\footnote{Ibid., p.2}
     \item Manhatan layout: Es una forma de distribución de los elementos de un documento escrito o
     impreso, en los que los elementos como párrafos o imágenes se pueden inscribir
     dentro de rectángulos de área mínima, de modo que la pendiente entre dos lados sea igual para
-    todos los rectángulos.
+    todos los rectángulos.\footnote{Ibid., p.5}
     \item Escala de grises: Una imágen en la que cada pixel es representado como un valor entre 0 y
-    255, siendo 0 negro y 255 blanco y cualquier otro valor intermedio algún tipo de gris.
+    255, siendo 0 negro y 255 blanco y cualquier otro valor intermedio algún tipo de gris. \footnote{
+    BREUEL Thomas M. Efficient implementation of local adaptative thersholding techniques using integral 
+    images. Image Understanding and Pattern Recognition (IUPR) Research Group, 2008.}
     \item Binarización:	Es el proceso de asignar un valor binario (uno o cero por ejemplo) a una
     variable dependiendo de	ciertas condiciones, en el contexto del procesamiento de imágenes se le
     llama binarización a el proceso de cambiar el valor de un pixel dentro de un formato de imagen
     estandar a 1 o 0, dependiendo generalmente de un valor límite generalmente llamado threshold.
+    \footnote{Ibid., p.2}
     \item Filtrado de imágen: Consiste en remover de una imágen elementos indeseables, que no
     son interesantes para el procesamiento requerido de la imagen y en algunos casos dificultan
     o imposibilitan obtener los resultados deseados.
+    \footnote{Ibid., p.2}
     \item Pixel adyacente: Dos pixeles $(x_1,y_1)$, $(x_2,y_2)$ son adyacentes, si $|x_1-x_2| \le 1$
     y $|y_1-y_2| \le 1$
-    \item Componente conectado: Después de tener una imágen binarizada (Blanco y negro), un
+    \item Componente conectado: Después de tener una imágen binarizada (blanco y negro), un
     componente conectado es un conjunto de pixeles negros adyacentes rodeados por un fondo blanco.
+    \footnote{Shafait, Keysers y Breuel. Performance Evaluation and Benchmarking of Six-Page segmentation
+    Algorithms, IEEE Transactions on Pattern Analysis And Machine Intelligence, 2008, p.6}
    
 	\end{itemize}
 	
