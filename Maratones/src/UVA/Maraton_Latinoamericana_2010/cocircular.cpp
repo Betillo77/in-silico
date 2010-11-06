@@ -17,8 +17,7 @@
 
 using namespace std;
 
-class Clave {
-public:
+struct Clave {
     double radio;
     Vector centro;
 
@@ -47,7 +46,9 @@ struct classcomp {
             return (lhs.radio < rhs.radio);
         if (!EQ(lhs.centro.real(), rhs.centro.real()))
             return lhs.centro.real() < rhs.centro.real();
-        return lhs.centro.imag() < rhs.centro.imag();
+        if (!EQ(lhs.centro.imag(), rhs.centro.imag()))
+        	return lhs.centro.imag() < rhs.centro.imag();
+		return false;
   }
 };
 
