@@ -18,7 +18,7 @@ import control.AnalisisLogica.Entrada;
 
 public class ConexionMySql
 {
-	static Connection conexion = dbConnect("jdbc:mysql://localhost:3306/DailyFX", "root", "CalidadIngesis");
+	static Connection conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis");
 	
 	public synchronized static void agregarEntrada(IdEstrategia id, Senal afectada) 
 	{
