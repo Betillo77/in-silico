@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 import control.AdministradorHilos;
 import control.Error;
+import control.HiloDaily;
+import control.RunnableDaily;
 
 public class Proceso 
 {
@@ -24,7 +26,7 @@ public class Proceso
 		try
 		{
 			path = p;
-			Thread hiloMonitor = new Thread(new Runnable() 
+			HiloDaily hiloMonitor = new HiloDaily(new RunnableDaily() 
 			{
 				public void run() 
 				{
@@ -68,7 +70,7 @@ public class Proceso
 						Error.agregar(e.getMessage() + " Error en el vigilante del proceso: " + path);
 					}
 				}
-			});
+			}, Long.MAX_VALUE);
 			hiloMonitor.setName("Monitor proceso " + path);
 			AdministradorHilos.agregarHilo(hiloMonitor);
 		}

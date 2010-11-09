@@ -12,7 +12,9 @@ import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
 import control.AdministradorHilos;
 import control.Error;
+import control.HiloDaily;
 import control.IdEstrategia;
+import control.RunnableDaily;
 import control.conexion.technical.ConexionServidorTechnical;
 
 public class SistemaTechnical extends SistemaEstrategias 
@@ -54,7 +56,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	@Override
 	public void iniciarHilo() 
 	{
-		Thread hiloPrincipal = new Thread(new Runnable()
+		HiloDaily hiloPrincipal = new HiloDaily(new RunnableDaily()
 		{
 			@Override
 			public void run() 
@@ -107,9 +109,10 @@ public class SistemaTechnical extends SistemaEstrategias
 				    		Error.agregar(e.getMessage() + " Error en el ciclo Technical");
 						}
 					}
+					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
-		});
+		}, 600000L);
 		hiloPrincipal.setName("Principal " + getClass().getCanonicalName());
 		AdministradorHilos.agregarHilo(hiloPrincipal);
 	}

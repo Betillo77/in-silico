@@ -16,7 +16,9 @@ import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
 import control.AdministradorHilos;
 import control.Error;
+import control.HiloDaily;
 import control.IdEstrategia;
+import control.RunnableDaily;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 public class SistemaDailyFX extends SistemaEstrategias
@@ -424,7 +426,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 	@Override
 	public void iniciarHilo() 
 	{
-		Thread hiloPrincipal = new Thread(new Runnable()
+		HiloDaily hiloPrincipal = new HiloDaily(new RunnableDaily()
 		{
 			public void run() 
 			{
@@ -480,12 +482,13 @@ public class SistemaDailyFX extends SistemaEstrategias
 				    		Error.agregar(e.getMessage() + " Error en el ciclo de error DailyFX");
 						}
 					}
+					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
-		});
+		}, 600000L);
 		hiloPrincipal.setName("Principal " + getClass().getCanonicalName());
 		AdministradorHilos.agregarHilo(hiloPrincipal);
-		Thread hiloPersistencia = new Thread(new Runnable()
+		HiloDaily hiloPersistencia = new HiloDaily(new RunnableDaily()
 		{
 			public void run() 
 			{
@@ -510,13 +513,14 @@ public class SistemaDailyFX extends SistemaEstrategias
 							Error.agregar("Error, ultima persistencia fue hace mas de 5 minutos");
 					}
 					persistir();
+					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
 			
-		});
+		}, 600000L);
 		hiloPersistencia.setName("Presistencia " + getClass().getCanonicalName());
 		AdministradorHilos.agregarHilo(hiloPersistencia);
-		Thread hiloSSIVix = new Thread(new Runnable()
+		HiloDaily hiloSSIVix = new HiloDaily(new RunnableDaily()
 		{
 			public void run() 
 			{
@@ -553,12 +557,13 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{
 						Error.agregar("Error en el hilo monitor de ConexionServidor");
 					}
+					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
-		});
+		}, 1200000);
 		hiloSSIVix.setName("Monitor VIX-SSI");
 		AdministradorHilos.agregarHilo(hiloSSIVix);
-		Thread hiloPares = new Thread(new Runnable()
+		HiloDaily hiloPares = new HiloDaily(new RunnableDaily()
 		{
 			public void run() 
 			{
@@ -582,9 +587,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{
 						Error.agregar("Error en el monitor de pares " + e.getMessage());
 					}
+					ultimaActualizacion = System.currentTimeMillis();
 				}
+				
 			}
-		});
+		}, 360000L);
 		hiloPares.setName("Monitor pares");
 		AdministradorHilos.agregarHilo(hiloPares);
 	}

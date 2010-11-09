@@ -11,6 +11,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import control.AdministradorHilos;
 import control.Error;
+import control.HiloDaily;
+import control.RunnableDaily;
 import control.conexion.ConexionMySql;
 
 
@@ -66,7 +68,7 @@ public class Escritor
 		proceso = new Proceso(path);
 		enConstruccion = new ArrayList <EntradaEscritor> ();
 		final Escritor este = this;
-		Thread hiloEscritor = new Thread(new Runnable()
+		HiloDaily hiloEscritor = new HiloDaily(new RunnableDaily()
 		{
 			public void run() 
 			{
@@ -75,6 +77,7 @@ public class Escritor
 					try
 					{
 						Thread.sleep(160000);
+						ultimaActualizacion = System.currentTimeMillis();
 					}
 					catch(InterruptedException e)
 					{
@@ -85,7 +88,10 @@ public class Escritor
 						synchronized(entradas)
 						{
 							while(entradas.size() == 0)
+							{
+								ultimaActualizacion = System.currentTimeMillis();
 								entradas.wait(100000);
+							}
 						}
 						if(debug)
 						{
@@ -93,17 +99,20 @@ public class Escritor
 						}
 						synchronized(este)
 						{
+							ultimaActualizacion = System.currentTimeMillis();
 							procesar(entradas.peek());
 							entradas.take();
+							ultimaActualizacion = System.currentTimeMillis();
 						}
 					}
 					catch(Exception e)
 					{
 						Error.agregar("Error en el hilo de escritura en path: " + pathMeta);
 					}
+					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
-		});
+		}, 300000L);
 		hiloEscritor.setName("Escritor " + path);
 		AdministradorHilos.agregarHilo(hiloEscritor);
 	}

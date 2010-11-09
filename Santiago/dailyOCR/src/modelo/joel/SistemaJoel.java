@@ -17,7 +17,9 @@ import modelo.SistemaEstrategias;
 import modelo.TipoSenal;
 import control.AdministradorHilos;
 import control.Error;
+import control.HiloDaily;
 import control.IdEstrategia;
+import control.RunnableDaily;
 import control.conexion.joel.ConexionServidorJoel;
 
 public class SistemaJoel extends SistemaEstrategias 
@@ -59,7 +61,7 @@ public class SistemaJoel extends SistemaEstrategias
 	@Override
 	public void iniciarHilo() 
 	{
-		Thread hiloPrincipal = new Thread(new Runnable()
+		HiloDaily hiloPrincipal = new HiloDaily(new RunnableDaily()
 		{
 			@Override
 			public void run() 
@@ -112,9 +114,10 @@ public class SistemaJoel extends SistemaEstrategias
 				    		Error.agregar(e.getMessage() + " Error en el ciclo Joel");
 						}
 					}
+					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
-		});
+		}, 2400000L);
 		hiloPrincipal.setName("Principal " + getClass().getCanonicalName());
 		AdministradorHilos.agregarHilo(hiloPrincipal);
 	}

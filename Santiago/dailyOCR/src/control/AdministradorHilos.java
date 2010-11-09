@@ -8,15 +8,15 @@ import java.util.List;
 
 public class AdministradorHilos 
 {
-	private static List <Thread> hilos = Collections.synchronizedList(new ArrayList <Thread> ());
+	private static List <HiloDaily> hilos = Collections.synchronizedList(new ArrayList <HiloDaily> ());
 	
-	public static synchronized void agregarHilo(Thread hilo)
+	public static synchronized void agregarHilo(HiloDaily hilo)
 	{
 		synchronized(hilos)
 		{
 			if(hilos.size() == 0)
 			{
-				Thread monitorHilos = new Thread(new Runnable()
+				HiloDaily monitorHilos = new HiloDaily(new RunnableDaily()
 				{
 					public void run()
 					{
@@ -52,11 +52,25 @@ public class AdministradorHilos
 											mensajeEnviado = true;
 										}
 									}
-									for(Thread h : hilos)
+									for(HiloDaily h : hilos)
 									{
 										if(!h.isAlive())
 										{
 											Error.agregar("Error, hilo termino su ejecucion inesperadamente, reiniciando");
+											try 
+											{
+												Runtime.getRuntime().exec("shutdown now -r");
+												System.exit(0);
+											} 
+											catch (IOException e) 
+											{
+												Error.agregar("Error reiniciando equipo " + e.getMessage());
+												System.exit(0);
+											}
+										}
+										if((System.currentTimeMillis() - h.runnable.ultimaActualizacion) > h.runnable.intervalorActualizacion)
+										{
+											Error.agregar("Error, hilo: " + h.getName() + " no se actualizo en mucho tiempo, intervalo aceptable: " + h.runnable.intervalorActualizacion + ", ultima actualizacion hace: " + (System.currentTimeMillis() - h.runnable.ultimaActualizacion));
 											try 
 											{
 												Runtime.getRuntime().exec("shutdown now -r");
@@ -75,9 +89,10 @@ public class AdministradorHilos
 							{
 								Error.agregar("Error en el monitor de hilos " + e.getMessage());
 							}
+							ultimaActualizacion = System.currentTimeMillis();
 						}
 					}
-				});
+				}, 600000L);
 				monitorHilos.setName("Monitor hilos");
 				hilos.add(monitorHilos);
 				monitorHilos.start();
