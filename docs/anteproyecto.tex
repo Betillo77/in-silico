@@ -122,9 +122,9 @@
 	extracción de características de caracteres.
 	\item Realizar la extracción de características de un conjunto de imágenes de caracteres. Las características a extraer serán escogidas
 	en base a investigaciones previas reconocidas, para formar una base de datos de características de caracteres.
-	\item Provar diferentes subconjuntos de características con métodos de aprendizaje no supervisado para determinar cuales 
+	\item Probar diferentes subconjuntos de características con métodos de aprendizaje no supervisado para determinar cuales 
 	características son	mejores y cuales redundantes.
-	\item Provar diferentes algoritmos de aprendizaje supervisado con la base de datos de características previamente obtenidas. 
+	\item Probar diferentes algoritmos de aprendizaje supervisado con la base de datos de características previamente obtenidas. 
 	\item Diseñar e implementar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de caracteres.
 	\item Realizar pruebas de la aplicación implementada.
 	\item Comparar el resultado obtenido por la aplicación implementada con el resultado obtenido por aplicaciones libres para
@@ -141,29 +141,29 @@
 	BREUEL Thomas M. The OCRopus Open Source OCR System, Proceedings IS\&T/SPIE 20th Annual Symposium, 2008.}
     \item Reconocimiento óptico de caracteres (OCR): Un OCR como proceso de cómputo, es un conjunto de
     algoritmos cuyo resultado esperado es la extracción de información  que este contenida dentro de
-    una imágen, que sean parte de un sistema de escritura humano, y que pueda ser codificada
+    una imagen, que sean parte de un sistema de escritura humano, y que pueda ser codificada
     posteriormente como texto entendible.\footnote{Ibid., p.2}
     \item Manhatan layout: Es una forma de distribución de los elementos de un documento escrito o
     impreso, en los que los elementos como párrafos o imágenes se pueden inscribir
     dentro de rectángulos de área mínima, de modo que la pendiente entre dos lados sea igual para
     todos los rectángulos.\footnote{Ibid., p.5}
-    \item Escala de grises: Una imágen en la que cada pixel es representado como un valor entre 0 y
+    \item Escala de grises: Una imagen en la que cada píxel es representado como un valor entre 0 y
     255, siendo 0 negro y 255 blanco y cualquier otro valor intermedio algún tipo de gris. \footnote{
     BREUEL Thomas M. Efficient implementation of local adaptative thersholding techniques using integral 
     images. Image Understanding and Pattern Recognition (IUPR) Research Group, 2008.}
     \item Binarización:	Es el proceso de asignar un valor binario (uno o cero por ejemplo) a una
     variable dependiendo de	ciertas condiciones, en el contexto del procesamiento de imágenes se le
-    llama binarización a el proceso de cambiar el valor de un pixel dentro de un formato de imagen
-    estandar a 1 o 0, dependiendo generalmente de un valor límite generalmente llamado threshold.
+    llama binarización a el proceso de cambiar el valor de un píxel dentro de un formato de imagen
+    estándar a 1 o 0, dependiendo generalmente de un valor límite generalmente llamado threshold.
     \footnote{Ibid., p.2}
-    \item Filtrado de imágen: Consiste en remover de una imágen elementos indeseables, que no
+    \item Filtrado de imagen: Consiste en remover de una imagen elementos indeseables, que no
     son interesantes para el procesamiento requerido de la imagen y en algunos casos dificultan
     o imposibilitan obtener los resultados deseados.
     \footnote{Ibid., p.2}
-    \item Pixel adyacente: Dos pixeles $(x_1,y_1)$, $(x_2,y_2)$ son adyacentes, si $|x_1-x_2| \le 1$
+    \item Píxel adyacente: Dos píxeles $(x_1,y_1)$, $(x_2,y_2)$ son adyacentes, si $|x_1-x_2| \le 1$
     y $|y_1-y_2| \le 1$
-    \item Componente conectado: Después de tener una imágen binarizada (blanco y negro), un
-    componente conectado es un conjunto de pixeles negros adyacentes rodeados por un fondo blanco.
+    \item Componente conectado: Después de tener una imagen binarizada (blanco y negro), un
+    componente conectado es un conjunto de píxeles negros adyacentes rodeados por un fondo blanco.
     \footnote{Shafait, Keysers y Breuel. Performance Evaluation and Benchmarking of Six-Page segmentation
     Algorithms, IEEE Transactions on Pattern Analysis And Machine Intelligence, 2008, p.6}
    
@@ -215,10 +215,9 @@
 	soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes
     neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran 
     utilidad en la construcción de un sistema de reconocimiento óptico de caracteres.\newline
-
+    
 	En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por 
-    estudiantes de Ingeniería Eléctrica:\newline 
-
+    estudiantes de Ingeniería Eléctrica:    
     En la tesis \footnote{Jaime Varela Rincón, Johan Eric Loaiza Pulgarín. Reconocimiento de palabras
     aisladas mediante redes neuronales sobre FPGA} se utilizaron redes neuronales para reconocimiento
     de voz en hardware sobre una FPGA. 
@@ -227,8 +226,7 @@
     de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las 
     misma en un dispositivo móvil. También es de anotar que las redes neuronales demostraron porcentajes 
     de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
-	\newline
-
+	\newline \newline
 	En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en
     una imagen utilizando un sistema de visión artificial ``Registro de transeúntes en tiempo real utilizando
     un sistema de visión artificial sobre un ambiente controlado''. Considerando el bajo nivel de
@@ -370,8 +368,8 @@
 	\begin{itemize}
 		\item Algoritmos de reconocimiento de caracteres y aprendizaje de máquinas
 		\item Selección de un buen conjunto de características
-		\item Selección de algortimo de aprendizaje a usar en el OCR
-		\item Diseño e implementación del reconocimiénto óptico de caracteres
+		\item Selección de algoritmo de aprendizaje a usar en el OCR
+		\item Diseño e implementación del reconocimiento óptico de caracteres
 		\item Pruebas y comparación de la aplicación con otras aplicaciones OCR libres
 	\end{itemize}
 	\clearpage
@@ -410,9 +408,9 @@ saulo.torres@utp.edu.co
 	
 	\section{Posibilidades de publicación}
 	\begin{itemize}
-		\item Un artículo en la selección de un conjunto de características apropiadas para reconocer caracteres usando algortimos de aprendizaje
+		\item Un artículo en la selección de un conjunto de características apropiadas para reconocer caracteres usando algoritmos de aprendizaje
 		no supervisado.
-		\item Un artículo en selección de un algoritmo de aprendizaje con sus respectivos parametros, que sea apropiado para el problema
+		\item Un artículo en selección de un algoritmo de aprendizaje con sus respectivos parámetros, que sea apropiado para el problema
 		del reconocimiento de caracteres.
 	\end{itemize}
 	
