@@ -37,15 +37,16 @@ public class AdministradorHilos
 									}
 									else
 									{
-										if(!mensajeEnviado && (hora == 5 || hora == 11 || hora == 17 || hora == 23))
+										if(!mensajeEnviado && (hora == 1 || hora == 3 || hora == 5 || hora == 7 || hora == 9 || hora == 11 || hora == 13 || hora == 15 || hora == 17 || hora == 19 || hora == 21 || hora == 23))
 										{
 											String mensaje = "";
-											for(Thread h : hilos)
+											for(HiloDaily h : hilos)
 											{
 												StackTraceElement[] stack = h.getStackTrace();
 												mensaje += h.getName() + " " + h.getState() + " Stack:\n";
 												for(StackTraceElement ste : stack)
 													mensaje += ste + " * \n";
+												mensaje += "Ultima actualizacion hace: " + (System.currentTimeMillis() - h.runnable.ultimaActualizacion) + " milisegundos, limite espera: " + h.runnable.intervalorActualizacion + "\n";
 												mensaje += "\n";
 											}
 											Error.agregar(mensaje);
