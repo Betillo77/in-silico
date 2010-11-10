@@ -162,7 +162,7 @@ public class Estrategia
 		    	}
 		    	catch(Exception e)
 		    	{
-		    		Error.agregar("Error en la escritura en la base de datos: " + id.name());
+		    		Error.agregar("Error en la escritura en la base de datos: " + id.name() + " " + e.getMessage());
 		    	}
     		}
     	}
