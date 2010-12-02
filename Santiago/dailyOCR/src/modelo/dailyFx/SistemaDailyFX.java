@@ -659,14 +659,14 @@ public class SistemaDailyFX extends SistemaEstrategias
 								if(afectada.numeroTrailing++ % 50 == 0)
 									Error.agregar("Actualizando trailing stop, actual: " + afectada.getPar().darPrecioActual(afectada.isCompra()) + ", stop daily: " + senal.darStop() + ", trailing stop: " + afectada.darStop());
 							}
-							if(ganancia > 50)
+							if(ganancia > 100)
 							{
 								double mejorStop = afectada.isCompra() ? Math.max(afectada.darStop(), afectada.getPrecioEntrada()) : Math.min(afectada.darStop(), afectada.getPrecioEntrada());
 								if(mejorStop != afectada.darStop())
 								{
 									afectada.ponerStop(mejorStop);
 									if(afectada.numeroTrailing++ % 50 == 0)
-										Error.agregar("Actualizando trailing stop a los 50 pips, actual: " + afectada.getPar().darPrecioActual(afectada.isCompra()) + ", stop daily: " + senal.darStop() + ", trailing stop: " + afectada.darStop());	
+										Error.agregar("Actualizando trailing stop a los 100 pips, actual: " + afectada.getPar().darPrecioActual(afectada.isCompra()) + ", stop daily: " + senal.darStop() + ", trailing stop: " + afectada.darStop());	
 								}
 							}
 						}
