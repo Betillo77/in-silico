@@ -16,21 +16,26 @@ CC=gcc
 CCC=g++
 CXX=g++
 FC=
+AS=as
 
 # Macros
-PLATFORM=GNU-Linux-x86
+CND_PLATFORM=GNU-Linux-x86
+CND_CONF=Debug
+CND_DISTDIR=dist
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Debug/${PLATFORM}
+OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/android.o \
+	${OBJECTDIR}/component.o \
 	${OBJECTDIR}/test.o \
 	${OBJECTDIR}/matrix.o \
+	${OBJECTDIR}/DocumentLayout.o \
 	${OBJECTDIR}/transform.o
 
 # C Compiler Flags
@@ -43,44 +48,57 @@ CXXFLAGS=
 # Fortran Compiler Flags
 FFLAGS=
 
+# Assembler Flags
+ASFLAGS=
+
 # Link Libraries and Options
 LDLIBSOPTIONS=-L/usr/include/opencv
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Debug.mk dist/Debug/${PLATFORM}/myocr
+	${MAKE}  -f nbproject/Makefile-Debug.mk dist/Debug/GNU-Linux-x86/myocr
 
-dist/Debug/${PLATFORM}/myocr: ${OBJECTFILES}
-	${MKDIR} -p dist/Debug/${PLATFORM}
-	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -o dist/Debug/${PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
+dist/Debug/GNU-Linux-x86/myocr: ${OBJECTFILES}
+	${MKDIR} -p dist/Debug/GNU-Linux-x86
+	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/android.o: android.cpp 
+${OBJECTDIR}/android.o: nbproject/Makefile-${CND_CONF}.mk android.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
+	$(COMPILE.cc) -g -I/usr/include/opencv/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
 
-${OBJECTDIR}/test.o: test.cpp 
+${OBJECTDIR}/component.o: nbproject/Makefile-${CND_CONF}.mk component.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
+	$(COMPILE.cc) -g -I/usr/include/opencv/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/component.o component.cpp
 
-${OBJECTDIR}/matrix.o: matrix.cpp 
+${OBJECTDIR}/test.o: nbproject/Makefile-${CND_CONF}.mk test.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
+	$(COMPILE.cc) -g -I/usr/include/opencv/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
 
-${OBJECTDIR}/transform.o: transform.cpp 
+${OBJECTDIR}/matrix.o: nbproject/Makefile-${CND_CONF}.mk matrix.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
+	$(COMPILE.cc) -g -I/usr/include/opencv/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
+
+${OBJECTDIR}/DocumentLayout.o: nbproject/Makefile-${CND_CONF}.mk DocumentLayout.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/opencv/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/DocumentLayout.o DocumentLayout.cpp
+
+${OBJECTDIR}/transform.o: nbproject/Makefile-${CND_CONF}.mk transform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/opencv/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
 
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
+.clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/Debug
-	${RM} dist/Debug/${PLATFORM}/myocr
+	${RM} dist/Debug/GNU-Linux-x86/myocr
 
 # Subprojects
 .clean-subprojects:

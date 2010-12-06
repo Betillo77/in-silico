@@ -13,6 +13,9 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="OCR" projectFiles="true">
+        <itemPath>DocumentLayout.cpp</itemPath>
+        <itemPath>DocumentLayout.h</itemPath>
+        <itemPath>component.cpp</itemPath>
         <itemPath>component.h</itemPath>
         <itemPath>matrix.cpp</itemPath>
         <itemPath>matrix.h</itemPath>
@@ -39,7 +42,7 @@
       <compileType>
         <ccTool>
           <incDir>
-            <pElem>/usr/local/include/opencv</pElem>
+            <pElem>/usr/include/opencv/</pElem>
           </incDir>
         </ccTool>
         <linkerTool>

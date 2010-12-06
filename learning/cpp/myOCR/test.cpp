@@ -12,6 +12,7 @@
 #include <cstring>
 #include "transform.h"
 #include "highgui.h"
+#include "DocumentLayout.h"
 
 using namespace MyOCR;
 
@@ -38,6 +39,7 @@ void showMatrix(Matrix *m) {
     cvReleaseImage(&img);
 }
 
+
 void testTransform(const char *fn) {
     Matrix *color = loadImage(fn);
     Matrix gray(color->getWidth(), color->getHeight(), 1);
@@ -50,14 +52,35 @@ void testTransform(const char *fn) {
     showMatrix(&gray);
 }
 
+void testConnected(const char *fn)
+{
+    Matrix *color = loadImage(fn);
+    Matrix gray(color->getWidth(), color->getHeight(), 1);
+    //Matrix out(color->getWidth(), color->getHeight(), 1);
+    Transform t;
+    t.toGrayScale(&gray,color);
+    //showMatrix(color);
+    //showMatrix(&gray);
+    t.binarize(&gray, &gray);
+    DocumentLayout dl;
+    list <ConComponent*> res = dl.connectedComponents(&gray);
+    for(list<ConComponent*>::iterator it = res.begin(); it != res.end(); it++)
+    {
+        (*it)->printComponent();
+        cout << endl;
+    }
+}
+
 /*
  * 
  */
 int main(int argc, char** argv) {
     if (!debug) cvNamedWindow("Test");
-    char *fn = "text2.jpg";
+//    char *fn = "text2.jpg";
+    char *fn = "prueba.jpg";
     if (argc>1) fn=argv[1];
     testTransform(fn);
+        testConnected(fn);
     cvDestroyWindow("Test");
     return (EXIT_SUCCESS);
 }

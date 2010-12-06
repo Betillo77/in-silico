@@ -25,6 +25,7 @@ namespace MyOCR {
         int getChannels();
         pixel *getData();
         pixel get(int i, int j);
+        pixel &operator()(int i, int j);
     };
 
 }

@@ -9,12 +9,34 @@
 #define	_COMPONENT_H
 
 #include "matrix.h"
+#include <cstdlib>
+#include <vector>
+#include <iostream>
+
 
 namespace MyOCR {
 
+    struct Point
+    {
+        int i, j;
+
+        Point(int x, int y)
+        {
+            i = x;
+            j = y;
+        }
+
+        Point()
+        {
+            i = 0;
+            j = 0;
+        }
+    };
+    
     //Class that represents connected component
     class ConComponent {
         Matrix *comp; //component itself
+        int top, left, down, right;
 
         //Returns the number of neighbors (Stored in ans), of the point act
         //that are "turned on" in the image

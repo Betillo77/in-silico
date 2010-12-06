@@ -31,5 +31,10 @@ int Matrix::getWidth() {
 }
 
 pixel Matrix::get(int i, int j) {
-    return this->data[i*width + j];
+    return this->data[channels * (i * width + j)];
+}
+
+pixel &Matrix::operator()(int i, int j)
+{
+    return data[channels * (i * width + j)];
 }
