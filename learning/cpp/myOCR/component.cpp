@@ -3,8 +3,7 @@
 using namespace MyOCR;
 using namespace std;
 
-int ConComponent::getNeighbors(Point* ans, Point act, Matrix* img)
-{
+int ConComponent::getNeighbors(Point* ans, Point act, Matrix* img) {
     int cuenta = 0;
     int delta[][2] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
     for(int i = 0; i < 4; i++)
@@ -19,8 +18,7 @@ int ConComponent::getNeighbors(Point* ans, Point act, Matrix* img)
     return cuenta;
 }
 
-ConComponent::ConComponent(int i, int j, Matrix* binImg)
-{
+ConComponent::ConComponent(int i, int j, Matrix* binImg) {
     Matrix & img = *binImg;
     left = 1 << 30, right = 0, top = 1 << 30, down = 0;
     vector <Point> s;
@@ -55,8 +53,7 @@ ConComponent::ConComponent(int i, int j, Matrix* binImg)
     }
 }
 
-void ConComponent::printComponent()
-{
+void ConComponent::printComponent() {
     for(int i = 0; i < down - top + 1; i++)
     {
         for(int j = 0; j < right - left + 1; j++)

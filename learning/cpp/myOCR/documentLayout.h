@@ -11,16 +11,15 @@
 #include "component.h"
 using namespace std;
 
-namespace MyOCR
-{
+namespace MyOCR {
+
     class DocumentLayout {
     public:
         DocumentLayout();
         ~DocumentLayout();
         list <ConComponent*> connectedComponents(Matrix *img);
-    private:
-
     };
+
 }
 #endif	/* _DOCUMENTLAYOUT_H */
 

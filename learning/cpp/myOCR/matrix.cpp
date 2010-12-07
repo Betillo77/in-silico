@@ -1,4 +1,3 @@
-
 #include "matrix.h"
 
 using namespace MyOCR;
@@ -34,7 +33,6 @@ pixel Matrix::get(int i, int j) {
     return this->data[channels * (i * width + j)];
 }
 
-pixel &Matrix::operator()(int i, int j)
-{
+pixel &Matrix::operator()(int i, int j) {
     return data[channels * (i * width + j)];
 }

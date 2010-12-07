@@ -6,8 +6,6 @@
  */
 
 #include <string.h>
-
-
 #include <stdlib.h>
 #include <cstring>
 #include "transform.h"
@@ -71,9 +69,6 @@ void testConnected(const char *fn)
     }
 }
 
-/*
- * 
- */
 int main(int argc, char** argv) {
     if (!debug) cvNamedWindow("Test");
 //    char *fn = "text2.jpg";

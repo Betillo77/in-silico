@@ -1,12 +1,4 @@
-/* 
- * File:   DocumentLayout.cpp
- * Author: santiago
- * 
- * Created on December 6, 2010, 4:33 PM
- */
-
-
-#include "DocumentLayout.h"
+#include "documentLayout.h"
 
 using namespace MyOCR;
 
@@ -14,11 +6,9 @@ DocumentLayout::DocumentLayout() {
 }
 
 DocumentLayout::~DocumentLayout() {
-
 }
 
-list <ConComponent*> DocumentLayout::connectedComponents(Matrix *img)
-{
+list <ConComponent*> DocumentLayout::connectedComponents(Matrix *img) {
     list <ConComponent*> ans;
     Matrix & mat = *img;
     for(int i = 0; i < mat.getHeight(); i++)
@@ -29,3 +19,4 @@ list <ConComponent*> DocumentLayout::connectedComponents(Matrix *img)
     primero->printComponent();
     return ans;
 }
+

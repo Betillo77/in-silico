@@ -13,21 +13,17 @@
 #include <vector>
 #include <iostream>
 
-
 namespace MyOCR {
 
-    struct Point
-    {
+    struct Point {
         int i, j;
 
-        Point(int x, int y)
-        {
+        Point(int x, int y) {
             i = x;
             j = y;
         }
 
-        Point()
-        {
+        Point() {
             i = 0;
             j = 0;
         }
@@ -41,13 +37,12 @@ namespace MyOCR {
         //Returns the number of neighbors (Stored in ans), of the point act
         //that are "turned on" in the image
         int getNeighbors(Point *ans, Point act, Matrix *img);
-    public:
+     public:
         ConComponent(int i, int j, Matrix *binImg);
         ~ConComponent();
         void printComponent();
     };
 
 }
-
 #endif	/* _COMPONENT_H */
 
