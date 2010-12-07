@@ -16,7 +16,7 @@ CC=gcc
 CCC=g++
 CXX=g++
 FC=
-AS=as
+AS=
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
@@ -31,12 +31,13 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/android.o \
 	${OBJECTDIR}/component.o \
-	${OBJECTDIR}/test.o \
 	${OBJECTDIR}/matrix.o \
-	${OBJECTDIR}/DocumentLayout.o \
-	${OBJECTDIR}/transform.o
+	${OBJECTDIR}/transform.o \
+	${OBJECTDIR}/config.o \
+	${OBJECTDIR}/android.o \
+	${OBJECTDIR}/test.o \
+	${OBJECTDIR}/documentLayout.o
 
 # C Compiler Flags
 CFLAGS=
@@ -60,37 +61,42 @@ LDLIBSOPTIONS=-L/usr/include/opencv
 
 dist/Release/GNU-Linux-x86/myocr: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/GNU-Linux-x86
-	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
-
-${OBJECTDIR}/android.o: nbproject/Makefile-${CND_CONF}.mk android.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
+	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -DBIG_JOINS=1 -fPIC -fno-strict-aliasing -Wl,-Bsymbolic-functions -rdynamic -L/usr/lib/mysql -lmysqlclient -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/component.o: nbproject/Makefile-${CND_CONF}.mk component.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/component.o component.cpp
-
-${OBJECTDIR}/test.o: nbproject/Makefile-${CND_CONF}.mk test.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/component.o component.cpp
 
 ${OBJECTDIR}/matrix.o: nbproject/Makefile-${CND_CONF}.mk matrix.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
-
-${OBJECTDIR}/DocumentLayout.o: nbproject/Makefile-${CND_CONF}.mk DocumentLayout.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/DocumentLayout.o DocumentLayout.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
 
 ${OBJECTDIR}/transform.o: nbproject/Makefile-${CND_CONF}.mk transform.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
+
+${OBJECTDIR}/config.o: nbproject/Makefile-${CND_CONF}.mk config.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/config.o config.cpp
+
+${OBJECTDIR}/android.o: nbproject/Makefile-${CND_CONF}.mk android.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
+
+${OBJECTDIR}/test.o: nbproject/Makefile-${CND_CONF}.mk test.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
+
+${OBJECTDIR}/documentLayout.o: nbproject/Makefile-${CND_CONF}.mk documentLayout.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/documentLayout.o documentLayout.cpp
 
 # Subprojects
 .build-subprojects:

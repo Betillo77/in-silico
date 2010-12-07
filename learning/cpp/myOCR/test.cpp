@@ -12,6 +12,7 @@
 #include "highgui.h"
 #include "documentLayout.h"
 #include <mysql.h>
+#include "config.h"
 
 using namespace MyOCR;
 
@@ -78,7 +79,7 @@ int main(int argc, char** argv) {
     testTransform(fn);
         testConnected(fn);
     cvDestroyWindow("Test");
-    MYSQL msql;
+    MYSQL *conn = Configuration::getInstance()->connectDB();
     return (EXIT_SUCCESS);
 }
 
