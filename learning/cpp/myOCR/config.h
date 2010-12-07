@@ -14,15 +14,17 @@
 #include <mysql.h>
 #include <string>
 
-namespace MyOCR {
+using namespace std;
 
-    Configuration* getConfInstance();
+namespace MyOCR {
 
     class Configuration {
         map<string,string> tabla;
+        MYSQL *conn;        
     public:
         Configuration();
-        MYSQL connectDB();
+        MYSQL* connectDB();
+        static Configuration* getInstance();
     };
 
 }

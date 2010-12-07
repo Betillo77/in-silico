@@ -10,10 +10,14 @@
         <itemPath>matrix.h</itemPath>
         <itemPath>transform.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f2" displayName="Utiles" projectFiles="true">
+        <itemPath>config.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>config.txt</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -23,6 +27,9 @@
         <itemPath>documentLayout.cpp</itemPath>
         <itemPath>matrix.cpp</itemPath>
         <itemPath>transform.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Utiles" projectFiles="true">
+        <itemPath>config.cpp</itemPath>
       </logicalFolder>
       <itemPath>android.cpp</itemPath>
       <itemPath>test.cpp</itemPath>
@@ -44,7 +51,8 @@
       <compileType>
         <ccTool>
           <incDir>
-            <pElem>/usr/include/opencv/</pElem>
+            <pElem>/usr/local/include/opencv/</pElem>
+            <pElem>/usr/include/mysql</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
@@ -53,7 +61,7 @@
           </linkerAddLib>
           <linkerLibItems>
           </linkerLibItems>
-          <commandLine>-I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml</commandLine>
+          <commandLine>-I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -DBIG_JOINS=1 -fPIC -fno-strict-aliasing -Wl,-Bsymbolic-functions -rdynamic -L/usr/lib/mysql -lmysqlclient</commandLine>
         </linkerTool>
       </compileType>
     </conf>
