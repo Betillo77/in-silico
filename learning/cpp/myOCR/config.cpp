@@ -11,16 +11,16 @@ Configuration::Configuration() {
         act = fgetc(f);
         if (act == '#') {
             while (fgetc(f) != '\n');
-        } else if (act!='\n' && act!=' ' && act!='\t') {
+        } else if (act!='\n' && act!=' ' && act!='\t' && act!=EOF) {
             int i=0;
             do {
                 buf[i++]=act;
-            } while ((act=fgetc(f)) != '=');
+            } while ((act=fgetc(f))!='=' && act!=EOF);
             buf[i]='\0';
             string key(buf);
 
             i=0;
-            while ((act=fgetc(f)) != '\n') {
+            while ((act=fgetc(f))!='\n' && act!=EOF) {
                 buf[i++]=act;
             }
             buf[i]='\0';
