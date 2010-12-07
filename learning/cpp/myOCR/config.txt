@@ -1,0 +1,7 @@
+
+host=localhost
+
+user=usuario
+passwd=contraseña
+
+#esto es un comentario

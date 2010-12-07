@@ -11,6 +11,7 @@
 #include "transform.h"
 #include "highgui.h"
 #include "documentLayout.h"
+#include <mysql.h>
 
 using namespace MyOCR;
 
@@ -77,6 +78,7 @@ int main(int argc, char** argv) {
     testTransform(fn);
         testConnected(fn);
     cvDestroyWindow("Test");
+    MYSQL msql;
     return (EXIT_SUCCESS);
 }
 
