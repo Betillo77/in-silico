@@ -10,7 +10,7 @@
 #include <cstring>
 #include "transform.h"
 #include "highgui.h"
-#include "DocumentLayout.h"
+#include "documentLayout.h"
 
 using namespace MyOCR;
 

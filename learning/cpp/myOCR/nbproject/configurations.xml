@@ -4,6 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="OCR" projectFiles="true">
+        <itemPath>component.h</itemPath>
+        <itemPath>documentLayout.h</itemPath>
+        <itemPath>matrix.h</itemPath>
+        <itemPath>transform.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,14 +19,10 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="OCR" projectFiles="true">
-        <itemPath>DocumentLayout.cpp</itemPath>
-        <itemPath>DocumentLayout.h</itemPath>
         <itemPath>component.cpp</itemPath>
-        <itemPath>component.h</itemPath>
+        <itemPath>documentLayout.cpp</itemPath>
         <itemPath>matrix.cpp</itemPath>
-        <itemPath>matrix.h</itemPath>
         <itemPath>transform.cpp</itemPath>
-        <itemPath>transform.h</itemPath>
       </logicalFolder>
       <itemPath>android.cpp</itemPath>
       <itemPath>test.cpp</itemPath>
@@ -69,6 +71,7 @@
           <developmentMode>5</developmentMode>
           <incDir>
             <pElem>/usr/local/include/opencv</pElem>
+            <pElem>/usr/include/mysql</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -80,7 +83,7 @@
           </linkerAddLib>
           <linkerLibItems>
           </linkerLibItems>
-          <commandLine>-I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml</commandLine>
+          <commandLine>-I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -DBIG_JOINS=1 -fPIC -fno-strict-aliasing -Wl,-Bsymbolic-functions -rdynamic -L/usr/lib/mysql -lmysqlclient</commandLine>
         </linkerTool>
       </compileType>
     </conf>
