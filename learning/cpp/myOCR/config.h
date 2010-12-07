@@ -12,13 +12,19 @@
 #include <cstdio>
 #include <map>
 #include <mysql.h>
+#include <string>
 
-class Configuration {
-    map<string,string> tabla;
-public:
-    Configuration();
-    MYSQL connectDB();
-};
+namespace MyOCR {
 
+    Configuration* getConfInstance();
+
+    class Configuration {
+        map<string,string> tabla;
+    public:
+        Configuration();
+        MYSQL connectDB();
+    };
+
+}
 #endif	/* _CONFIG_H */
 
