@@ -13,10 +13,9 @@
 #include "documentLayout.h"
 #include <mysql.h>
 #include "config.h"
+#include "test.h"
 
 using namespace MyOCR;
-
-bool debug=true;
 
 Matrix *loadImage(const char *fn) {
     IplImage *img = cvLoadImage(fn);
@@ -71,15 +70,14 @@ void testConnected(const char *fn)
     }
 }
 
-int main(int argc, char** argv) {
-    if (!debug) cvNamedWindow("Test");
+int mainTest(int argc, char** argv) {
+    //if (!debug) cvNamedWindow("Test");
 //    char *fn = "text2.jpg";
     char *fn = "prueba.jpg";
     if (argc>1) fn=argv[1];
     testTransform(fn);
 //    testConnected(fn);
     ConComponent::loadComponent(1502)->printComponent();
-    cvDestroyWindow("Test");
     return (EXIT_SUCCESS);
 }
 

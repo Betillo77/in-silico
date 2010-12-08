@@ -88,7 +88,7 @@ void ConComponent::saveComponent(const char *imageId) {
     mysql_real_escape_string(sql, salida, datos, size);
     char sqlQ[size * 2 + 200];
     int tam = sprintf(sqlQ, "insert into Components(imageId, leftP, rightP, topP, downP, data) VALUES('%s', '%i', '%i', '%i', '%i', '%s')", imageId, left, right, top, down, salida);
-    std::cout << sqlQ << endl;
+    //std::cout << sqlQ << endl;
     mysql_real_query(sql, sqlQ, tam);
 }
 
