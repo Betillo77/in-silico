@@ -79,8 +79,8 @@ double ConComponent::m(int iV, int jV) {
     double acum = 0;
     int height = down - top + 1;
     int width = right - left + 1;
-    double deltaI = 1 / height;
-    double deltaJ = 1 / width;
+    double deltaI = 1.0;
+    double deltaJ = 1.0;
     double iAct = deltaI;
     double jAct = deltaJ;
     for(int i = 0; i < height; i++)

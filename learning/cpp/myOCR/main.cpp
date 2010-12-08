@@ -46,7 +46,12 @@ int main(int argc, char** argv) {
         const char *query = "truncate table Components";
         mysql_query(conn, query);
     } else if (argc > 1 && strcmp(argv[0], "show") == 0) {
-        ConComponent::loadComponent( atoi(argv[1]) )->printComponent();
+        ConComponent *comp = ConComponent::loadComponent( atoi(argv[1]) );
+        comp->printComponent();
+        double *hu = comp->huMoments();
+        for(int i = 0; i < 8; i++)
+            cout << hu[i] << " ";
+        cout << endl;
     } else {
         printf("Error en la linea de comando:\n");
         printf("myocr add <filename>\tPara adicionar a la base de datos\n");

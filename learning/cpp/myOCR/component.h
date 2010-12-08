@@ -44,13 +44,13 @@ namespace MyOCR {
         double u(int i, int j);
         double n(int i, int j);
         double m(int i, int j);
-        double *huMoments();
      public:
         ConComponent(int i, int j, Matrix *binImg);
         ConComponent(int l, int r, int u, int d, Matrix *imagen);
         ~ConComponent();
         void printComponent();
         void saveComponent(const char *imageId);
+        double *huMoments();
         static ConComponent *loadComponent(int componentId);
     };
 
