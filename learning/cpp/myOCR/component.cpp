@@ -1,4 +1,7 @@
+#include <string.h>
+
 #include "component.h"
+#include "config.h"
 
 using namespace MyOCR;
 using namespace std;
@@ -53,13 +56,50 @@ ConComponent::ConComponent(int i, int j, Matrix* binImg) {
     }
 }
 
+ConComponent::ConComponent(Matrix *imagen) {
+    comp = imagen;
+}
+
+ConComponent::~ConComponent() {
+    delete comp;
+}
+
 void ConComponent::printComponent() {
-    for(int i = 0; i < down - top + 1; i++)
+    for(int i = 0; i < comp->getHeight(); i++)
     {
-        for(int j = 0; j < right - left + 1; j++)
+        for(int j = 0; j < comp->getWidth(); j++)
         {
             cout << (comp->get(i, j) == 1 ? "+" : "-");
         }
         cout << endl;
     }
+}
+
+void ConComponent::saveComponent(int imageId) {
+    Configuration *config = Configuration::getInstance();
+    MYSQL *sql = config->connectDB();
+    char *datos = (char*) comp->getData();
+    int size = comp->getWidth() * comp->getHeight() * comp->getChannels();
+    char salida[size * 2 + 1];
+    mysql_real_escape_string(sql, salida, datos, size);
+    char sqlQ[size * 2 + 200];
+    int tam = sprintf(sqlQ, "insert into Components(imageId, width, height, data) VALUES('%i', '%i', '%i', '%s')", imageId, comp->getWidth(), comp->getHeight(), salida);
+    std::cout << sqlQ << endl;
+    mysql_real_query(sql, sqlQ, tam);
+}
+
+ConComponent *ConComponent::loadComponent(int componentId) {
+    MYSQL *sql = Configuration::getInstance()->connectDB();
+    char sqlQ[200];
+    sprintf(sqlQ, "SELECT width, height, data FROM Components WHERE id=%i", componentId);
+    mysql_query(sql, sqlQ);
+    MYSQL_RES *result = mysql_store_result(sql);
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int width = atoi(row[0]);
+    int height = atoi(row[1]);
+    Matrix *matrix = new Matrix(width, height, 1);
+    char *datos = (char*) matrix->getData();
+    memcpy(datos, row[2], width * height);
+    mysql_free_result(result);
+    return new ConComponent(matrix);
 }

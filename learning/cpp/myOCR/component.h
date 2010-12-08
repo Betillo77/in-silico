@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <vector>
 #include <iostream>
+#include "config.h"
 
 namespace MyOCR {
 
@@ -39,8 +40,11 @@ namespace MyOCR {
         int getNeighbors(Point *ans, Point act, Matrix *img);
      public:
         ConComponent(int i, int j, Matrix *binImg);
+        ConComponent(Matrix *imagen);
         ~ConComponent();
         void printComponent();
+        void saveComponent(int imageId);
+        static ConComponent *loadComponent(int componentId);
     };
 
 }

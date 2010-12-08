@@ -5,8 +5,7 @@
 #message1=Hello
 #message2=Hello world!!!
 
-host=localhost
-user=usuario
-passwd=contraseña
-dbname=OCR
-
+host=192.168.0.105
+user=ocr
+passwd=tobytierno
+dbname=MyOCR

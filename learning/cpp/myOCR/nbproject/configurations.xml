@@ -51,7 +51,7 @@
       <compileType>
         <ccTool>
           <incDir>
-            <pElem>/usr/local/include/opencv/</pElem>
+            <pElem>/usr/include/opencv/</pElem>
             <pElem>/usr/include/mysql</pElem>
           </incDir>
         </ccTool>
