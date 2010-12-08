@@ -26,9 +26,11 @@ void addToDB(const char *fn)
     t.binarize(&gray, &gray);
     DocumentLayout dl;
     list <ConComponent*> res = dl.connectedComponents(&gray);
+    const char *imgId = strrchr(fn, '/');
+    imgId = (imgId == NULL) ? fn : imgId+1;
     for(list<ConComponent*>::iterator it = res.begin(); it != res.end(); it++)
     {
-        (*it)->saveComponent(fn);
+        (*it)->saveComponent(imgId);
     }
 }
 
