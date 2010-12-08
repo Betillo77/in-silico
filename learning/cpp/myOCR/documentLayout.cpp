@@ -15,8 +15,6 @@ list <ConComponent*> DocumentLayout::connectedComponents(Matrix *img) {
         for(int j = 0; j < mat.getWidth(); j++)
             if(mat(i, j) != 255)
                 ans.push_back(new ConComponent(i, j, img));
-    ConComponent *primero = *ans.begin();
-    primero->printComponent();
     return ans;
 }
 
