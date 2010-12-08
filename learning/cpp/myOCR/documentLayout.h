@@ -17,7 +17,7 @@ namespace MyOCR {
     public:
         DocumentLayout();
         ~DocumentLayout();
-        list <ConComponent*> connectedComponents(Matrix *img);
+        void connectedComponents(list <ConComponent*> &res, Matrix &img);
     };
 
 }

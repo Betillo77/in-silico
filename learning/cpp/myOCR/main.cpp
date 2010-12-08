@@ -12,26 +12,24 @@
 #include "documentLayout.h"
 #include "config.h"
 #include "test.h"
+#include "page.h"
 
 using namespace MyOCR;
 
-bool debug=false;
+bool debug = false;
 
-void addToDB(const char *fn)
-{
+void addToDB(const char *fn) {
     Matrix *color = loadImage(fn);
     Matrix gray(color->getWidth(), color->getHeight(), 1);
     Transform t;
     t.toGrayScale(&gray,color);
     t.binarize(&gray, &gray);
-    DocumentLayout dl;
-    list <ConComponent*> res = dl.connectedComponents(&gray);
     const char *imgId = strrchr(fn, '/');
-    imgId = (imgId == NULL) ? fn : imgId+1;
-    for(list<ConComponent*>::iterator it = res.begin(); it != res.end(); it++)
-    {
-        (*it)->saveComponent(imgId);
-    }
+    imgId = (imgId == NULL) ? fn : imgId + 1;
+    Page newPage(gray);
+    for(int i = 0; i < newPage.lenght(); i++)
+        newPage[i].saveComponent(imgId);
+    delete color;
 }
 
 /*
@@ -40,7 +38,6 @@ void addToDB(const char *fn)
 int main(int argc, char** argv) {
     if (debug)
         mainTest(argc, argv);
-    
     argc--; argv++;
     if (argc > 1 && strcmp(argv[0], "add") == 0) {
         addToDB( argv[1] );

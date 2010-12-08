@@ -8,6 +8,7 @@
         <itemPath>component.h</itemPath>
         <itemPath>documentLayout.h</itemPath>
         <itemPath>matrix.h</itemPath>
+        <itemPath>page.h</itemPath>
         <itemPath>transform.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Utiles" projectFiles="true">
@@ -27,6 +28,7 @@
         <itemPath>component.cpp</itemPath>
         <itemPath>documentLayout.cpp</itemPath>
         <itemPath>matrix.cpp</itemPath>
+        <itemPath>page.cpp</itemPath>
         <itemPath>transform.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Utiles" projectFiles="true">

@@ -51,24 +51,6 @@ void testTransform(const char *fn) {
     showMatrix(&gray);
 }
 
-void testConnected(const char *fn)
-{
-    Matrix *color = loadImage(fn);
-    Matrix gray(color->getWidth(), color->getHeight(), 1);
-    //Matrix out(color->getWidth(), color->getHeight(), 1);
-    Transform t;
-    t.toGrayScale(&gray,color);
-    //showMatrix(color);
-    //showMatrix(&gray);
-    t.binarize(&gray, &gray);
-    DocumentLayout dl;
-    list <ConComponent*> res = dl.connectedComponents(&gray);
-    for(list<ConComponent*>::iterator it = res.begin(); it != res.end(); it++)
-    {
-        (*it)->saveComponent(fn);
-        cout << endl;
-    }
-}
 
 int mainTest(int argc, char** argv) {
     //if (!debug) cvNamedWindow("Test");
@@ -76,8 +58,7 @@ int mainTest(int argc, char** argv) {
     char *fn = "prueba.jpg";
     if (argc>1) fn=argv[1];
     testTransform(fn);
-//    testConnected(fn);
-    ConComponent::loadComponent(1502)->printComponent();
+ //   ConComponent::loadComponent(1502)->printComponent();
     return (EXIT_SUCCESS);
 }
 
