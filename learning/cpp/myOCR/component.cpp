@@ -166,6 +166,10 @@ ConComponent::ConComponent(int l, int r, int t, int d, Matrix *imagen) {
     top = t;
     down = d;
     comp = imagen;
+    for(int i = 0; i < 4; i++)
+        for(int j = 0; j < 4; j++)
+            dpN[i][j] = dpM[i][j] = dpU[i][j] = numeric_limits<double>::infinity();
+    dpI = NULL;
 }
 
 ConComponent::~ConComponent() {
