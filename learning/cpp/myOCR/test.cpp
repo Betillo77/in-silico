@@ -66,7 +66,7 @@ void testConnected(const char *fn)
     list <ConComponent*> res = dl.connectedComponents(&gray);
     for(list<ConComponent*>::iterator it = res.begin(); it != res.end(); it++)
     {
-        (*it)->saveComponent(0);
+        (*it)->saveComponent(fn);
         cout << endl;
     }
 }
@@ -77,10 +77,9 @@ int main(int argc, char** argv) {
     char *fn = "prueba.jpg";
     if (argc>1) fn=argv[1];
     testTransform(fn);
-//        testConnected(fn);
-    ConComponent::loadComponent(2)->printComponent();
+//    testConnected(fn);
+    ConComponent::loadComponent(1502)->printComponent();
     cvDestroyWindow("Test");
-    MYSQL *conn = Configuration::getInstance()->connectDB();
     return (EXIT_SUCCESS);
 }
 

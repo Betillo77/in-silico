@@ -56,7 +56,11 @@ ConComponent::ConComponent(int i, int j, Matrix* binImg) {
     }
 }
 
-ConComponent::ConComponent(Matrix *imagen) {
+ConComponent::ConComponent(int l, int r, int t, int d, Matrix *imagen) {
+    left = l;
+    right = r;
+    top = t;
+    down = d;
     comp = imagen;
 }
 
@@ -75,7 +79,7 @@ void ConComponent::printComponent() {
     }
 }
 
-void ConComponent::saveComponent(int imageId) {
+void ConComponent::saveComponent(const char *imageId) {
     Configuration *config = Configuration::getInstance();
     MYSQL *sql = config->connectDB();
     char *datos = (char*) comp->getData();
@@ -83,7 +87,7 @@ void ConComponent::saveComponent(int imageId) {
     char salida[size * 2 + 1];
     mysql_real_escape_string(sql, salida, datos, size);
     char sqlQ[size * 2 + 200];
-    int tam = sprintf(sqlQ, "insert into Components(imageId, width, height, data) VALUES('%i', '%i', '%i', '%s')", imageId, comp->getWidth(), comp->getHeight(), salida);
+    int tam = sprintf(sqlQ, "insert into Components(imageId, leftP, rightP, topP, downP, data) VALUES('%s', '%i', '%i', '%i', '%i', '%s')", imageId, left, right, top, down, salida);
     std::cout << sqlQ << endl;
     mysql_real_query(sql, sqlQ, tam);
 }
@@ -91,15 +95,17 @@ void ConComponent::saveComponent(int imageId) {
 ConComponent *ConComponent::loadComponent(int componentId) {
     MYSQL *sql = Configuration::getInstance()->connectDB();
     char sqlQ[200];
-    sprintf(sqlQ, "SELECT width, height, data FROM Components WHERE id=%i", componentId);
+    sprintf(sqlQ, "SELECT leftP, rightP, topP, downP, data FROM Components WHERE id=%i", componentId);
     mysql_query(sql, sqlQ);
     MYSQL_RES *result = mysql_store_result(sql);
     MYSQL_ROW row = mysql_fetch_row(result);
-    int width = atoi(row[0]);
-    int height = atoi(row[1]);
-    Matrix *matrix = new Matrix(width, height, 1);
+    int left = atoi(row[0]);
+    int right = atoi(row[1]);
+    int top = atoi(row[2]);
+    int down = atoi(row[3]);
+    Matrix *matrix = new Matrix(right - left + 1, down - top + 1, 1);
     char *datos = (char*) matrix->getData();
-    memcpy(datos, row[2], width * height);
+    memcpy(datos, row[4], (right - left + 1) * (down - top + 1));
     mysql_free_result(result);
-    return new ConComponent(matrix);
+    return new ConComponent(left, right, top, down, matrix);
 }
