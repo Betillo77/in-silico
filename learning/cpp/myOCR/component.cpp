@@ -54,8 +54,112 @@ ConComponent::ConComponent(int i, int j, Matrix* binImg) {
         Point actual = s[i];
         ans(actual.i - top, actual.j - left) = 1;
     }
+    for(int i = 0; i < 4; i++)
+        for(int j = 0; j < 4; j++)
+            dpN[i][j] = dpM[i][j] = dpU[i][j] = numeric_limits<double>::infinity();
+    dpI = NULL;
 }
 
+double ConComponent::pow(double a, int b) {
+    if(b == 0)
+        return 1;
+    else if(b == 1)
+        return a;
+    else if(b == 2)
+        return a * a;
+    else if(b == 3)
+        return a * a * a;
+    else
+        return a * a * a * pow(a, b - 3);
+}
+
+double ConComponent::m(int iV, int jV) {
+    if(dpM[iV][jV] != numeric_limits<double>::infinity())
+        return dpM[iV][jV];
+    double acum = 0;
+    int height = down - top + 1;
+    int width = right - left + 1;
+    double deltaI = 1 / height;
+    double deltaJ = 1 / width;
+    double iAct = deltaI;
+    double jAct = deltaJ;
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            pixel act = comp->get(i, j);
+            acum += act == 0 ? 0 : act * pow(iAct, iV) * pow(jAct, jV);
+            jAct += deltaJ;
+        }
+        iAct += deltaI;
+        jAct = deltaJ;
+    }
+    return dpM[iV][jV] = acum;
+}
+
+double ConComponent::u(int iV, int jV) {
+    if(dpU[iV][jV] != numeric_limits<double>::infinity())
+        return dpU[iV][jV];
+    double xAvg = m(1, 0) / m(0, 0);
+    double yAvg = m(0, 1) / m(0, 0);
+    switch(iV)
+    {
+        case 0:
+            switch(jV)
+            {
+                case 0: return dpU[iV][jV] = m(0, 0);
+                case 1: return dpU[iV][jV] = 0;
+                case 2: return dpU[iV][jV] = m(0, 2) - yAvg * m(0, 1);
+                case 3: return dpU[iV][jV] = m(0, 3) - 3 * yAvg * m(0, 2) + 2 * pow(yAvg, 2) * m(0, 1);
+            }
+        case 1:
+            switch(jV)
+            {
+                case 0: return dpU[iV][jV] = 0;
+                case 1: return dpU[iV][jV] = m(1, 1) - xAvg * m(0, 1);
+                case 2: return dpU[iV][jV] = m(1, 2) - 2 * yAvg * m(1, 1) - xAvg * m(0, 2) + 2 * pow(yAvg, 2) * m(1, 0);
+                case 3: return dpU[iV][jV] = 0;
+            }
+        case 2:
+            switch(jV)
+            {
+                case 0: return dpU[iV][jV] = m(2, 0) - xAvg * m(1, 0);
+                case 1: return dpU[iV][jV] = m(2, 1) - 2 * xAvg * m(1, 1) - yAvg * m(2, 0) + 2 * pow(xAvg, 2) * m(0, 1);
+                case 2: return dpU[iV][jV] = 0;
+                case 3: return dpU[iV][jV] = 0;
+            }
+        case 3:
+            switch(jV)
+            {
+                case 0: return dpU[iV][jV] = m(3, 0) - 3 * xAvg * m(2, 0) + 2 * pow(xAvg, 2) * m(1, 0);
+                case 1: return dpU[iV][jV] = 0;
+                case 2: return dpU[iV][jV] = 0;
+                case 3: return dpU[iV][jV] = 0;
+            }
+
+    }
+}
+
+double ConComponent::n(int iV, int jV) {
+    if(dpN[iV][jV] != numeric_limits<double>::infinity())
+        return dpN[iV][jV];
+    return dpN[iV][jV] = u(iV, jV) / pow(u(0, 0), 1 + (iV + jV) / 2);
+}
+
+double *ConComponent::huMoments() {
+    if(dpI != NULL)
+        return dpI;
+    dpI = new double[8];
+    dpI[0] = n(2, 0) + n(0, 2);
+    dpI[1] = pow(n(2, 0) - n(0, 2), 2) + pow(2 * n(1, 1), 2);
+    dpI[2] = pow(n(3, 0) - 3 * n(1, 2), 2) + pow(3 * n(2, 1) - n(0, 3), 2);
+    dpI[3] = pow(n(3, 0) + n(1, 2), 2) + pow(n(2, 1) + n(0, 3), 2);
+    dpI[4] = (n(3, 0) - 3 * n(1, 2)) * (n(3, 0) + n(1, 2)) * (pow(n(3, 0) + n(1, 2), 2) - 3 * pow(n(2, 1) + n(0, 3), 2)) + (3 * n(2, 1) - n(0, 3)) * (n(2, 1) + n(0, 3)) * (3 * pow(n(3, 0) + n(1, 2), 2) - pow(n(2, 1) + n(0, 3), 2));
+    dpI[5] = (n(2, 0) - n(0, 2)) * (pow(n(3, 0) + n(1, 2), 2) - pow(n(2, 1) + n(0, 3), 2)) + 4 * n(1, 1) * (n(3, 0) + n(1, 2)) * (n(2, 1) + n(0, 3));
+    dpI[6] = (3 * n(2, 1) - n(0, 3)) * (n(3, 0) + n(1, 2)) * (pow(n(3, 0) + n(1, 2), 2) - 3 * pow(n(2, 1) + n(0, 3), 2)) - (n(3, 0) - 3 * n(1, 2)) * (n(2, 1) + n(0, 3)) * (3 * pow(n(3, 0) + n(1, 2), 2) - pow(n(2, 1) + n(0, 3), 2));
+    dpI[7] = n(1, 1) * (pow(n(3, 0) + n(1, 2), 2) - pow(n(0, 3) + n(2, 1), 2)) - (n(2, 0) - n(0, 2)) * (n(3, 0) + n(1, 2)) * (n(0, 3) + n(2, 1));
+    return dpI;
+}
 ConComponent::ConComponent(int l, int r, int t, int d, Matrix *imagen) {
     left = l;
     right = r;
@@ -66,6 +170,8 @@ ConComponent::ConComponent(int l, int r, int t, int d, Matrix *imagen) {
 
 ConComponent::~ConComponent() {
     delete comp;
+    if(dpI != NULL)
+        delete dpI;
 }
 
 void ConComponent::printComponent() {
