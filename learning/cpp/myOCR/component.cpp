@@ -81,8 +81,8 @@ double ConComponent::m(int iV, int jV) {
     int width = right - left + 1;
     double deltaI = 1.0;
     double deltaJ = 1.0;
-    double iAct = deltaI;
-    double jAct = deltaJ;
+    double iAct = 0;
+    double jAct = 0;
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
@@ -92,7 +92,7 @@ double ConComponent::m(int iV, int jV) {
             jAct += deltaJ;
         }
         iAct += deltaI;
-        jAct = deltaJ;
+        jAct = 0;
     }
     return dpM[iV][jV] = acum;
 }

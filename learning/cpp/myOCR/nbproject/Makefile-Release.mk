@@ -16,7 +16,7 @@ CC=gcc
 CCC=g++
 CXX=g++
 FC=
-AS=
+AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
@@ -31,9 +31,11 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/page.o \
 	${OBJECTDIR}/component.o \
 	${OBJECTDIR}/matrix.o \
 	${OBJECTDIR}/transform.o \
+	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/config.o \
 	${OBJECTDIR}/android.o \
 	${OBJECTDIR}/test.o \
@@ -63,6 +65,11 @@ dist/Release/GNU-Linux-x86/myocr: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/GNU-Linux-x86
 	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -DBIG_JOINS=1 -fPIC -fno-strict-aliasing -Wl,-Bsymbolic-functions -rdynamic -L/usr/lib/mysql -lmysqlclient -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/page.o: nbproject/Makefile-${CND_CONF}.mk page.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/page.o page.cpp
+
 ${OBJECTDIR}/component.o: nbproject/Makefile-${CND_CONF}.mk component.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -77,6 +84,11 @@ ${OBJECTDIR}/transform.o: nbproject/Makefile-${CND_CONF}.mk transform.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
+
+${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/config.o: nbproject/Makefile-${CND_CONF}.mk config.cpp 
 	${MKDIR} -p ${OBJECTDIR}
