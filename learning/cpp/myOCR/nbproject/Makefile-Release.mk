@@ -31,6 +31,7 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/chrfeatures.o \
 	${OBJECTDIR}/page.o \
 	${OBJECTDIR}/component.o \
 	${OBJECTDIR}/matrix.o \
@@ -64,6 +65,11 @@ LDLIBSOPTIONS=-L/usr/include/opencv
 dist/Release/GNU-Linux-x86/myocr: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/GNU-Linux-x86
 	${LINK.cc} -I/usr/local/include/opencv -L/usr/local/lib -lcxcore -lcv -lhighgui -lcvaux -lml -DBIG_JOINS=1 -fPIC -fno-strict-aliasing -Wl,-Bsymbolic-functions -rdynamic -L/usr/lib/mysql -lmysqlclient -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/myocr ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/chrfeatures.o: nbproject/Makefile-${CND_CONF}.mk chrfeatures.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/chrfeatures.o chrfeatures.cpp
 
 ${OBJECTDIR}/page.o: nbproject/Makefile-${CND_CONF}.mk page.cpp 
 	${MKDIR} -p ${OBJECTDIR}

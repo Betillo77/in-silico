@@ -14,6 +14,7 @@
 #include <iostream>
 #include "config.h"
 #include <limits>
+#include <cmath>
 
 namespace MyOCR {
 
@@ -40,7 +41,6 @@ namespace MyOCR {
         //Returns the number of neighbors (Stored in ans), of the point act
         //that are "turned on" in the image
         int getNeighbors(Point *ans, Point act, Matrix *img);
-        double pow(double a, int b);
         double u(int i, int j);
         double n(int i, int j);
         double m(int i, int j);

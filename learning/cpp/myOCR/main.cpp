@@ -14,6 +14,7 @@
 #include "config.h"
 #include "test.h"
 #include "page.h"
+#include "chrfeatures.h"
 
 using namespace MyOCR;
 
@@ -40,7 +41,6 @@ void addToDB(const char *fn)
 int main(int argc, char** argv) {
     if (debug)
         mainTest(argc, argv);
-
     argc--; argv++;
     if (argc > 1 && strcmp(argv[0], "add") == 0) {
         addToDB( argv[1] );
@@ -49,7 +49,22 @@ int main(int argc, char** argv) {
         const char *query = "truncate table Components";
         mysql_query(conn, query);
     } else if (argc > 1 && strcmp(argv[0], "show") == 0) {
-        ConComponent::loadComponent( atoi(argv[1]) )->printComponent();
+        ConComponent* comp = ConComponent::loadComponent( atoi(argv[1]) );
+        comp->printComponent();
+        for(int i = 0; i < 7; i++)
+        {
+             printf("%lf ", comp->huMoments()[i]);
+        }
+        printf("\n");
+        ChrMoments *momm = new ChrMoments(comp);
+        double *prueba = new double[7];
+        momm->getHuMoments(prueba);
+        for(int i = 0; i < 7; i++)
+        {
+             printf("%lf ", prueba[i]);
+        }
+        delete [] prueba;
+        printf("\n");
     } else if (argc > 1 && strcmp(argv[0], "binarize") == 0) {
         testTransform(argv[1]);
     } else {

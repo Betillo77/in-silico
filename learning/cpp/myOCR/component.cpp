@@ -64,19 +64,6 @@ ConComponent::ConComponent(int i, int j, Matrix* binImg) {
     dpI = NULL;
 }
 
-double ConComponent::pow(double a, int b) {
-    if(b == 0)
-        return 1;
-    else if(b == 1)
-        return a;
-    else if(b == 2)
-        return a * a;
-    else if(b == 3)
-        return a * a * a;
-    else
-        return a * a * a * pow(a, b - 3);
-}
-
 double ConComponent::m(int iV, int jV) {
     if(dpM[iV][jV] != numeric_limits<double>::infinity())
         return dpM[iV][jV];
@@ -147,7 +134,7 @@ double ConComponent::u(int iV, int jV) {
 double ConComponent::n(int iV, int jV) {
     if(dpN[iV][jV] != numeric_limits<double>::infinity())
         return dpN[iV][jV];
-    return dpN[iV][jV] = u(iV, jV) / pow(u(0, 0), 1 + (iV + jV) / 2);
+    return dpN[iV][jV] = u(iV, jV) / pow(u(0, 0), 1 + ((double) (iV + jV)) / 2);
 }
 
 double *ConComponent::huMoments() {

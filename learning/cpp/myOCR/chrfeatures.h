@@ -9,6 +9,7 @@
 #define	_CHRFEATURES_H
 
 #include "component.h"
+#include <cmath>
 
 namespace MyOCR {
 

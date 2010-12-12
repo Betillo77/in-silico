@@ -1,6 +1,5 @@
 
 #include "chrfeatures.h"
-#include <cmath>
 
 using namespace MyOCR;
 
@@ -14,6 +13,7 @@ double ChrMoments::getRawMoment(int p, int q) {
             data++;
         }
     }
+    return sum;
 }
 
 void ChrMoments::getControid(double *x, double *y) {
@@ -41,6 +41,7 @@ double ChrMoments::getCenterMoment(int p, int q) {
             data++;
         }
     }
+    return sum;
 }
 
 double ChrMoments::getScaleInvMoment(int p, int q) {

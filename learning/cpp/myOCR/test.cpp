@@ -68,6 +68,12 @@ void test1() {
         if (c != NULL) {
             ChrMoments m(c);
             m.getHuMoments(x[acum++]);
+            for(int j = 0; j < 7; j++)
+            {
+                 double diff = c->huMoments()[j] - x[acum - 1][j];
+                 if(abs(diff) > 1e-6)
+                     printf("error en componente %i\n", i);
+            }
             for(int i = 0; i < 7; i++)
                 u[i] += x[acum - 1][i];
         }
@@ -87,7 +93,7 @@ void test1() {
 int mainTest(int argc, char** argv) {
     //if (!debug) cvNamedWindow("Test");
 //    char *fn = "text2.jpg";
-    char *fn = "prueba.jpg";
+    const char *fn = "prueba.jpg";
     if (argc>1) fn=argv[1];
     //testTransform(fn);
     test1();
