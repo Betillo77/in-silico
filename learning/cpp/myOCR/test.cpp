@@ -14,6 +14,7 @@
 #include <mysql.h>
 #include "config.h"
 #include "test.h"
+#include "chrfeatures.h"
 
 using namespace MyOCR;
 
@@ -42,22 +43,54 @@ void showMatrix(Matrix *m) {
 void testTransform(const char *fn) {
     Matrix *color = loadImage(fn);
     Matrix gray(color->getWidth(), color->getHeight(), 1);
-    //Matrix out(color->getWidth(), color->getHeight(), 1);
     Transform t;
     t.toGrayScale(&gray,color);
-    //showMatrix(color);
-    //showMatrix(&gray);
     t.binarize(&gray, &gray);
     showMatrix(&gray);
 }
 
+double testO(int i, int j, double x[][7], int tam, double u[])
+{
+    double sum = 0;
+    for(int k = 0; k < tam; k++) {
+        sum += ((x[k][i] - u[i]) * (x[k][j] - u[j]));
+    }
+    return sum / tam;
+}
+
+void test1() {
+    double x[500][7];
+    double u[7];
+    double s[7][7];
+    int acum = 0;
+    for (int i=7021; i<=7514; i++) {
+        ConComponent* c = ConComponent::loadComponent(i);
+        if (c != NULL) {
+            ChrMoments m(c);
+            m.getHuMoments(x[acum++]);
+            for(int i = 0; i < 7; i++)
+                u[i] += x[acum - 1][i];
+        }
+        delete c;
+    }
+    for(int i = 0; i < 7; i++)
+        u[i] /= acum;
+    for(int i = 0; i < 7; i++) {
+        for(int j = 0; j < 7; j++) {
+            s[i][j] = testO(i, j, x, 7, u);
+            printf("%lf ", s[i][j]);
+        }
+        printf("\n");
+    }
+}
 
 int mainTest(int argc, char** argv) {
     //if (!debug) cvNamedWindow("Test");
 //    char *fn = "text2.jpg";
     char *fn = "prueba.jpg";
     if (argc>1) fn=argv[1];
-    testTransform(fn);
+    //testTransform(fn);
+    test1();
  //   ConComponent::loadComponent(1502)->printComponent();
     return (EXIT_SUCCESS);
 }

@@ -16,6 +16,7 @@ extern bool debug;
 
 Matrix* loadImage(const char *fn);
 int mainTest(int argc, char** argv);
+void testTransform(const char *fn);
 
 #endif	/* _TEST_H */
 

@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   main.cpp
  * Author: seb
  *
@@ -7,6 +7,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <cstdio>
 #include "transform.h"
 #include "highgui.h"
 #include "documentLayout.h"
@@ -16,9 +17,10 @@
 
 using namespace MyOCR;
 
-bool debug = false;
+bool debug=true;
 
-void addToDB(const char *fn) {
+void addToDB(const char *fn)
+{
     Matrix *color = loadImage(fn);
     Matrix gray(color->getWidth(), color->getHeight(), 1);
     Transform t;
@@ -38,6 +40,7 @@ void addToDB(const char *fn) {
 int main(int argc, char** argv) {
     if (debug)
         mainTest(argc, argv);
+
     argc--; argv++;
     if (argc > 1 && strcmp(argv[0], "add") == 0) {
         addToDB( argv[1] );
@@ -46,18 +49,15 @@ int main(int argc, char** argv) {
         const char *query = "truncate table Components";
         mysql_query(conn, query);
     } else if (argc > 1 && strcmp(argv[0], "show") == 0) {
-        ConComponent *comp = ConComponent::loadComponent( atoi(argv[1]) );
-        comp->printComponent();
-        double *hu = comp->huMoments();
-        for(int i = 0; i < 8; i++)
-            cout << hu[i] << " ";
-        cout << endl;
+        ConComponent::loadComponent( atoi(argv[1]) )->printComponent();
+    } else if (argc > 1 && strcmp(argv[0], "binarize") == 0) {
+        testTransform(argv[1]);
     } else {
         printf("Error en la linea de comando:\n");
         printf("myocr add <filename>\tPara adicionar a la base de datos\n");
         printf("myocr truncate\tPara eliminar todo la información de OCR\n");
         printf("myocr show <imgId>\tPara mostrar un caracter en especial\n");
+        printf("myocr binarize <imgId>\tPara binarizar una imagen\n");
     }
     return (EXIT_SUCCESS);
 }
-

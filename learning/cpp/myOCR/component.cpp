@@ -214,6 +214,10 @@ ConComponent *ConComponent::loadComponent(int componentId) {
     mysql_query(sql, sqlQ);
     MYSQL_RES *result = mysql_store_result(sql);
     MYSQL_ROW row = mysql_fetch_row(result);
+    if (row == NULL) {
+         mysql_free_result(result);
+         return NULL;
+    }
     int left = atoi(row[0]);
     int right = atoi(row[1]);
     int top = atoi(row[2]);
