@@ -51,6 +51,7 @@ namespace MyOCR {
         void printComponent();
         void saveComponent(const char *imageId);
         double *huMoments();
+        Matrix* getMatrix();
         static ConComponent *loadComponent(int componentId);
     };
 

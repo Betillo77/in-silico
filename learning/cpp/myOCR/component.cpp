@@ -21,6 +21,10 @@ int ConComponent::getNeighbors(Point* ans, Point act, Matrix* img) {
     return cuenta;
 }
 
+Matrix* ConComponent::getMatrix() {
+    return this->comp;
+}
+
 ConComponent::ConComponent(int i, int j, Matrix* binImg) {
     Matrix & img = *binImg;
     left = 1 << 30, right = 0, top = 1 << 30, down = 0;
@@ -160,6 +164,7 @@ double *ConComponent::huMoments() {
     dpI[7] = n(1, 1) * (pow(n(3, 0) + n(1, 2), 2) - pow(n(0, 3) + n(2, 1), 2)) - (n(2, 0) - n(0, 2)) * (n(3, 0) + n(1, 2)) * (n(0, 3) + n(2, 1));
     return dpI;
 }
+
 ConComponent::ConComponent(int l, int r, int t, int d, Matrix *imagen) {
     left = l;
     right = r;
