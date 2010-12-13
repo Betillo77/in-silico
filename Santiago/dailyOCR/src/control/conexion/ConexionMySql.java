@@ -59,30 +59,55 @@ public class ConexionMySql
 	
 	public synchronized static void guardarPersistencia(IdEstrategia id, String xml) 
 	{
-		try
+		for(int i = 0; i < 100; i++)
 		{
-			Statement st = conexion.createStatement();
-		    st.executeUpdate("UPDATE Persistencia set Datos='" + xml + "' where IdEstrategia=" + (id.ordinal() + 1));
-		}
-		catch (SQLException s)
-		{
-			Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + xml); 
+			try
+			{
+				Statement st = conexion.createStatement();
+			    st.executeUpdate("UPDATE Persistencia set Datos='" + xml + "' where IdEstrategia=" + (id.ordinal() + 1));
+			    return;
+			}
+			catch (SQLException s)
+			{
+				Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + xml + " " + i); 
+				conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis");
+				try
+				{
+					Thread.sleep(10000);
+				}
+				catch(Exception e)
+				{
+					Error.agregar("Error de sincronizacion"); 
+				}
+			}
 		}
 	}
 	
 	public synchronized static String cargarPersistencia(IdEstrategia id) 
 	{
-		try 
+		for(int i = 0; i < 100; i++)
 		{
-			ResultSet rs = conexion.createStatement().executeQuery("select * from Persistencia where IdEstrategia=" + (id.ordinal() + 1));
-			rs.next();
-			return rs.getString(2);
-		} 
-		catch (SQLException e) 
-		{
-			Error.agregar("Error haciendo la lectura de la persistencia de la base de datos en estrategia " + id + ": " + e.getMessage());
-			return "";
+			try 
+			{
+				ResultSet rs = conexion.createStatement().executeQuery("select * from Persistencia where IdEstrategia=" + (id.ordinal() + 1));
+				rs.next();
+				return rs.getString(2);
+			} 
+			catch (SQLException e) 
+			{
+				Error.agregar("Error haciendo la lectura de la persistencia de la base de datos en estrategia " + id + ": " + e.getMessage() + " " + i);
+				conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis");
+				try
+				{
+					Thread.sleep(10000);
+				}
+				catch(Exception e1)
+				{
+					Error.agregar("Error de sincronizacion"); 
+				}
+			}
 		}
+		return "";
 	}
 	
     private static Connection dbConnect(String db_connect_string, String db_userid, String db_password)
