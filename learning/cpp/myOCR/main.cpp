@@ -51,20 +51,12 @@ int main(int argc, char** argv) {
     } else if (argc > 1 && strcmp(argv[0], "show") == 0) {
         ConComponent* comp = ConComponent::loadComponent( atoi(argv[1]) );
         comp->printComponent();
-        for(int i = 0; i < 7; i++)
-        {
-             printf("%lf ", comp->huMoments()[i]);
-        }
-        printf("\n");
         ChrMoments *momm = new ChrMoments(comp);
         double *prueba = new double[7];
         momm->getHuMoments(prueba);
-        for(int i = 0; i < 7; i++)
-        {
-             printf("%lf ", prueba[i]);
-        }
-        delete [] prueba;
+        printf("%E vsa %E", imag(momm->getComplexMoment(3, 0) * pow(momm->getComplexMoment(1, 2), 3)), prueba[6]);
         printf("\n");
+        delete [] prueba;
     } else if (argc > 1 && strcmp(argv[0], "binarize") == 0) {
         testTransform(argv[1]);
     } else {

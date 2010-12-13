@@ -44,6 +44,20 @@ double ChrMoments::getCenterMoment(int p, int q) {
     return sum;
 }
 
+complex<double> ChrMoments::getComplexMoment(int p, int q) {
+    Matrix *m = component->getMatrix();
+    pixel *data = m->getData();
+    complex<double> sum(0, 0);
+    complex<double> ii(0, 1.0);
+    for (int i=0; i<m->getHeight(); i++) {
+        for (int j=0; j<m->getWidth(); j++) {
+            sum += pow((double)(i-cx)+(double)(j-cy)*ii,p)*pow((double)(i-cx)-(double)(j-cy)*ii,q)*(double)(*data);
+            data++;
+        }
+    }
+    return sum/pow(u00, 1 + ((double)p+q)/2);
+}
+
 double ChrMoments::getScaleInvMoment(int p, int q) {
     double den = pow(u00, 1 + ((double)p+q)/2);
     return getCenterMoment(p,q)/den;

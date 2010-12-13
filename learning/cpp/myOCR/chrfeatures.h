@@ -10,6 +10,7 @@
 
 #include "component.h"
 #include <cmath>
+#include <complex>
 
 namespace MyOCR {
 
@@ -20,6 +21,7 @@ namespace MyOCR {
     public:
         ChrMoments(ConComponent *component);
         double getRawMoment(int p, int q);
+        complex<double> getComplexMoment(int p, int q);
         double getCenterMoment(int p, int q);
         double getScaleInvMoment(int p, int q);
         void getHuMoments(double *ans);

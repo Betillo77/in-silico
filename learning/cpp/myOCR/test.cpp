@@ -68,13 +68,6 @@ void test1() {
         if (c != NULL) {
             ChrMoments m(c);
             m.getHuMoments(x[acum++]);
-            double *tmp = c->huMoments();
-            for(int j = 0; j < 7; j++)
-            {
-                 double diff = tmp[j] - x[acum - 1][j];
-                 if(fabs(diff) > 1e-6)
-                     printf("error en componente %i\n", i);
-            }
             for(int i = 0; i < 7; i++)
                 u[i] += x[acum - 1][i];
         }
