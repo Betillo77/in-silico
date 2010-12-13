@@ -21,6 +21,7 @@
                    displayName="Resource Files"
                    projectFiles="true">
       <itemPath>config.txt</itemPath>
+      <itemPath>scripts/db.sql</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"

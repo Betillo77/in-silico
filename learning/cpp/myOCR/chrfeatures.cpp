@@ -74,5 +74,5 @@ void ChrMoments::getHuMoments(double* ans) {
     b = pow(n[3][0]+n[1][2],2) - 3*pow(n[2][1]+n[0][3], 2);
     c = (n[3][0]-3*n[1][2])*(n[2][1]+n[0][3]);
     d = 3*pow(n[3][0]+n[1][2],2) - pow(n[2][1]+n[0][3], 2);
-    ans[6] = a*b + c*d;
+    ans[6] = a*b - c*d;
 }
