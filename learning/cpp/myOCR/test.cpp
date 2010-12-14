@@ -49,6 +49,18 @@ void testTransform(const char *fn) {
     showMatrix(&gray);
 }
 
+void printVec(double *vec, int size) {
+    if (size==0) {
+        printf("{}");
+        return;
+    }
+    printf("{%E",vec[0]);
+    for (int i=1; i<size; i++) {
+        printf(",%E",vec[i]);
+    }
+    printf("}\n");
+}
+
 double testO(int i, int j, double x[][7], int tam, double u[])
 {
     double sum = 0;
@@ -59,33 +71,35 @@ double testO(int i, int j, double x[][7], int tam, double u[])
 }
 
 void test1() {
-    double x[500][7];
-    double u[7];
+    double x[2504][7];
+    double u[7], nu[7];
     double s[7][7];
     int acum = 0;
-    for (int i=7021; i<=7514; i++) {
+    //for (int i=2505; i<=4967; i++) {
+    for (int i=1; i<=2504; i++) {
         ConComponent* c = ConComponent::loadComponent(i);
-        if (c != NULL) {
+        if (c != NULL) {            
             ChrMoments m(c);
             m.getHuMoments(x[acum++]);
-            for(int i = 0; i < 7; i++)
-                u[i] += x[acum - 1][i];
-        }
-        delete c;
+            for(int j = 0; j < 7; j++)
+                u[j] += x[acum - 1][j];
+            delete c;
+        }        
     }
-    printf("Cantidad de elementos: %i, media: {", acum);
+    printf("Cantidad de elementos: %i, media: ", acum);
     for(int i = 0; i < 7; i++) {
         u[i] /= acum;
-        printf("%E;", u[i]);
     }
-    printf("}\n");
+    printVec(u,7);
     for(int i = 0; i < 7; i++) {
         for(int j = 0; j < 7; j++) {
             s[i][j] = testO(i, j, x, 7, u);
             printf("%E ", s[i][j]);
         }
         printf("\n");
+        nu[i] = u[i]/sqrt(s[i][i]);
     }
+    printVec(nu,7);
 }
 
 int mainTest(int argc, char** argv) {

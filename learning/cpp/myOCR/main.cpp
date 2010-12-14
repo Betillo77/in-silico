@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
+#include <ctime>
+#include <mysql.h>
 #include "transform.h"
 #include "highgui.h"
 #include "documentLayout.h"
@@ -16,9 +18,12 @@
 #include "page.h"
 #include "chrfeatures.h"
 
+#define HU 1
+
 using namespace MyOCR;
 
-bool debug=true;
+bool debug=false;
+CvRNG seed;
 
 void addToDB(const char *fn)
 {
@@ -35,6 +40,44 @@ void addToDB(const char *fn)
     delete color;
 }
 
+void insertMoment(int id, ConComponent *cc, double training, double validation) {
+    double r = cvRandReal(&seed);
+    MYSQL* conn = Configuration::getInstance()->connectDB();
+    const char* set = (r<training) ? "tr" : (((r-training)<validation) ?
+        "val" : "test");
+
+    ChrMoments mm(cc);
+    double hu[7];
+    mm.getHuMoments(hu);
+    char hustr[100];
+    mysql_real_escape_string(conn, hustr, (char*)hu, 7*sizeof(double));
+    
+    char sql[1000];
+    int tam = sprintf(sql, "insert into Moments (ComponentId,MomentType,\
+TrainingSet,Vector) values (%i,%i,'%s','%s')", id, HU, set, hustr);
+    mysql_real_query(conn, sql, tam);
+}
+
+void recomputeMoments(double training, double validation) {
+    MYSQL *conn = Configuration::getInstance()->connectDB();
+    mysql_query(conn, "truncate table Moments");
+    mysql_query(conn, "select * from Components");
+    MYSQL_RES *result = mysql_store_result(conn);
+    MYSQL_ROW row;
+    while ((row = mysql_fetch_row(result)) != NULL) {
+        int l = atoi( row[2] );
+        int r = atoi( row[3] );
+        int u = atoi( row[4] );
+        int d = atoi( row[5] );
+        Matrix *imagen = new Matrix(r - l + 1, d - u + 1, 1);
+        char *datos = (char*) imagen->getData();
+        memcpy( datos, row[6], (r - l + 1)*(d - u + 1) );
+        ConComponent cc(l,r,u,d,imagen);
+
+        insertMoment(atoi(row[0]), &cc, training, validation);
+    }
+}
+
 /*
  * Archivo principal para "producción"
  */
@@ -42,6 +85,7 @@ int main(int argc, char** argv) {
     if (debug)
         mainTest(argc, argv);
     argc--; argv++;
+    seed = cvRNG( time(0) );
     if (argc > 1 && strcmp(argv[0], "add") == 0) {
         addToDB( argv[1] );
     } else if (argc>0 && strcmp(argv[0], "truncate") == 0) {
@@ -59,12 +103,15 @@ int main(int argc, char** argv) {
         delete [] prueba;
     } else if (argc > 1 && strcmp(argv[0], "binarize") == 0) {
         testTransform(argv[1]);
+    } else if (argc > 2 && strcmp(argv[0], "moments") == 0) {
+        recomputeMoments( atof(argv[1]), atof(argv[2]) );
     } else {
         printf("Error en la linea de comando:\n");
         printf("myocr add <filename>\tPara adicionar a la base de datos\n");
         printf("myocr truncate\tPara eliminar todo la información de OCR\n");
         printf("myocr show <imgId>\tPara mostrar un caracter en especial\n");
         printf("myocr binarize <imgId>\tPara binarizar una imagen\n");
+        printf("myocr moments <tr> <val>\tPara recalcular los momentos de las imágenes\n");
     }
     return (EXIT_SUCCESS);
 }

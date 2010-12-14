@@ -14,6 +14,7 @@
       </logicalFolder>
       <logicalFolder name="f2" displayName="Utiles" projectFiles="true">
         <itemPath>config.h</itemPath>
+        <itemPath>multivariate.h</itemPath>
       </logicalFolder>
       <itemPath>test.h</itemPath>
     </logicalFolder>
@@ -36,6 +37,7 @@
       </logicalFolder>
       <logicalFolder name="f2" displayName="Utiles" projectFiles="true">
         <itemPath>config.cpp</itemPath>
+        <itemPath>multivariate.cpp</itemPath>
       </logicalFolder>
       <itemPath>android.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -87,6 +89,7 @@
           <incDir>
             <pElem>/usr/local/include/opencv</pElem>
             <pElem>/usr/include/mysql</pElem>
+            <pElem>/usr/include/eigen2</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
