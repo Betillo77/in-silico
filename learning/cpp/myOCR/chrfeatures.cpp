@@ -4,7 +4,7 @@
 using namespace MyOCR;
 
 double ChrMoments::getRawMoment(int p, int q) {
-    Matrix *m = component->getMatrix();
+    ImgMatrix *m = component->getMatrix();
     pixel *data = m->getData();
     double sum=0;
     for (int i=0; i<m->getHeight(); i++) {
@@ -32,7 +32,7 @@ ChrMoments::ChrMoments(ConComponent* component) {
 }
 
 double ChrMoments::getCenterMoment(int p, int q) {
-    Matrix *m = component->getMatrix();
+    ImgMatrix *m = component->getMatrix();
     pixel *data = m->getData();
     double sum=0;
     for (int i=0; i<m->getHeight(); i++) {
@@ -45,7 +45,7 @@ double ChrMoments::getCenterMoment(int p, int q) {
 }
 
 complex<double> ChrMoments::getComplexMoment(int p, int q) {
-    Matrix *m = component->getMatrix();
+    ImgMatrix *m = component->getMatrix();
     pixel *data = m->getData();
     complex<double> sum(0, 0);
     complex<double> ii(0, 1.0);

@@ -1,5 +1,6 @@
 
 #include "config.h"
+#include <cstring>
 
 using namespace MyOCR;
 
@@ -48,4 +49,14 @@ MYSQL* Configuration::connectDB() {
 Configuration* Configuration::getInstance() {
     static Configuration* myInst= new Configuration();
     return myInst;
+}
+
+void Configuration::executeEscalar(char* sql, char* ans) {
+    MYSQL *conn = Configuration::getInstance()->connectDB();
+    mysql_query(conn, sql);
+    MYSQL_RES *result = mysql_store_result(conn);
+    MYSQL_ROW row = mysql_fetch_row(result);
+    if (row != NULL) {
+        strcpy(ans, row[0]);
+    }
 }

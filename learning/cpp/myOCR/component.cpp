@@ -6,7 +6,7 @@
 using namespace MyOCR;
 using namespace std;
 
-int ConComponent::getNeighbors(Point* ans, Point act, Matrix* img) {
+int ConComponent::getNeighbors(Point* ans, Point act, ImgMatrix* img) {
     int cuenta = 0;
     int delta[][2] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
     for(int i = 0; i < 4; i++)
@@ -21,12 +21,12 @@ int ConComponent::getNeighbors(Point* ans, Point act, Matrix* img) {
     return cuenta;
 }
 
-Matrix* ConComponent::getMatrix() {
+ImgMatrix* ConComponent::getMatrix() {
     return this->comp;
 }
 
-ConComponent::ConComponent(int i, int j, Matrix* binImg) {
-    Matrix & img = *binImg;
+ConComponent::ConComponent(int i, int j, ImgMatrix* binImg) {
+    ImgMatrix & img = *binImg;
     left = 1 << 30, right = 0, top = 1 << 30, down = 0;
     vector <Point> s;
     s.push_back(Point(i, j));
@@ -48,8 +48,8 @@ ConComponent::ConComponent(int i, int j, Matrix* binImg) {
         down = max(down, p.i);
         act++;
     }
-    comp = new Matrix(right - left + 1, down - top + 1, 1);
-    Matrix & ans = *comp;
+    comp = new ImgMatrix(right - left + 1, down - top + 1, 1);
+    ImgMatrix & ans = *comp;
     for(int i = 0; i < ans.getHeight(); i++)
         for(int j = 0; j < ans.getWidth(); j++)
             ans(i, j) = 0;
@@ -60,7 +60,7 @@ ConComponent::ConComponent(int i, int j, Matrix* binImg) {
     }
 }
 
-ConComponent::ConComponent(int l, int r, int t, int d, Matrix *imagen) {
+ConComponent::ConComponent(int l, int r, int t, int d, ImgMatrix *imagen) {
     left = l;
     right = r;
     top = t;
@@ -111,7 +111,7 @@ ConComponent *ConComponent::loadComponent(int componentId) {
     int right = atoi(row[1]);
     int top = atoi(row[2]);
     int down = atoi(row[3]);
-    Matrix *matrix = new Matrix(right - left + 1, down - top + 1, 1);
+    ImgMatrix *matrix = new ImgMatrix(right - left + 1, down - top + 1, 1);
     char *datos = (char*) matrix->getData();
     memcpy(datos, row[4], (right - left + 1) * (down - top + 1));
     mysql_free_result(result);

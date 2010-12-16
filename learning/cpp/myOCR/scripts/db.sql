@@ -22,7 +22,7 @@ CREATE TABLE `MomentTypes` (
 CREATE TABLE `MyOCR`.`Moments` (
   `ComponentId` INT  NOT NULL,
   `MomentType` INT  NOT NULL,
-  `Set` varchar(4),
+  `TrainingSet` varchar(4),
   `Vector` BLOB  NOT NULL,
   PRIMARY KEY (ComponentId,MomentType)
 )

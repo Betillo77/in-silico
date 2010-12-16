@@ -34,19 +34,19 @@ namespace MyOCR {
     
     //Class that represents connected component
     class ConComponent {
-        Matrix *comp; //component itself
+        ImgMatrix *comp; //component itself
         int top, left, down, right;
 
         //Returns the number of neighbors (Stored in ans), of the point act
         //that are "turned on" in the image
-        int getNeighbors(Point *ans, Point act, Matrix *img);
+        int getNeighbors(Point *ans, Point act, ImgMatrix *img);
      public:
-        ConComponent(int i, int j, Matrix *binImg);
-        ConComponent(int l, int r, int u, int d, Matrix *imagen);
+        ConComponent(int i, int j, ImgMatrix *binImg);
+        ConComponent(int l, int r, int u, int d, ImgMatrix *imagen);
         ~ConComponent();
         void printComponent();
         void saveComponent(const char *imageId);
-        Matrix* getMatrix();
+        ImgMatrix* getMatrix();
         static ConComponent *loadComponent(int componentId);
     };
 }

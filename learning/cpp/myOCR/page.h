@@ -20,7 +20,7 @@ class Page {
     vector <ConComponent*> *components;
     int size;
 public:
-    Page(Matrix &grayScale);
+    Page(ImgMatrix &grayScale);
     ~Page();
     int lenght();
     ConComponent &operator[](int index);

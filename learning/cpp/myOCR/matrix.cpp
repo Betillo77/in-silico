@@ -2,37 +2,37 @@
 
 using namespace MyOCR;
 
-Matrix::Matrix(int width, int height, int channels) {
+ImgMatrix::ImgMatrix(int width, int height, int channels) {
     this->width = width;
     this->height = height;
     this->channels = channels;
     this->data = new pixel[width*height*channels];
 }
 
-Matrix::~Matrix() {
+ImgMatrix::~ImgMatrix() {
     delete [] data;
 }
 
-int Matrix::getChannels() {
+int ImgMatrix::getChannels() {
     return this->channels;
 }
 
-pixel* Matrix::getData() {
+pixel* ImgMatrix::getData() {
     return this->data;
 }
 
-int Matrix::getHeight() {
+int ImgMatrix::getHeight() {
     return this->height;
 }
 
-int Matrix::getWidth() {
+int ImgMatrix::getWidth() {
     return this->width;
 }
 
-pixel Matrix::get(int i, int j) {
+pixel ImgMatrix::get(int i, int j) {
     return this->data[channels * (i * width + j)];
 }
 
-pixel &Matrix::operator()(int i, int j) {
+pixel &ImgMatrix::operator()(int i, int j) {
     return data[channels * (i * width + j)];
 }

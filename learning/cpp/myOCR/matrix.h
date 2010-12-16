@@ -11,15 +11,14 @@
 namespace MyOCR {
 
     typedef unsigned char pixel;
-    typedef long long int int64;
-
-    class Matrix {
+    
+    class ImgMatrix {
         int width, height;
         int channels;
         pixel *data;
     public:
-        Matrix(int width, int height, int channels);
-        ~Matrix();
+        ImgMatrix(int width, int height, int channels);
+        ~ImgMatrix();
         int getWidth();
         int getHeight();
         int getChannels();

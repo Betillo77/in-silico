@@ -5,7 +5,7 @@
 #message1=Hello
 #message2=Hello world!!!
 
-host=insilico.no-ip.biz
+host=localhost
 user=ocr
 passwd=tobytierno
 dbname=MyOCR

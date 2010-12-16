@@ -3,7 +3,7 @@
 
 using namespace MyOCR;
 
-Page::Page(Matrix &grayScale) {
+Page::Page(ImgMatrix &grayScale) {
     list <ConComponent*> comp;
     DocumentLayout dl;
     dl.connectedComponents(comp, grayScale);

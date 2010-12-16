@@ -8,7 +8,7 @@ DocumentLayout::DocumentLayout() {
 DocumentLayout::~DocumentLayout() {
 }
 
-void DocumentLayout::connectedComponents(list <ConComponent*> &ans, Matrix &mat) {
+void DocumentLayout::connectedComponents(list <ConComponent*> &ans, ImgMatrix &mat) {
     for(int i = 0; i < mat.getHeight(); i++)
         for(int j = 0; j < mat.getWidth(); j++)
             if(mat(i, j) != 255)

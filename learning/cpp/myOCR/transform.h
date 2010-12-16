@@ -14,18 +14,20 @@
 
 namespace MyOCR {
 
+    typedef long long int ocr_int64;
+
     class Transform {
         float cvtWeight[4];
         int wsize; //Binarization window size
         float kfac; //Sauvola k factor
     public:
         Transform();
-        void toGrayScale(Matrix *res, Matrix *m);
+        void toGrayScale(ImgMatrix *res, ImgMatrix *m);
 
         /**
          * Binarize the image by Sauvola Method
          */
-        void binarize(Matrix *res, Matrix *m);
+        void binarize(ImgMatrix *res, ImgMatrix *m);
     };
 }
 

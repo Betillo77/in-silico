@@ -9,25 +9,41 @@
 #define	_MULTIVARIATE_H
 
 #include "cv.h"
-#include <vector>
-#include "component.h"
+#include <map>
+
+using namespace std;
 
 namespace MyOCR {
-/*
-    struct TrainingData {
-        vector<ConComponent> training;
-        vector<ConComponent> validation;
+
+    class SymbolParams {
+        int symbol;
+        int ndata, cols;
+        CvMat* data;
+    public:
+        SymbolParams();
+        ~SymbolParams();
+        int GetNdata() const;
+        void SetSymbol(int symbol);
+        int GetSymbol() const;
+        CvMat* getData();
+        void increaseN();
+        void initParams(int symbol, int cols);
     };
 
     class Multivariate {
-        vector<ConComponent> data;
-        GaussianParams* params;
+        CvMat *data;
+        CvMat *resp;
+        map<int,SymbolParams> symbols;
+
+        void calcSymbolParams();
+        int mySymbol(const char *fname);
     public:
-        Multivariate(double trainingProb);
+        Multivariate(int momentType);
         ~Multivariate();
-        void getHuParams();
+        SymbolParams *getSymbolParams(int symbol);
+        CvMat *getData();
     };
-*/
+
 }
 
 #endif	/* _MULTIVARIATE_H */

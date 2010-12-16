@@ -15,19 +15,20 @@
 #include "config.h"
 #include "test.h"
 #include "chrfeatures.h"
+#include "multivariate.h"
 
 using namespace MyOCR;
 
-Matrix *loadImage(const char *fn) {
+ImgMatrix *loadImage(const char *fn) {
     IplImage *img = cvLoadImage(fn);
     int w = img->width, h = img->height, k = img->nChannels;
-    Matrix *m = new Matrix(w, h, k);
+    ImgMatrix *m = new ImgMatrix(w, h, k);
     memcpy(m->getData(), img->imageData, w*h*k);
     cvReleaseImage(&img);
     return m;
 }
 
-void showMatrix(Matrix *m) {
+void showMatrix(ImgMatrix *m) {
     int w=m->getWidth(), h=m->getHeight(), k=m->getChannels();
     IplImage *img = cvCreateImage(cvSize(w,h),IPL_DEPTH_8U, k);
     memcpy(img->imageData, m->getData(), w*h*k);
@@ -41,8 +42,8 @@ void showMatrix(Matrix *m) {
 
 
 void testTransform(const char *fn) {
-    Matrix *color = loadImage(fn);
-    Matrix gray(color->getWidth(), color->getHeight(), 1);
+    ImgMatrix *color = loadImage(fn);
+    ImgMatrix gray(color->getWidth(), color->getHeight(), 1);
     Transform t;
     t.toGrayScale(&gray,color);
     t.binarize(&gray, &gray);
@@ -102,13 +103,35 @@ void test1() {
     printVec(nu,7);
 }
 
+void printMat(CvMat * mat) {
+    for (int i=0; i<mat->rows; i++) {
+        double *vec = mat->data.db + i*mat->cols;
+        for (int j=0; j<mat->cols; j++) {
+            printf("%e\t", *vec);
+            vec++;
+        }
+        printf("\n");
+    }
+}
+
+void testMulti() {
+    Multivariate mult(1);
+    printMat( mult.getData() );
+    for (char c='0'; c<='9'; c++) {
+        SymbolParams* s = mult.getSymbolParams(c);
+        printf("\nDatos de simbolo: %c\n", c); // </editor-fold>
+        printMat( s->getData() );
+    }
+}
+
 int mainTest(int argc, char** argv) {
     //if (!debug) cvNamedWindow("Test");
 //    char *fn = "text2.jpg";
     const char *fn = "prueba.jpg";
     if (argc>1) fn=argv[1];
     //testTransform(fn);
-    test1();
+    //test1();
+    testMulti();
  //   ConComponent::loadComponent(1502)->printComponent();
     return (EXIT_SUCCESS);
 }

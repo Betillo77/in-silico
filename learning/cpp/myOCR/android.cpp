@@ -3,6 +3,6 @@
 
 using namespace MyOCR;
 
-Matrix* openImage(char *fname, int width, int height) {
+ImgMatrix* openImage(char *fname, int width, int height) {
     
 }

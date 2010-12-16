@@ -22,13 +22,13 @@
 
 using namespace MyOCR;
 
-bool debug=false;
+bool debug=true;
 CvRNG seed;
 
 void addToDB(const char *fn)
 {
-    Matrix *color = loadImage(fn);
-    Matrix gray(color->getWidth(), color->getHeight(), 1);
+    ImgMatrix *color = loadImage(fn);
+    ImgMatrix gray(color->getWidth(), color->getHeight(), 1);
     Transform t;
     t.toGrayScale(&gray,color);
     t.binarize(&gray, &gray);
@@ -69,7 +69,7 @@ void recomputeMoments(double training, double validation) {
         int r = atoi( row[3] );
         int u = atoi( row[4] );
         int d = atoi( row[5] );
-        Matrix *imagen = new Matrix(r - l + 1, d - u + 1, 1);
+        ImgMatrix *imagen = new ImgMatrix(r - l + 1, d - u + 1, 1);
         char *datos = (char*) imagen->getData();
         memcpy( datos, row[6], (r - l + 1)*(d - u + 1) );
         ConComponent cc(l,r,u,d,imagen);

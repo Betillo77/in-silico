@@ -12,7 +12,7 @@ Transform::Transform() {
     wsize=40; kfac=0.3;
 }
 
-void Transform::toGrayScale(Matrix* res, Matrix* m) {
+void Transform::toGrayScale(ImgMatrix* res, ImgMatrix* m) {
     assert(res != 0); assert(m != 0);
     int N = m->getWidth()*m->getHeight(), K=m->getChannels();
     float ans;
@@ -30,9 +30,9 @@ void Transform::toGrayScale(Matrix* res, Matrix* m) {
     }
 }
 
-void compIntegralImg(Matrix *m, int64 *sum, int64 *sumsq) {
-    int64 row, rowsq;
-    int64 *sump, *sumsp;
+void compIntegralImg(ImgMatrix *m, ocr_int64 *sum, ocr_int64 *sumsq) {
+    ocr_int64 row, rowsq;
+    ocr_int64 *sump, *sumsp;
     int im_w = m->getWidth(), im_h = m->getHeight();
     pixel *img = m->getData();
 
@@ -49,7 +49,7 @@ void compIntegralImg(Matrix *m, int64 *sum, int64 *sumsq) {
         *sumsp = sumsp[-1] + (*img)*(*img);
         img++; sump++; sumsp++; //avanzar a la siguiente j
     }
-    int64 *sumup=sum, *sumsup=sumsq;
+    ocr_int64 *sumup=sum, *sumsup=sumsq;
     for (int i=1; i<im_h; i++) {
         row=(*img); rowsq=row*row; //row=img[i][0]
         img++; sump++; sumsp++; sumup++; sumsup++; //apuntar (j=1)
@@ -62,7 +62,7 @@ void compIntegralImg(Matrix *m, int64 *sum, int64 *sumsq) {
     }
 }
 
-void Transform::binarize(Matrix* res, Matrix* m) {
+void Transform::binarize(ImgMatrix* res, ImgMatrix* m) {
     int w = this->wsize;
     float k = this->kfac;
     assert(k >= 0.001 && k<=0.999);
@@ -72,8 +72,8 @@ void Transform::binarize(Matrix* res, Matrix* m) {
     int xmin,ymin,xmax,ymax,area;
     int whalf = w >> 1;
     int im_w = m->getWidth(), im_h = m->getHeight();
-    int64* sum = new int64[im_h*im_w];
-    int64* sumsq = new int64[im_h*im_w];
+    ocr_int64* sum = new ocr_int64[im_h*im_w];
+    ocr_int64* sumsq = new ocr_int64[im_h*im_w];
     pixel *img, *ires;
     double mean, stddev, num, snum, thresh;    
 
