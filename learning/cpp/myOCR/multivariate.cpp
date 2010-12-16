@@ -2,12 +2,14 @@
 #include "multivariate.h"
 #include "config.h"
 #include "mysql.h"
+#include "chrfeatures.h"
 #include <cstdio>
 #include <cstdlib>
 
 using namespace MyOCR;
 
 Multivariate::Multivariate(int momentType) {
+    this->momentType = momentType;
     MYSQL* conn = Configuration::getInstance()->connectDB();
     char text[200];
     sprintf(text,"select VectorSize from MomentTypes where MomentType=%i",momentType);
@@ -83,9 +85,17 @@ Multivariate::~Multivariate() {
 }
 
 SymbolParams::SymbolParams() {
+    this->momentType = 0;
     ndata = 0;
     symbol = 0;
     data = NULL;
+    mean = NULL;
+    covar = NULL;
+    invCovar = NULL;
+}
+
+void SymbolParams::SetMomentType(int momentType) {
+    this->momentType = momentType;
 }
 
 SymbolParams::~SymbolParams() {
@@ -112,10 +122,54 @@ void SymbolParams::increaseN() {
 void SymbolParams::initParams(int symbol, int cols) {
     this->symbol = symbol;
     this->cols = cols;
-    if (data != NULL) cvReleaseMat( &data);
-    data = cvCreateMat( ndata, cols, CV_64F );
+    if (data != NULL) cvReleaseMat( &data );
+    data = cvCreateMat( ndata, cols, CV_64F );    
+}
+
+CvMat* SymbolParams::getInvCovar() {
+    if (invCovar == NULL) computeStat();
+    return invCovar;
+}
+
+CvMat* SymbolParams::getCovar() {
+    if (covar == NULL) computeStat();
+    return covar;
+}
+
+CvMat* SymbolParams::getMean() {
+    if (mean == NULL) computeStat();
+    return mean;
 }
 
 CvMat* SymbolParams::getData() {
     return this->data;
+}
+
+void SymbolParams::computeStat() {
+    if (mean != NULL) cvReleaseMat( &mean );
+    mean = cvCreateMat( 1, cols, CV_64F );
+    if (covar != NULL) cvReleaseMat( &covar );
+    covar = cvCreateMat( cols, cols, CV_64F );
+    if (invCovar != NULL) cvReleaseMat( &invCovar );
+    invCovar = cvCreateMat( cols, cols, CV_64F );
+
+    int flgs = CV_COVAR_NORMAL | CV_COVAR_ROWS | CV_COVAR_SCALE;
+    cvCalcCovarMatrix( (const CvArr**)&data, 1, covar, mean, flgs );
+    cvInvert( covar, invCovar );
+}
+
+double SymbolParams::mahalanobis(ConComponent *c) {
+    ChrMoments m(c);
+    CvMat* X;
+    switch(momentType) {
+        case HU:
+            X = cvCreateMat(1,7,CV_64F);
+            m.getHuMoments(X->data.db);
+            break;
+        default:
+            return -1;
+    }
+    double distance = cvMahalanobis(X,mean,invCovar);
+    cvReleaseMat( &X );
+    return distance;
 }

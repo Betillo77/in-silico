@@ -77,7 +77,7 @@ void test1() {
     double s[7][7];
     int acum = 0;
     //for (int i=2505; i<=4967; i++) {
-    for (int i=1; i<=2504; i++) {
+    for (int i=1; i<=2500; i++) {
         ConComponent* c = ConComponent::loadComponent(i);
         if (c != NULL) {            
             ChrMoments m(c);
@@ -116,11 +116,13 @@ void printMat(CvMat * mat) {
 
 void testMulti() {
     Multivariate mult(1);
-    printMat( mult.getData() );
+    //printMat( mult.getData() );
     for (char c='0'; c<='9'; c++) {
         SymbolParams* s = mult.getSymbolParams(c);
         printf("\nDatos de simbolo: %c\n", c); // </editor-fold>
-        printMat( s->getData() );
+        printf("Media: "); printMat( s->getMean() );
+        printf("Varianza: \n"); printMat( s->getCovar() );
+        printf("Inv Covar: \n"); printMat( s->getInvCovar() );
     }
 }
 

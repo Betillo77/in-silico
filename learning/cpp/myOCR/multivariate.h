@@ -9,7 +9,11 @@
 #define	_MULTIVARIATE_H
 
 #include "cv.h"
+#include "component.h"
 #include <map>
+
+#define HU 1
+#define CPLX 2
 
 using namespace std;
 
@@ -18,25 +22,37 @@ namespace MyOCR {
     class SymbolParams {
         int symbol;
         int ndata, cols;
+        int momentType;
         CvMat* data;
+        CvMat* mean;
+        CvMat* covar;
+        CvMat* invCovar;
+
+        void computeStat();
     public:
         SymbolParams();
         ~SymbolParams();
         int GetNdata() const;
         void SetSymbol(int symbol);
+        void SetMomentType(int momentType);
         int GetSymbol() const;
         CvMat* getData();
         void increaseN();
         void initParams(int symbol, int cols);
+        CvMat* getInvCovar();
+        CvMat* getCovar();
+        CvMat* getMean();
+        double mahalanobis(ConComponent *c);
     };
 
     class Multivariate {
         CvMat *data;
         CvMat *resp;
         map<int,SymbolParams> symbols;
+        int momentType;
 
         void calcSymbolParams();
-        int mySymbol(const char *fname);
+        static int mySymbol(const char *fname);
     public:
         Multivariate(int momentType);
         ~Multivariate();
