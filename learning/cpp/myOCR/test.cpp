@@ -134,6 +134,7 @@ int mainTest(int argc, char** argv) {
     //testTransform(fn);
     //test1();
     testMulti();
+    //testRecognition();
  //   ConComponent::loadComponent(1502)->printComponent();
     return (EXIT_SUCCESS);
 }

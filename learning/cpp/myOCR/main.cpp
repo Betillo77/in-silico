@@ -17,12 +17,11 @@
 #include "test.h"
 #include "page.h"
 #include "chrfeatures.h"
-
-#define HU 1
+#include "multivariate.h"
 
 using namespace MyOCR;
 
-bool debug=true;
+bool debug=false;
 CvRNG seed;
 
 void addToDB(const char *fn)
@@ -78,6 +77,33 @@ void recomputeMoments(double training, double validation) {
     }
 }
 
+void testRecognition(int momentType) {
+    Multivariate mult(momentType);
+    MYSQL* conn = Configuration::getInstance()->connectDB();
+    char text[200];
+    sprintf(text, "select id,imageId from Moments inner join Components\
+ on id=ComponentId where MomentType=%i and TrainingSet='%s';", momentType, "val");
+    mysql_query(conn, text);
+    MYSQL_RES *result = mysql_store_result(conn);
+    MYSQL_ROW row;
+    int right=0,total=0;
+    if (result != NULL) {
+        while ( (row = mysql_fetch_row(result)) != NULL ) {
+            int cid = atoi( row[0] );
+            ConComponent* cc = ConComponent::loadComponent(cid);
+            double dist;
+            int rsym = mult.recognize(cc, dist);
+            int sym = Multivariate::mySymbol(row[1]);
+            printf("%i\t%c\t%c\t%lf\n", cid, (char)rsym, (char)sym, dist);
+            total++;
+            if (rsym == sym) right++;
+            delete cc;
+        }
+        printf( "Total: %i\tCorrectos: %i\n Porcentaje: %f\n",total,right,
+                ((float)right) / total );
+    }
+}
+
 /*
  * Archivo principal para "producción"
  */
@@ -105,6 +131,9 @@ int main(int argc, char** argv) {
         testTransform(argv[1]);
     } else if (argc > 2 && strcmp(argv[0], "moments") == 0) {
         recomputeMoments( atof(argv[1]), atof(argv[2]) );
+    } else if (argc > 1 && strcmp(argv[0], "testRecognition")==0) {
+        int momentType = atoi(argv[1]);
+        testRecognition( momentType );
     } else {
         printf("Error en la linea de comando:\n");
         printf("myocr add <filename>\tPara adicionar a la base de datos\n");
@@ -112,6 +141,7 @@ int main(int argc, char** argv) {
         printf("myocr show <imgId>\tPara mostrar un caracter en especial\n");
         printf("myocr binarize <imgId>\tPara binarizar una imagen\n");
         printf("myocr moments <tr> <val>\tPara recalcular los momentos de las imágenes\n");
+        printf("myocr testRecognition <momentType>\tProbar reconocimiento\n");
     }
     return (EXIT_SUCCESS);
 }

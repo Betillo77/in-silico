@@ -48,6 +48,7 @@ void Multivariate::calcSymbolParams() {
     for (it=symbols.begin(); it!=symbols.end(); it++) {
         SymbolParams *s = &(it->second);
         s->initParams(it->first, cols);
+        s->SetMomentType(this->momentType);
     }
     map<int,int> symCount;
     for (int i=0; i<data->rows; i++) {
@@ -77,6 +78,21 @@ SymbolParams* Multivariate::getSymbolParams(int symbol) {
     if (it == symbols.end())
         return NULL;
     return &(it->second);
+}
+
+int Multivariate::recognize(ConComponent* cc, double &distance) {
+    map<int,SymbolParams>::iterator it;
+    distance = 1e10;
+    int ans=0;
+    for (it = symbols.begin(); it != symbols.end(); it++) {
+        SymbolParams *s = &(it->second);
+        double act = s->mahalanobis(cc);
+        if (act < distance) {
+            distance = act;
+            ans = s->GetSymbol();
+        }
+    }
+    return ans;
 }
 
 Multivariate::~Multivariate() {
@@ -159,6 +175,7 @@ void SymbolParams::computeStat() {
 }
 
 double SymbolParams::mahalanobis(ConComponent *c) {
+    if (mean==NULL || invCovar==NULL) computeStat();
     ChrMoments m(c);
     CvMat* X;
     switch(momentType) {
@@ -168,7 +185,7 @@ double SymbolParams::mahalanobis(ConComponent *c) {
             break;
         default:
             return -1;
-    }
+    }    
     double distance = cvMahalanobis(X,mean,invCovar);
     cvReleaseMat( &X );
     return distance;

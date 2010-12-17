@@ -51,13 +51,14 @@ namespace MyOCR {
         map<int,SymbolParams> symbols;
         int momentType;
 
-        void calcSymbolParams();
-        static int mySymbol(const char *fname);
+        void calcSymbolParams();        
     public:
         Multivariate(int momentType);
         ~Multivariate();
         SymbolParams *getSymbolParams(int symbol);
         CvMat *getData();
+        static int mySymbol(const char *fname);
+        int recognize(ConComponent* cc, double &distance);
     };
 
 }
