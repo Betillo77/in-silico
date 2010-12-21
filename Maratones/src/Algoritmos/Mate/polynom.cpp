@@ -1,11 +1,56 @@
+#include <complex>
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <algorithm>
 
-#include "polynom.h"
+using namespace std;
+
+typedef complex <double> dcmplx;
+
+#include <complex>
+#include <cmath>
+
+#define PREC 0.1
+#define ERR 0.1
+
+using namespace std;
+
+class Polynom {
+public:
+    int grado, max;
+    double *coef;
+
+    Polynom(int grado, int max);
+    ~Polynom();
+
+    Polynom* operator+= (Polynom *b);
+    Polynom* operator-= (Polynom *b);
+    Polynom* operator*= (Polynom *b);
+    Polynom* operator/= (Polynom *b);
+    Polynom* operator%= (Polynom *b);
+
+    complex<double> eval(complex<double> x);
+    void derivate();
+    void clear();
+    void print();
+    void simplify();
+    void div(Polynom *b, Polynom *cos, Polynom *residuo);
+    void copyFrom(Polynom *p);
+    void remMultRoot();
+    void laguerre(complex<double>* roots);
+
+    bool isZero();
+};
+
+void mcd(Polynom *a, Polynom *b, Polynom *res);
+
 
 Polynom::Polynom(int grado, int max) {
     if (max != 0)   this->coef = new double[max];
     this->max=max;
     clear();
-    this->grado=grado;  
+    this->grado=grado;
 }
 
 Polynom::~Polynom() {
@@ -103,12 +148,16 @@ void Polynom::copyFrom(Polynom* p) {
 
 void Polynom::remMultRoot() {
     Polynom *a = this;
-    Polynom b(0,max);
-    Polynom gcd(0,max);
-    b.copyFrom(this);
-    b.derivate();
-    mcd(a,&b,&gcd);
-    if (gcd.grado>0) *a /= &gcd;
+    while(true)
+    {
+        Polynom b(0,max);
+        Polynom gcd(0,max);
+        b.copyFrom(this);
+        b.derivate();
+        mcd(a,&b,&gcd);
+        if (gcd.grado>0) *a /= &gcd;
+        else break;
+    }
 }
 
 //It doesn't change b or this. Just changes cos and return residuo if not null
@@ -151,6 +200,7 @@ void Polynom::laguerre(complex<double>* roots) {
         polyp.derivate();
         polypp.copyFrom(&polyp);
         polypp.derivate();
+        int i = 0;
         do {
             fx = poly.eval(*root);
             if (abs(fx) < ERR) break;
@@ -163,12 +213,12 @@ void Polynom::laguerre(complex<double>* roots) {
                 den = G+den;
             a = n / den;
             *root -= a;
-        } while (abs(a)>PREC);
+        } while (i++ < 50);
         if (root->imag() < ERR) {
             polyp.grado=1;
             polyp.coef[0]=-1*root->real();
             polyp.coef[1]=1;
-            poly /= &polyp;           
+            poly /= &polyp;
             root++;
         } else {
             polyp.grado=2;
@@ -199,4 +249,173 @@ void mcd(Polynom* na, Polynom* nb, Polynom *res) {
     }
     delete t; delete residuo;
     res->copyFrom(&a);
+}
+//
+//dcmplx Polynom::evaluate(dcmplx x){
+//    dcmplx res = 0;
+//    for(int i = 0; i <= grado; i++)
+//        res += ((dcmplx) coef[i]) * pow(x, i);
+//    return res;
+//}
+//
+//void Polynom::laGuerre(dcmplx *xk, int iteraciones) {
+//    dcmplx n = grado;
+//    Polynom *pp = new Polynom(max, max);
+//    pp->copyFrom(this);
+//    pp->derivate();
+//    Polynom *p2 = new Polynom(max, max);
+//    p2->copyFrom(pp);
+//    p2->derivate();
+//    for (int i = 0; i < iteraciones; i++) {
+//        dcmplx G = pp->evaluate(*xk) / evaluate(*xk);
+//        dcmplx H = G * G - p2->evaluate(*xk) / evaluate(*xk);
+//        dcmplx a1 = G + sqrt((n - (dcmplx) 1) * (n * H - G * G));
+//        dcmplx a2 = G - sqrt((n - (dcmplx) 1) * (n * H - G * G));
+//        dcmplx a;
+//        if(abs(a1) > abs(a2))
+//            a = n / a1;
+//        else
+//            a = n / a2;
+//        *xk = *xk - a;
+//        if(evaluate(*xk) == dcmplx(0))
+//            break;
+//    }
+//}
+//
+//void Polynom::roots(dcmplx *roots)
+//{
+//    Polynom *temporal = new Polynom(grado, max);
+//    temporal->copyFrom(this);
+//    for(int i = 0; i < grado; i++)
+//    {
+//        dcmplx *xk = new dcmplx(0, 0);
+//        temporal->laGuerre(xk, 50);
+//        if(xk->imag() >= 1e-6)
+//        {
+//            Polynom *divisible = new Polynom(2, 3);
+//            divisible->coef[0] = xk->real() * xk->real() + xk->imag() * xk->imag();
+//            divisible->coef[1] = -2 * xk->real();
+//            divisible->coef[2] = 1;
+//            *temporal /= divisible;
+//            roots[i] = *xk;
+//            dcmplx *xk1 = new dcmplx(xk->real(), xk->imag());
+//            delete divisible;
+//            roots[++i] = *xk1;
+//        }
+//        else
+//        {
+//            Polynom *divisible = new Polynom(1, 2);
+//            divisible->coef[0] = -(xk->real());
+//            divisible->coef[1] = 1;
+//            *temporal /= divisible;
+//            delete divisible;
+//            dcmplx *xk1 = new dcmplx(xk->real(), 0);
+//            delete xk;
+//            roots[i] = *xk1;
+//        }
+//    }
+//}
+
+int main() {
+    char entrada[36];
+    while (cin >> entrada) {
+        int tam;
+        for (int i = 0; i < 36; i++) {
+            if (entrada[i] == '\0') {
+                tam = i;
+                break;
+            }
+        }
+        if(tam == 1 && entrada[0] == '=')
+            return 0;
+        Polynom a(0, 17);
+        Polynom b(0, 17);
+        Polynom *este = &a;
+        Polynom *actual = new Polynom(0, 17);
+        actual->coef[0] = 1;
+        Polynom *temp = new Polynom(-1, 17);
+        int gradoActual = -1;
+        int numeroMenor = 0;
+        for (int i = tam - 1; i >-1; i--) {
+            if (entrada[i] == '=') {
+                *actual *= temp;
+                *este += actual;
+                delete actual;
+                actual = new Polynom(0, 17);
+                actual->coef[0] = 1;
+                delete temp;
+                temp = new Polynom(-1, 17);
+                gradoActual = -1;
+                este = &b;
+            } else if (entrada[i] == '+') {
+                *actual *= temp;
+                *este += actual;
+                delete actual;
+                actual = new Polynom(0, 17);
+                actual->coef[0] = 1;
+                delete temp;
+                temp = new Polynom(-1, 17);
+                gradoActual = -1;
+            } else if (entrada[i] == '*') {
+                *actual *= temp;
+                delete temp;
+                temp = new Polynom(-1, 17);
+                temp->coef[0];
+                gradoActual = -1;
+            } else {
+                temp->coef[++gradoActual] = entrada[i] - '0';
+                if((entrada[i] - '0') > numeroMenor)
+                {
+                    numeroMenor = entrada[i] - '0';
+                }
+                temp->grado++;
+            }
+        }
+        *actual *= temp;
+        *este += actual;
+        a -= &b;
+        if(a.isZero())
+        {
+            if(numeroMenor < 2)
+                cout << "2+";
+            else
+            {
+                cout << (numeroMenor + 1) << "+";
+            }
+        }
+        else
+        {
+            numeroMenor++;
+            vector <int> raicesEnteras(0);
+            dcmplx zero(0, 0);
+            while(a.grado >= 0 && a.coef[0] == 0)
+            {
+                Polynom temp(1, 2);
+                temp.coef[1] = 1;
+                a /= &temp;
+            }
+            for (int i = 1, s = abs(a.coef[0]); i*i <= s; ++i)
+            {
+                if (s % i == 0)
+                {
+                    if (i >= numeroMenor && a.eval(*(new dcmplx(i,0))) == zero)
+                        raicesEnteras.push_back(i);
+                    if (i*i < s && s / i >= numeroMenor && a.eval(*(new dcmplx(s / i, 0))) == zero)
+                        raicesEnteras.push_back(s / i);
+                }
+            }
+            if(raicesEnteras.size() == 0)
+            {
+                cout << "*";
+            }
+            else
+            {
+                sort(raicesEnteras.begin(), raicesEnteras.end());
+                for(int i = 0; i < raicesEnteras.size() - 1; i++)
+                    cout << raicesEnteras[i] << " ";
+                cout << raicesEnteras[raicesEnteras.size() - 1];
+            }
+        }
+        cout << endl;
+    }
 }

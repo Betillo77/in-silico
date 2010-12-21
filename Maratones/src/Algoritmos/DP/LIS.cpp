@@ -2,6 +2,29 @@
 #include <iostream>
 using namespace std;
 
+
+/* Algoritmo N^2
+	int lis(int *entrada, int numero)
+	{
+		int valores[numero];
+		for(int i = 0; i < numero; i++)
+		    valores[i] = 0;
+		int mejorM = 0;
+		for(int i = 0; i < numero; i++)
+		{
+		    int mejor = 0;
+		    for(int j = 0; j < i; j++)
+		    {
+		        if(entrada[j] <= entrada[i])
+		            mejor = max(mejor, valores[j]);
+		    }
+		    valores[i] = mejor + 1;
+		    mejorM = max(mejorM, valores[i]);
+		}
+		return mejorM;
+	}
+*/
+
 /* Finds longest strictly increasing subsequence. O(n log k) algorithm. */
 void find_lis(vector<int> &a, vector<int> &b)
 {

@@ -6,6 +6,13 @@
  */
 
 #include "algorithms.h"
+#include <cstring>
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+
 
 char *alg_mark;
 int *alg_lista;
@@ -39,6 +46,11 @@ void comb(int* vector, int n, int r, int index, void (*func) (int*,int)) {
     }
 }
 
+/**
+ * Receives a vector of n integers and does all possible permutations
+ * of r elements. Once a new permutation if found, it calls the received
+ * function func with the computed vector and its respective size (r)
+ */
 void permutations(int* vector, int n, int r, void (*func) (int*,int)) {
     if ((r<0) || (r>n)) return;
     alg_mark = new char[n];
@@ -49,6 +61,32 @@ void permutations(int* vector, int n, int r, void (*func) (int*,int)) {
     delete [] alg_lista;
 }
 
+
+using namespace std;
+
+char entrada[20];
+
+int main()
+{
+    int tam = 0;
+    int caseN = 1;
+    while ((cin >> entrada) && (tam = strlen(entrada)))
+    {
+        sort(entrada, entrada + tam);
+        cout << "Case " << caseN++ << "\n";
+        do
+        {
+            cout << entrada << "\n";
+        } while(next_permutation(entrada, entrada + tam));
+        cout << endl;
+    }
+}
+
+/**
+ * Receives a vector of n integers and does all possible combinations
+ * of r elements. Once a new combination if found, it calls the received
+ * function func with the computed vector and its respective size (r)
+ */
 void combinations(int* vector, int n, int r, void (*func) (int*,int)) {
     if ((r<0) || (r>n)) return;
     alg_lista = new int[r];
