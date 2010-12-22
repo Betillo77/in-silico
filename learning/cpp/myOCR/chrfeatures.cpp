@@ -16,7 +16,7 @@ double ChrMoments::getRawMoment(int p, int q) {
     return sum;
 }
 
-void ChrMoments::getControid(double *x, double *y) {
+void ChrMoments::getCentroid(double *x, double *y) {
     *x = cx;
     *y = cy;
 }
@@ -61,6 +61,28 @@ complex<double> ChrMoments::getComplexMoment(int p, int q) {
 double ChrMoments::getScaleInvMoment(int p, int q) {
     double den = pow(u00, 1 + ((double)p+q)/2);
     return getCenterMoment(p,q)/den;
+}
+
+void ChrMoments::getFlusserMoments(double* ans) {
+    complex<double> c[5][5];
+    for(int i = 0; i < 5; i++)
+        for(int j = 0; j < 5; j++)
+            c[i][j] = getComplexMoment(i, j);
+    ans[0] = abs(c[1][1]);
+    ans[1] = abs(c[2][1] * c[1][2]);
+    complex<double> tmp = c[2][0] * pow(c[1][2], 2);
+    ans[2] = real(tmp);
+    ans[3] = imag(tmp);
+    tmp = c[3][0] * pow(c[1][2], 3);
+    ans[4] = real(tmp);
+    ans[5] = imag(tmp);
+    ans[6] = abs(c[2][2]);
+    tmp = c[3][1] * pow(c[1][2], 2);
+    ans[7] = real(tmp);
+    ans[8] = imag(tmp);
+    tmp = c[4][0] * pow(c[1][2], 2);
+    ans[9] = real(tmp);
+    ans[10] = imag(tmp);
 }
 
 void ChrMoments::getHuMoments(double* ans) {

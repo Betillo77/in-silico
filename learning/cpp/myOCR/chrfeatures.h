@@ -25,7 +25,8 @@ namespace MyOCR {
         double getCenterMoment(int p, int q);
         double getScaleInvMoment(int p, int q);
         void getHuMoments(double *ans);
-        void getControid(double *x, double *y);
+        void getFlusserMoments(double *ans);
+        void getCentroid(double *x, double *y);
     };
 
 }
