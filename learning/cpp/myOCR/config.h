@@ -24,6 +24,7 @@ namespace MyOCR {
     public:
         Configuration();
         MYSQL* connectDB();
+        string getValue(string key);
         static Configuration* getInstance();
         static void executeEscalar(char *sql, char *ans);
     };

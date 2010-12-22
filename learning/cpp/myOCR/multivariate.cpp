@@ -5,6 +5,9 @@
 #include "chrfeatures.h"
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
+
+#define PI 3.14159265
 
 using namespace MyOCR;
 
@@ -80,7 +83,27 @@ SymbolParams* Multivariate::getSymbolParams(int symbol) {
     return &(it->second);
 }
 
-int Multivariate::recognize(ConComponent* cc, double &distance) {
+int Multivariate::recognize(ConComponent* cc, double &prob) {
+    map<int,SymbolParams>::iterator it;
+    prob = 0;
+    int ans=0;
+    double den=0;
+    for (it = symbols.begin(); it != symbols.end(); it++) {
+        SymbolParams *s = &(it->second);
+        double density = s->pDensity( cc );
+        double PCi = ((double) s->GetNdata()) / this->data->rows;
+        double act = density*PCi;
+        if (act > prob) {
+            prob = act;
+            ans = s->GetSymbol();
+        }
+        den += act;
+    }
+    prob /= den;
+    return ans;
+}
+
+int Multivariate::recognizeTest(ConComponent* cc, double &distance) {
     map<int,SymbolParams>::iterator it;
     distance = 1e10;
     int ans=0;
@@ -172,6 +195,8 @@ void SymbolParams::computeStat() {
     int flgs = CV_COVAR_NORMAL | CV_COVAR_ROWS | CV_COVAR_SCALE;
     cvCalcCovarMatrix( (const CvArr**)&data, 1, covar, mean, flgs );
     cvInvert( covar, invCovar );
+    covarDet = cvDet( covar );
+    densCoeff = 1/( pow(2*PI,cols/2.0) * sqrt(covarDet) );
 }
 
 double SymbolParams::mahalanobis(ConComponent *c) {
@@ -189,4 +214,22 @@ double SymbolParams::mahalanobis(ConComponent *c) {
     double distance = cvMahalanobis(X,mean,invCovar);
     cvReleaseMat( &X );
     return distance;
+}
+
+double SymbolParams::pDensity(ConComponent* c) {
+    if (mean==NULL || invCovar==NULL) computeStat();
+    ChrMoments m(c);
+    CvMat* X;
+    switch(momentType) {
+        case HU:
+            X = cvCreateMat(1,7,CV_64F);
+            m.getHuMoments(X->data.db);
+            break;
+        default:
+            return -1;
+    }
+    double distance = cvMahalanobis(X,mean,invCovar);
+    double ans = densCoeff * exp((-1.0/2.0)*distance);
+    cvReleaseMat( &X );
+    return ans;
 }

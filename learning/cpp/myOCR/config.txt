@@ -9,3 +9,6 @@ host=localhost
 user=ocr
 passwd=tobytierno
 dbname=MyOCR
+
+#Datos de reconocimiento
+normalize=1

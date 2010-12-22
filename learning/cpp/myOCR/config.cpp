@@ -34,6 +34,10 @@ Configuration::Configuration() {
     conn=NULL;
 }
 
+string Configuration::getValue(string key) {
+    return tabla[key];
+}
+
 MYSQL* Configuration::connectDB() {
     if (conn == NULL) {
         conn = mysql_init(NULL);

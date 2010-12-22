@@ -92,7 +92,7 @@ void testRecognition(int momentType) {
             int cid = atoi( row[0] );
             ConComponent* cc = ConComponent::loadComponent(cid);
             double dist;
-            int rsym = mult.recognize(cc, dist);
+            int rsym = mult.recognizeTest(cc, dist);
             int sym = Multivariate::mySymbol(row[1]);
             printf("%i\t%c\t%c\t%lf\n", cid, (char)rsym, (char)sym, dist);
             total++;

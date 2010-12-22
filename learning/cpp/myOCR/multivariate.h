@@ -27,6 +27,8 @@ namespace MyOCR {
         CvMat* mean;
         CvMat* covar;
         CvMat* invCovar;
+        double covarDet;
+        double densCoeff;
 
         void computeStat();
     public:
@@ -43,6 +45,7 @@ namespace MyOCR {
         CvMat* getCovar();
         CvMat* getMean();
         double mahalanobis(ConComponent *c);
+        double pDensity(ConComponent *c);
     };
 
     class Multivariate {
@@ -58,7 +61,8 @@ namespace MyOCR {
         SymbolParams *getSymbolParams(int symbol);
         CvMat *getData();
         static int mySymbol(const char *fname);
-        int recognize(ConComponent* cc, double &distance);
+        int recognize(ConComponent* cc, double &prob);
+        int recognizeTest(ConComponent *cc, double &dist);
     };
 
 }
