@@ -1,5 +1,6 @@
 package control.conexion;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,6 +11,8 @@ import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
+import com.mysql.jdbc.Driver;
+
 import modelo.Par;
 import modelo.Senal;
 import control.Error;
@@ -18,7 +21,7 @@ import control.AnalisisLogica.Entrada;
 
 public class ConexionMySql
 {
-	static Connection conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis");
+	static Connection conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis", 0);
 	
 	public synchronized static void agregarEntrada(IdEstrategia id, Senal afectada) 
 	{
@@ -70,15 +73,6 @@ public class ConexionMySql
 			catch (SQLException s)
 			{
 				Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + xml + " " + i); 
-				conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis");
-				try
-				{
-					Thread.sleep(10000);
-				}
-				catch(Exception e)
-				{
-					Error.agregar("Error de sincronizacion"); 
-				}
 			}
 		}
 	}
@@ -96,32 +90,36 @@ public class ConexionMySql
 			catch (SQLException e) 
 			{
 				Error.agregar("Error haciendo la lectura de la persistencia de la base de datos en estrategia " + id + ": " + e.getMessage() + " " + i);
-				conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis");
-				try
-				{
-					Thread.sleep(10000);
-				}
-				catch(Exception e1)
-				{
-					Error.agregar("Error de sincronizacion"); 
-				}
 			}
 		}
 		return "";
 	}
 	
-    private static Connection dbConnect(String db_connect_string, String db_userid, String db_password)
+    private static Connection dbConnect(String db_connect_string, String db_userid, String db_password, int intento)
     {
         try
         {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            new Driver();
             Connection conn = DriverManager.getConnection(db_connect_string, db_userid, db_password);
-            return conn;
-                
+            return conn;  
         }
         catch (Exception e)
         {
-                return null;
+        	if(intento == 10)
+        	{
+        		Error.agregar("No se pudo conectar a la base de datos en 10 intentos");
+        		try 
+        		{
+        			Runtime.getRuntime().exec("shutdown now -r");
+        			System.exit(0);
+        		} 
+        		catch (IOException e1) 
+        		{
+        			Error.agregar("Error reiniciando equipo " + e.getMessage());
+        			System.exit(0);
+        		}
+        	}
+        	return dbConnect(db_connect_string, db_userid, db_password, intento + 1);
         }
     }
 
