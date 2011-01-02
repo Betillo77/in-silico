@@ -68,7 +68,7 @@ public class ConexionMySql
 			try
 			{
 				Statement st = conexion.createStatement();
-			    st.executeUpdate("UPDATE Persistencia set Datos='" + xml + "' where IdEstrategia=" + (id.ordinal() + 1));
+			    st.executeUpdate("UPDATE Estrategias set Datos='" + xml + "' where IdEstrategia=" + (id.ordinal() + 1));
 			    return;
 			}
 			catch (SQLException s)
@@ -84,7 +84,7 @@ public class ConexionMySql
 		{
 			try 
 			{
-				ResultSet rs = conexion.createStatement().executeQuery("select * from Persistencia where IdEstrategia=" + (id.ordinal() + 1));
+				ResultSet rs = conexion.createStatement().executeQuery("select * from Estrategias where IdEstrategia=" + (id.ordinal() + 1));
 				if(rs.next())
 					return rs.getString(2);
 				else
