@@ -1,6 +1,5 @@
 package control.conexion;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,22 +10,24 @@ import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
+import modelo.Par;
+import modelo.SenalEstrategia;
+import modelo.Estrategia.IdEstrategia;
+import modelo.Proveedor.IdProveedor;
+
 import com.mysql.jdbc.Driver;
 
-import modelo.Par;
-import modelo.Senal;
 import control.Error;
-import control.IdEstrategia;
 import control.AnalisisLogica.Entrada;
 
 public class ConexionMySql
 {
 	static Connection conexion = dbConnect("jdbc:mysql://192.168.0.105:3306/DailyFX", "root", "CalidadIngesis", 0);
 	
-	public synchronized static void agregarEntrada(IdEstrategia id, Senal afectada) 
+	public synchronized static void agregarEntrada(IdEstrategia id, SenalEstrategia afectada) 
 	{
 		long fechaLong = System.currentTimeMillis();
-		int ganancia = afectada.getPar().diferenciaPips(afectada.getPrecioEntrada(), afectada.isCompra());
+		int ganancia = afectada.darGanancia();
 		if(ganancia > 2000)
 		{
 			Error.agregar("Entrada sospechosa: " + id.name() + ", " + afectada.getPar().name() + ", " + fechaLong + ", �ganancia: " + ganancia + "?");
@@ -38,7 +39,7 @@ public class ConexionMySql
 			double SSI1 = afectada.getSSI1();
 			double SSI2 = afectada.getSSI2();
 			Statement st = conexion.createStatement();
-		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra,FechaA,GananciaReal,High,Low) VALUES(" + id.ordinal() + "," + convertirFecha(fechaLong) + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + "," + convertirFecha(afectada.getFechaInicio()) + "," + afectada.darGananciaReal() + "," + afectada.getHigh() + "," + afectada.getLow() + ")");
+		    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra,FechaA,GananciaReal,High,Low) VALUES(" + id.ordinal() + "," + convertirFecha(fechaLong) + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + "," + convertirFecha(afectada.getFechaInicio()) + "," + ganancia + "," + afectada.getHigh() + "," + afectada.getLow() + ")");
 		}
 		catch (SQLException s)
 		{
@@ -79,20 +80,61 @@ public class ConexionMySql
 	
 	public synchronized static String cargarPersistencia(IdEstrategia id) 
 	{
-		for(int i = 0; i < 100; i++)
+		for(int i = 0; i < 10; i++)
 		{
 			try 
 			{
 				ResultSet rs = conexion.createStatement().executeQuery("select * from Persistencia where IdEstrategia=" + (id.ordinal() + 1));
-				rs.next();
-				return rs.getString(2);
+				if(rs.next())
+					return rs.getString(2);
+				else
+					return "";
 			} 
 			catch (SQLException e) 
 			{
 				Error.agregar("Error haciendo la lectura de la persistencia de la base de datos en estrategia " + id + ": " + e.getMessage() + " " + i);
 			}
 		}
-		return "";
+		Error.reiniciarSinPersistir();
+		return "Error haciendo la lectura de la persistencia de la base de datos en estrategia " + id;
+	}
+	
+	public synchronized static void guardarPersistencia(IdProveedor id, String xml) 
+	{
+		for(int i = 0; i < 100; i++)
+		{
+			try
+			{
+				Statement st = conexion.createStatement();
+			    st.executeUpdate("UPDATE Proveedores set Datos='" + xml + "' where IdProveedor=" + (id.ordinal() + 1));
+			    return;
+			}
+			catch (SQLException s)
+			{
+				Error.agregar("Error escribiendo a la base de datos: " + id.toString() + ", " + xml + " " + i); 
+			}
+		}
+	}
+	
+	public synchronized static String cargarPersistencia(IdProveedor id) 
+	{
+		for(int i = 0; i < 10; i++)
+		{
+			try 
+			{
+				ResultSet rs = conexion.createStatement().executeQuery("select * from Proveedores where IdProveedor=" + (id.ordinal() + 1));
+				if(rs.next())
+					return rs.getString(2);
+				else
+					return "";
+			} 
+			catch (SQLException e) 
+			{
+				Error.agregar("Error haciendo la lectura de la persistencia de la base de datos en proveedor " + id + ": " + e.getMessage() + " " + i);
+			}
+		}
+		Error.reiniciarSinPersistir();
+		return "Error haciendo la lectura de la persistencia de la base de datos en proveedor " + id;
 	}
 	
     private static Connection dbConnect(String db_connect_string, String db_userid, String db_password, int intento)
@@ -108,16 +150,7 @@ public class ConexionMySql
         	if(intento == 10)
         	{
         		Error.agregar("No se pudo conectar a la base de datos en 10 intentos");
-        		try 
-        		{
-        			Runtime.getRuntime().exec("shutdown now -r");
-        			System.exit(0);
-        		} 
-        		catch (IOException e1) 
-        		{
-        			Error.agregar("Error reiniciando equipo " + e.getMessage());
-        			System.exit(0);
-        		}
+        		Error.reiniciarSinPersistir();
         	}
         	return dbConnect(db_connect_string, db_userid, db_password, intento + 1);
         }

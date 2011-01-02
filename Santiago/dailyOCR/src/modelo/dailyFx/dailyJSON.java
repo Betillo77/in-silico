@@ -3,14 +3,13 @@ package modelo.dailyFx;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.Par;
+import modelo.SenalEstrategia;
+import modelo.Estrategia.IdEstrategia;
+
 import com.google.gson.Gson;
 
-import modelo.Par;
-import modelo.Senal;
-
-import control.IdEstrategia;
 import control.Error;
-import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 
 public class dailyJSON 
@@ -61,12 +60,12 @@ public class dailyJSON
 		Signal = signal;
 	}
 	
-	public static ArrayList <Senal> leer(String entrada)
+	public static ArrayList <SenalEstrategia> leer(String entrada)
 	{
 		try
 		{
 			dailyJSON dailyJson = gson.fromJson(entrada, dailyJSON.class);
-			ArrayList <Senal> nuevasSenales = new ArrayList <Senal> ();
+			ArrayList <SenalEstrategia> nuevasSenales = new ArrayList <SenalEstrategia> ();
 			for(SenalJSON s : dailyJson.Signal)
 			{
 				boolean compra = s.direction.equals("Buy");
@@ -83,7 +82,7 @@ public class dailyJSON
 						else
 							stop = Math.min(stop, c.value);
 				}
-				Senal actual = new Senal(IdEstrategia.darEstrategia(s.strategyId), compra, Par.convertirPar(s.symbol), s.curOpLots, s.entryPrice, stop);
+				SenalEstrategia actual = new SenalEstrategia(darEstrategia(s.strategyId), compra, Par.convertirPar(s.symbol), s.curOpLots, s.entryPrice, stop);
 				nuevasSenales.add(actual);
 			}
 			for(IndicadorJSON i : dailyJson.Indicator)
@@ -103,15 +102,19 @@ public class dailyJSON
 		}
 	}
 	
-	public static void main(String[] args)
+	public static IdEstrategia darEstrategia(int id)
 	{
-		for(Senal s : leer(ConexionServidorDailyFx.leerServidorDailyFX()[0]))
+		switch(id)
 		{
-			System.out.println(s.toString() + " diferencia stop: " + s.getPar().diferenciaPips(s.darStop(), s.isCompra()));
-		}
-		for(Par p : Par.values())
-		{
-			System.out.println(p.name() + " " + p.darPrecioActual(true) + " " + p.darPrecioActual(false));
+			case 5: return IdEstrategia.BREAKOUT2;
+			case 6: return IdEstrategia.MOMENTUM2;
+			case 10: return IdEstrategia.RANGE2;
+			case 11: return IdEstrategia.MOMENTUM1;
+			case 12: return IdEstrategia.BREAKOUT1;
+			case 14: return IdEstrategia.RANGE1;
+			default: 
+				Error.agregar("id estrategia desconocido: " + id);
+				return null;
 		}
 	}
 }
@@ -519,7 +522,7 @@ class SenalJSON
 		String componentes = "";
 		for(ComponentesJSON c : components)
 			componentes += c.toString() + " ";
-		return IdEstrategia.darEstrategia((int) strategyId).toString() + ", lotes: " + curOpLots + ", entrada: " + entryPrice + ", par: " + Par.convertirPar(symbol).toString() + ", componentes: {" + componentes + "}" ;
+		return dailyJSON.darEstrategia((int) strategyId).toString() + ", lotes: " + curOpLots + ", entrada: " + entryPrice + ", par: " + Par.convertirPar(symbol).toString() + ", componentes: {" + componentes + "}" ;
 	}
 }
 

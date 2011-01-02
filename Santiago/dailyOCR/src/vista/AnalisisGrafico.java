@@ -25,8 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
-import modelo.Estrategia;
 import modelo.Par;
+import modelo.Estrategia.IdEstrategia;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -36,7 +36,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import control.AnalisisLogica;
-import control.IdEstrategia;
 
 public class AnalisisGrafico extends JFrame implements ActionListener, ItemListener {
 
@@ -405,8 +404,8 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		int numero;
 		if(e.getSource() instanceof JCheckBox)
 		{
-			Estrategia estrategia = manejador.estrategia.darEstrategia();
-			estrategia.cambiarActivo(manejador.divisaActual, ((JCheckBox) e.getSource()).isSelected());
+	//		Estrategia estrategia = manejador.estrategia.darEstrategia();
+	//TODO		estrategia.cambiarActivo(manejador.divisaActual, ((JCheckBox) e.getSource()).isSelected());
 			return;
 		}
 		if(((AbstractButton) e.getSource()).getText().equals("1s"))

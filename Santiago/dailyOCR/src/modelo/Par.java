@@ -18,7 +18,7 @@ public enum Par
 	private double bidActual = 0;
 	private double askActual = 0;
 	private double ssiActual = 0;
-	private LinkedList <Senal> senales = new LinkedList <Senal> ();
+	private LinkedList <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 	private static String mensaje = "";
 	private static int numeroIniciados = 0;
 	
@@ -87,7 +87,7 @@ public enum Par
 				mensaje += "\nError en Par inicializando " + toString() + ", bid anterior: " + bidActual + ", bid nuevo: " + bid + ", ask anterior: " + askActual + ", ask nuevo: " + ask;
 			numeroIniciados++;
 			if(numeroIniciados >= values().length - 1)
-				Error.agregar(mensaje);
+				Error.agregarInfo(mensaje);
 		}
 		else
 		{
@@ -129,23 +129,23 @@ public enum Par
 		return ssiActual;
 	}
 	
-	private int diferenciaPips(Senal s)
+	private int diferenciaPips(SenalEstrategia s)
 	{
 		double precioActual = darPrecioActual(s.isCompra());
 		double precioParActual = s.isCompra() ? precioActual - s.getPrecioEntrada() : s.getPrecioEntrada() - precioActual;
 		return esCruceYen() ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
 	}
 	
-	public synchronized void agregarSenal(Senal s)
+	public synchronized void agregarSenal(SenalEstrategia s)
 	{
 		senales.add(s);
 	}
 	
-	public synchronized void eliminarSenal(Senal s)
+	public synchronized void eliminarSenal(SenalEstrategia s)
 	{
-		for(Iterator <Senal> it = senales.iterator(); it.hasNext();)
+		for(Iterator <SenalEstrategia> it = senales.iterator(); it.hasNext();)
 		{
-			Senal s1 = it.next();
+			SenalEstrategia s1 = it.next();
 			if(s == s1)
 				it.remove();
 		}
@@ -155,7 +155,7 @@ public enum Par
 	{
 		if(Math.abs(darPrecioActual(true) - 0.0d) < 10e-4d  || Math.abs(darPrecioActual(false) - 0.0d) < 10e-4d)
 			return;
-		for(Senal s : senales)
+		for(SenalEstrategia s : senales)
 		{
 			s.setLow(Math.min(s.getLow(), diferenciaPips(s)));
 			s.setHigh(Math.max(s.getHigh(), diferenciaPips(s)));
@@ -165,7 +165,7 @@ public enum Par
 	public synchronized String debugSenales()
 	{
 		String debug = "";
-		for(Senal s : senales)
+		for(SenalEstrategia s : senales)
 			debug += s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh() + "\n";
 		return debug;
 	}

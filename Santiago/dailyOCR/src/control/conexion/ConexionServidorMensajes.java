@@ -39,7 +39,7 @@ public class ConexionServidorMensajes
 		} 
 		catch(FileNotFoundException e) 
 		{
-			Error.agregar("No se encuentra el archivo con la clave del correo " + e.getMessage(), false);
+			Error.agregarSinCorreo("No se encuentra el archivo con la clave del correo " + e.getMessage());
 			e.printStackTrace();
 		}
 		Properties props = new Properties();
@@ -77,7 +77,7 @@ public class ConexionServidorMensajes
 		}
 		catch(MessagingException e)
 		{		
-			Error.agregar("Error al enviar el correo " + e.getMessage(), false);	
+			Error.agregarSinCorreo("Error al enviar el correo " + e.getMessage());	
 		}
 	}
 }

@@ -38,9 +38,9 @@ public class Proceso
 							pb.directory(new File("/home/santiago/Desktop/dailyOCR/" + path));
 							pb.command("wine", "terminal.exe");
 							proceso = pb.start();
-							Error.agregar("Iniciando proceso " + path);
+							Error.agregarInfo("Iniciando proceso " + path);
 							iniciarSocket();
-							Error.agregar("Conexion establecida " + path);
+							Error.agregarInfo("Conexion establecida " + path);
 							Thread.sleep(30000);
 							proceso.waitFor();
 							Error.agregar("Reiniciando proceso y socket: " + path);
@@ -51,7 +51,7 @@ public class Proceso
 							catch(Exception e)
 							{
 								Error.agregar("Proceso no se pudo cerrar en: " + path + ", reiniciando");
-								reiniciarEquipo();
+								Error.reiniciar();
 							}
 							try
 							{
@@ -60,14 +60,14 @@ public class Proceso
 							catch(Exception e)
 							{
 								Error.agregar("Error reiniciando proceso, reinicando equipo");
-								reiniciarEquipo();
+								Error.reiniciar();
 							}
-							Thread.sleep(10000);
+							Thread.sleep(100000);
 						}
 					} 
 					catch (Exception e)
 					{
-						Error.agregar(e.getMessage() + " Error en el vigilante del proceso: " + path);
+						Error.agregar(e.getMessage() + " error en el vigilante del proceso: " + path);
 					}
 				}
 			}, Long.MAX_VALUE);
@@ -77,7 +77,7 @@ public class Proceso
 		catch(Exception e)
 		{
 			Error.agregar(e.getMessage() + " error iniciando proceso, reinicando equipo");
-			reiniciarEquipo();
+			Error.reiniciar();
 		}
 	}
 
@@ -95,7 +95,7 @@ public class Proceso
 		 catch(Exception e)
 		 {
 			 Error.agregar(e.getMessage() + " error iniciando socket, " + path);
-			 reiniciarEquipo();
+			 Error.reiniciar();
 		 }
 	}
 	
@@ -108,7 +108,6 @@ public class Proceso
 		catch(Exception e)
 		{
 			Error.agregar(e.getMessage() + " error escribiendo en el socket, " + path);
-			reiniciarEquipo();
 		}
 	}
 	
@@ -137,8 +136,7 @@ public class Proceso
 					}
 					catch(Exception e)
 					{
-						Error.agregar(e.getMessage() + " error leyendo en el socket, " + path + " reiniciando");
-						reiniciarEquipo();
+						Error.agregar(e.getMessage() + " error leyendo en el socket, " + path);
 					}
 				}	
 			}).start();
@@ -149,28 +147,25 @@ public class Proceso
 				{
 					try 
 					{
-						espera.wait(600000);
+						espera.wait(20000);
 					}
 					catch (InterruptedException e) 
 					{
-						Error.agregar("Excepcion de interrupcion, reiniciando");
-						reiniciarEquipo();
+						Error.agregar("Excepcion de interrupcion en el proceso: " + path);
 					}
 				}
 			}
 			String resultado = salida.toString();
 			if(salida.length() == 0)
 			{
-				Error.agregar("Error de lectura en el socket, " + path + " reiniciando");
-				reiniciarEquipo();
+				Error.agregar("Error de lectura en el socket, " + path + " no se leyo nada");
 				resultado = null;
 			}
 			return resultado.equals(" ") ? "" : resultado;
 		}
 		catch(Exception e)
 		{
-			Error.agregar("Error de lectura en el socket, " + path + " reiniciando");
-			reiniciarEquipo();
+			Error.agregar(e.getMessage() + ", error de lectura en el socket: " + path);
 			return null;
 		}
 	}
@@ -183,19 +178,5 @@ public class Proceso
 	public synchronized void cerrar()
 	{
 		proceso.destroy();
-	}
-	
-	private void reiniciarEquipo()
-	{
-		 try 
-		 {
-			 Runtime.getRuntime().exec("shutdown now -r");
-			 System.exit(0);
-		 } 
-		 catch (IOException e1) 
-		 {
-			 Error.agregar("Error reiniciando equipo " + e1.getMessage());
-			 System.exit(0);
-		 }
 	}
 }

@@ -3,7 +3,6 @@ package modelo.joel;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,26 +10,22 @@ import java.util.regex.Pattern;
 import modelo.Escritor;
 import modelo.Estrategia;
 import modelo.Par;
-import modelo.Senal;
-import modelo.SenalEntrada;
+import modelo.SenalEstrategia;
 import modelo.SistemaEstrategias;
-import modelo.TipoSenal;
+import modelo.Estrategia.IdEstrategia;
 import control.AdministradorHilos;
 import control.Error;
 import control.HiloDaily;
-import control.IdEstrategia;
 import control.RunnableDaily;
-import control.conexion.joel.ConexionServidorJoel;
 
 public class SistemaJoel extends SistemaEstrategias 
 {
 	Escritor escritor;
 	Estrategia joel;
 
-	@Override
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("joel/experts/files/", null);
+/*		escritor = new Escritor("joel/experts/files/", null);
 		joel = Estrategia.leer(IdEstrategia.JOEL);
 		if(joel == null)
 		{
@@ -46,8 +41,8 @@ public class SistemaJoel extends SistemaEstrategias
 		{
     		Error.agregar(e.getMessage() + " Error metodo invalido en Sistema Joel");
 		}
-		persistir();
-	}
+		persistir(); 
+*/	}
 	
 	@Override
 	public void verificarConsistencia() 
@@ -74,7 +69,7 @@ public class SistemaJoel extends SistemaEstrategias
 						verificarConsistencia();
 						Thread.sleep(1200000);
 						iniciarProcesamiento();
-						synchronized(este())
+						synchronized(this)
 						{
 						    escritor.terminarCiclo();
 							verificarConsistencia();
@@ -91,22 +86,6 @@ public class SistemaJoel extends SistemaEstrategias
 							if(numeroErrores == 60)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
-								Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
-								{
-									@Override
-									public void run() 
-									{
-										try 
-										{
-											Runtime.getRuntime().exec("java -jar dailyOCR.jar");
-										} 
-										catch (IOException e)
-										{
-								    		Error.agregar(e.getMessage() + " Error reiniciando");
-										}
-									}
-								}));
-								System.exit(0);
 							}
 						}
 						catch(Exception e1)
@@ -122,7 +101,7 @@ public class SistemaJoel extends SistemaEstrategias
 		AdministradorHilos.agregarHilo(hiloPrincipal);
 	}
 	
-	public static Senal deducir(String subject)
+	public static SenalEstrategia deducir(String subject)
     {
     	boolean recomendado = false;
     	boolean compra = false;
@@ -188,7 +167,7 @@ public class SistemaJoel extends SistemaEstrategias
         			precioDeEntrada = -1;
         		else if(recomendado && precioDeEntrada < 0)
         			return null;
-    	    	Senal nueva = new Senal(IdEstrategia.JOEL, compra, par, 1, precioDeEntrada, 0); 
+    	    	SenalEstrategia nueva = new SenalEstrategia(IdEstrategia.JOEL, compra, par, 1, precioDeEntrada, 0); 
     			return nueva;
     		}
     	}
@@ -196,7 +175,7 @@ public class SistemaJoel extends SistemaEstrategias
     }
 	
 	@Override
-	protected ArrayList <Senal> leer(String[] lecturas) 
+	protected ArrayList <SenalEstrategia> leer(String[] lecturas) 
 	{
 		if(lecturas.length > 0)
 		{
@@ -215,10 +194,10 @@ public class SistemaJoel extends SistemaEstrategias
 			{
 			}
 		}
-		ArrayList <Senal> senalesLeidas = new ArrayList <Senal> ();
+		ArrayList <SenalEstrategia> senalesLeidas = new ArrayList <SenalEstrategia> ();
 		for(String titulo : lecturas)
 		{
-			Senal sj = deducir(titulo);
+			SenalEstrategia sj = deducir(titulo);
 			if(sj != null)
 				senalesLeidas.add(sj);
 		}
@@ -226,9 +205,9 @@ public class SistemaJoel extends SistemaEstrategias
 	}
 	
 	@Override
-	protected void procesar(ArrayList <Senal> senalesLeidas) 
+	protected void procesar() 
 	{
-		try
+/*		try
 		{
 			for(Senal senal : senalesLeidas)
 			{
@@ -246,7 +225,7 @@ public class SistemaJoel extends SistemaEstrategias
 		{
 			Error.agregar("Se produjo un error en el sistema Joel: " + e.getMessage());
 		}
-	}
+*/	}
 	
 	@Override
 	public void persistir() 
@@ -254,7 +233,6 @@ public class SistemaJoel extends SistemaEstrategias
 		joel.escribir();
 	}
 
-	@Override
 	public void chequearSenales(boolean enviarMensaje) 
 	{
 		String mensaje = this.getClass().getCanonicalName() + " OK";

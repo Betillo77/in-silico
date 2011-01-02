@@ -1,6 +1,5 @@
 package control;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -49,7 +48,7 @@ public class AdministradorHilos
 												mensaje += "Ultima actualizacion hace: " + (System.currentTimeMillis() - h.runnable.ultimaActualizacion) + " milisegundos, limite espera: " + h.runnable.intervalorActualizacion + "\n";
 												mensaje += "\n";
 											}
-											Error.agregar(mensaje);
+											Error.agregarInfo(mensaje);
 											mensajeEnviado = true;
 										}
 									}
@@ -58,30 +57,12 @@ public class AdministradorHilos
 										if(!h.isAlive())
 										{
 											Error.agregar("Error, hilo termino su ejecucion inesperadamente, reiniciando");
-											try 
-											{
-												Runtime.getRuntime().exec("shutdown now -r");
-												System.exit(0);
-											} 
-											catch (IOException e) 
-											{
-												Error.agregar("Error reiniciando equipo " + e.getMessage());
-												System.exit(0);
-											}
+											Error.reiniciar();
 										}
 										if((System.currentTimeMillis() - h.runnable.ultimaActualizacion) > h.runnable.intervalorActualizacion)
 										{
 											Error.agregar("Error, hilo: " + h.getName() + " no se actualizo en mucho tiempo, intervalo aceptable: " + h.runnable.intervalorActualizacion + ", ultima actualizacion hace: " + (System.currentTimeMillis() - h.runnable.ultimaActualizacion));
-											try 
-											{
-												Runtime.getRuntime().exec("shutdown now -r");
-												System.exit(0);
-											} 
-											catch (IOException e) 
-											{
-												Error.agregar("Error reiniciando equipo " + e.getMessage());
-												System.exit(0);
-											}
+											Error.reiniciar();
 										}
 									}
 								}

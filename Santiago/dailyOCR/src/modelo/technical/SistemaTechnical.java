@@ -1,31 +1,26 @@
 package modelo.technical;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import modelo.Escritor;
 import modelo.Estrategia;
 import modelo.Par;
-import modelo.Senal;
-import modelo.SenalEntrada;
+import modelo.SenalEstrategia;
 import modelo.SistemaEstrategias;
-import modelo.TipoSenal;
+import modelo.Estrategia.IdEstrategia;
 import control.AdministradorHilos;
 import control.Error;
 import control.HiloDaily;
-import control.IdEstrategia;
 import control.RunnableDaily;
-import control.conexion.technical.ConexionServidorTechnical;
 
 public class SistemaTechnical extends SistemaEstrategias 
 {
 	Escritor escritor;
 	Estrategia technical;
 	
-	@Override
 	public void cargarEstrategias() 
 	{
-		escritor = new Escritor("technical/", null);
+/*		escritor = new Escritor("technical/", null);
 		technical = Estrategia.leer(IdEstrategia.TECHNICAL);
 		if(technical == null)
 		{
@@ -42,7 +37,7 @@ public class SistemaTechnical extends SistemaEstrategias
     		Error.agregar(e.getMessage() + " Error metodo invalido en Sistema technical");
 		}
 		persistir();
-	}
+*/	}
 
 	@Override
 	public void verificarConsistencia() 
@@ -69,7 +64,7 @@ public class SistemaTechnical extends SistemaEstrategias
 						verificarConsistencia();
 						Thread.sleep(10000);
 						iniciarProcesamiento();
-						synchronized(este())
+						synchronized(this)
 						{
 						    escritor.terminarCiclo();
 							verificarConsistencia();
@@ -86,22 +81,6 @@ public class SistemaTechnical extends SistemaEstrategias
 							if(numeroErrores == 60)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
-								Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
-								{
-									@Override
-									public void run() 
-									{
-										try 
-										{
-											Runtime.getRuntime().exec("java -jar dailyOCR.jar");
-										} 
-										catch (IOException e)
-										{
-								    		Error.agregar(e.getMessage() + " Error reiniciando");
-										}
-									}
-								}));
-								System.exit(0);
 							}
 						}
 						catch(Exception e1)
@@ -118,9 +97,9 @@ public class SistemaTechnical extends SistemaEstrategias
 	}
 	
 	@Override
-	protected ArrayList <Senal> leer(String[] contenidos)
+	protected ArrayList <SenalEstrategia> leer(String[] contenidos)
 	{
-		ArrayList <Senal> nuevas = new ArrayList <Senal> (10);
+		ArrayList <SenalEstrategia> nuevas = new ArrayList <SenalEstrategia> (10);
 		try
 		{
 			for(int i = 0; i < contenidos.length; i++)
@@ -152,7 +131,7 @@ public class SistemaTechnical extends SistemaEstrategias
 				try
 				{
 					double limite = valores.get(2);
-					nuevas.add(new Senal(IdEstrategia.TECHNICAL, compra, estePar, 1, limite, 0));
+					nuevas.add(new SenalEstrategia(IdEstrategia.TECHNICAL, compra, estePar, 1, limite, 0));
 				}
 				catch(Exception e)
 				{
@@ -168,9 +147,9 @@ public class SistemaTechnical extends SistemaEstrategias
 	}
 	
 	@Override
-	protected void procesar(ArrayList <Senal> senalesLeidas)
+	protected void procesar()
 	{
-		try
+/*		try
 		{
 			for(Senal senal : senalesLeidas)
 			{
@@ -227,7 +206,7 @@ public class SistemaTechnical extends SistemaEstrategias
 		{
 			Error.agregar(e.getMessage() + " Error al a�adir nuevas senales en sistema technical");
 		}
-	}
+*/	}
 	
 	@Override
 	public void persistir() 
@@ -235,7 +214,6 @@ public class SistemaTechnical extends SistemaEstrategias
 		technical.escribir();
 	}
 
-	@Override
 	public void chequearSenales(boolean enviarMensaje) 
 	{
 		String mensaje = this.getClass().getCanonicalName() + " OK";

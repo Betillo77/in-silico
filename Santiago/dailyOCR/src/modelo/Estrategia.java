@@ -4,167 +4,140 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import modelo.Proveedor.IdProveedor;
 import control.Error;
-import control.IdEstrategia;
 import control.conexion.ConexionMySql;
 
 public class Estrategia
 {	
+	public enum IdEstrategia
+	{
+		BREAKOUT1, BREAKOUT2, RANGE1, RANGE2, MOMENTUM1, MOMENTUM2, TECHNICAL, JOEL;
+		
+		Estrategia esta = null;
+		
+		public Estrategia darEstrategia()
+		{
+			if(esta == null)
+				Error.agregar("Estrategia " + this + " fue llamada antes de ser registrada.");
+			return esta;
+		}
+		
+		public void iniciarEstrategia()
+		{
+			esta = Estrategia.leer(this);
+			if(esta == null)
+				esta = new Estrategia(this);
+		}
+	}
+	
 	protected IdEstrategia id;
-	protected List <Senal> senales;
-	protected List <Senal> senalesNoSync = new ArrayList <Senal> ();
-	private boolean[] activos = new boolean[Par.values().length];
-	protected Escritor escritor;
-	protected ArrayList < ArrayList <EntradaEscritor> > entradasEscritor = null;
+	protected List <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 
 	public Estrategia()
 	{
-		senales = Collections.synchronizedList(senalesNoSync);
 	}
 	
 	public Estrategia(IdEstrategia id)
 	{
 		this.id = id;
-		senales = Collections.synchronizedList(senalesNoSync);
 	}
 	
-	public void cambiarActivo(Par par, boolean activo)
+	public synchronized void agregar(Par par, boolean hit, boolean compra, int numeroLotes, double precioEntrada, SenalEstrategia afectada) 
 	{
-		if(activos == null)
-			activos = new boolean[Par.values().length];
-		synchronized(activos)
+		if(hit)
 		{
-			int i = 0;
-			for(Par p : Par.values())
-			{
-				if(p.equals(par))
-				{
-					activos[i] = activo;
-					return;
-				}
-				i++;
-			}
-		}
-	}
-	
-	public boolean darActivo(Par par)
-	{
-		if(activos == null)
-			activos = new boolean[Par.values().length];
-		synchronized(activos)
-		{
-			int i = 0;
-			for(Par p : Par.values())
-			{
-				if(p.equals(par))
-				{
-					return activos[i];
-				}
-				i++;
-			}
-			return false;
-		}
-	}
-	
-	public void agregar(SenalEntrada entrada, Senal afectada) 
-	{
-		if(entrada.getTipo().equals(TipoSenal.HIT))
-		{
-			hit(entrada, afectada);
-		}
-		else
-		{
-			trade(entrada);
-		}
-	}
-	
-	protected void hit(SenalEntrada entrada, Senal afectada) 
-	{
-		synchronized(senales)
-		{
-			escritor.cerrar(entrada, afectada);
+			afectada.setNumeroLotes(afectada.getNumeroLotes() - numeroLotes);
+			for(int i = 0; i < numeroLotes; i++)
+				ConexionMySql.agregarEntrada(id, afectada);
 			if(afectada.getNumeroLotes() <= 0)
 			{
+				for(IdProveedor id : IdProveedor.values())
+					id.darProveedor().agregar(afectada, hit);
 				senales.remove(afectada);
 				afectada.getPar().eliminarSenal(afectada);
 			}
 		}
-	}
-	
-	protected void trade(SenalEntrada entrada) 
-	{
-		synchronized(senales)
+		else
 		{
-			Senal nueva = new Senal(id, entrada.isCompra(), entrada.getPar(), entrada.getNumeroLotes(), entrada.getPrecioEntrada(), 0);
-			nueva.setLimite(entrada.getLimite());
-			if(tienePar(entrada.getPar()) != null)
+			SenalEstrategia nueva = new SenalEstrategia(id, compra, par, numeroLotes, precioEntrada, 0);
+			if(tienePar(par) != null)
 			{
-	    		Error.agregar("Par ya exite en esta estrategia " + id.toString());
+	    		Error.agregar("Error, par: " + par + ", ya existe en esta estrategia " + id.toString());
 	    		return;
 			}
-			escritor.abrir(entrada, nueva);
+			for(IdProveedor id : IdProveedor.values())
+				id.darProveedor().agregar(nueva, hit);
 			senales.add(nueva);
 			nueva.getPar().agregarSenal(nueva);
 		}
 	}
 	
-	public void tocoStop(Senal afectada) 
+	public synchronized void chequearStops()
 	{
-		if(!afectada.isTocoStop())
+		for(SenalEstrategia afectada : senales)
 		{
-			afectada.setTocoStop(true);
-			escritor.cerrarStop(afectada);
-		}
-	}
-
-	public Senal tienePar(Par par) 
-	{
-		synchronized(senales)
-		{
-			for(Senal senal : senales)
+			if(Math.abs(afectada.darStop()) < 10e-4d)
+				continue;
+			if(afectada.isCompra())
 			{
-				if(senal.getPar().equals(par))
-					return senal;
+				if(afectada.getPar().darPrecioActual(true) <= afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() > afectada.darStopDaily()))
+				{
+					if(!afectada.isTocoStop())
+						Error.agregarInfo(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + afectada.darStop());
+					for(IdProveedor p : IdProveedor.values())
+						if(!afectada.isTocoStop())
+							p.darProveedor().tocoStop(afectada);
+					afectada.setTocoStop(true);
+				}
 			}
-		}
-		return null;
-	}
-
-	public boolean verificarConsistencia() 
-	{
-		synchronized(senales)
-		{
-			synchronized(activos)
+			else
 			{
-				return senales == null || id == null || activos == null || escritor == null;
+				if(afectada.getPar().darPrecioActual(false) >= afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() < afectada.darStopDaily()))
+				{
+					if(!afectada.isTocoStop())
+						Error.agregarInfo(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(false) + ", stop -> " + afectada.darStop());
+					for(IdProveedor p : IdProveedor.values())
+						if(!afectada.isTocoStop())
+							p.darProveedor().tocoStop(afectada);
+					afectada.setTocoStop(true);
+				}
 			}
 		}
 	}
 	
-    public void escribir()
+	public synchronized SenalEstrategia tienePar(Par par) 
+	{
+		for(SenalEstrategia senal : senales)
+		{
+			if(senal.getPar().equals(par))
+				return senal;
+		}
+		return null;
+	}
+
+	public synchronized boolean verificarConsistencia() 
+	{
+			return senales == null || id == null;
+	}
+	
+    public synchronized void escribir()
     {
-    	synchronized(senales)
+    	try
     	{
-    		synchronized(activos)
-    		{
-		    	try
-		    	{
-			    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			        XMLEncoder encoder = new XMLEncoder(baos);
-			        encoder.writeObject(this);
-			        encoder.close();
-			        String salida = new String(baos.toByteArray());
-			        ConexionMySql.guardarPersistencia(id, salida);
-		    	}
-		    	catch(Exception e)
-		    	{
-		    		Error.agregar("Error en la escritura en la base de datos: " + id.name() + " " + e.getMessage());
-		    	}
-    		}
+	    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        XMLEncoder encoder = new XMLEncoder(baos);
+	        encoder.writeObject(this);
+	        encoder.close();
+	        String salida = new String(baos.toByteArray());
+	        ConexionMySql.guardarPersistencia(id, salida);
+    	}
+    	catch(Exception e)
+    	{
+    		Error.agregar("Error en la escritura en la base de datos: " + id.name() + " " + e.getMessage());
     	}
     }
     
@@ -190,75 +163,44 @@ public class Estrategia
     	catch(Exception e)
     	{
     		Error.agregar("Error de lectura de base de datos: " + id.name());
+    		Error.reiniciarSinPersistir();
     		return null;
     	}
     }
 
-	public IdEstrategia getId() {
+	public IdEstrategia getId() 
+	{
 		return id;
 	}
 
-	public void setId(IdEstrategia id) {
+	public void setId(IdEstrategia id)
+	{
 		this.id = id;
 	}
 
-	public List <Senal> getSenales() {
-		synchronized(senales)
-		{
-			return senalesNoSync;
-		}
-	}
-	
-	public List <Senal> getSenalesSync() {
-		synchronized(senales)
-		{
-			return senales;
-		}
-	}
-	
-	public List <Senal> getSenalesCopy() 
+	public synchronized List <SenalEstrategia> darSenales() 
 	{
-		ArrayList <Senal> senalesNuevas = new ArrayList <Senal> ();
+		LinkedList <SenalEstrategia> senalesNuevas = new LinkedList <SenalEstrategia> ();
 		if(senales == null)
 			return null;
-		synchronized(senales)
+		for(SenalEstrategia s : senales)
 		{
-			for(Senal s : senales)
-			{
-				senalesNuevas.add(s);
-			}
+			senalesNuevas.add(s);
 		}
 		return senalesNuevas;
 	}
-
-	public void setSenales(List <Senal> senales) {
-		this.senalesNoSync = senales;
-		this.senales = Collections.synchronizedList(senales);
-	}
-
-	public boolean[] getActivos() {
-		synchronized(activos)
-		{
-			return activos;
-		}
-	}
-
-	public void setActivos(boolean[] activos) {
-		this.activos = activos;
-	}
 	
-	public ArrayList < ArrayList <EntradaEscritor> > getEntradasEscritor() {
-		return entradasEscritor;
+	public List <SenalEstrategia> getSenales()
+	{
+		return senales;
 	}
 
-	public void setEntradasEscritor(ArrayList < ArrayList <EntradaEscritor> > entradasEscritor) {
-		this.entradasEscritor = entradasEscritor;
-	}
-	
-	public void ponerEscritor(Escritor e) {
-		escritor = e;
-		for(Senal s : senales)
+	public void setSenales(List <SenalEstrategia> senales)
+	{
+		this.senales = new LinkedList <SenalEstrategia> ();
+		for(SenalEstrategia s : senales)
 		{
+			this.senales.add(s);
 			s.getPar().agregarSenal(s);
 		}
 	}

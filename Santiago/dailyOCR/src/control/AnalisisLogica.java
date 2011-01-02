@@ -7,28 +7,27 @@ import java.util.Iterator;
 import java.util.List;
 
 import modelo.Par;
+import modelo.Estrategia.IdEstrategia;
 import control.conexion.ConexionMySql;
 
 public class AnalisisLogica 
 {
-	public static  ArrayList <Entrada> Buscar(IdEstrategia historialEstrategia, long fecha, Par par)
+	public static ArrayList <Entrada> Buscar(IdEstrategia historialEstrategia, long fecha, Par par)
 	{	
 		List <Entrada> temporal = ConexionMySql.darEntradas(historialEstrategia);
+		Collections.sort(temporal);
 		int indice = Collections.binarySearch(temporal, new Entrada(Par.AUDJPY, fecha, 0));
 		if(indice < 0)
 		{
 			indice++;
 			indice *= -1;
 		}
-		Collections.sort(temporal);
 		temporal = temporal.subList(indice, temporal.size());
 		for(Iterator <Entrada> it = temporal.iterator(); it.hasNext();)
 		{
 			Entrada e = it.next();
 			if(e.par.esDistinto(par))
-			{
 				it.remove();
-			}
 		}
 		return new ArrayList <Entrada> (temporal);
 	}
