@@ -182,12 +182,16 @@ public class dailyOCR
 			{
 				try 
 				{
+
+					int hora = c.get(Calendar.HOUR_OF_DAY);
+					if(hora > 16 && dia == Calendar.SUNDAY)
+					{
+						termino = true;
+						break;
+					}
 					Thread.sleep(600000);
 					c = Calendar.getInstance();
-					int hora = c.get(Calendar.HOUR_OF_DAY);
 					dia = c.get(Calendar.DAY_OF_WEEK);
-					if(hora > 16 && dia == Calendar.SUNDAY)
-						termino = true;
 				}
 				catch (InterruptedException e) 
 				{
