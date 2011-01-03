@@ -39,8 +39,8 @@ public class Escritor
 		}
 	}
 	
-	private final LinkedBlockingQueue < LinkedBlockingQueue <EntradaEscritor> > entradas;
-	private LinkedBlockingQueue <EntradaEscritor> enConstruccion;
+	private final LinkedBlockingQueue < ArrayList <EntradaEscritor> > entradas;
+	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
 	private String mensaje = "";
@@ -62,9 +62,9 @@ public class Escritor
 	public Escritor(String path)
 	{
 		pathMeta = path;
-		entradas = new LinkedBlockingQueue < LinkedBlockingQueue <EntradaEscritor> > ();
+		entradas = new LinkedBlockingQueue < ArrayList <EntradaEscritor> > ();
 		proceso = new Proceso(path);
-		enConstruccion = new LinkedBlockingQueue<EntradaEscritor> ();
+		enConstruccion = new ArrayList <EntradaEscritor> ();
 		final Escritor este = this;
 		HiloDaily hiloEscritor = new HiloDaily(new RunnableDaily()
 		{
@@ -128,7 +128,7 @@ public class Escritor
 			{
 				Error.agregar("Error de interrupcion en path: " + pathMeta);
 			}
-			enConstruccion = new LinkedBlockingQueue <EntradaEscritor> ();
+			enConstruccion = new ArrayList <EntradaEscritor> ();
 			synchronized(entradas)
 			{
 				if(debug)
@@ -144,7 +144,7 @@ public class Escritor
 		}
 	}
 	
-	private void escribir(LinkedBlockingQueue <EntradaEscritor> trabajoActual) 
+	private void escribir(ArrayList <EntradaEscritor> trabajoActual) 
 	{
 		try
 		{
@@ -200,7 +200,7 @@ public class Escritor
 		}
 	}
 	
-	private ArrayList <String> cargarEntradas(LinkedBlockingQueue <EntradaEscritor> trabajoActual)
+	private ArrayList <String> cargarEntradas(ArrayList <EntradaEscritor> trabajoActual)
 	{
 		escribir(trabajoActual);
 		return leer();
@@ -278,7 +278,7 @@ public class Escritor
 		}
 	}
 
-	public synchronized void procesar(LinkedBlockingQueue <EntradaEscritor> trabajoActual)
+	public synchronized void procesar(ArrayList <EntradaEscritor> trabajoActual)
 	{
 		ArrayList <String> entradas = null;
 		for(int i = 0; i < 11; i++)
@@ -341,7 +341,7 @@ public class Escritor
 			fw.close();
 			if(debug)
 				Error.agregarInfo("Chequeando senales");
-			LinkedBlockingQueue <EntradaEscritor> trabajoActual = new LinkedBlockingQueue <EntradaEscritor> ();
+			ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
 			trabajoActual.add(new EntradaEscritor("GBPCHF;LIST;CLOSE;0"));
 			ArrayList <String> entradas = null;
 			for(int i = 0; i < 11; i++)

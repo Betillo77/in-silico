@@ -63,7 +63,7 @@ public class ParteGrafica extends JPanel
 		botonNuevo.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
-//				new Tabla(id);
+				new Tabla(id);
 				new FormatoProveedor(id);
 			}
 		});

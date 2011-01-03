@@ -45,26 +45,25 @@ public class Proveedor
 			if(este == null)
 				este = new Proveedor(this);
 			este.escritor = new Escritor(path);
+			este.iniciarHiloPersistencia();
 		}
 		
 	}
 	
 	private IdProveedor id;
-	private boolean[][] activos;
+	private boolean[][] activos = new boolean[IdEstrategia.values().length][Par.values().length];
 	private boolean[] cambios = new boolean[IdEstrategia.values().length];
-	private SenalProveedor[][] senales;
+	private SenalProveedor[][] senales = new SenalProveedor[IdEstrategia.values().length][Par.values().length];;
 	private Escritor escritor;
 	private AtomicBoolean cambio = new AtomicBoolean(false);
 	
 	public Proveedor()
 	{
-		iniciarHiloPersistencia();
 	}
 	
 	public Proveedor(IdProveedor i)
 	{
-		id = i; 
-		iniciarHiloPersistencia();
+		id = i;
 	}
 	
 	private void iniciarHiloPersistencia()
@@ -112,7 +111,7 @@ public class Proveedor
 						}
 						if(!chequeoRealizado)
 						{
-							este.chequearSenales(false);
+							este.chequearSenales(true);
 							chequeoRealizado = true;
 						}
 					}

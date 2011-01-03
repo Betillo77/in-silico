@@ -31,6 +31,8 @@ public class Estrategia
 			esta = Estrategia.leer(this);
 			if(esta == null)
 				esta = new Estrategia(this);
+			for(SenalEstrategia s : esta.senales)
+				s.getPar().agregarSenal(s);
 		}
 	}
 	
@@ -69,10 +71,10 @@ public class Estrategia
 	    		Error.agregar("Error, par: " + par + ", ya existe en esta estrategia " + id.toString());
 	    		return;
 			}
-			for(IdProveedor id : IdProveedor.values())
-				id.darProveedor().agregar(nueva, hit);
 			senales.add(nueva);
 			nueva.getPar().agregarSenal(nueva);
+			for(IdProveedor id : IdProveedor.values())
+				id.darProveedor().agregar(nueva, hit);
 		}
 	}
 	

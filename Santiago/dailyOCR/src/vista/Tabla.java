@@ -62,7 +62,7 @@ public class Tabla extends JFrame
 			mostrar[i][1] = listaE.get(i).isCompra();
 			mostrar[i][2] = listaE.get(i).getPar().toString();
 			mostrar[i][3] = listaE.get(i).darPrecioEntrada();
-			mostrar[i][4] = listaE.get(i).darGanancia();
+			mostrar[i][4] = listaE.get(i).darGanancia() + " " + listaE.get(i).getMagico();
 		}
 	}
 

@@ -160,7 +160,13 @@ public class dailyOCR
 	private static void salir(int n)
 	{
 		if(n == sistemas.size())
+		{
+			for(IdProveedor p : IdProveedor.values())
+				p.darProveedor().escribir();
+			for(IdEstrategia e : IdEstrategia.values())
+				e.darEstrategia().escribir();
 			System.exit(0);
+		}
 		else
 		{
 			synchronized(sistemas.get(n))

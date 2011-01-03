@@ -16,22 +16,22 @@ public class Error
 	
 	public static synchronized void agregar(String error)
 	{
-		enviar(error, true);
+		enviar("DailyOCR-error", error, true);
 		chequearHora();
 	}
 	
 	public static synchronized void agregarInfo(String info)
 	{
-		enviar(info, true);
+		enviar("DailyOCR-info", info, true);
 	}
 
 	public static synchronized void agregarSinCorreo(String error) 
 	{
-		enviar(error, false);
+		enviar("DailyOCR-error", error, false);
 		chequearHora();
 	}
 	
-	private static void enviar(String mensaje, boolean correo)
+	private static void enviar(String titulo, String mensaje, boolean correo)
 	{
 		try
 		{
@@ -39,7 +39,7 @@ public class Error
 			fw.write(mensaje);
 			fw.write(System.getProperty("line.separator"));
 			if(correo)
-				ConexionServidorMensajes.enviarMensaje("DailyOCR", mensaje);
+				ConexionServidorMensajes.enviarMensaje(titulo, mensaje);
 			fw.close();
 		} 
 		catch (Exception e)
