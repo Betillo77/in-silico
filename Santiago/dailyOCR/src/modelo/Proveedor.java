@@ -128,123 +128,136 @@ public class Proveedor
 	{
 		try 
 		{ 
-			ArrayList <SenalProveedor> senalesEste = new ArrayList <SenalProveedor> (); 
-			for(int i = 0; i < senales.length; i++)
-				for(int j = 0; senales[0] != null && j < senales[0].length;j++)
-					if(senales[i][j] != null)
-						senalesEste.add(senales[i][j]);
-			String mensaje = id + " OK\n"; 
-			String mensajeError = "";
-
-			class ParMagico 
-			{ 
-				Par par; 
-				int magico; 
-				IdEstrategia id;
-				boolean esCompra;
-
-				public ParMagico(Par p, int m, IdEstrategia i, boolean eC) 
+			synchronized(escritor)
+			{
+				ArrayList <SenalProveedor> senalesEste = new ArrayList <SenalProveedor> (); 
+				for(int i = 0; i < senales.length; i++)
+					for(int j = 0; senales[0] != null && j < senales[0].length;j++)
+						if(senales[i][j] != null)
+							senalesEste.add(senales[i][j]);
+				String mensaje = id + " OK\n"; 
+				String mensajeError = "";
+	
+				class ParMagico 
 				{ 
-					par = p; 
-					magico = m; 
-					id = i;
-					esCompra = eC; 
-				} 
-				
-				@Override
-				public boolean equals(Object obj)  
-				{ 
-					ParMagico otro = (ParMagico) obj; 
-					return par.equals(otro.par) && magico == otro.magico && esCompra == otro.esCompra; 
-				} 
-				
-				@Override
-				public String toString() 
-				{
-					SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
-					double precioEntrada = posible == null ? 0 : posible.darPrecioEntrada();
-					double trailingStop = posible == null ? 0 : posible.darStop();
-					double stopDaily = posible == null ? 0 : posible.darStopDaily();
-					double precioActual = par.darPrecioActual(esCompra);
-					double precioParActual = esCompra ? precioActual - precioEntrada : precioEntrada - precioActual; 
-					int resultado = precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
-					String salida = id + " " + par + " " + magico + " " + esCompra + " Entrada: " + precioEntrada + " Actual: " + precioActual + " P/L: " + resultado;
-					if(stopDaily != -1)
-						salida += " Trailing stop: " + trailingStop + " Stop daily: " + stopDaily;
-					return salida;
-				}
-			} 
-			
-			ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
-			ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
-			for(SenalProveedor s : senalesEste) 
-				if(s.getMagico() != 0) 
-					parMagicosEste.add(new ParMagico(s.getPar(), s.getMagico(), s.getEstrategia(), s.isCompra())); 
-				else 
-					parMagicosEsteNoAbiertos.add(new ParMagico(s.getPar(), s.getMagico(), s.getEstrategia(), s.isCompra())); 
-			ArrayList <ParMagico> parMagicosRealesEste = new ArrayList <ParMagico> ();
-			for(String s : escritor.chequearSenales()) 
-			{ 
-				Scanner sc = new Scanner(s); 
-				sc.useDelimiter("\\Q;\\E"); 
-				Par par = Par.convertirPar(sc.next()); 
-				int magico = sc.nextInt(); 
-				boolean compra = sc.nextInt() == 1; 
-				sc.close(); 
-				parMagicosRealesEste.add(new ParMagico(par, magico, null, compra)); 
-			}
-			
-			ArrayList <ParMagico> parMagicosEsteCopia = new ArrayList <ParMagico> (parMagicosEste);
-			for(ParMagico pm : parMagicosRealesEste) 
-				parMagicosEsteCopia.remove(pm); 
-			for(ParMagico pm : parMagicosEste) 
-				if(parMagicosRealesEste.remove(pm)) 
-					mensaje += pm + " OK\n"; 
-			for(ParMagico pm : parMagicosEsteCopia) 
-				if(activos[pm.id.ordinal()][pm.par.ordinal()])
-				{
-					mensaje += pm + " CERRADO_PREMATURAMENTE\n";
-					mensajeError += pm + " CERRADO_PREMATURAMENTE\n";
-				}
-			for(ParMagico pm : parMagicosEsteNoAbiertos) 
-			{ 
-				if(activos[pm.id.ordinal()][pm.par.ordinal()])
-				{
-					mensaje += pm + " NO_ABIERTO\n";
-					mensajeError += pm + " NO_ABIERTO\n";
-				}
-			}
-			for(ParMagico pm : parMagicosRealesEste) 
-			{ 
-				SenalProveedor s = null; 
-				for(int i = 0; i < IdEstrategia.values().length; i++)
-				{
-					if(activos[i][pm.par.ordinal()] && senales[i][pm.par.ordinal()] != null && senales[i][pm.par.ordinal()].isCompra() == pm.esCompra && senales[i][pm.par.ordinal()].getMagico() == 0)
+					Par par; 
+					int magico; 
+					IdEstrategia id;
+					boolean esCompra;
+	
+					public ParMagico(Par p, int m, IdEstrategia i, boolean eC) 
+					{ 
+						par = p; 
+						magico = m; 
+						id = i;
+						esCompra = eC; 
+					} 
+					
+					public boolean isTocoStop()
 					{
-						s = senales[i][pm.par.ordinal()];
+						SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
+						if(posible == null)
+							return false;
+						return posible.darTocoStop();
+					}
+					
+					@Override
+					public boolean equals(Object obj)  
+					{ 
+						ParMagico otro = (ParMagico) obj; 
+						return par.equals(otro.par) && magico == otro.magico && esCompra == otro.esCompra; 
+					} 
+					
+					@Override
+					public String toString() 
+					{
+						SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
+						double precioEntrada = posible == null ? 0 : posible.darPrecioEntrada();
+						double trailingStop = posible == null ? 0 : posible.darStop();
+						double stopDaily = posible == null ? 0 : posible.darStopDaily();
+						double precioActual = par.darPrecioActual(esCompra);
+						double precioParActual = esCompra ? precioActual - precioEntrada : precioEntrada - precioActual; 
+						int resultado = precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+						String salida = id + " " + par + " " + magico + " " + esCompra + " Entrada: " + precioEntrada + " Actual: " + precioActual + " P/L: " + resultado;
+						if(stopDaily != -1)
+							salida += " Trailing stop: " + trailingStop + " Stop daily: " + stopDaily;
+						return salida;
+					}
+				} 
+				
+				ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
+				ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
+				for(SenalProveedor s : senalesEste) 
+					if(s.getMagico() != 0) 
+						parMagicosEste.add(new ParMagico(s.getPar(), s.getMagico(), s.getEstrategia(), s.isCompra())); 
+					else 
+						parMagicosEsteNoAbiertos.add(new ParMagico(s.getPar(), s.getMagico(), s.getEstrategia(), s.isCompra())); 
+				ArrayList <ParMagico> parMagicosRealesEste = new ArrayList <ParMagico> ();
+				for(String s : escritor.chequearSenales()) 
+				{ 
+					Scanner sc = new Scanner(s); 
+					sc.useDelimiter("\\Q;\\E"); 
+					Par par = Par.convertirPar(sc.next()); 
+					int magico = sc.nextInt(); 
+					boolean compra = sc.nextInt() == 1; 
+					sc.close(); 
+					parMagicosRealesEste.add(new ParMagico(par, magico, null, compra)); 
+				}
+				
+				ArrayList <ParMagico> parMagicosEsteCopia = new ArrayList <ParMagico> (parMagicosEste);
+				for(ParMagico pm : parMagicosRealesEste) 
+					parMagicosEsteCopia.remove(pm); 
+				for(ParMagico pm : parMagicosEste) 
+					if(parMagicosRealesEste.remove(pm)) 
+						mensaje += pm + " OK\n"; 
+				for(ParMagico pm : parMagicosEsteCopia) 
+					if(activos[pm.id.ordinal()][pm.par.ordinal()])
+					{
+						boolean tocoStop = pm.isTocoStop();
+						mensaje += tocoStop ? pm + " TOCO STOP\n" : pm + " CERRADO_PREMATURAMENTE\n";
+						if(!pm.isTocoStop())
+							mensajeError += pm + " CERRADO_PREMATURAMENTE\n";
+					}
+				for(ParMagico pm : parMagicosEsteNoAbiertos) 
+				{ 
+					if(activos[pm.id.ordinal()][pm.par.ordinal()])
+					{
+						mensaje += pm + " NO_ABIERTO\n";
+						mensajeError += pm + " NO_ABIERTO\n";
 					}
 				}
-				if(s != null)
+				for(ParMagico pm : parMagicosRealesEste) 
 				{ 
-					s.setMagico(pm.magico); 
-					mensajeError += "Asignando magico tentativamente: " + id + " " + s.getPar() + " " + pm.magico; 
+					SenalProveedor s = null; 
+					for(int i = 0; i < IdEstrategia.values().length; i++)
+					{
+						if(activos[i][pm.par.ordinal()] && senales[i][pm.par.ordinal()] != null && senales[i][pm.par.ordinal()].isCompra() == pm.esCompra && senales[i][pm.par.ordinal()].getMagico() == 0)
+						{
+							s = senales[i][pm.par.ordinal()];
+						}
+					}
+					if(s != null)
+					{ 
+						s.setMagico(pm.magico); 
+						mensajeError += "Asignando magico tentativamente: " + id + " " + s.getPar() + " " + pm.magico; 
+					} 
+					else 
+					{ 
+						escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
+						mensajeError += pm + " no existe en la bd, eliminado\n";       
+					} 
 				} 
-				else 
-				{ 
-					escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
-					mensajeError += pm + " no existe en la bd, eliminado\n";       
-				} 
+				escritor.terminarCiclo(); 
+				for(Par p : Par.values())
+				{
+					mensaje += p.debugSenales();
+				}
+				if(!mensajeError.equals("")) 
+					Error.agregar(mensajeError); 
+				if(enviarMensaje) 
+					Error.agregarInfo(mensaje);
 			} 
-			escritor.terminarCiclo(); 
-			for(Par p : Par.values())
-			{
-				mensaje += p.debugSenales();
-			}
-			if(!mensajeError.equals("")) 
-				Error.agregar(mensajeError); 
-			if(enviarMensaje) 
-				Error.agregarInfo(mensaje);
-		} 
+		}
 		catch(Exception e) 
 		{ 
 			Error.agregar("Error en el metodo " + e.getMessage()); 
@@ -264,9 +277,9 @@ public class Proveedor
 					Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar.");
 				else
 				{
-					senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
 					if(!s.isTocoStop())
 						escritor.cerrar(afectada);
+					senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
 				}
 			}
 			else
@@ -277,8 +290,8 @@ public class Proveedor
 				else
 				{
 					afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
-					senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
 					escritor.abrir(afectada);
+					senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
 				}
 			}
 		}

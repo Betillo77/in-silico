@@ -44,6 +44,7 @@ public class Escritor
 	private String pathMeta;
 	private Proceso proceso;
 	private String mensaje = "";
+	private volatile String mensajeDebug = "";
 	public volatile boolean debug = true;
 	
 	private void reiniciarProceso()
@@ -91,14 +92,16 @@ public class Escritor
 								entradas.wait(100000);
 							}
 						}
+						mensajeDebug = "";
 						if(debug)
-							Error.agregarInfo("Notificado " + pathMeta + " " + System.currentTimeMillis());
+							mensajeDebug += " Notificado " + pathMeta + " " + System.currentTimeMillis();
 						synchronized(este)
 						{
 							ultimaActualizacion = System.currentTimeMillis();
 							procesar(entradas.peek());
 							if(entradas.size() > 0)
 								entradas.take();
+							Error.agregarInfo(mensajeDebug);
 							ultimaActualizacion = System.currentTimeMillis();
 						}
 					}
@@ -132,7 +135,7 @@ public class Escritor
 			synchronized(entradas)
 			{
 				if(debug)
-					Error.agregarInfo("Encolando y notificando " + pathMeta + " " + mensaje + System.currentTimeMillis());
+					mensajeDebug += " Encolando y notificando " + pathMeta + " " + mensaje + System.currentTimeMillis();
 				entradas.notifyAll();
 			}
 			mensaje = "";
@@ -165,7 +168,7 @@ public class Escritor
 			fw.close();
 			proceso.escribir(lineaEnvio);
 			if(debug)
-				Error.agregarInfo("Escribiendo " + mensaje);
+				mensajeDebug += " Escribiendo " + mensaje;
 		}
 		catch(Exception e)
 		{
@@ -185,7 +188,7 @@ public class Escritor
 			String magicos = proceso.leer();
 			fw.write(magicos + "\n");
 			if(debug)
-				Error.agregarInfo("Leido: " + magicos + ", " + System.currentTimeMillis());
+				mensajeDebug += " Leido: " + magicos + ", " + System.currentTimeMillis();
 			if(magicos == null)
 				return null;
 			String [] magicosPartidos = magicos.split("-");
@@ -264,7 +267,7 @@ public class Escritor
 	        	{
 	        		actual.setMagico(magico);
 	        		if(debug)
-	        			Error.agregarInfo("Procesado " + lectura + " -> " + " " + par.toString() + " " + magico + " " + System.currentTimeMillis());
+	        			mensajeDebug += " Procesado " + lectura + " -> " + " " + par.toString() + " " + magico + " " + System.currentTimeMillis();
 	        	}
 	        	else
 	        		Error.agregar("Error leyendo magicos en path: " + pathMeta + ", no se encuentra par: " + entrada.par);
@@ -339,8 +342,7 @@ public class Escritor
 			FileWriter fw = new FileWriter(archivoEscritura, true);
 			fw.write("Chequeando senales\n");
 			fw.close();
-			if(debug)
-				Error.agregarInfo("Chequeando senales");
+			debug = false;
 			ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
 			trabajoActual.add(new EntradaEscritor("GBPCHF;LIST;CLOSE;0"));
 			ArrayList <String> entradas = null;
@@ -368,6 +370,7 @@ public class Escritor
 				if(it.next().equals(""))
 					it.remove();
 			}
+			debug = true;
 			return entradas;
 		}
 		catch(Exception e)

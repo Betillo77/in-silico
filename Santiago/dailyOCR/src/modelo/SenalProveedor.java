@@ -111,4 +111,11 @@ public class SenalProveedor
 			return 0;
 		return esta.darStopDaily();
 	}
+
+	public boolean darTocoStop() {
+		SenalEstrategia esta = darSenalEstrategia();
+		if(esta == null)
+			return false;
+		return esta.isTocoStop();
+	}
 }

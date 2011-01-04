@@ -45,9 +45,9 @@ public class Tabla extends JFrame
 		for(int i = 0; i < listaE.size(); i++)
 		{
 			mostrar[i][0] = listaE.get(i).getEstrategia().toString();
-			mostrar[i][1] = listaE.get(i).isCompra();
+			mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + listaE.get(i).isTocoStop();
 			mostrar[i][2] = listaE.get(i).getPar().toString();
-			mostrar[i][3] = listaE.get(i).getPrecioEntrada();
+			mostrar[i][3] = listaE.get(i).getPrecioEntrada() + " sd: " + listaE.get(i).darStopDaily() + " s: " + listaE.get(i).darStop();
 			mostrar[i][4] = listaE.get(i).darGanancia();
 		}
 	}
@@ -59,9 +59,9 @@ public class Tabla extends JFrame
 		for(int i = 0; i < listaE.size(); i++)
 		{
 			mostrar[i][0] = listaE.get(i).getEstrategia().toString();
-			mostrar[i][1] = listaE.get(i).isCompra();
+			mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + listaE.get(i).darTocoStop();
 			mostrar[i][2] = listaE.get(i).getPar().toString();
-			mostrar[i][3] = listaE.get(i).darPrecioEntrada();
+			mostrar[i][3] = listaE.get(i).darPrecioEntrada() + " sd: " + listaE.get(i).darStopDaily() + " s: " + listaE.get(i).darStop();
 			mostrar[i][4] = listaE.get(i).darGanancia() + " " + listaE.get(i).getMagico();
 		}
 	}

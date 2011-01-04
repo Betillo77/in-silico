@@ -203,11 +203,15 @@ public class SistemaDailyFX extends SistemaEstrategias
 						{
 							if(afectada.darStop() < senal.darStop())
 								afectada.ponerStop(senal.darStop());
+							if(afectada.darStop() > senal.darStop() && (afectada.darStop() < (afectada.getPrecioEntrada() - 10e-4d)))
+								afectada.ponerStop(senal.darStop());
 							afectada.ponerStopDaily(senal.darStop());
 						}
 						else
 						{
 							if(afectada.darStop() > senal.darStop())
+								afectada.ponerStop(senal.darStop());
+							if(afectada.darStop() < senal.darStop() && (afectada.darStop() > (afectada.getPrecioEntrada() + 10e-4d)))
 								afectada.ponerStop(senal.darStop());
 							afectada.ponerStopDaily(senal.darStop());
 						}
