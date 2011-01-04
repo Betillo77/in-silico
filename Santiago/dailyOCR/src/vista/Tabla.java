@@ -72,7 +72,7 @@ public class Tabla extends JFrame
 	private void crearTabla()
 	{
 		table = new JTable(mostrar, nombreCol);
-		table.setPreferredScrollableViewportSize(new Dimension(800, 100));
+		table.setPreferredScrollableViewportSize(new Dimension(950, 100));
 		JScrollPane scrollPane = new JScrollPane(table);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		ListSelectionModel listMod = table.getSelectionModel();
