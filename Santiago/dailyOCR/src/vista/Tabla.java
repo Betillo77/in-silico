@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -40,6 +41,7 @@ public class Tabla extends JFrame
 	
 	private void llenarMostrar(IdEstrategia id)
 	{
+		DecimalFormat df = new DecimalFormat("0.0000");
 		List <SenalEstrategia> listaE = id.darEstrategia().darSenales();
 		mostrar = new Object[listaE.size()][5];
 		for(int i = 0; i < listaE.size(); i++)
@@ -47,13 +49,14 @@ public class Tabla extends JFrame
 			mostrar[i][0] = listaE.get(i).getEstrategia().toString();
 			mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + listaE.get(i).isTocoStop();
 			mostrar[i][2] = listaE.get(i).getPar().toString();
-			mostrar[i][3] = listaE.get(i).getPrecioEntrada() + " sd: " + listaE.get(i).darStopDaily() + " s: " + listaE.get(i).darStop();
+			mostrar[i][3] = df.format(listaE.get(i).getPrecioEntrada()) + " " + df.format(listaE.get(i).darStopDaily()) + " " + df.format(listaE.get(i).darStop());
 			mostrar[i][4] = listaE.get(i).darGanancia();
 		}
 	}
 	
 	private void llenarMostrar(IdProveedor proveedor) 
 	{
+		DecimalFormat df = new DecimalFormat("0.0000");
 		List <SenalProveedor> listaE = proveedor.darProveedor().darSenales();
 		mostrar = new Object[listaE.size()][5];
 		for(int i = 0; i < listaE.size(); i++)
@@ -61,7 +64,7 @@ public class Tabla extends JFrame
 			mostrar[i][0] = listaE.get(i).getEstrategia().toString();
 			mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + listaE.get(i).darTocoStop();
 			mostrar[i][2] = listaE.get(i).getPar().toString();
-			mostrar[i][3] = listaE.get(i).darPrecioEntrada() + " sd: " + listaE.get(i).darStopDaily() + " s: " + listaE.get(i).darStop();
+			mostrar[i][3] = df.format(listaE.get(i).darPrecioEntrada()) + " " + df.format(listaE.get(i).darStopDaily()) + " " + df.format(listaE.get(i).darStop());
 			mostrar[i][4] = listaE.get(i).darGanancia() + " " + listaE.get(i).getMagico();
 		}
 	}
@@ -69,7 +72,7 @@ public class Tabla extends JFrame
 	private void crearTabla()
 	{
 		table = new JTable(mostrar, nombreCol);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		table.setPreferredScrollableViewportSize(new Dimension(800, 100));
 		JScrollPane scrollPane = new JScrollPane(table);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		ListSelectionModel listMod = table.getSelectionModel();
