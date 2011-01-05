@@ -8,7 +8,7 @@ public class SenalProveedor
 {
 	private IdProveedor proveedor;
 	private IdEstrategia estrategia;
-	private boolean compra;
+	private Boolean compra;
 	private Par par;
 	private int magico;
 	
@@ -16,7 +16,7 @@ public class SenalProveedor
 	{
 		proveedor = null;
 		estrategia = null;
-		compra = false;
+		compra = null;
 		par = null;
 		magico = 0;
 	}
@@ -56,13 +56,15 @@ public class SenalProveedor
 	
 	public void setCompra(boolean compra) 
 	{
-		if(compra == false)
+		if(this.compra != null)
 			throw new UnsupportedOperationException("Campo compra de SenalProveedor es inmutable");
 		this.compra = compra;
 	}
 	
 	public boolean isCompra() 
 	{
+		if(compra == null)
+			return compra = false;
 		return compra;
 	}
 	
