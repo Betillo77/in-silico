@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 import control.AdministradorHilos;
 import control.Error;
 import control.HiloDaily;
 import control.RunnableDaily;
-
 
 public class Escritor
 {	
@@ -45,20 +46,9 @@ public class Escritor
 	private Proceso proceso;
 	private String mensaje = "";
 	private volatile String mensajeDebug = "";
+	private ReentrantLock lock = new ReentrantLock(true);
+	private ReentrantLock lockConstruir = new ReentrantLock(true);
 	public volatile boolean debug = true;
-	
-	private void reiniciarProceso()
-	{
-		proceso.cerrar();
-		try
-		{
-			Thread.sleep(100000);
-		}
-		catch(InterruptedException e)
-		{
-			Error.agregar("Error de interrupcion en escritor: " + pathMeta);
-		}
-	}
 	
 	public Escritor(String path)
 	{
@@ -66,50 +56,41 @@ public class Escritor
 		entradas = new LinkedBlockingQueue < ArrayList <EntradaEscritor> > ();
 		proceso = new Proceso(path);
 		enConstruccion = new ArrayList <EntradaEscritor> ();
-		final Escritor este = this;
 		HiloDaily hiloEscritor = new HiloDaily(new RunnableDaily()
 		{
 			public void run() 
 			{
 				while(true)
 				{
+					ultimaActualizacion = System.currentTimeMillis();
 					try
 					{
-						Thread.sleep(1000);
 						ultimaActualizacion = System.currentTimeMillis();
-					}
-					catch(InterruptedException e)
-					{
-						Error.agregar("Error de interrupcion en: " + pathMeta);
-					}
-					try
-					{
-						synchronized(entradas)
-						{
-							while(entradas.size() == 0)
-							{
-								ultimaActualizacion = System.currentTimeMillis();
-								entradas.wait(100000);
-							}
-						}
-						mensajeDebug = "";
-						if(debug)
-							mensajeDebug += " Notificado " + pathMeta + " " + System.currentTimeMillis();
-						synchronized(este)
-						{
+						ArrayList <EntradaEscritor> leidas = entradas.poll(600000L, TimeUnit.MILLISECONDS);
+						try
+						{						
+							lock.lock();
 							ultimaActualizacion = System.currentTimeMillis();
-							procesar(entradas.peek());
-							if(entradas.size() > 0)
-								entradas.take();
-							Error.agregarInfo(mensajeDebug);
+							mensajeDebug = "";
+							if(leidas == null)
+								continue;
+							if(debug)
+								mensajeDebug += " Notificado " + pathMeta + " " + System.currentTimeMillis();
 							ultimaActualizacion = System.currentTimeMillis();
+							procesar(leidas);
 						}
+						finally
+						{
+							lock.unlock();
+						}
+						Error.agregarInfo(mensajeDebug);
+						ultimaActualizacion = System.currentTimeMillis();
 					}
 					catch(Exception e)
 					{
 						Error.agregar("Error en el hilo de escritura en path: " + pathMeta);
+						ultimaActualizacion = System.currentTimeMillis();
 					}
-					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
 		}, 1000000L);
@@ -117,33 +98,53 @@ public class Escritor
 		AdministradorHilos.agregarHilo(hiloEscritor);
 	}
 	
-	public synchronized void terminarCiclo()
+	public void lock()
 	{
-		if(enConstruccion.size() != 0 && mensaje.equals(""))
+		lock.lock();
+	}
+	
+	public void unlock()
+	{
+		lock.unlock();
+	}
+	
+	private void reiniciarProceso()
+	{
+		proceso.cerrar();
+		HiloDaily.sleep(100000);
+	}
+	
+	public void terminarCiclo()
+	{
+		lockConstruir.lock();
+		try
 		{
-			try 
+			if(enConstruccion.size() != 0 && mensaje.equals(""))
 			{
-				entradas.put(enConstruccion);
-				for(EntradaEscritor e : enConstruccion)
-					mensaje += e.linea + ";";
-			} 
-			catch (InterruptedException e)
-			{
-				Error.agregar("Error de interrupcion en path: " + pathMeta);
-			}
-			enConstruccion = new ArrayList <EntradaEscritor> ();
-			synchronized(entradas)
-			{
+				try 
+				{
+					entradas.put(enConstruccion);
+					for(EntradaEscritor e : enConstruccion)
+						mensaje += e.linea + ";";
+				} 
+				catch (InterruptedException e)
+				{
+					Error.agregar("Error de interrupcion en path: " + pathMeta);
+				}
+				enConstruccion = new ArrayList <EntradaEscritor> ();
 				if(debug)
-					mensajeDebug += " Encolando y notificando " + pathMeta + " " + mensaje + System.currentTimeMillis();
-				entradas.notifyAll();
+					mensajeDebug += " Encolando " + pathMeta + " " + mensaje + " " + System.currentTimeMillis();
+				mensaje = "";
 			}
-			mensaje = "";
+			else if(!mensaje.equals(""))
+			{
+				Error.agregar("Error, se encolaron: " + mensaje + " y no se procesaron");
+				mensaje = "";
+			}
 		}
-		else if(!mensaje.equals(""))
+		finally
 		{
-			Error.agregar("Error, se encolaron: " + mensaje + " y no se procesaron");
-			mensaje = "";
+			lockConstruir.unlock();
 		}
 	}
 	
@@ -281,7 +282,7 @@ public class Escritor
 		}
 	}
 
-	public synchronized void procesar(ArrayList <EntradaEscritor> trabajoActual)
+	public void procesar(ArrayList <EntradaEscritor> trabajoActual)
 	{
 		ArrayList <String> entradas = null;
 		for(int i = 0; i < 11; i++)
@@ -332,8 +333,9 @@ public class Escritor
 		}
 	}
 	
-	public synchronized ArrayList <String> chequearSenales() 
+	public ArrayList <String> chequearSenales() 
 	{
+		lock.lock();
 		try
 		{
 			File archivoEscritura = new File(pathMeta + "log.txt");
@@ -379,31 +381,102 @@ public class Escritor
 			Error.reiniciar();
 			return null;
 		}
-	}
-	
-	public synchronized void cerrar(SenalProveedor afectada)
-	{
-		if(afectada.getMagico() != 0)
-			enConstruccion.add(new EntradaEscritor(afectada.getPar(), afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico(), true, afectada));
-	}
-	
-	public synchronized void cerrarStop(SenalProveedor afectada)
-	{
-		if(afectada.getMagico() != 0)
+		finally
 		{
-			enConstruccion.add(new EntradaEscritor(afectada.getPar(), afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico(), true, afectada));
-			if(debug)
-				Error.agregarInfo("Cerrado: " + afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico() + " toco stop en: " + System.currentTimeMillis());
+			lock.unlock();
+		}
+	}
+	
+	public void cerrar(SenalProveedor afectada)
+	{
+		lockConstruir.lock();
+		try
+		{
+			if(afectada.getMagico() != 0)
+				enConstruccion.add(new EntradaEscritor(afectada.getPar(), afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico(), true, afectada));
+		}
+		finally
+		{
+			lockConstruir.unlock();
+		}
+	}
+	
+	public void cerrarStop(SenalProveedor afectada)
+	{
+		lockConstruir.lock();
+		try
+		{
+			if(afectada.getMagico() != 0)
+			{
+				enConstruccion.add(new EntradaEscritor(afectada.getPar(), afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico(), true, afectada));
+				if(debug)
+					Error.agregarInfo("Cerrado: " + afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico() + " toco stop en: " + System.currentTimeMillis());
+			}
+		}
+		finally
+		{
+			lockConstruir.unlock();
 		}
 	}
 
-	public synchronized void abrir(SenalProveedor nueva)
+	public void abrir(SenalProveedor nueva)
 	{
-		enConstruccion.add(new EntradaEscritor(nueva.getPar(), nueva.getPar() + ";" + (nueva.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false, nueva)); 
+		lockConstruir.lock();
+		try
+		{
+			enConstruccion.add(new EntradaEscritor(nueva.getPar(), nueva.getPar() + ";" + (nueva.isCompra() ? "BUY" : "SELL") + ";OPEN;0", false, nueva)); 
+		}
+		finally
+		{
+			lockConstruir.unlock();
+		}
 	}
 	
-	public synchronized void agregarLinea(String linea)
+	public void agregarLinea(String linea)
 	{
-		enConstruccion.add(new EntradaEscritor(linea));
+		lockConstruir.lock();
+		try
+		{
+			enConstruccion.add(new EntradaEscritor(linea));
+		}
+		finally
+		{
+			lockConstruir.unlock();
+		}
+	}
+	
+	public boolean chequearMagico(SenalProveedor dudosa)
+	{
+		lockConstruir.lock();
+		try
+		{
+			for(EntradaEscritor e : enConstruccion)
+				if(e.afectada == dudosa)
+					return true;
+			for(ArrayList <EntradaEscritor> ae : entradas)
+				for(EntradaEscritor e : ae)
+					if(e.afectada == dudosa)
+						return true;
+			return false;
+		}
+		finally
+		{
+			lockConstruir.unlock();
+		}
+	}
+
+	public void cerrarProceso() 
+	{
+		lock.lock();
+		lockConstruir.lock();
+		try
+		{
+			proceso.cerrarProceso();
+		}
+		finally
+		{
+			lockConstruir.unlock();
+			lock.unlock();
+		}
 	}
 }

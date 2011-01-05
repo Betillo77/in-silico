@@ -7,6 +7,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 import control.AdministradorHilos;
 import control.Error;
@@ -17,9 +23,12 @@ public class Proceso
 {
 	private String path;
 	private Process proceso;
-	private Socket socket = null;
+	private ExecutorService executor;
+	private Socket socket;
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
+	private boolean cerrado = false;
+	private ReentrantLock lock = new ReentrantLock(true);
 	
 	public Proceso(String p)
 	{
@@ -41,28 +50,38 @@ public class Proceso
 							Error.agregarInfo("Iniciando proceso " + path);
 							iniciarSocket();
 							Error.agregarInfo("Conexion establecida " + path);
-							Thread.sleep(30000);
+							HiloDaily.sleep(30000);
 							proceso.waitFor();
 							Error.agregar("Reiniciando proceso y socket: " + path);
+							lock.lock();
 							try
 							{
-								proceso.destroy();
+								try
+								{
+									proceso.destroy();
+								}
+								catch(Exception e)
+								{
+									Error.agregar("Proceso no se pudo cerrar en: " + path + ", reiniciando");
+									Error.reiniciar();
+								}
+								try
+								{
+									cerrarSocket();
+								}
+								catch(Exception e)
+								{
+									Error.agregar("Error reiniciando proceso, reinicando equipo");
+									Error.reiniciar();
+								}
+								if(cerrado)
+									return;
 							}
-							catch(Exception e)
+							finally
 							{
-								Error.agregar("Proceso no se pudo cerrar en: " + path + ", reiniciando");
-								Error.reiniciar();
+								lock.unlock();
 							}
-							try
-							{
-								cerrarSocket();
-							}
-							catch(Exception e)
-							{
-								Error.agregar("Error reiniciando proceso, reinicando equipo");
-								Error.reiniciar();
-							}
-							Thread.sleep(100000);
+							HiloDaily.sleep(100000);
 						}
 					} 
 					catch (Exception e)
@@ -73,6 +92,7 @@ public class Proceso
 			}, Long.MAX_VALUE);
 			hiloMonitor.setName("Monitor proceso " + path);
 			AdministradorHilos.agregarHilo(hiloMonitor);
+			executor = Executors.newSingleThreadExecutor();
 		}
 		catch(Exception e)
 		{
@@ -81,26 +101,31 @@ public class Proceso
 		}
 	}
 
-	private synchronized void iniciarSocket()
+	private void iniciarSocket()
 	{
-		 String s = null;
-		 try
-		 {
-			 Thread.sleep(100000);
-			 Scanner sc = new Scanner(new File(path + "port.txt"));
-		     socket = new Socket(s, sc.nextInt());
-		     socketOut = new PrintWriter(socket.getOutputStream(), true);
-		     socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		 }
-		 catch(Exception e)
-		 {
-			 Error.agregar(e.getMessage() + " error iniciando socket, " + path);
-			 Error.reiniciar();
-		 }
+		lock.lock();
+		try
+		{
+			HiloDaily.sleep(100000);
+			Scanner sc = new Scanner(new File(path + "port.txt"));
+			socket = new Socket((String) null, sc.nextInt());
+			socketOut = new PrintWriter(socket.getOutputStream(), true);
+			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " error iniciando socket, " + path);
+			Error.reiniciar();
+		}
+		finally
+		{
+			lock.unlock();
+		}
 	}
 	
-	public synchronized void escribir(String mensaje)
+	public void escribir(String mensaje)
 	{
+		lock.lock();
 		try
 		{
 			socketOut.println(mensaje);
@@ -109,58 +134,40 @@ public class Proceso
 		{
 			Error.agregar(e.getMessage() + " error escribiendo en el socket, " + path);
 		}
+		finally
+		{
+			lock.unlock();
+		}
 	}
 	
-	public synchronized String leer()
+	class CallableSocket implements Callable <String>
+	{
+		@Override
+		public String call() throws Exception 
+		{
+			lock.lock();
+			try
+			{
+				socket.setSoTimeout(600000);
+				String resultado = socketIn.readLine();
+				if(resultado.equals(""))
+					resultado = " ";
+				socket.wait(20000);
+				return resultado;
+			}
+			finally
+			{
+				lock.unlock();
+			}
+		}
+	}
+	
+	public String leer()
 	{
 		try
 		{
-			final Object espera = new Object();
-			final StringBuffer salida = new StringBuffer();
-			new Thread(new Runnable()
-			{
-				@Override
-				public void run() 
-				{
-					try
-					{
-						socket.setSoTimeout(600000);
-						String resultado = socketIn.readLine();
-						if(resultado.equals(""))
-							resultado = " ";
-						salida.append(resultado);
-						synchronized(espera)
-						{
-							espera.notifyAll();
-						}
-					}
-					catch(Exception e)
-					{
-						Error.agregar(e.getMessage() + " error leyendo en el socket, " + path);
-					}
-				}	
-			}).start();
-			long tiempoInicio = System.currentTimeMillis();
-			while((System.currentTimeMillis() - tiempoInicio < 600000) && salida.length() == 0)
-			{
-				synchronized(espera)
-				{
-					try 
-					{
-						espera.wait(20000);
-					}
-					catch (InterruptedException e) 
-					{
-						Error.agregar("Excepcion de interrupcion en el proceso: " + path);
-					}
-				}
-			}
-			String resultado = salida.toString();
-			if(salida.length() == 0)
-			{
-				Error.agregar("Error de lectura en el socket, " + path + " no se leyo nada");
-				resultado = null;
-			}
+			Future <String> futureResultado = executor.submit(new CallableSocket());
+			String resultado = futureResultado.get(600, TimeUnit.SECONDS);
 			return resultado.equals(" ") ? "" : resultado;
 		}
 		catch(Exception e)
@@ -170,13 +177,43 @@ public class Proceso
 		}
 	}
 	
-	private synchronized void cerrarSocket() throws IOException
+	private void cerrarSocket() throws IOException
 	{
-		socket.close();
+		lock.lock();
+		try
+		{
+			socket.close();
+		}
+		finally
+		{
+			lock.unlock();
+		}
 	}
 	
-	public synchronized void cerrar()
+	public void cerrar()
 	{
-		proceso.destroy();
+		lock.lock();
+		try
+		{
+			proceso.destroy();
+		}
+		finally
+		{
+			lock.unlock();
+		}
+	}
+	
+	public void cerrarProceso()
+	{
+		lock.lock();
+		try
+		{
+			cerrado = true;
+			proceso.destroy();
+		}
+		finally
+		{
+			lock.unlock();
+		}
 	}
 }

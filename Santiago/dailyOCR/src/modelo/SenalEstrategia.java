@@ -6,14 +6,14 @@ import control.conexion.dailyFx.ConexionServidorDailyFx;
 public class SenalEstrategia
 {	
 	private IdEstrategia estrategia;
-	private boolean compra;
+	private Boolean compra;
 	private Par par;
 	private int numeroLotes;
 	private double precioEntrada;
-	private double VIX = 0.0d;
-	private double SSI1 = 0.0d;
-	private double SSI2 = 0.0d;
-	private long fechaInicio = 0;
+	private double VIX;
+	private double SSI1;
+	private double SSI2;
+	private long fechaInicio;
 	public transient int numeroTrailing = 0;
 	private int low = Short.MAX_VALUE;
 	private int high = Short.MIN_VALUE;
@@ -21,9 +21,16 @@ public class SenalEstrategia
 	private transient double stop;
 	private transient double stopDaily = -1;
 	
-	
 	public SenalEstrategia()
 	{
+		estrategia = null;
+		compra = null;
+		par = null;
+		precioEntrada = Double.NEGATIVE_INFINITY;
+		VIX = Double.NEGATIVE_INFINITY;
+		SSI1 = Double.NEGATIVE_INFINITY;
+		SSI2 = Double.NEGATIVE_INFINITY;
+		fechaInicio = Long.MIN_VALUE;
 	}
     
 	public SenalEstrategia(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada, double stop)
@@ -39,25 +46,36 @@ public class SenalEstrategia
 		this.fechaInicio = System.currentTimeMillis();
 		this.stop = stop;
 	}
+	
+	public void setEstrategia(IdEstrategia estrategia) 
+	{
+		if(this.estrategia != null)
+			throw new UnsupportedOperationException("Campo estrategia de SenalEstrategia es inmutable");
+		this.estrategia = estrategia;
+	}
     
 	public IdEstrategia getEstrategia()
 	{
 		return estrategia;
 	}
 
-	public void setEstrategia(IdEstrategia estrategia) 
+	public void setCompra(boolean compra) 
 	{
-		this.estrategia = estrategia;
+		if(this.compra != null)
+			throw new UnsupportedOperationException("Campo compra de SenalEstrategia es inmutable");
+		this.compra = compra;
 	}
-
+	
 	public boolean isCompra() 
 	{
 		return compra;
 	}
 
-	public void setCompra(boolean compra) 
+	public void setPar(Par par) 
 	{
-		this.compra = compra;
+		if(this.par != null)
+			throw new UnsupportedOperationException("Campo par de SenalEstrategia es inmutable");
+		this.par = par;
 	}
 
 	public Par getPar() 
@@ -65,49 +83,47 @@ public class SenalEstrategia
 		return par;
 	}
 
-	public void setPar(Par par) 
+	public void setPrecioEntrada(double precioEntrada) 
 	{
-		this.par = par;
+		if(this.precioEntrada != Double.NEGATIVE_INFINITY)
+			throw new UnsupportedOperationException("Campo precioEntrada de SenalEstrategia es inmutable");
+		this.precioEntrada = precioEntrada;
 	}
-
-	public int getNumeroLotes() 
-	{
-		return numeroLotes;
-	}
-
-	public void setNumeroLotes(int numeroLotes) 
-	{
-		this.numeroLotes = numeroLotes;
-	}
-
+	
 	public double getPrecioEntrada() 
 	{
 		return precioEntrada;
 	}
 
-	public void setPrecioEntrada(double precioEntrada) 
+	public void setVIX(double vIX) 
 	{
-		this.precioEntrada = precioEntrada;
+		if(this.VIX != Double.NEGATIVE_INFINITY)
+			throw new UnsupportedOperationException("Campo VIX de SenalEstrategia es inmutable");
+		VIX = vIX;
 	}
-
+	
 	public double getVIX() 
 	{
 		return VIX;
 	}
 
-	public void setVIX(double vIX) 
+	public void setSSI1(double sSI1) 
 	{
-		VIX = vIX;
+		if(this.SSI1 != Double.NEGATIVE_INFINITY)
+			throw new UnsupportedOperationException("Campo SSI1 de SenalEstrategia es inmutable");
+		SSI1 = sSI1;
 	}
-
+	
 	public double getSSI1() 
 	{
 		return SSI1;
 	}
 
-	public void setSSI1(double sSI1) 
+	public void setSSI2(double sSI2) 
 	{
-		SSI1 = sSI1;
+		if(this.SSI2 != Double.NEGATIVE_INFINITY)
+			throw new UnsupportedOperationException("Campo SSI2 de SenalEstrategia es inmutable");
+		SSI2 = sSI2;
 	}
 
 	public double getSSI2() 
@@ -115,19 +131,31 @@ public class SenalEstrategia
 		return SSI2;
 	}
 
-	public void setSSI2(double sSI2) 
-	{
-		SSI2 = sSI2;
-	}
-
 	public void setFechaInicio(long fechaInicio) 
 	{
+		if(this.fechaInicio != Long.MIN_VALUE)
+			throw new UnsupportedOperationException("Campo fechaInicio de SenalEstrategia es inmutable");
 		this.fechaInicio = fechaInicio;
 	}
 
 	public long getFechaInicio() 
 	{
 		return fechaInicio;
+	}
+	
+	public int darGanancia() 
+	{
+		return par.diferenciaPips(precioEntrada, compra);
+	}
+	
+	public synchronized void setNumeroLotes(int numeroLotes) 
+	{
+		this.numeroLotes = numeroLotes;
+	}
+	
+	public synchronized int getNumeroLotes() 
+	{
+		return numeroLotes;
 	}
 	
 	public synchronized void setLow(int low) 
@@ -149,22 +177,17 @@ public class SenalEstrategia
 	{
 		return high;
 	}
-	
-	public int darGanancia() 
-	{
-		return par.diferenciaPips(precioEntrada, compra);
-	}
-	
-	public void setTocoStop(boolean tocoStop) 
+
+	public synchronized void setTocoStop(boolean tocoStop) 
 	{
 		this.tocoStop = tocoStop;
 	}
 
-	public boolean isTocoStop() 
+	public synchronized boolean isTocoStop() 
 	{
 		return tocoStop;
 	}
-
+	
 	public synchronized void ponerStop(double stop) 
 	{
 		this.stop = stop;
@@ -186,7 +209,7 @@ public class SenalEstrategia
 	}
 	
 	@Override
-	public String toString()
+	public synchronized String toString()
 	{
 		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada + " Stop: " + stop; 
 	}

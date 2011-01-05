@@ -2,7 +2,8 @@ package modelo.dailyFx;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 
 import modelo.Estrategia;
 import modelo.SenalEstrategia;
@@ -16,8 +17,9 @@ import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 public class SistemaDailyFX extends SistemaEstrategias
 {
-	private AtomicBoolean cambio = new AtomicBoolean(false);
-	 
+	private boolean cambio = false;
+	protected Condition cambioSistema = lockSistema.newCondition();
+	
 	public SistemaDailyFX()
 	{
 		estrategias = new IdEstrategia[] {IdEstrategia.BREAKOUT1, IdEstrategia.BREAKOUT2, IdEstrategia.RANGE1, IdEstrategia.RANGE2, IdEstrategia.MOMENTUM1, IdEstrategia.MOMENTUM2};
@@ -39,15 +41,8 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			public void run() 
 			{
-				try
-				{
-					Thread.sleep(120000);
-					Error.agregarInfo("Iniciando hilo " + este.getClass().getCanonicalName());
-				}
-				catch(InterruptedException e)
-				{
-					Error.agregar("Error de interrupcion en " + getClass().getCanonicalName());
-				}
+				HiloDaily.sleep(120000);
+				Error.agregarInfo("Iniciando hilo " + este.getClass().getCanonicalName());
 				int numeroErrores = 0;
 				while(true)
 				{
@@ -55,18 +50,20 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{
 						System.gc();
 						verificarConsistencia();
-						Thread.sleep(1000);
-						synchronized(este)
+						HiloDaily.sleep(1000);
+						lockSistema.lock();
+						try
 						{
-							cambio.set(false);
 							iniciarProcesamiento();
 							verificarConsistencia();
-							if(cambio.get())
-								synchronized(cambio)
-								{
-									cambio.notifyAll();
-								}
+							if(cambio)
+								cambioSistema.signalAll();
 						}
+						finally
+						{
+							lockSistema.unlock();
+						}
+						numeroErrores = 0;
 					}
 					catch(Exception e)
 					{	
@@ -75,7 +72,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 							System.gc();
 							numeroErrores++;
 				    		Error.agregar(e.getMessage() + " Error en el ciclo dailyFX");
-				    		Thread.sleep(60000);
+				    		HiloDaily.sleep(60000);
 							if(numeroErrores == 30)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");
@@ -99,25 +96,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 			{
 				while(true)
 				{
-					synchronized(cambio)
-					{
-						long tiempoAnterior = System.currentTimeMillis();
-						cambio.set(false);
-						while(!cambio.get() && ((System.currentTimeMillis() - tiempoAnterior) < 30000))
-						{
-							try 
-							{	
-								cambio.wait(60000);
-							} 
-							catch (InterruptedException e) 
-							{
-								Error.agregar("Excepcion de interrupcion esperando para grabar en: " + este.getClass().getCanonicalName());
-							}
-						}
-						if((System.currentTimeMillis() - tiempoAnterior) > 300000)
-							Error.agregar("Error, ultima persistencia fue hace mas de 5 minutos");
-					}
-					persistir();
+					esperarCambio();
 					ultimaActualizacion = System.currentTimeMillis();
 				}
 			}
@@ -157,12 +136,12 @@ public class SistemaDailyFX extends SistemaEstrategias
 					{
 						actual.agregar(senal.getPar(), true, false, afectada.getNumeroLotes(), 0, afectada);
 						actual.agregar(senal.getPar(), false, senal.isCompra(), senal.getNumeroLotes(), afectada.getPrecioEntrada(), afectada);
-						cambio.set(true);
+						cambio = true;
 					}
 					if(afectada.getNumeroLotes() > senal.getNumeroLotes())
 					{
 						actual.agregar(senal.getPar(), true, false, afectada.getNumeroLotes() - senal.getNumeroLotes(), afectada.getPrecioEntrada(), afectada);
-						cambio.set(true);
+						cambio = true;
 						if(afectada.isCompra())
 						{
 							if(afectada.darStop() < afectada.getPrecioEntrada())
@@ -220,7 +199,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				else
 				{
 					actual.agregar(senal.getPar(), false, senal.isCompra(), senal.getNumeroLotes(), senal.getPrecioEntrada(), afectada);
-					cambio.set(true);
+					cambio = true;
 				}
 			}
 			for(IdEstrategia id : estrategias)
@@ -240,7 +219,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 					if(!encontrada)
 					{
 						actual.agregar(senal.getPar(), true, false, senal.getNumeroLotes(), 0, senal);
-						cambio.set(true);
+						cambio = true;
 					}
 				}
 			}
@@ -251,8 +230,32 @@ public class SistemaDailyFX extends SistemaEstrategias
 		}
 	}
 
+	public void esperarCambio()
+	{
+		long tiempoInicial = System.currentTimeMillis();
+		lockSistema.lock();
+		try
+		{
+			while(!cambio && System.currentTimeMillis() - tiempoInicial < 100000)
+				try 
+				{
+					cambioSistema.await(120000, TimeUnit.MILLISECONDS);
+				}
+				catch (InterruptedException e)
+				{
+					Error.agregar("Error de interrupcion en sistema dailyFx");
+				}
+			cambio = false;
+		}
+		finally
+		{
+			lockSistema.unlock();
+		}
+		persistir();
+	}
+	
 	@Override
-	public synchronized void persistir() 
+	public void persistir() 
 	{
 		verificarConsistencia();
 		for(IdEstrategia e : estrategias)

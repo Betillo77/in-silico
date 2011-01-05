@@ -62,7 +62,7 @@ public class SistemaTechnical extends SistemaEstrategias
 					try
 					{
 						verificarConsistencia();
-						Thread.sleep(10000);
+						HiloDaily.sleep(10000);
 						iniciarProcesamiento();
 						synchronized(this)
 						{
@@ -77,7 +77,7 @@ public class SistemaTechnical extends SistemaEstrategias
 						{
 							numeroErrores++;
 				    		Error.agregar(e.getMessage() + " Error en el ciclo Technical");
-				    		Thread.sleep(60000);
+				    		HiloDaily.sleep(60000);
 							if(numeroErrores == 60)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");

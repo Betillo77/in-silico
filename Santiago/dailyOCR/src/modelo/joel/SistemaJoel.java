@@ -67,7 +67,7 @@ public class SistemaJoel extends SistemaEstrategias
 					try
 					{
 						verificarConsistencia();
-						Thread.sleep(1200000);
+						HiloDaily.sleep(1200000);
 						iniciarProcesamiento();
 						synchronized(this)
 						{
@@ -82,7 +82,7 @@ public class SistemaJoel extends SistemaEstrategias
 						{
 							numeroErrores++;
 				    		Error.agregar(e.getMessage() + " Error en el ciclo Joel");
-				    		Thread.sleep(60000);
+				    		HiloDaily.sleep(60000);
 							if(numeroErrores == 60)
 							{
 								Error.agregar(e.getMessage() + " Error de lectura, intentando reiniciar.");

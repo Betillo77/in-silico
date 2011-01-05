@@ -89,10 +89,10 @@ public class dailyOCR
 							try
 							{
 								Runtime.getRuntime().exec("/home/santiago/backup");
-								Thread.sleep(60000);
+								HiloDaily.sleep(60000);
 								Calendar actual = Calendar.getInstance();
 								Error.agregarInfo("Apagando equipo automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
-								Thread.sleep(60000);
+								HiloDaily.sleep(60000);
 								Runtime.getRuntime().exec("shutdown now -P");
 								System.exit(0);
 							}
@@ -101,7 +101,7 @@ public class dailyOCR
 								System.exit(0);
 							}
 						}
-						Thread.sleep(600000);
+						HiloDaily.sleep(600000);
 						
 					}
 					catch(Exception e)
@@ -118,19 +118,12 @@ public class dailyOCR
 		{
 			public void run() 
 			{
-				try
-				{
-					Thread.sleep(180000);
-				}
-				catch(InterruptedException e)
-				{
-					System.out.println("Error de interrupcion en hilo pares");
-				}
+				HiloDaily.sleep(180000);
 				while(true)
 				{
 					try
 					{
-						Thread.sleep(30000);
+						HiloDaily.sleep(30000);
 						for(Par p : Par.values())
 							p.procesarSenales();
 					}
@@ -162,18 +155,19 @@ public class dailyOCR
 		if(n == sistemas.size())
 		{
 			for(IdProveedor p : IdProveedor.values())
+			{
 				p.darProveedor().escribir();
+				p.darProveedor().cerrar();
+			}
 			for(IdEstrategia e : IdEstrategia.values())
 				e.darEstrategia().escribir();
 			System.exit(0);
 		}
 		else
 		{
-			synchronized(sistemas.get(n))
-			{
-				sistemas.get(n).persistir();
-				salir(n + 1);
-			}
+			sistemas.get(n).lockSistema();
+			sistemas.get(n).persistir();
+			salir(n + 1);
 		}	
 	}
 	
@@ -186,23 +180,15 @@ public class dailyOCR
 			boolean termino = false;
 			while(!termino)
 			{
-				try 
+				int hora = c.get(Calendar.HOUR_OF_DAY);
+				if(hora > 16 && dia == Calendar.SUNDAY)
 				{
-
-					int hora = c.get(Calendar.HOUR_OF_DAY);
-					if(hora > 16 && dia == Calendar.SUNDAY)
-					{
-						termino = true;
-						break;
-					}
-					Thread.sleep(600000);
-					c = Calendar.getInstance();
-					dia = c.get(Calendar.DAY_OF_WEEK);
+					termino = true;
+					break;
 				}
-				catch (InterruptedException e) 
-				{
-					Error.agregar("Excepcion de interrupcion en  metodo main");
-				}
+				HiloDaily.sleep(600000);
+				c = Calendar.getInstance();
+				dia = c.get(Calendar.DAY_OF_WEEK);
 			}
 		}
 		cargarSistemasEstrategias();

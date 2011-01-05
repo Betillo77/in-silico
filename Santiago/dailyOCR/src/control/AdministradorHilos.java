@@ -24,7 +24,7 @@ public class AdministradorHilos
 						{
 							try 
 							{
-								Thread.sleep(300000);
+								HiloDaily.sleep(300000);
 								Calendar c = Calendar.getInstance();
 								int hora = c.get(Calendar.HOUR_OF_DAY);
 								int minuto = c.get(Calendar.MINUTE);

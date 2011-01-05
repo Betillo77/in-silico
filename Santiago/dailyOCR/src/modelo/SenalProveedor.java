@@ -8,21 +8,33 @@ public class SenalProveedor
 {
 	private IdProveedor proveedor;
 	private IdEstrategia estrategia;
+	private Boolean compra;
 	private Par par;
-	private boolean compra;
 	private int magico;
 	
 	public SenalProveedor()
 	{
+		proveedor = null;
+		estrategia = null;
+		compra = null;
+		par = null;
+		magico = 0;
 	}
 	
 	public SenalProveedor(IdProveedor i, IdEstrategia e, Par p, boolean c)
 	{
 		proveedor = i;
 		estrategia = e;
-		par = p;
 		compra = c;
+		par = p;
 		magico = 0;
+	}
+	
+	public void setProveedor(IdProveedor proveedor) 
+	{
+		if(this.proveedor != null)
+			throw new UnsupportedOperationException("Campo proveedor de SenalProveedor es inmutable");
+		this.proveedor = proveedor;
 	}
 	
 	public IdProveedor getProveedor() 
@@ -30,9 +42,11 @@ public class SenalProveedor
 		return proveedor;
 	}
 	
-	public void setProveedor(IdProveedor proveedor) 
+	public void setEstrategia(IdEstrategia estrategia) 
 	{
-		this.proveedor = proveedor;
+		if(this.estrategia != null)
+			throw new UnsupportedOperationException("Campo estrategia de SenalProveedor es inmutable");
+		this.estrategia = estrategia;
 	}
 	
 	public IdEstrategia getEstrategia() 
@@ -40,9 +54,11 @@ public class SenalProveedor
 		return estrategia;
 	}
 	
-	public void setEstrategia(IdEstrategia estrategia) 
+	public void setCompra(boolean compra) 
 	{
-		this.estrategia = estrategia;
+		if(this.compra != null)
+			throw new UnsupportedOperationException("Campo compra de SenalProveedor es inmutable");
+		this.compra = compra;
 	}
 	
 	public boolean isCompra() 
@@ -50,9 +66,11 @@ public class SenalProveedor
 		return compra;
 	}
 	
-	public void setCompra(boolean compra) 
+	public void setPar(Par par) 
 	{
-		this.compra = compra;
+		if(this.par != null)
+			throw new UnsupportedOperationException("Campo par de SenalProveedor es inmutable");
+		this.par = par;
 	}
 	
 	public Par getPar() 
@@ -60,21 +78,6 @@ public class SenalProveedor
 		return par;
 	}
 	
-	public void setPar(Par par) 
-	{
-		this.par = par;
-	}
-	
-	public int getMagico() 
-	{
-		return magico;
-	}
-	
-	public void setMagico(int magico) 
-	{
-		this.magico = magico;
-	}
-
 	private SenalEstrategia darSenalEstrategia()
 	{
 		SenalEstrategia posible = estrategia.darEstrategia().tienePar(par);
@@ -90,6 +93,7 @@ public class SenalProveedor
 			return Integer.MIN_VALUE;
 		return esta.darGanancia();
 	}
+	
 	public double darPrecioEntrada()
 	{
 		SenalEstrategia esta = darSenalEstrategia();
@@ -98,24 +102,37 @@ public class SenalProveedor
 		return esta.getPrecioEntrada();
 	}
 
-	public double darStop() {
+	public double darStop() 
+	{
 		SenalEstrategia esta = darSenalEstrategia();
 		if(esta == null)
 			return 0;
 		return esta.darStop();
 	}
 	
-	public double darStopDaily() {
+	public double darStopDaily() 
+	{
 		SenalEstrategia esta = darSenalEstrategia();
 		if(esta == null)
 			return 0;
 		return esta.darStopDaily();
 	}
 
-	public boolean darTocoStop() {
+	public boolean darTocoStop()
+	{
 		SenalEstrategia esta = darSenalEstrategia();
 		if(esta == null)
 			return false;
 		return esta.isTocoStop();
+	}
+	
+	public synchronized void setMagico(int magico) 
+	{
+		this.magico = magico;
+	}
+
+	public synchronized int getMagico() 
+	{
+		return magico;
 	}
 }

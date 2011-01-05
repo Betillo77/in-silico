@@ -136,38 +136,50 @@ public enum Par
 		return esCruceYen() ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000);
 	}
 	
-	public synchronized void agregarSenal(SenalEstrategia s)
+	public void agregarSenal(SenalEstrategia s)
 	{
-		senales.add(s);
-	}
-	
-	public synchronized void eliminarSenal(SenalEstrategia s)
-	{
-		for(Iterator <SenalEstrategia> it = senales.iterator(); it.hasNext();)
+		synchronized(senales)
 		{
-			SenalEstrategia s1 = it.next();
-			if(s == s1)
-				it.remove();
+			senales.add(s);
 		}
 	}
 	
-	public synchronized void procesarSenales()
+	public void eliminarSenal(SenalEstrategia s)
 	{
-		if(Math.abs(darPrecioActual(true) - 0.0d) < 10e-4d  || Math.abs(darPrecioActual(false) - 0.0d) < 10e-4d)
-			return;
-		for(SenalEstrategia s : senales)
+		synchronized(senales)
 		{
-			s.setLow(Math.min(s.getLow(), diferenciaPips(s)));
-			s.setHigh(Math.max(s.getHigh(), diferenciaPips(s)));
+			for(Iterator <SenalEstrategia> it = senales.iterator(); it.hasNext();)
+			{
+				SenalEstrategia s1 = it.next();
+				if(s == s1)
+					it.remove();
+			}
+		}
+	}
+	
+	public void procesarSenales()
+	{
+		synchronized(senales)
+		{
+			if(Math.abs(darPrecioActual(true) - 0.0d) < 10e-4d  || Math.abs(darPrecioActual(false) - 0.0d) < 10e-4d)
+				return;
+			for(SenalEstrategia s : senales)
+			{
+				s.setLow(Math.min(s.getLow(), diferenciaPips(s)));
+				s.setHigh(Math.max(s.getHigh(), diferenciaPips(s)));
+			}
 		}
 	}
 	
 	public synchronized String debugSenales()
 	{
-		String debug = "";
-		for(SenalEstrategia s : senales)
-			debug += s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh() + "\n";
-		return debug;
+		synchronized(senales)
+		{
+			String debug = "";
+			for(SenalEstrategia s : senales)
+				debug += s.getEstrategia().toString() + " " + s.getPar().toString() + " " + s.getPrecioEntrada() + " " + s.isCompra() + " " + s.getLow() + " " + s.getHigh() + "\n";
+			return debug;
+		}
 	}
 	
 	public int spread()
