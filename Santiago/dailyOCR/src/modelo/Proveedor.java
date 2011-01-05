@@ -260,10 +260,6 @@ public class Proveedor
 				} 
 			} 
 			escritor.terminarCiclo(); 
-			for(Par p : Par.values())
-			{
-				mensaje += p.debugSenales();
-			}
 			if(!mensajeError.equals("")) 
 				Error.agregar(mensajeError); 
 			if(enviarMensaje) 
