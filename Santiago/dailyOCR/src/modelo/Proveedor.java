@@ -62,7 +62,7 @@ public class Proveedor
 	protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
 	protected final Lock read = rwl.readLock();
 	protected final Lock write = rwl.writeLock();
-	protected final Condition wait = read.newCondition();
+	protected final Condition wait = write.newCondition();
 	
 	public Proveedor()
 	{
@@ -368,7 +368,7 @@ public class Proveedor
 	
 	public void esperarCambio()
 	{
-		read.lock();
+		write.lock();
 		try
 		{
 			long tiempoInicial = System.currentTimeMillis();
@@ -386,7 +386,7 @@ public class Proveedor
 		}
 		finally
 		{
-			read.unlock();
+			write.unlock();
 		}
 	}
 	
