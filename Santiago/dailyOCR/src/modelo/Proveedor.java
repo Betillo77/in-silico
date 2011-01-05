@@ -61,7 +61,7 @@ public class Proveedor
 	protected boolean cambio;
 	protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
 	protected final Lock read = rwl.readLock();
-	protected final Lock write = rwl.writeLock();
+	protected final Lock write = HiloDaily.darWriteLockSeguro(rwl);
 	protected final Condition wait = write.newCondition();
 	
 	public Proveedor()

@@ -211,8 +211,15 @@ public class SenalEstrategia
 	}
 	
 	@Override
-	public synchronized String toString()
+	public String toString()
 	{
+		int numeroLotes;
+		double stop;
+		synchronized(this)
+		{
+			numeroLotes = this.numeroLotes;
+			stop = this.stop;
+		}
 		return estrategia + " " + (compra ? "Compra" : "Venta") + " " + numeroLotes + " Lotes de " + par + " a: " + precioEntrada + " Stop: " + stop; 
 	}
 }

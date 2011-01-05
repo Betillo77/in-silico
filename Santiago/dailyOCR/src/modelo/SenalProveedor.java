@@ -125,7 +125,7 @@ public class SenalProveedor
 		SenalEstrategia esta = darSenalEstrategia();
 		if(esta == null)
 			return false;
-		return esta.isTocoStop();
+		return esta.isTocoStop() || esta.getLow() < -150;
 	}
 	
 	public synchronized void setMagico(int magico) 

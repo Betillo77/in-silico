@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import modelo.Proveedor.IdProveedor;
 import control.Error;
+import control.HiloDaily;
 import control.conexion.ConexionMySql;
 
 public class Estrategia
@@ -42,7 +43,7 @@ public class Estrategia
 	protected List <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 	protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
 	protected final Lock read = rwl.readLock();
-	protected final Lock write = rwl.writeLock();
+	protected final Lock write = HiloDaily.darWriteLockSeguro(rwl);
 
 	public Estrategia()
 	{
