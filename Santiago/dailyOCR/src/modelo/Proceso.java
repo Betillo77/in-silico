@@ -152,7 +152,6 @@ public class Proceso
 				String resultado = socketIn.readLine();
 				if(resultado.equals(""))
 					resultado = " ";
-				socket.wait(20000);
 				return resultado;
 			}
 			finally

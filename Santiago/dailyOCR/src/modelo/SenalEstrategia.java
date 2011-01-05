@@ -6,7 +6,8 @@ import control.conexion.dailyFx.ConexionServidorDailyFx;
 public class SenalEstrategia
 {	
 	private IdEstrategia estrategia;
-	private Boolean compra;
+	private boolean compra;
+	private boolean compraPuesta;
 	private Par par;
 	private int numeroLotes;
 	private double precioEntrada;
@@ -24,13 +25,14 @@ public class SenalEstrategia
 	public SenalEstrategia()
 	{
 		estrategia = null;
-		compra = null;
+		compra = false;
 		par = null;
 		precioEntrada = Double.NEGATIVE_INFINITY;
 		VIX = Double.NEGATIVE_INFINITY;
 		SSI1 = Double.NEGATIVE_INFINITY;
 		SSI2 = Double.NEGATIVE_INFINITY;
 		fechaInicio = Long.MIN_VALUE;
+		compraPuesta = false;
 	}
     
 	public SenalEstrategia(IdEstrategia estrategia, boolean compra, Par par, int numeroLotes, double precioEntrada, double stop)
@@ -45,6 +47,7 @@ public class SenalEstrategia
 		this.SSI2 = par.darPadreDos().darSSI();
 		this.fechaInicio = System.currentTimeMillis();
 		this.stop = stop;
+		this.compraPuesta = true;
 	}
 	
 	public void setEstrategia(IdEstrategia estrategia) 
@@ -61,15 +64,14 @@ public class SenalEstrategia
 
 	public void setCompra(boolean compra) 
 	{
-		if(this.compra != null)
+		if(compraPuesta)
 			throw new UnsupportedOperationException("Campo compra de SenalEstrategia es inmutable");
 		this.compra = compra;
+		this.compraPuesta = true;
 	}
 	
 	public boolean isCompra() 
 	{
-		if(compra == null)
-			return compra = false;
 		return compra;
 	}
 
