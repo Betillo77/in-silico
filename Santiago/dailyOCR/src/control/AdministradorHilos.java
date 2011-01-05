@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import modelo.Par;
+
 public class AdministradorHilos 
 {
 	private static List <HiloDaily> hilos = Collections.synchronizedList(new ArrayList <HiloDaily> ());
@@ -48,6 +50,8 @@ public class AdministradorHilos
 												mensaje += "Ultima actualizacion hace: " + (System.currentTimeMillis() - h.runnable.ultimaActualizacion) + " milisegundos, limite espera: " + h.runnable.intervalorActualizacion + "\n";
 												mensaje += "\n";
 											}
+											for(Par p : Par.values())
+												mensaje += p.debugSenales();
 											Error.agregarInfo(mensaje);
 											mensajeEnviado = true;
 										}
