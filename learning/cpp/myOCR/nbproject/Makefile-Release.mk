@@ -16,7 +16,7 @@ CC=gcc
 CCC=g++
 CXX=g++
 FC=
-AS=
+AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
@@ -33,6 +33,7 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/page.o \
 	${OBJECTDIR}/chrfeatures.o \
+	${OBJECTDIR}/multivariate.o \
 	${OBJECTDIR}/component.o \
 	${OBJECTDIR}/matrix.o \
 	${OBJECTDIR}/transform.o \
@@ -69,52 +70,57 @@ dist/Release/GNU-Linux-x86/myocr: ${OBJECTFILES}
 ${OBJECTDIR}/page.o: nbproject/Makefile-${CND_CONF}.mk page.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/page.o page.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/page.o page.cpp
 
 ${OBJECTDIR}/chrfeatures.o: nbproject/Makefile-${CND_CONF}.mk chrfeatures.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/chrfeatures.o chrfeatures.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/chrfeatures.o chrfeatures.cpp
+
+${OBJECTDIR}/multivariate.o: nbproject/Makefile-${CND_CONF}.mk multivariate.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/multivariate.o multivariate.cpp
 
 ${OBJECTDIR}/component.o: nbproject/Makefile-${CND_CONF}.mk component.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/component.o component.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/component.o component.cpp
 
 ${OBJECTDIR}/matrix.o: nbproject/Makefile-${CND_CONF}.mk matrix.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/matrix.o matrix.cpp
 
 ${OBJECTDIR}/transform.o: nbproject/Makefile-${CND_CONF}.mk transform.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/transform.o transform.cpp
 
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/config.o: nbproject/Makefile-${CND_CONF}.mk config.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/config.o config.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/config.o config.cpp
 
 ${OBJECTDIR}/android.o: nbproject/Makefile-${CND_CONF}.mk android.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/android.o android.cpp
 
 ${OBJECTDIR}/test.o: nbproject/Makefile-${CND_CONF}.mk test.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/test.o test.cpp
 
 ${OBJECTDIR}/documentLayout.o: nbproject/Makefile-${CND_CONF}.mk documentLayout.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/documentLayout.o documentLayout.cpp
+	$(COMPILE.cc) -O2 -I/usr/local/include/opencv -I/usr/include/mysql -I/usr/include/eigen2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/documentLayout.o documentLayout.cpp
 
 # Subprojects
 .build-subprojects:

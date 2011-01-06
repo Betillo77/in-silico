@@ -16,7 +16,7 @@ CC=gcc
 CCC=g++
 CXX=g++
 FC=
-AS=
+AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
@@ -33,6 +33,7 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/page.o \
 	${OBJECTDIR}/chrfeatures.o \
+	${OBJECTDIR}/multivariate.o \
 	${OBJECTDIR}/component.o \
 	${OBJECTDIR}/matrix.o \
 	${OBJECTDIR}/transform.o \
@@ -75,6 +76,11 @@ ${OBJECTDIR}/chrfeatures.o: nbproject/Makefile-${CND_CONF}.mk chrfeatures.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -I/usr/include/opencv/ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/chrfeatures.o chrfeatures.cpp
+
+${OBJECTDIR}/multivariate.o: nbproject/Makefile-${CND_CONF}.mk multivariate.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/opencv/ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/multivariate.o multivariate.cpp
 
 ${OBJECTDIR}/component.o: nbproject/Makefile-${CND_CONF}.mk component.cpp 
 	${MKDIR} -p ${OBJECTDIR}
