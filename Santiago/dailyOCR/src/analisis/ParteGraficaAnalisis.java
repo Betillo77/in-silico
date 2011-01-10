@@ -1,4 +1,4 @@
-package vista;
+package analisis;
 
 import java.awt.Choice;
 import java.awt.Dimension;
@@ -10,13 +10,18 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,10 +40,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import control.AnalisisLogica;
+import control.conexion.ConexionMySql;
 
-public class AnalisisGrafico extends JFrame implements ActionListener, ItemListener {
 
+public class ParteGraficaAnalisis extends JFrame implements ActionListener, ItemListener
+{
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
 	private JLabel ganancia = null;
@@ -70,10 +76,7 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	private JLabel desviacionT = null;
 	private JLabel pips1 = null;
 	
-	/**
-	 * This is the default constructor
-	 */
-	public AnalisisGrafico(IdEstrategia estrategia) 
+	public ParteGraficaAnalisis(IdEstrategia estrategia) 
 	{
 		super();
 		manejador = new ManejadorAnalisisGrafico(estrategia);
@@ -84,60 +87,59 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		setVisible(true);
 	}
 
-	public AnalisisGrafico()
+	public ParteGraficaAnalisis()
 	{
 		super();
 		initialize();
 	}
 	
-	/**
-	 * This method initializes this
-	 * 
-	 * @return void
-	 */
-	private void initialize() {
+	private void initialize() 
+	{
 		this.setSize(1237, 626);
 		this.setContentPane(getJContentPane());
 		this.setTitle(manejador.estrategia.toString());
 		this.addWindowListener(new WindowListener() {
 			
 			@Override
-			public void windowOpened(WindowEvent e) {
+			public void windowOpened(WindowEvent e) 
+			{
 			}
 			
 			@Override
-			public void windowIconified(WindowEvent e) {
+			public void windowIconified(WindowEvent e) 
+			{
 			}
 			
 			@Override
-			public void windowDeiconified(WindowEvent e) {
+			public void windowDeiconified(WindowEvent e) 
+			{
 			}
 			
 			@Override
-			public void windowDeactivated(WindowEvent e) {	
+			public void windowDeactivated(WindowEvent e) 
+			{	
 			}
 			
 			@Override
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+			public void windowClosing(WindowEvent e) 
+			{
+				new ParteGraficaAnalisis(IdEstrategia.values()[((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)).ordinal()]);
 			}
 			
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void windowClosed(WindowEvent e) 
+			{
 			}
 			
 			@Override
-			public void windowActivated(WindowEvent e) {
+			public void windowActivated(WindowEvent e) 
+			{
 			}
 		});
 	}
 
-	/**
-	 * This method initializes jContentPane
-	 * 
-	 * @return javax.swing.JPanel
-	 */
-	private JPanel getJContentPane() {
+	private JPanel getJContentPane()
+	{
 		pips1 = new JLabel();
 		pips1.setBounds(new Rectangle(185, 158, 26, 19));
 		pips1.setText("pips");
@@ -198,8 +200,63 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		ganancia = new JLabel();
 		ganancia.setBounds(new Rectangle(19, 94, 82, 16));
 		ganancia.setText("Ganancia");
+		JButton vix = new JButton("VIX");
+		vix.setBounds(new Rectangle(16, 250, 60, 30));
+		vix.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				abrirGraficaVix();
+			}
+		});
+		JButton ssi = new JButton("SSI");
+		ssi.setBounds(new Rectangle(76, 250, 60, 30));
+		ssi.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				abrirGraficaSSI();
+			}
+		});
+		JButton gananciaSsi = new JButton("SSG");
+		gananciaSsi.setBounds(new Rectangle(136, 250, 60, 30));
+		gananciaSsi.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				abrirGraficaGananciaSSI(Integer.parseInt(JOptionPane.showInputDialog("como?")));
+			}
+		});
+		JButton gananciaAtr = new JButton("ATR");
+		gananciaAtr.setBounds(new Rectangle(196, 250, 60, 30));
+		gananciaAtr.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				abrirGraficaAtr();
+			}
+		});
+		JButton gananciaRsi = new JButton("RSI");
+		gananciaRsi.setBounds(new Rectangle(256, 250, 60, 30));
+		gananciaRsi.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				abrirGraficaRsi();
+			}
+		});
 		jContentPane = new JPanel();
 		jContentPane.setLayout(null);
+		jContentPane.add(vix, null);
+		jContentPane.add(ssi, null);
+		jContentPane.add(gananciaSsi, null);
+		jContentPane.add(gananciaAtr, null);
+		jContentPane.add(gananciaRsi, null);
 		jContentPane.add(ganancia, null);
 		jContentPane.add(numeroTransacciones, null);
 		jContentPane.add(promedioPips, null);
@@ -259,27 +316,236 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		}
 		return jContentPane;
 	}
+	
+	private void abrirGraficaVix()
+	{
+		List <RegistroHistorial> registros = manejador.darRegistros();
+		ArrayList <RegistroHistorial> filtrados = new ArrayList <RegistroHistorial> ();
+		for(RegistroHistorial r : registros)
+			if(r.VIX != 0)
+				filtrados.add(r);
+		registros = filtrados;
+		double[][] vixG = new double[2][registros.size()];
+		for(int i = 0; i < registros.size(); i++)
+		{
+			vixG[1][i] = registros.get(i).ganancia;
+			vixG[0][i] = registros.get(i).VIX;
+		}
+		Grafica.crearChartPuntos("VIX", "Vix", "Ganancia", vixG);
+	}
+	
+	private void abrirGraficaAtr()
+	{
+		List <RegistroHistorial> registros = manejador.darRegistros();
+		ArrayList <RegistroHistorial> filtrados = new ArrayList <RegistroHistorial> ();
+		for(RegistroHistorial r : registros)
+				filtrados.add(r);
+		registros = filtrados;
+		double[][] vixG = new double[2][registros.size()];
+		double sumaMas120 = 0;
+		double sumaMenos120 = 0;
+		int numeroMas120 = 0;
+		int numeroMenos120 = 0;
+		int limite = Integer.parseInt(JOptionPane.showInputDialog("limite"));
+		for(int i = 0; i < registros.size(); i++)
+		{
+			vixG[1][i] = registros.get(i).ganancia;
+			vixG[0][i] = registros.get(i).ATR;
+			if(vixG[0][i] < limite)
+			{
+				sumaMenos120 += vixG[1][i];
+				numeroMenos120++;
+			}
+			else
+			{
+				sumaMas120 += vixG[1][i];
+				numeroMas120++;
+			}
+		}
+		System.out.println("Mas " + limite + " " + sumaMas120 / numeroMas120 + ", total: $" + sumaMas120 + ", con " + numeroMas120);
+		System.out.println("Menos " + limite + " " + sumaMenos120 / numeroMenos120 + ", total: $" + sumaMenos120 + ", con " + numeroMenos120);
+		Grafica.crearChartPuntos("ATR", "ATR", "Ganancia", vixG);
+	}
+	
+	private void abrirGraficaRsi()
+	{
+		List <RegistroHistorial> registros = manejador.darRegistros();
+		ArrayList <RegistroHistorial> filtrados = new ArrayList <RegistroHistorial> ();
+		for(RegistroHistorial r : registros)
+			filtrados.add(r);
+		registros = filtrados;
+		double[][] vixG = new double[2][registros.size()];
+		double sumaMas120 = 0;
+		double sumaMenos120 = 0;
+		int numeroMas120 = 0;
+		int numeroMenos120 = 0;
+		int limite = Integer.parseInt(JOptionPane.showInputDialog("limite"));
+		for(int i = 0; i < registros.size(); i++)
+		{
+			vixG[1][i] = registros.get(i).ganancia;
+			vixG[0][i] = registros.get(i).RSI;
+			if(vixG[0][i] < limite)
+			{
+				sumaMenos120 += vixG[1][i];
+				numeroMenos120++;
+			}
+			else
+			{
+				sumaMas120 += vixG[1][i];
+				numeroMas120++;
+			}
+		}
+		System.out.println("Mas " + limite + " " + sumaMas120 / numeroMas120 + ", total: $" + sumaMas120 + ", con " + numeroMas120);
+		System.out.println("Menos " + limite + " " + sumaMenos120 / numeroMenos120 + ", total: $" + sumaMenos120 + ", con " + numeroMenos120);
+		Grafica.crearChartPuntos("RSI", "RSI", "Ganancia", vixG);
+	}
 
-	/**
-	 * This method initializes choice	
-	 * 	
-	 * @return java.awt.Choice	
-	 */
-	private Choice getChoice() {
-		if (choice == null) {
+	private void abrirGraficaSSI()
+	{
+		List <RegistroHistorial> registros = manejador.darRegistros();
+		ArrayList <RegistroHistorial> filtrados = new ArrayList <RegistroHistorial> ();
+		for(RegistroHistorial r : registros)
+			if(r.SSI1 != 0)
+				filtrados.add(r);
+		registros = filtrados;
+		double numeroSSIP = 0;
+		double numeroSSIPP = 0;
+		double numeroSSIN = 0;
+		double numeroSSINP = 0;
+		double acumSSIP = 0;
+		double acumSSIN = 0;
+		double[][] vixG = new double[2][registros.size()];
+		for(int i = 0; i < registros.size(); i++)
+		{
+			RegistroHistorial este = registros.get(i);
+			double ssi = darSSI(este);
+			int ganancia = este.ganancia;
+			if(ssi >= 0)
+			{
+				numeroSSIP++;
+				if(ganancia >= 0)
+					numeroSSIPP++;
+				acumSSIP += ganancia;
+			}
+			else
+			{
+				numeroSSIN++;
+				if(ganancia >= 0)
+					numeroSSINP++;
+				acumSSIN += ganancia;
+			}
+			vixG[1][i] = ganancia;
+			vixG[0][i] = ssi;
+		}
+		System.out.println((numeroSSIPP / numeroSSIP) * 100 + "% ssi positivo, promedio: " + acumSSIP / numeroSSIP);
+		System.out.println((numeroSSINP / numeroSSIN) * 100 + "% ssi negativo, promedio: " + acumSSIN / numeroSSIN);
+		Grafica.crearChartPuntos("VIX", "Vix", "Ganancia", vixG);
+	}
+
+	private void abrirGraficaGananciaSSI(int como)
+	{
+		List <RegistroHistorial> registros = manejador.darRegistros();
+		ArrayList <RegistroHistorial> filtrados = new ArrayList <RegistroHistorial> ();
+		int nIgnorados = 0;
+		for(RegistroHistorial r : registros)
+			if(r.SSI1 != 0)
+			{
+				double ssi = darSSI(r);
+				if(como == 0 || como == 1 && ssi > 0 || como == 2 && ssi < 0)
+					filtrados.add(r);
+			}
+			else
+				nIgnorados++;
+		System.out.println("Ignorados: " + nIgnorados + ", no ignorados: " + filtrados.size() + ", total: " + (nIgnorados + filtrados.size()));
+		registros = filtrados;
+		double numeroSSIP = 0;
+		double numeroSSIPP = 0;
+		double numeroSSIN = 0;
+		double numeroSSINP = 0;
+		double acumSSIP = 0;
+		double acumSSIN = 0;
+		double acum = 0;
+		double[] vixG = new double[registros.size()];
+		for(int i = 0; i < registros.size(); i++)
+		{
+			RegistroHistorial este = registros.get(i);
+			double ssi = darSSI(este);
+			int ganancia = este.ganancia;
+			if(ssi >= 0)
+			{
+				numeroSSIP++;
+				if(ganancia >= 0)
+					numeroSSIPP++;
+				acumSSIP += ganancia;
+			}
+			else
+			{
+				numeroSSIN++;
+				if(ganancia >= 0)
+					numeroSSINP++;
+				acumSSIN += ganancia;
+			}
+			acum += ganancia;
+			vixG[i] = acum;
+		}
+		System.out.println((numeroSSIPP / numeroSSIP) * 100 + "% ssi positivo, promedio: " + acumSSIP / numeroSSIP);
+		System.out.println((numeroSSINP / numeroSSIN) * 100 + "% ssi negativo, promedio: " + acumSSIN / numeroSSIN);
+		System.out.println(((numeroSSINP  + numeroSSIPP) / (numeroSSIN + numeroSSIP)) * 100 + "%, promedio: " + (acumSSIN + acumSSIP) / (numeroSSIN + numeroSSIP));
+		Grafica.crearChartProgreso("VIX", "Tiempo", "Ganancia", vixG);
+	}
+	
+	
+	static Boolean[][] ssi = new Boolean[2][Par.values().length];
+	
+	private double darSSI(RegistroHistorial r)
+	{
+		double ssi2 = darSSI(r, true);
+		if(ssi[r.compra ? 1 : 0][r.par.ordinal()] == null)
+		{
+			System.out.println(r.par + " " + r.SSI1 + " " + r.SSI2 + " " + (r.compra ? "compra" : "venta") + " " + ssi2);
+			ssi[r.compra ? 1 : 0][r.par.ordinal()] = true;
+		}
+		return ssi2;
+	}
+	
+	private double darSSI(RegistroHistorial r, boolean a)
+	{
+		if(r.par.darPadreUno() == r.par.darPadreDos())
+			return r.compra ? -r.SSI1 : r.SSI1;
+		double ssi1 = r.SSI1;
+		double ssi2 = r.SSI2;
+		switch(r.par.darPadreUno())
+		{
+			case USDCAD:
+			case USDCHF:
+			case USDJPY: ssi1 = -ssi1; break;
+		}
+		switch(r.par.darPadreDos())
+		{
+			case USDCAD:
+			case USDCHF:
+			case USDJPY: ssi2 = -ssi2; break;
+		}
+		double ssi = ssi1 - ssi2;
+		if(r.compra)
+			ssi = -ssi;
+		return ssi;
+	}
+	
+	private Choice getChoice() 
+	{
+		if (choice == null)
+		{
 			choice = new Choice();
 			choice.setBounds(new Rectangle(79, 57, 89, 22));
 		}
 		return choice;
 	}
 
-	/**
-	 * This method initializes unaSemana	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getUnaSemana() {
-		if (unaSemana == null) {
+	private JRadioButton getUnaSemana() 
+	{
+		if (unaSemana == null) 
+		{
 			unaSemana = new JRadioButton();
 			unaSemana.setBounds(new Rectangle(16, 195, 50, 21));
 			unaSemana.setText("1s");
@@ -287,13 +553,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return unaSemana;
 	}
 
-	/**
-	 * This method initializes dosSemanas	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getDosSemanas() {
-		if (dosSemanas == null) {
+	private JRadioButton getDosSemanas()
+	{
+		if (dosSemanas == null) 
+		{
 			dosSemanas = new JRadioButton();
 			dosSemanas.setBounds(new Rectangle(56, 195, 50, 21));
 			dosSemanas.setText("2s");
@@ -301,12 +564,8 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return dosSemanas;
 	}
 
-	/**
-	 * This method initializes tresSemanas	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getTresSemanas() {
+	private JRadioButton getTresSemanas()
+	{
 		if (tresSemanas == null) {
 			tresSemanas = new JRadioButton();
 			tresSemanas.setBounds(new Rectangle(96, 195, 50, 21));
@@ -315,13 +574,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return tresSemanas;
 	}
 
-	/**
-	 * This method initializes unMes	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getUnMes() {
-		if (unMes == null) {
+	private JRadioButton getUnMes() 
+	{
+		if (unMes == null) 
+		{
 			unMes = new JRadioButton();
 			unMes.setBounds(new Rectangle(136, 195, 50, 21));
 			unMes.setText("1m");
@@ -329,13 +585,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return unMes;
 	}
 
-	/**
-	 * This method initializes dosMeses	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getDosMeses() {
-		if (dosMeses == null) {
+	private JRadioButton getDosMeses() 
+	{
+		if (dosMeses == null) 
+		{
 			dosMeses = new JRadioButton();
 			dosMeses.setBounds(new Rectangle(181, 195, 50, 21));
 			dosMeses.setText("2m");
@@ -343,13 +596,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return dosMeses;
 	}
 
-	/**
-	 * This method initializes tresMeses	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getTresMeses() {
-		if (tresMeses == null) {
+	private JRadioButton getTresMeses() 
+	{
+		if (tresMeses == null) 
+		{
 			tresMeses = new JRadioButton();
 			tresMeses.setBounds(new Rectangle(226, 195, 50, 21));
 			tresMeses.setText("3m");
@@ -357,13 +607,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return tresMeses;
 	}
 
-	/**
-	 * This method initializes seisMeses	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getSeisMeses() {
-		if (seisMeses == null) {
+	private JRadioButton getSeisMeses() 
+	{
+		if (seisMeses == null) 
+		{
 			seisMeses = new JRadioButton();
 			seisMeses.setBounds(new Rectangle(16, 215, 50, 21));
 			seisMeses.setText("6m");
@@ -371,13 +618,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return seisMeses;
 	}
 
-	/**
-	 * This method initializes unAnho	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getUnAnho() {
-		if (unAnho == null) {
+	private JRadioButton getUnAnho()
+	{
+		if (unAnho == null) 
+		{
 			unAnho = new JRadioButton();
 			unAnho.setBounds(new Rectangle(56, 215, 50, 21));
 			unAnho.setText("1a");
@@ -385,13 +629,10 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 		return unAnho;
 	}
 
-	/**
-	 * This method initializes todo	
-	 * 	
-	 * @return javax.swing.JRadioButton	
-	 */
-	private JRadioButton getTodo() {
-		if (todo == null) {
+	private JRadioButton getTodo() 
+	{
+		if (todo == null) 
+		{
 			todo = new JRadioButton();
 			todo.setBounds(new Rectangle(96, 215, 60, 21));
 			todo.setText("t");
@@ -400,12 +641,11 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) 
+	{
 		int numero;
 		if(e.getSource() instanceof JCheckBox)
 		{
-	//		Estrategia estrategia = manejador.estrategia.darEstrategia();
-	//TODO		estrategia.cambiarActivo(manejador.divisaActual, ((JCheckBox) e.getSource()).isSelected());
 			return;
 		}
 		if(((AbstractButton) e.getSource()).getText().equals("1s"))
@@ -450,7 +690,8 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	}
 
 	@Override
-	public void itemStateChanged(ItemEvent e) {
+	public void itemStateChanged(ItemEvent e)
+	{
 		Par actual = Par.stringToPar(choice.getSelectedItem());
 		manejador.cambiarObjetos(actual, manejador.tiempoActual);
 		initialize();
@@ -459,9 +700,15 @@ public class AnalisisGrafico extends JFrame implements ActionListener, ItemListe
 	
 	public static void main(String [] args)
 	{
-		new AnalisisGrafico(IdEstrategia.values()[((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)).ordinal()]);
+		new ParteGraficaAnalisis(IdEstrategia.values()[((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)).ordinal()]);
+		Calendar actual = new GregorianCalendar();
+		for(int i = 0; i < 100; i++)
+		{
+			System.out.println(new Date(actual.getTimeInMillis()) + " " + ConexionMySql.darRSI(Par.EURUSD, 27, actual.getTimeInMillis()));
+			actual.setTimeInMillis(actual.getTimeInMillis() - 24 * 60 * 60 * 1000);
+		}
 	}
-}  //  @jve:decl-index=0:visual-constraint="5,7"
+}
 
 
 class ManejadorAnalisisGrafico
@@ -496,7 +743,13 @@ class ManejadorAnalisisGrafico
 	{
 		return (Double) objetos.get(1);
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List <RegistroHistorial> darRegistros()
+	{
+		return (List) objetos.get(7);
+	}
+	
 	public JFreeChart darGraficaProgreso() 
 	{
 		long[][] graficaProgreso = (long[][]) objetos.get(0);

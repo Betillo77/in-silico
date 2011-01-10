@@ -11,21 +11,21 @@ import control.conexion.ConexionServidorMensajes;
 
 public class Error 
 {
-	static int hora = 0;
-	static int numeroErrores = 0;
+	private static int hora = 0;
+	private static int numeroErrores = 0;
 	
-	public static synchronized void agregar(String error)
+	public static void agregar(String error)
 	{
 		enviar("DailyOCR-error", error, true);
 		chequearHora();
 	}
 	
-	public static synchronized void agregarInfo(String info)
+	public static void agregarInfo(String info)
 	{
 		enviar("DailyOCR-info", info, true);
 	}
 
-	public static synchronized void agregarSinCorreo(String error) 
+	public static void agregarSinCorreo(String error) 
 	{
 		enviar("DailyOCR-error", error, false);
 		chequearHora();
@@ -77,7 +77,7 @@ public class Error
 		}
 	}
 	
-	private static void chequearHora() 
+	private static synchronized void chequearHora() 
 	{
 		Calendar c = Calendar.getInstance();
 		int h = c.get(Calendar.HOUR_OF_DAY);

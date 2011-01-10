@@ -64,12 +64,12 @@ public class SistemaTechnical extends SistemaEstrategias
 						verificarConsistencia();
 						HiloDaily.sleep(10000);
 						iniciarProcesamiento();
-						synchronized(this)
-						{
-						    escritor.terminarCiclo();
-							verificarConsistencia();
-							persistir();
-						}
+//						synchronized(this)
+//						{
+//						    escritor.terminarCiclo();
+//							verificarConsistencia();
+//							persistir();
+//						}
 					}
 					catch(Exception e)
 					{	

@@ -113,6 +113,53 @@ public class Proveedor
 		AdministradorHilos.agregarHilo(hiloPersistencia);
 	}
 	
+	protected class ParMagico 
+	{ 
+		Par par; 
+		int magico; 
+		IdEstrategia id;
+		boolean esCompra;
+
+		public ParMagico(Par p, int m, IdEstrategia i, boolean eC) 
+		{ 
+			par = p; 
+			magico = m; 
+			id = i;
+			esCompra = eC; 
+		} 
+		
+		public boolean isTocoStop()
+		{
+			SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
+			if(posible == null)
+				return false;
+			return posible.darTocoStop();
+		}
+		
+		@Override
+		public boolean equals(Object obj)  
+		{ 
+			ParMagico otro = (ParMagico) obj; 
+			return par.equals(otro.par) && magico == otro.magico && esCompra == otro.esCompra; 
+		} 
+		
+		@Override
+		public String toString() 
+		{
+			SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
+			double precioEntrada = posible == null ? 0 : posible.darPrecioEntrada();
+			double trailingStop = posible == null ? 0 : posible.darStop();
+			double stopDaily = posible == null ? 0 : posible.darStopDaily();
+			double precioActual = par.darPrecioActual(esCompra);
+			double precioParActual = esCompra ? precioActual - precioEntrada : precioEntrada - precioActual; 
+			int resultado = precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+			String salida = id + " " + par + " " + magico + " " + esCompra + " Entrada: " + precioEntrada + " Actual: " + precioActual + " P/L: " + resultado;
+			if(stopDaily != -1)
+				salida += " Trailing stop: " + trailingStop + " Stop daily: " + stopDaily;
+			return salida;
+		}
+	} 
+	
 	protected void chequearSenales(boolean enviarMensaje) 
 	{
 		read.lock();
@@ -120,59 +167,11 @@ public class Proveedor
 		{ 
 			ArrayList <SenalProveedor> senalesEste = new ArrayList <SenalProveedor> (); 
 			for(int i = 0; i < senales.length; i++)
-				for(int j = 0; senales[0] != null && j < senales[0].length;j++)
+				for(int j = 0; senales[0] != null && j < senales[0].length; j++)
 					if(senales[i][j] != null)
 						senalesEste.add(senales[i][j]);
 			String mensaje = id + " OK\n"; 
 			String mensajeError = "";
-
-			class ParMagico 
-			{ 
-				Par par; 
-				int magico; 
-				IdEstrategia id;
-				boolean esCompra;
-
-				public ParMagico(Par p, int m, IdEstrategia i, boolean eC) 
-				{ 
-					par = p; 
-					magico = m; 
-					id = i;
-					esCompra = eC; 
-				} 
-				
-				public boolean isTocoStop()
-				{
-					SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
-					if(posible == null)
-						return false;
-					return posible.darTocoStop();
-				}
-				
-				@Override
-				public boolean equals(Object obj)  
-				{ 
-					ParMagico otro = (ParMagico) obj; 
-					return par.equals(otro.par) && magico == otro.magico && esCompra == otro.esCompra; 
-				} 
-				
-				@Override
-				public String toString() 
-				{
-					SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
-					double precioEntrada = posible == null ? 0 : posible.darPrecioEntrada();
-					double trailingStop = posible == null ? 0 : posible.darStop();
-					double stopDaily = posible == null ? 0 : posible.darStopDaily();
-					double precioActual = par.darPrecioActual(esCompra);
-					double precioParActual = esCompra ? precioActual - precioEntrada : precioEntrada - precioActual; 
-					int resultado = precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
-					String salida = id + " " + par + " " + magico + " " + esCompra + " Entrada: " + precioEntrada + " Actual: " + precioActual + " P/L: " + resultado;
-					if(stopDaily != -1)
-						salida += " Trailing stop: " + trailingStop + " Stop daily: " + stopDaily;
-					return salida;
-				}
-			} 
-			
 			ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
 			ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
 			for(SenalProveedor s : senalesEste) 
@@ -191,20 +190,6 @@ public class Proveedor
 				sc.close(); 
 				parMagicosRealesEste.add(new ParMagico(par, magico, null, compra)); 
 			}
-			ArrayList <ParMagico> parMagicosEsteCopia = new ArrayList <ParMagico> (parMagicosEste);
-			for(ParMagico pm : parMagicosRealesEste) 
-				parMagicosEsteCopia.remove(pm); 
-			for(ParMagico pm : parMagicosEste) 
-				if(parMagicosRealesEste.remove(pm)) 
-					mensaje += pm + " OK\n"; 
-			for(ParMagico pm : parMagicosEsteCopia) 
-				if(activos[pm.id.ordinal()][pm.par.ordinal()] && pm.magico != 1000)
-				{
-					boolean tocoStop = pm.isTocoStop();
-					mensaje += tocoStop ? pm + " TOCO STOP\n" : pm + " CERRADO_PREMATURAMENTE\n";
-					if(!pm.isTocoStop())
-						mensajeError += pm + " CERRADO_PREMATURAMENTE\n";
-				}
 			for(ParMagico pm : parMagicosEsteNoAbiertos) 
 			{ 
 				if(activos[pm.id.ordinal()][pm.par.ordinal()] && senales[pm.id.ordinal()][pm.par.ordinal()] != null)
@@ -219,7 +204,14 @@ public class Proveedor
 								mensaje += pm + " NO_ABIERTO\n";
 								mensajeError += pm + " NO_ABIERTO\n";
 							}
+							else
+							{
+								pm.magico = senales[pm.id.ordinal()][pm.par.ordinal()].getMagico();
+								parMagicosEste.add(pm);
+							}
 						}
+						else
+							mensaje += pm + " EN_COLA\n";
 					}
 					finally
 					{
@@ -227,6 +219,20 @@ public class Proveedor
 					}
 				}
 			}
+			ArrayList <ParMagico> parMagicosEsteCopia = new ArrayList <ParMagico> (parMagicosEste);
+			for(ParMagico pm : parMagicosRealesEste) 
+				parMagicosEsteCopia.remove(pm); 
+			for(ParMagico pm : parMagicosEste) 
+				if(parMagicosRealesEste.remove(pm)) 
+					mensaje += pm + " OK\n"; 
+			for(ParMagico pm : parMagicosEsteCopia) 
+				if(activos[pm.id.ordinal()][pm.par.ordinal()] && pm.magico != 1000)
+				{
+					boolean tocoStop = pm.isTocoStop();
+					mensaje += tocoStop ? pm + " TOCO STOP\n" : pm + " CERRADO_PREMATURAMENTE\n";
+					if(!pm.isTocoStop())
+						mensajeError += pm + " CERRADO_PREMATURAMENTE\n";
+				}
 			for(ParMagico pm : parMagicosRealesEste) 
 			{ 
 				SenalProveedor s = null; 

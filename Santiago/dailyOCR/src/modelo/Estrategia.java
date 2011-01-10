@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import analisis.Rangos;
+
 import modelo.Proveedor.IdProveedor;
 import control.Error;
 import control.HiloDaily;
@@ -40,6 +42,7 @@ public class Estrategia
 	}
 	
 	protected IdEstrategia id;
+	protected Rangos rangos = new Rangos();
 	protected List <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 	protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
 	protected final Lock read = rwl.readLock();
@@ -232,6 +235,32 @@ public class Estrategia
 		try
 		{
 			this.id = id;
+		}
+		finally
+		{
+			write.unlock();
+		}
+	}
+	
+	public Rangos getRangos() 
+	{
+		read.lock();
+		try
+		{
+			return rangos;
+		}
+		finally
+		{
+			read.unlock();
+		}
+	}
+
+	public void setRangos(Rangos rangos) 
+	{
+		write.lock();
+		try
+		{
+			this.rangos = rangos;
 		}
 		finally
 		{

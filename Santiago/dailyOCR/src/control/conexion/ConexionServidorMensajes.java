@@ -19,7 +19,7 @@ public class ConexionServidorMensajes
 {
 	private static final String SMTP_HOST_NAME = "gmail-smtp.l.google.com";
 	private static final String SMTP_AUTH_USER = "dailyfxstatus@gmail.com";
-	private static String SMTP_AUTH_PWD = "";
+	private static volatile String SMTP_AUTH_PWD = "";
 	private static final String emailFromAddress = "dailyfxstatus@gmail.com";
 	public static final String passwordRoute = "clave.txt";
 	private static final String[] emailList = {"santigutierrez1@gmail.com"};
@@ -49,9 +49,8 @@ public class ConexionServidorMensajes
 		props.put("mail.smtp.auth", "true");
 		Session session = Session.getDefaultInstance(props, new Authenticator()
 															{
-														
 																@Override
-																public  PasswordAuthentication getPasswordAuthentication() 
+																public PasswordAuthentication getPasswordAuthentication() 
 																{
 																	String username = SMTP_AUTH_USER;
 																	String password = SMTP_AUTH_PWD;
@@ -66,11 +65,9 @@ public class ConexionServidorMensajes
 		 	InternetAddress addressFrom = new InternetAddress(emailFromAddress);
 			msg.setFrom(addressFrom);
 		 	InternetAddress[] addressTo = new InternetAddress[emailList.length];
-		 	for (int i = 0; i < emailList.length ; i++) 
-		 	{
-		 		addressTo[i] = new InternetAddress (emailList [i]) ;
-			}
-		 	msg.setRecipients(Message.RecipientType.TO, addressTo) ;
+		 	for (int i = 0; i < emailList.length; i++) 
+		 		addressTo[i] = new InternetAddress(emailList[i]);
+		 	msg.setRecipients(Message.RecipientType.TO, addressTo);
 		 	msg.setSubject(subject);
 			msg.setContent(message, "text/plain");
 			Transport.send(msg);

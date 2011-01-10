@@ -13,16 +13,14 @@ import modelo.Par;
 import modelo.Estrategia.IdEstrategia;
 import modelo.Proveedor.IdProveedor;
 
-public class FormatoPares extends JPanel {
-
+public class FormatoPares extends JPanel 
+{
 	private static final long serialVersionUID = 1L;
 	private IdProveedor idP;
 	private IdEstrategia idE;
 	
-	/**
-	 * @param owner
-	 */
-	public FormatoPares(IdProveedor i, IdEstrategia ii) {
+	public FormatoPares(IdProveedor i, IdEstrategia ii)
+	{
 		super();
 		idP = i;
 		idE = ii;

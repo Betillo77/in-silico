@@ -1,9 +1,10 @@
-package control;
+package analisis;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import modelo.Par;
@@ -12,24 +13,34 @@ import control.conexion.ConexionMySql;
 
 public class AnalisisLogica 
 {
-	public static ArrayList <Entrada> Buscar(IdEstrategia historialEstrategia, long fecha, Par par)
+	static List <RegistroHistorial> todas = ConexionMySql.darEntradas();
+	
+	static
+	{
+		Collections.sort(todas);
+	}
+	
+	public static List <RegistroHistorial> Buscar(IdEstrategia historialEstrategia, long fecha, Par par)
 	{	
-		List <Entrada> temporal = ConexionMySql.darEntradas(historialEstrategia);
-		Collections.sort(temporal);
-		int indice = Collections.binarySearch(temporal, new Entrada(Par.AUDJPY, fecha, 0));
+		RegistroHistorial buscado = new RegistroHistorial();
+		buscado.fechaApertura = fecha;
+		int indice = Collections.binarySearch(todas, buscado);
 		if(indice < 0)
 		{
 			indice++;
 			indice *= -1;
 		}
-		temporal = temporal.subList(indice, temporal.size());
-		for(Iterator <Entrada> it = temporal.iterator(); it.hasNext();)
+		List <RegistroHistorial> nueva = new LinkedList <RegistroHistorial> ();
+		List <RegistroHistorial> temporal = todas.subList(indice, todas.size());
+		for(Iterator <RegistroHistorial> it = temporal.iterator(); it.hasNext();)
 		{
-			Entrada e = it.next();
-			if(e.par.esDistinto(par))
-				it.remove();
+			RegistroHistorial e = it.next();
+			if(e.par.esDistinto(par) || e.id != historialEstrategia)
+				continue;
+			else
+				nueva.add(e);
 		}
-		return new ArrayList <Entrada> (temporal);
+		return nueva;
 	}
 	
 	public static ArrayList <Object> retornar(IdEstrategia estrategia, Par par, int timeFrame)
@@ -38,8 +49,7 @@ public class AnalisisLogica
 		long [][] datos;
 		double [][] PromedioPips;
 		int transacciones;
-		ArrayList <Entrada> temporal = new ArrayList <Entrada> ();
-		temporal = darHistorialTiempo(estrategia, par, timeFrame);
+		List <RegistroHistorial> temporal = darHistorialTiempo(estrategia, par, timeFrame);
 		if(temporal.size() == 0)
 		{
 			ArrayList <Object> objetos = new ArrayList <Object> ();
@@ -51,6 +61,7 @@ public class AnalisisLogica
 			objetos.add(0.0D);
 			objetos.add(new double[1][0]);
 			objetos.add(new ArrayList <String> ());
+			objetos.add(temporal);
 			return objetos;
 		}
 		int ganancia = 0;
@@ -61,9 +72,9 @@ public class AnalisisLogica
 		{	
 			ganancia += temporal.get(i).ganancia;
 			datos[0][i] = ganancia;
-			datos[1][i] = temporal.get(i).fecha;
+			datos[1][i] = temporal.get(i).fechaApertura;
 			PromedioPips[0][i] = ganancia / (i + 1);
-			PromedioPips[1][i] = temporal.get(i).fecha;	
+			PromedioPips[1][i] = temporal.get(i).fechaApertura;	
 		}
 		promedio = ganancia / temporal.size();
 		transacciones = temporal.size();
@@ -75,16 +86,16 @@ public class AnalisisLogica
 		temporal1 = temporal1 / temporal.size();
 		temporal1 = Math.sqrt(temporal1);
 		desviacion = temporal1;		
-		ArrayList <Entrada> temporal2 = Buscar(estrategia, 0, par);
+		List <RegistroHistorial> temporal2 = Buscar(estrategia, 0, par);
 		Calendar fecha1 = Calendar.getInstance();
-		fecha1.setTimeInMillis(temporal2.get(0).fecha);
+		fecha1.setTimeInMillis(temporal2.get(0).fechaApertura);
 		Calendar actual = fecha1;
 		int acumuladoActual = 0;
 		ArrayList <String> meses = new ArrayList <String> ();
 		for(int i = 0; i < temporal2.size(); i++)
 		{
 			Calendar temp = Calendar.getInstance();
-			temp.setTimeInMillis(temporal2.get(i).fecha);
+			temp.setTimeInMillis(temporal2.get(i).fechaApertura);
 			if(temp.get(Calendar.MONTH) != actual.get(Calendar.MONTH))
 			{
 				meses.add(acumuladoActual + " " + mesComoString(actual) + " " + actual.get(Calendar.YEAR));
@@ -103,13 +114,14 @@ public class AnalisisLogica
 		retornar.add(desviacion);
 		retornar.add(PromedioPips);
 		retornar.add(meses);
+		retornar.add(temporal);
 		return retornar;
 	}
 
-	public static ArrayList <Entrada> darHistorialTiempo(IdEstrategia historialEstrategia, Par par, int timeFrame) 
+	public static List <RegistroHistorial> darHistorialTiempo(IdEstrategia historialEstrategia, Par par, int timeFrame) 
 	{
 		Calendar fecha = Calendar.getInstance();
-		ArrayList <Entrada> temporal;
+		List <RegistroHistorial> temporal;
 		final long semana = 1000 * 60 * 60 * 24 * 7;
 		final long mes = 1000L * 60 * 60 * 24 * 30;
 		switch(timeFrame)
@@ -155,35 +167,6 @@ public class AnalisisLogica
 			case Calendar.NOVEMBER:  return "Noviembre";
 			case Calendar.DECEMBER:  return "Diciembre";
 			default:                 return "ERROR";
-		}
-	}
-
-	public static class Entrada implements Comparable <Entrada>
-	{
-		Par par;
-		long fecha;
-		int ganancia;
-		
-		public Entrada(Par par, long fecha, int ganancia)
-		{
-			this.par = par;
-			this.fecha = fecha;
-			this.ganancia = ganancia;
-		}
-		
-		@Override
-		public String toString()
-		{
-			Calendar fecha = Calendar.getInstance();
-			fecha.setTimeInMillis(this.fecha);
-			String fechaS = fecha.get(Calendar.DAY_OF_MONTH) + "/"  + (1 + fecha.get(Calendar.MONTH)) + "/" + fecha.get(Calendar.YEAR) + " " + fecha.get(Calendar.HOUR_OF_DAY) + ":" + fecha.get(Calendar.MINUTE); 
-			return par + ";" + fechaS + ";" + ganancia;
-		}
-
-		@Override
-		public int compareTo(Entrada o) 
-		{
-			return new Long(fecha).compareTo(o.fecha);
 		}
 	}
 }

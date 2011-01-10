@@ -69,12 +69,12 @@ public class SistemaJoel extends SistemaEstrategias
 						verificarConsistencia();
 						HiloDaily.sleep(1200000);
 						iniciarProcesamiento();
-						synchronized(this)
-						{
-						    escritor.terminarCiclo();
-							verificarConsistencia();
-							persistir();
-						}
+//						synchronized(this)
+//						{
+//						    escritor.terminarCiclo();
+//							verificarConsistencia();
+//							persistir();
+//						}
 					}
 					catch(Exception e)
 					{	

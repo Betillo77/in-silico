@@ -11,7 +11,7 @@ public class AdministradorHilos
 {
 	private static List <HiloDaily> hilos = Collections.synchronizedList(new ArrayList <HiloDaily> ());
 	
-	public static synchronized void agregarHilo(HiloDaily hilo)
+	public static void agregarHilo(HiloDaily hilo)
 	{
 		synchronized(hilos)
 		{

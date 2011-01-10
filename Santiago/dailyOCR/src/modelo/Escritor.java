@@ -338,12 +338,6 @@ public class Escritor
 		lock.lock();
 		try
 		{
-			File archivoEscritura = new File(pathMeta + "log.txt");
-			if(!archivoEscritura.exists())
-				archivoEscritura.createNewFile();
-			FileWriter fw = new FileWriter(archivoEscritura, true);
-			fw.write("Chequeando senales\n");
-			fw.close();
 			debug = false;
 			ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
 			trabajoActual.add(new EntradaEscritor("GBPCHF;LIST;CLOSE;0"));
