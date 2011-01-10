@@ -52,7 +52,6 @@ public class Proceso
 							Error.agregarInfo("Conexion establecida " + path);
 							HiloDaily.sleep(30000);
 							proceso.waitFor();
-							Error.agregar("Reiniciando proceso y socket: " + path);
 							lock.lock();
 							try
 							{
@@ -81,6 +80,7 @@ public class Proceso
 							{
 								lock.unlock();
 							}
+							Error.agregar("Reiniciando proceso y socket: " + path);
 							HiloDaily.sleep(100000);
 						}
 					} 

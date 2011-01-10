@@ -87,7 +87,7 @@ public class Proveedor
 					Calendar c = Calendar.getInstance();
 					int hora = c.get(Calendar.HOUR_OF_DAY);
 					int minuto = c.get(Calendar.MINUTE);
-					if(minuto > 30)
+					if(minuto > 10)
 					{
 						mensajeEnviado = chequeoRealizado = false;
 					}
