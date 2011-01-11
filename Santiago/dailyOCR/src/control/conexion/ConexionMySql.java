@@ -255,7 +255,7 @@ public class ConexionMySql
 				if(rs.next())
 					return new double[] {rs.getDouble("Low"), rs.getDouble("High"), rs.getDouble("Open"), rs.getDouble("Close")};
 				else
-					return new double[] {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
+					return new double[] {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
 			}
 			finally
 			{

@@ -236,6 +236,8 @@ public enum Par
 			}
 			low = Math.min(low, darPrecioActual(true));
 			high = Math.min(high, darPrecioActual(true));
+			if(open == Double.NEGATIVE_INFINITY)
+				open = darPrecioActual(true);
 			Calendar actual = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 			int dia = actual.get(Calendar.DAY_OF_MONTH);
 			if(dia != fecha.get(Calendar.DAY_OF_MONTH))
