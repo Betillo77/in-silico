@@ -48,7 +48,7 @@ public class RangosGrafico extends JPanel
 			}
 		});
 		this.add(box);
-		if(Toolkit.getDefaultToolkit().getScreenSize().width < 1500)
+		if(Toolkit.getDefaultToolkit().getScreenSize().width > 1500)
 		{
 			JFrame nuevo = new JFrame();
 			nuevo.setLayout(new BorderLayout());
