@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -19,22 +20,22 @@ public class ConexionServidorMensajes
 {
 	private static final String SMTP_HOST_NAME = "gmail-smtp.l.google.com";
 	private static final String SMTP_AUTH_USER = "dailyfxstatus@gmail.com";
-	private static volatile String SMTP_AUTH_PWD = "";
 	private static final String emailFromAddress = "dailyfxstatus@gmail.com";
-	public static final String passwordRoute = "clave.txt";
+	private static final String passwordRoute = "clave.txt";
 	private static final String[] emailList = {"santigutierrez1@gmail.com"};
+	private static AtomicReference <String> SMTP_AUTH_PWD = new AtomicReference <String> ("");
 	
 	public static void enviarMensaje(String subject, String message)
 	{
-		java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 		File file = new File(passwordRoute);
 		try
 		{
-			if(SMTP_AUTH_PWD.equals(""))
+			if(SMTP_AUTH_PWD.get().equals(""))
 			{
 				Scanner sc = new Scanner(file);
-				SMTP_AUTH_PWD = sc.next();
+				SMTP_AUTH_PWD.set(sc.next());
 				sc.close();
+				java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 			}
 		} 
 		catch(FileNotFoundException e) 
@@ -53,7 +54,7 @@ public class ConexionServidorMensajes
 																public PasswordAuthentication getPasswordAuthentication() 
 																{
 																	String username = SMTP_AUTH_USER;
-																	String password = SMTP_AUTH_PWD;
+																	String password = SMTP_AUTH_PWD.get();
 																	return new PasswordAuthentication(username, password);
 																}
 															}

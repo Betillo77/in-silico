@@ -4,10 +4,12 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import modelo.Par;
 import modelo.Estrategia.IdEstrategia;
 import analisis.AnalisisLogica;
+import analisis.Rangos;
 
 public class EstrategiaGrafica extends JFrame
 {
@@ -19,6 +21,13 @@ public class EstrategiaGrafica extends JFrame
 	{	
 		super();
 		idEstrategia = id;
+		initialize();
+	}
+	
+	public EstrategiaGrafica()
+	{
+		super();
+		idEstrategia = null;
 		initialize();
 	}
 
@@ -42,9 +51,14 @@ public class EstrategiaGrafica extends JFrame
 		{
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
-				new RangosGrafico(idEstrategia.darEstrategia().getRangos()[par.ordinal()], AnalisisLogica.darRegistrosEstrategia(idEstrategia, par));
+				new RangosGrafico(idEstrategia == null ? new Rangos() : idEstrategia.darEstrategia().getRangos()[par.ordinal()], AnalisisLogica.darRegistrosEstrategia(idEstrategia == null ? IdEstrategia.values()[((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)).ordinal()] : idEstrategia, par));
 			}
 		});
 		return botonNuevo;
+	}
+	
+	public static void main(String[] args)
+	{
+		new EstrategiaGrafica();
 	}
 }

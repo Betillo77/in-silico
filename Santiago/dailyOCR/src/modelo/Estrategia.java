@@ -271,18 +271,21 @@ public class Estrategia
 			write.unlock();
 		}
 	}
+	
+
+	private static LinkedList <SenalEstrategia> senalesCopia = new LinkedList <SenalEstrategia> ();
 
 	public List <SenalEstrategia> darSenales() 
 	{
 		read.lock();
 		try
 		{
-			LinkedList <SenalEstrategia> senalesNuevas = new LinkedList <SenalEstrategia> ();
+			senalesCopia.clear();
 			if(senales == null)
 				return null;
 			for(SenalEstrategia s : senales)
-				senalesNuevas.add(s);
-			return senalesNuevas;
+				senalesCopia.add(s);
+			return senalesCopia;
 		}
 		finally
 		{

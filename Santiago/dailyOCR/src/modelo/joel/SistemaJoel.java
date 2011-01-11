@@ -93,7 +93,7 @@ public class SistemaJoel extends SistemaEstrategias
 				    		Error.agregar(e.getMessage() + " Error en el ciclo Joel");
 						}
 					}
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
 		}, 2400000L);

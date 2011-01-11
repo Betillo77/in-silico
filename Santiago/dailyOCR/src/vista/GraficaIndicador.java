@@ -91,23 +91,24 @@ public class GraficaIndicador extends JPanel
 	    NumberFormat df = DecimalFormat.getNumberInstance();
 	    df.setMaximumFractionDigits(4);
 	    info.promedioPips.setText(df.format(media));
-	    info.numeroTransacciones.setText(nTransacciones + "");
+	    int porcentaje = (int) (((nTransacciones + 0.0d) / registros.size()) * 100);
+	    String espacios = nTransacciones < 10 ? "    " : nTransacciones < 100 ? "   " : nTransacciones < 1000 ? "  " : " ";
+	    String espaciosA = espacios;
+	    espacios += "( " + (porcentaje == 100 ? "" : " ") + porcentaje + "%  )";
+	    info.numeroTransacciones.setText(espaciosA + nTransacciones + espacios);
 	    info.desviacion.setText(df.format(desviacionD));
 	    dataset.addSeries(seriesDentro);
 	    dataset.addSeries(seriesFuera);
 	    JFreeChart chart = ChartFactory.createScatterPlot(indicador + " vs Ganancia ", indicador.toString(), "Ganancia", dataset, PlotOrientation.VERTICAL, false, false, false);
         XYPlot xyplot = chart.getXYPlot();
         Paint gradientpaint = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        double delta = (indicador.darRango().maximo - indicador.darRango().minimo) / 1000;
-        XYBoxAnnotation x = new XYBoxAnnotation(rango.minimo, -100000, rango.minimo + delta, 100000, null, null, gradientpaint);
+        double delta = (indicador.darRango().getMaximo() - indicador.darRango().getMinimo()) / 1000;
+        XYBoxAnnotation x = new XYBoxAnnotation(rango.getMinimo(), -100000, rango.getMinimo() + delta, 100000, null, null, gradientpaint);
         xyplot.getRenderer().addAnnotation(x, Layer.BACKGROUND);
         xyplot.getRenderer().setSeriesPaint(0, Color.BLUE);
-        x = new XYBoxAnnotation(rango.maximo - delta, -100000, rango.maximo, 100000, null, null, gradientpaint);
+        x = new XYBoxAnnotation(rango.getMaximo() - delta, -100000, rango.getMaximo(), 100000, null, null, gradientpaint);
         xyplot.getRenderer().addAnnotation(x, Layer.BACKGROUND);
 	    label.setIcon(new ImageIcon(chart.createBufferedImage(600, 410)));
 		this.setVisible(true);
 	}
-	
-	
-
 }

@@ -42,8 +42,8 @@ public class RangoGrafico extends JPanel {
         nombre.setFont(new java.awt.Font("DejaVu Sans", 0, 18));
         invertido = new javax.swing.JCheckBox();
         invertido.setText("invertido");
-        minimo = new JSlider((int) original.minimo, (int) original.maximo); 
-        minimo.setValue((int) r.minimo);
+        minimo = new JSlider((int) original.getMinimo(), (int) original.getMaximo()); 
+        minimo.setValue((int) rango.getMinimo());
         minimo.setPreferredSize(new Dimension(600, 39));
         minimo.setMinorTickSpacing(Math.min(1, espacio));
         minimo.setMajorTickSpacing(espacio);
@@ -56,18 +56,19 @@ public class RangoGrafico extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) 
 			{
-				rango.minimo = minimo.getValue();	
-				if(minimo.getValue() > rango.maximo)
+				if(minimo.getValue() > rango.getMaximo())
 				{
 					SwingUtilities.invokeLater(new Runnable() 
 					{
                         public void run() 
                         {
-                        	minimo.setValue((int) rango.maximo);
-            				rango.minimo = minimo.getValue();	
+                        	minimo.setValue((int) rango.getMaximo());
+            				rango.setMinimo(minimo.getValue());	
                         }
                     });
-				}		
+				}	
+				else
+					rango.setMinimo(minimo.getValue());
 				SwingUtilities.invokeLater(new Runnable() 
 				{
                     public void run() 
@@ -84,8 +85,8 @@ public class RangoGrafico extends JPanel {
         gridBagConstraints.gridwidth = 3;
         add(minimo, gridBagConstraints);
         add(nombre, new GridBagConstraints());
-        maximo = new JSlider((int) original.minimo, (int) original.maximo);
-        maximo.setValue((int) r.maximo);
+        maximo = new JSlider((int) original.getMinimo(), (int) original.getMaximo());
+        maximo.setValue((int) rango.getMaximo());
         maximo.setPreferredSize(new Dimension(600, 39));
         maximo.setMinorTickSpacing(Math.min(1, espacio));
         maximo.setMajorTickSpacing(espacio);
@@ -98,18 +99,19 @@ public class RangoGrafico extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) 
 			{
-				rango.maximo = maximo.getValue();
-				if(maximo.getValue() < rango.minimo)
+				if(maximo.getValue() < rango.getMinimo())
 				{
 					SwingUtilities.invokeLater(new Runnable() 
 					{
                         public void run() 
                         {
-                        	maximo.setValue((int) rango.minimo);
-                        	rango.maximo = maximo.getValue();
+                        	maximo.setValue((int) rango.getMinimo());
+                        	rango.setMaximo(maximo.getValue());
                         }
                     });
 				}
+				else
+					rango.setMaximo(maximo.getValue());
 				SwingUtilities.invokeLater(new Runnable() 
 				{
                     public void run() 
@@ -130,7 +132,7 @@ public class RangoGrafico extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				rango.invertido = invertido.isSelected();
+				rango.setInvertido(invertido.isSelected());
 				SwingUtilities.invokeLater(new Runnable() 
 				{
                     public void run() 
@@ -148,6 +150,5 @@ public class RangoGrafico extends JPanel {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         add(invertido, gridBagConstraints);
-        
     }
 }

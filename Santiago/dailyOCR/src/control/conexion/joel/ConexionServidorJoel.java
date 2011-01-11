@@ -17,7 +17,6 @@ import javax.mail.event.StoreEvent;
 import javax.mail.event.StoreListener;
 
 import control.Error;
-import control.conexion.ConexionServidorMensajes;
 
 public class ConexionServidorJoel
 {
@@ -49,7 +48,7 @@ public class ConexionServidorJoel
         boolean debug = false;
         boolean showAlert = false;
 		java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-		File file = new File(ConexionServidorMensajes.passwordRoute);
+		File file = new File("clave.txt");
 		String clave = "";
 		try
 		{

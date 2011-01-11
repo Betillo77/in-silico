@@ -62,21 +62,21 @@ public class Escritor
 			{
 				while(true)
 				{
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 					try
 					{
-						ultimaActualizacion = System.currentTimeMillis();
+						ponerUltimaActulizacion(System.currentTimeMillis());
 						ArrayList <EntradaEscritor> leidas = entradas.poll(600000L, TimeUnit.MILLISECONDS);
 						try
 						{						
 							lock.lock();
-							ultimaActualizacion = System.currentTimeMillis();
+							ponerUltimaActulizacion(System.currentTimeMillis());
 							mensajeDebug = "";
 							if(leidas == null)
 								continue;
 							if(debug)
 								mensajeDebug += " Notificado " + pathMeta + " " + System.currentTimeMillis();
-							ultimaActualizacion = System.currentTimeMillis();
+							ponerUltimaActulizacion(System.currentTimeMillis());
 							procesar(leidas);
 						}
 						finally
@@ -84,12 +84,12 @@ public class Escritor
 							lock.unlock();
 						}
 						Error.agregarInfo(mensajeDebug);
-						ultimaActualizacion = System.currentTimeMillis();
+						ponerUltimaActulizacion(System.currentTimeMillis());
 					}
 					catch(Exception e)
 					{
 						Error.agregar("Error en el hilo de escritura en path: " + pathMeta);
-						ultimaActualizacion = System.currentTimeMillis();
+						ponerUltimaActulizacion(System.currentTimeMillis());
 					}
 				}
 			}
@@ -123,13 +123,13 @@ public class Escritor
 			{
 				try 
 				{
-					entradas.put(enConstruccion);
+					entradas.add(enConstruccion);
 					for(EntradaEscritor e : enConstruccion)
 						mensaje += e.linea + ";";
 				} 
-				catch (InterruptedException e)
+				catch (Exception e)
 				{
-					Error.agregar("Error de interrupcion en path: " + pathMeta);
+					Error.agregar(e.getMessage() + ", Error agregando a la cola en path: " + pathMeta);
 				}
 				enConstruccion = new ArrayList <EntradaEscritor> ();
 				if(debug)

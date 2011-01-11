@@ -77,23 +77,26 @@ public class Error
 		}
 	}
 	
-	private static synchronized void chequearHora() 
+	private static void chequearHora() 
 	{
 		Calendar c = Calendar.getInstance();
 		int h = c.get(Calendar.HOUR_OF_DAY);
-		if(hora == h)
+		synchronized(Error.class.getClass())
 		{
-			numeroErrores++;
-		}
-		else
-		{
-			hora = h;
-			numeroErrores = 1;
-		}
-		if(numeroErrores == 200)
-		{
-			Error.agregar("200 errores en una hora, reiniciando");
-			reiniciar();
+			if(hora == h)
+			{
+				numeroErrores++;
+			}
+			else
+			{
+				hora = h;
+				numeroErrores = 1;
+			}
+			if(numeroErrores == 200)
+			{
+				Error.agregar("200 errores en una hora, reiniciando");
+				reiniciar();
+			}
 		}
 	}
 }

@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -47,17 +48,38 @@ public class RangosGrafico extends JPanel
 			}
 		});
 		this.add(box);
-		JFrame nuevo = new JFrame();
-		nuevo.setLayout(new BorderLayout());
-		nuevo.add(this, BorderLayout.WEST);
-		JPanel derecha = new JPanel();
-		derecha.setLayout(new BorderLayout());
-		derecha.add(graficaProgreso, BorderLayout.SOUTH);
-		derecha.add(graficaIndicador, BorderLayout.NORTH);
-		nuevo.add(derecha, BorderLayout.EAST);
-		nuevo.setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
-		nuevo.pack();
-		nuevo.setVisible(true);
-		this.setVisible(true);
+		if(Toolkit.getDefaultToolkit().getScreenSize().width < 1500)
+		{
+			JFrame nuevo = new JFrame();
+			nuevo.setLayout(new BorderLayout());
+			nuevo.add(this, BorderLayout.WEST);
+			JPanel derecha = new JPanel();
+			derecha.setLayout(new BorderLayout());
+			derecha.add(graficaProgreso, BorderLayout.SOUTH);
+			derecha.add(graficaIndicador, BorderLayout.NORTH);
+			nuevo.add(derecha, BorderLayout.EAST);
+			nuevo.setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
+			nuevo.pack();
+			nuevo.setVisible(true);
+			this.setVisible(true);
+		}
+		else
+		{
+			JFrame izquierda = new JFrame();
+			izquierda.add(this);
+			JFrame derecha = new JFrame();
+			JPanel panelDerecha = new JPanel();
+			panelDerecha.setLayout(new BorderLayout());
+			panelDerecha.add(graficaProgreso, BorderLayout.SOUTH);
+			panelDerecha.add(graficaIndicador, BorderLayout.NORTH);
+			derecha.add(panelDerecha);
+			this.setVisible(true);
+			izquierda.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+			izquierda.pack();
+			izquierda.setVisible(true);
+			derecha.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+			derecha.pack();
+			derecha.setVisible(true);
+		}
 	}
 }

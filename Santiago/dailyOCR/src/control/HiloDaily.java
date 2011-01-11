@@ -12,7 +12,7 @@ public class HiloDaily extends Thread
 	{
 		super(((Runnable) r));
 		runnable = r;
-		runnable.intervalorActualizacion = intervalo;
+		runnable.ponerIntervaloActulizacion(intervalo);
 	}
 	
 	public static final Random random = new Random();

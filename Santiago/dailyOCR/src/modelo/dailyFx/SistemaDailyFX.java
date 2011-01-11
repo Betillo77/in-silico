@@ -84,7 +84,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				    		Error.agregar(e.getMessage() + " Error en el ciclo de error DailyFX");
 						}
 					}
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
 		}, 600000L);
@@ -97,7 +97,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 				while(true)
 				{
 					esperarCambio();
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
 			

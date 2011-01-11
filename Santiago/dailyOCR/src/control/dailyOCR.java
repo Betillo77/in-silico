@@ -111,7 +111,7 @@ public class dailyOCR
 					{
 						Error.agregar("Error en el hilo monitor de ConexionServidor");
 					}
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
 		}, 1200000);
@@ -134,7 +134,7 @@ public class dailyOCR
 					{
 						Error.agregar("Error en el monitor de pares " + e.getMessage());
 					}
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 				
 			}

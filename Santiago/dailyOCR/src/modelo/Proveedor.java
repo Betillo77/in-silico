@@ -106,7 +106,7 @@ public class Proveedor
 							chequeoRealizado = true;
 						}
 					}
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
 			

@@ -6,9 +6,9 @@ public class Rangos
 {
 	static public class Rango
 	{
-		public boolean invertido;
-		public double minimo;
-		public double maximo;
+		private boolean invertido;
+		private double minimo;
+		private double maximo;
 		
 		public Rango(double min, double max, boolean invertido)
 		{
@@ -29,6 +29,36 @@ public class Rangos
 		public boolean estaDentro(double resultado)
 		{
 			return !invertido ? minimo <= resultado && resultado <= maximo : minimo >= resultado || resultado >= maximo;
+		}
+
+		public synchronized void setInvertido(boolean invertido) 
+		{
+			this.invertido = invertido;
+		}
+		
+		public synchronized boolean isInvertido() 
+		{
+			return invertido;
+		}
+
+		public synchronized void setMinimo(double minimo) 
+		{
+			this.minimo = minimo;
+		}
+		
+		public synchronized double getMinimo() 
+		{
+			return minimo;
+		}
+
+		public synchronized void setMaximo(double maximo) 
+		{
+			this.maximo = maximo;
+		}
+		
+		public synchronized double getMaximo() 
+		{
+			return maximo;
 		}
 	}
 	

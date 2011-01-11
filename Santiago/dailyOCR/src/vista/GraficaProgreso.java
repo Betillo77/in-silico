@@ -66,7 +66,11 @@ public class GraficaProgreso extends JPanel
 	    NumberFormat df = DecimalFormat.getNumberInstance();
 	    df.setMaximumFractionDigits(4);
 	    info.promedioPips.setText(df.format(media));
-	    info.numeroTransacciones.setText(nTransacciones + "");
+	    int porcentaje = (int) (((nTransacciones + 0.0d) / registros.size()) * 100);
+	    String espacios = nTransacciones < 10 ? "    " : nTransacciones < 100 ? "   " : nTransacciones < 1000 ? "  " : " ";
+	    String espaciosA = espacios;
+	    espacios += "( " + (porcentaje == 100 ? "" : " ") + porcentaje + "%  )";
+	    info.numeroTransacciones.setText(espaciosA + nTransacciones + espacios);
 	    info.desviacion.setText(df.format(desviacionD));
 	    XYSeriesCollection xySeriesCollection = new XYSeriesCollection(series);
 	    JFreeChart chart = ChartFactory.createXYAreaChart("Ganancia vs tiempo", "Ganancia", "Tiempo", xySeriesCollection, PlotOrientation.VERTICAL, false, false, false);

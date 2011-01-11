@@ -88,7 +88,7 @@ public class SistemaTechnical extends SistemaEstrategias
 				    		Error.agregar(e.getMessage() + " Error en el ciclo Technical");
 						}
 					}
-					ultimaActualizacion = System.currentTimeMillis();
+					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
 		}, 600000L);
