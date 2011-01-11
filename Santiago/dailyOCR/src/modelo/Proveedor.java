@@ -308,7 +308,7 @@ public class Proveedor
 						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar.");
 					else
 					{
-						if(!s.isTocoStop())
+						if(!s.isTocoStop() && afectada.getMagico() != 0 && afectada.getMagico() != 1000)
 							escritor.cerrar(afectada);
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
 					}
