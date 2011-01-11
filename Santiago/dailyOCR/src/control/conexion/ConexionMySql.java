@@ -74,7 +74,7 @@ public class ConexionMySql
 						SSI2 = -0.01;
 				}
 				Statement st = conexion.createStatement();
-			    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra,FechaA,GananciaReal,High,Low) VALUES(" + id.ordinal() + "," + convertirFecha(fechaLong) + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + "," + convertirFecha(afectada.getFechaInicio()) + "," + ganancia + "," + afectada.getHigh() + "," + afectada.getLow() + ")");
+			    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra,FechaA,High,Low) VALUES(" + id.ordinal() + "," + convertirFecha(fechaLong) + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + "," + convertirFecha(afectada.getFechaInicio()) + "," + afectada.getHigh() + "," + afectada.getLow() + ")");
 			    st.close();
 			}
 			catch (SQLException s)
@@ -299,7 +299,6 @@ public class ConexionMySql
 		
 		public static SortedMap <Date, EntradaHistoriaPares> darHasta(Par par, Date fecha)
 		{
-			System.out.println(fecha + " " + cache[par.ordinal()].subMap(java.sql.Date.valueOf("1900-01-01"), fecha).lastKey());
 			return cache[par.ordinal()].subMap(java.sql.Date.valueOf("1900-01-01"), fecha);
 		}
 	}

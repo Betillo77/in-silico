@@ -14,6 +14,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import analisis.RegistroHistorial;
+
 import modelo.Estrategia.IdEstrategia;
 import control.AdministradorHilos;
 import control.Error;
@@ -319,7 +321,10 @@ public class Proveedor
 					else
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
-						escritor.abrir(afectada);
+						if(s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra())))
+							afectada.setMagico(1000);
+						else
+							escritor.abrir(afectada);
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
 					}
 				}

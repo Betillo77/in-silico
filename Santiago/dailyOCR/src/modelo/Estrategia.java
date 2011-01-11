@@ -42,7 +42,7 @@ public class Estrategia
 	}
 	
 	protected IdEstrategia id;
-	protected Rangos rangos = new Rangos();
+	protected Rangos[] rangos = new Rangos[Par.values().length];
 	protected List <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 	protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
 	protected final Lock read = rwl.readLock();
@@ -50,11 +50,15 @@ public class Estrategia
 
 	public Estrategia()
 	{
+		for(int i = 0; i < Par.values().length; i++)
+			rangos[i] = new Rangos();
 	}
 	
 	public Estrategia(IdEstrategia id)
 	{
 		this.id = id;
+		for(int i = 0; i < Par.values().length; i++)
+			rangos[i] = new Rangos();
 	}
 	
 	public void agregar(Par par, boolean hit, boolean compra, int numeroLotes, double precioEntrada, SenalEstrategia afectada) 
@@ -242,7 +246,7 @@ public class Estrategia
 		}
 	}
 	
-	public Rangos getRangos() 
+	public Rangos[] getRangos() 
 	{
 		read.lock();
 		try
@@ -255,7 +259,7 @@ public class Estrategia
 		}
 	}
 
-	public void setRangos(Rangos rangos) 
+	public void setRangos(Rangos[] rangos) 
 	{
 		write.lock();
 		try

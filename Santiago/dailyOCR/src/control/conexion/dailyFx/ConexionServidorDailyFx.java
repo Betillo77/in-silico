@@ -3,7 +3,6 @@ package control.conexion.dailyFx;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
-import java.sql.Date;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -312,11 +311,30 @@ public class ConexionServidorDailyFx extends ConexionServidor
     
     public static void main(String[] args)
     {
-    	Calendar actual = Calendar.getInstance();
-    	for(int i = 0; i < 100; i++)
+    	int par = -1;
+    	for(String a : s.split("@"))
     	{
-    		System.out.println(new Date(actual.getTimeInMillis() - 24 * 60 * 60 * 1000) + " " + ConexionMySql.darRSI(Par.EURUSD, 27, actual.getTimeInMillis()));
-    		actual.setTimeInMillis(actual.getTimeInMillis() - 24 * 60 * 60 * 1000);
+    		
+    		String[] pedazos = a.split(";");
+    		String[] pedazos1 = pedazos[0].split("/");
+    		if(pedazos1.length < 2)
+    		{
+    			par++;
+    			continue;
+    		}
+    		int m = sacarInt(pedazos1[0]);
+    		int d = sacarInt(pedazos1[1]);
+    		int y = sacarInt(pedazos1[2]);
+    		if(y < 2000)
+    			y += 2000;
+    		double close = Double.parseDouble(pedazos[1]);
+    		double open = Double.parseDouble(pedazos[2]);
+    		double high = Double.parseDouble(pedazos[3]);
+    		double low = Double.parseDouble(pedazos[4]);
+    		Calendar actual = Calendar.getInstance();
+    		actual.set(y, m - 1, d);
+    		if(actual.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && actual.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)
+    			ConexionMySql.agregarATR(Par.values()[par], y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d, open, close, low, high);
     	}
     }
 }

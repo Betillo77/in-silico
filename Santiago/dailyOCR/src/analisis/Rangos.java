@@ -6,23 +6,29 @@ public class Rangos
 {
 	static public class Rango
 	{
-		double minimo;
-		double maximo;
+		public boolean invertido;
+		public double minimo;
+		public double maximo;
 		
-		public Rango(double min, double max)
+		public Rango(double min, double max, boolean invertido)
 		{
 			minimo = min;
 			maximo = max;
 		}
 		
+		public Rango(double min, double max)
+		{
+			this(min, max, false);
+		}
+		
 		public Rango duplicar()
 		{
-			return new Rango(minimo, maximo);
+			return new Rango(minimo, maximo, invertido);
 		}
 		
 		public boolean estaDentro(double resultado)
 		{
-			return minimo <= resultado && resultado <= maximo;
+			return !invertido ? minimo <= resultado && resultado <= maximo : minimo >= resultado || resultado >= maximo;
 		}
 	}
 	
@@ -51,7 +57,7 @@ public class Rangos
 	{
 		if(!rangos.containsKey(i))
 			rangos.put(i, i.rango.duplicar());
-		return i.rango;
+		return rangos.get(i);
 	}
 	
 	public boolean cumple(RegistroHistorial registro)

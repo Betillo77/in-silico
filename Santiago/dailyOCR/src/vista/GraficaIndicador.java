@@ -1,0 +1,113 @@
+package vista;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Paint;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYBoxAnnotation;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.Layer;
+
+import analisis.Indicador;
+import analisis.Rangos;
+import analisis.RegistroHistorial;
+import analisis.Rangos.Rango;
+
+public class GraficaIndicador extends JPanel
+{
+	private static final long serialVersionUID = 3829875524026705923L;
+	
+	private JLabel label;
+	private List <RegistroHistorial> registros;
+	private Rangos rangos;
+	private InfoGrafica info;
+	boolean unico;
+	
+	public GraficaIndicador(Rango r, List <RegistroHistorial> re, Indicador i, Rangos ra)
+	{
+		registros = re;
+		label = new JLabel();
+        info = new InfoGrafica();
+        unico = true;
+        rangos = ra;
+        setLayout(new BorderLayout());
+        add(info, BorderLayout.CENTER);
+        add(label, BorderLayout.EAST);
+//		pack();
+		setVisible(true);
+		actualizarGrafica(r, i);
+	}
+
+	public void actualizarGrafica(Rango rango, Indicador indicador) 
+	{
+		XYSeriesCollection dataset = new XYSeriesCollection(); 
+	    XYSeries seriesDentro = new XYSeries("Dentro " + indicador);
+	    XYSeries seriesFuera = new XYSeries("Fuera " + indicador);
+	    double acum = 0;
+	    int nTransacciones = 0;
+	    for(RegistroHistorial r : registros)
+	    	if(unico)
+	    	{
+		    	if(rango.estaDentro(indicador.calcular(r)))
+		    	{
+		    		nTransacciones++;
+		    		acum += r.ganancia;
+		    		seriesDentro.add(indicador.calcular(r), r.ganancia);
+		    	}
+		    	else
+		    		seriesFuera.add(indicador.calcular(r), r.ganancia);
+	    	}
+	    	else
+	    	{
+		    	if(rangos.cumple(r))
+		    	{
+		    		nTransacciones++;
+		    		acum += r.ganancia;
+		    		seriesDentro.add(indicador.calcular(r), r.ganancia);
+		    	}
+		    	else
+		    		seriesFuera.add(indicador.calcular(r), r.ganancia);
+	    	}
+	    double media = acum / nTransacciones;
+	    double desviacionD = 0;
+	    for(RegistroHistorial r : registros)
+	    	if(rango.estaDentro(indicador.calcular(r)))
+	    		desviacionD += (r.ganancia - media) * (r.ganancia - media);
+	    desviacionD /= nTransacciones;
+	    desviacionD = Math.sqrt(desviacionD);
+	    info.ganancia.setText(acum + "");
+	    NumberFormat df = DecimalFormat.getNumberInstance();
+	    df.setMaximumFractionDigits(4);
+	    info.promedioPips.setText(df.format(media));
+	    info.numeroTransacciones.setText(nTransacciones + "");
+	    info.desviacion.setText(df.format(desviacionD));
+	    dataset.addSeries(seriesDentro);
+	    dataset.addSeries(seriesFuera);
+	    JFreeChart chart = ChartFactory.createScatterPlot(indicador + " vs Ganancia ", indicador.toString(), "Ganancia", dataset, PlotOrientation.VERTICAL, false, false, false);
+        XYPlot xyplot = chart.getXYPlot();
+        Paint gradientpaint = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+        double delta = (indicador.darRango().maximo - indicador.darRango().minimo) / 1000;
+        XYBoxAnnotation x = new XYBoxAnnotation(rango.minimo, -100000, rango.minimo + delta, 100000, null, null, gradientpaint);
+        xyplot.getRenderer().addAnnotation(x, Layer.BACKGROUND);
+        xyplot.getRenderer().setSeriesPaint(0, Color.BLUE);
+        x = new XYBoxAnnotation(rango.maximo - delta, -100000, rango.maximo, 100000, null, null, gradientpaint);
+        xyplot.getRenderer().addAnnotation(x, Layer.BACKGROUND);
+	    label.setIcon(new ImageIcon(chart.createBufferedImage(600, 410)));
+		this.setVisible(true);
+	}
+	
+	
+
+}

@@ -16,7 +16,8 @@ public class ParteGrafica extends JPanel
 {
 	private static final long serialVersionUID = 7878714258759106938L;
 
-	public ParteGrafica() {
+	public ParteGrafica() 
+	{
 		super();
 		initialize();
 	}
@@ -51,6 +52,7 @@ public class ParteGrafica extends JPanel
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
 				new Tabla(id);
+				new EstrategiaGrafica(id);
 			}
 		});
 		return botonNuevo;

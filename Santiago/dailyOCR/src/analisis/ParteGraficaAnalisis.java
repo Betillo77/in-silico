@@ -40,6 +40,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import analisis.Rangos.Rango;
 import control.conexion.ConexionMySql;
 
 
@@ -227,7 +228,6 @@ public class ParteGraficaAnalisis extends JFrame implements ActionListener, Item
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				abrirGraficaGananciaSSI(Integer.parseInt(JOptionPane.showInputDialog("como?")));
 			}
 		});
 		JButton gananciaAtr = new JButton("ATR");
@@ -331,7 +331,6 @@ public class ParteGraficaAnalisis extends JFrame implements ActionListener, Item
 			vixG[1][i] = registros.get(i).ganancia;
 			vixG[0][i] = registros.get(i).VIX;
 		}
-		Grafica.crearChartPuntos("VIX", "Vix", "Ganancia", vixG);
 	}
 	
 	private void abrirGraficaAtr()
@@ -364,7 +363,6 @@ public class ParteGraficaAnalisis extends JFrame implements ActionListener, Item
 		}
 		System.out.println("Mas " + limite + " " + sumaMas120 / numeroMas120 + ", total: $" + sumaMas120 + ", con " + numeroMas120);
 		System.out.println("Menos " + limite + " " + sumaMenos120 / numeroMenos120 + ", total: $" + sumaMenos120 + ", con " + numeroMenos120);
-		Grafica.crearChartPuntos("ATR", "ATR", "Ganancia", vixG);
 	}
 	
 	private void abrirGraficaRsi()
@@ -397,7 +395,6 @@ public class ParteGraficaAnalisis extends JFrame implements ActionListener, Item
 		}
 		System.out.println("Mas " + limite + " " + sumaMas120 / numeroMas120 + ", total: $" + sumaMas120 + ", con " + numeroMas120);
 		System.out.println("Menos " + limite + " " + sumaMenos120 / numeroMenos120 + ", total: $" + sumaMenos120 + ", con " + numeroMenos120);
-		Grafica.crearChartPuntos("RSI", "RSI", "Ganancia", vixG);
 	}
 
 	private void abrirGraficaSSI()
@@ -439,24 +436,20 @@ public class ParteGraficaAnalisis extends JFrame implements ActionListener, Item
 		}
 		System.out.println((numeroSSIPP / numeroSSIP) * 100 + "% ssi positivo, promedio: " + acumSSIP / numeroSSIP);
 		System.out.println((numeroSSINP / numeroSSIN) * 100 + "% ssi negativo, promedio: " + acumSSIN / numeroSSIN);
-		Grafica.crearChartPuntos("VIX", "Vix", "Ganancia", vixG);
 	}
 
-	private void abrirGraficaGananciaSSI(int como)
+	public void abrirGraficaGananciaSSI(Rango rango)
 	{
 		List <RegistroHistorial> registros = manejador.darRegistros();
 		ArrayList <RegistroHistorial> filtrados = new ArrayList <RegistroHistorial> ();
 		int nIgnorados = 0;
 		for(RegistroHistorial r : registros)
-			if(r.SSI1 != 0)
+			if(rango.estaDentro(darSSI(r)))
 			{
-				double ssi = darSSI(r);
-				if(como == 0 || como == 1 && ssi > 0 || como == 2 && ssi < 0)
-					filtrados.add(r);
+				filtrados.add(r);
 			}
 			else
 				nIgnorados++;
-		System.out.println("Ignorados: " + nIgnorados + ", no ignorados: " + filtrados.size() + ", total: " + (nIgnorados + filtrados.size()));
 		registros = filtrados;
 		double numeroSSIP = 0;
 		double numeroSSIPP = 0;
@@ -488,10 +481,6 @@ public class ParteGraficaAnalisis extends JFrame implements ActionListener, Item
 			acum += ganancia;
 			vixG[i] = acum;
 		}
-		System.out.println((numeroSSIPP / numeroSSIP) * 100 + "% ssi positivo, promedio: " + acumSSIP / numeroSSIP);
-		System.out.println((numeroSSINP / numeroSSIN) * 100 + "% ssi negativo, promedio: " + acumSSIN / numeroSSIN);
-		System.out.println(((numeroSSINP  + numeroSSIPP) / (numeroSSIN + numeroSSIP)) * 100 + "%, promedio: " + (acumSSIN + acumSSIP) / (numeroSSIN + numeroSSIP));
-		Grafica.crearChartProgreso("VIX", "Tiempo", "Ganancia", vixG);
 	}
 	
 	

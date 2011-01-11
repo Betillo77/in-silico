@@ -233,9 +233,9 @@ public enum Par
 			Calendar actual = Calendar.getInstance();
 			int hora = actual.get(Calendar.HOUR_OF_DAY);
 			int minuto = actual.get(Calendar.MINUTE);
-			if(minuto > 5 && open == Double.NEGATIVE_INFINITY)
+			if(minuto > 15 && open == Double.NEGATIVE_INFINITY)
 				open = darPrecioActual(true);
-			if(hora == 19 && minuto < 5 && open != Double.NEGATIVE_INFINITY)
+			if(hora == 19 && minuto < 15 && open != Double.NEGATIVE_INFINITY)
 				cerrarDia();
 		}
 		finally

@@ -20,6 +20,15 @@ public class AnalisisLogica
 		Collections.sort(todas);
 	}
 	
+	public static List <RegistroHistorial> darRegistrosEstrategia(IdEstrategia id, Par par)
+	{
+		LinkedList <RegistroHistorial> aDevolver = new LinkedList <RegistroHistorial> ();
+		for(RegistroHistorial r : todas)
+			if(r.id == id && r.par == par && r.SSI1 != 0)
+				aDevolver.add(r);
+		return aDevolver;
+	}
+	
 	public static List <RegistroHistorial> Buscar(IdEstrategia historialEstrategia, long fecha, Par par)
 	{	
 		RegistroHistorial buscado = new RegistroHistorial();

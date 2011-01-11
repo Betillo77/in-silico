@@ -20,8 +20,20 @@ public class RegistroHistorial implements Comparable <RegistroHistorial>
 	public int low;
 	public int high;
 
-	RegistroHistorial()
+	
+	RegistroHistorial() 
 	{
+	}
+	
+	public RegistroHistorial(Par par, boolean compra)
+	{
+		this.par = par;
+		this.compra = compra;
+		this.SSI1 = par.darPadreUno().darSSI();
+		this.SSI2 = par.darPadreDos().darSSI();
+		this.fechaApertura = System.currentTimeMillis();
+		this.ATR = ConexionMySql.darATR(this.par, 14, this.fechaApertura);
+		this.RSI = ConexionMySql.darRSI(par, 27, this.fechaApertura);
 	}
 	
 	public RegistroHistorial(IdEstrategia id, Par par, boolean compra, long fechaApertura, long fechaCierre, int ganancia, double vIX, double sSI1, double sSI2, int low, int high) 
@@ -32,13 +44,19 @@ public class RegistroHistorial implements Comparable <RegistroHistorial>
 		this.fechaApertura = fechaApertura;
 		this.fechaCierre = fechaCierre;
 		this.ganancia = ganancia;
+		this.low = low;
+		if(low < -200)
+		{
+			this.ganancia = -200;
+		}
+		this.high = high;
 		this.VIX = vIX;
 		this.SSI1 = sSI1;
 		this.SSI2 = sSI2;
-		this.low = low;
-		this.high = high;
-		this.ATR = ConexionMySql.darATR(this.par, 14, this.fechaCierre);
-		this.RSI = ConexionMySql.darRSI(par, 27, this.fechaCierre);
+		this.ATR = ConexionMySql.darATR(this.par, 14, this.fechaApertura);
+		if(ATR < 25)
+			ConexionMySql.darATR(this.par, 14, this.fechaApertura);
+		this.RSI = ConexionMySql.darRSI(par, 27, this.fechaApertura);
 		if(!compra)
 			RSI = 100 - RSI;
 	}
