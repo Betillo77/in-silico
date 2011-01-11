@@ -45,7 +45,6 @@ public class GraficaIndicador extends JPanel
         setLayout(new BorderLayout());
         add(info, BorderLayout.CENTER);
         add(label, BorderLayout.EAST);
-//		pack();
 		setVisible(true);
 		actualizarGrafica(r, i);
 	}
@@ -71,7 +70,7 @@ public class GraficaIndicador extends JPanel
 	    	}
 	    	else
 	    	{
-		    	if(rangos.cumple(r))
+		    	if(rangos.cumple(r, false))
 		    	{
 		    		nTransacciones++;
 		    		acum += r.ganancia;
@@ -83,8 +82,16 @@ public class GraficaIndicador extends JPanel
 	    double media = acum / nTransacciones;
 	    double desviacionD = 0;
 	    for(RegistroHistorial r : registros)
-	    	if(rango.estaDentro(indicador.calcular(r)))
-	    		desviacionD += (r.ganancia - media) * (r.ganancia - media);
+	    	if(unico)
+	    	{
+		    	if(rango.estaDentro(indicador.calcular(r)))
+		    		desviacionD += (r.ganancia - media) * (r.ganancia - media);
+	    	}
+	    	else
+	    	{
+		    	if(rangos.cumple(r, false))
+		    		desviacionD += (r.ganancia - media) * (r.ganancia - media);
+	    	}
 	    desviacionD /= nTransacciones;
 	    desviacionD = Math.sqrt(desviacionD);
 	    info.ganancia.setText(acum + "");

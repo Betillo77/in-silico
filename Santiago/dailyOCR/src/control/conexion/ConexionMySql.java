@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.SortedMap;
+import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -198,7 +199,7 @@ public class ConexionMySql
 		}
 	}
 	
-	public static void agregarATR(Par par, String fecha, double open, double close, double low, double high) 
+	public static void agregarDatosPar(Par par, String fecha, double open, double close, double low, double high) 
 	{
 		lock.lock();
 		try
@@ -206,6 +207,7 @@ public class ConexionMySql
 			Statement st = conexion.createStatement();
 			try
 			{
+				st.executeUpdate("delete from ATR where Par=" + par.ordinal() + " and Fecha='" + fecha + "'");		
 				st.executeUpdate("INSERT ATR (Par,Fecha,Open,Close,Low,High) VALUES(" + par.ordinal() + ",'" + fecha + "'," + open + "," + close + "," + low + "," + high + ")");		
 			}
 			finally
@@ -223,15 +225,52 @@ public class ConexionMySql
 		}
 	}
 	
-	public static void agregarATR(Par par, double open, double close, double low, double high)
+	private static String darFechaCalendar(Calendar actual)
 	{
-		Calendar actual = Calendar.getInstance();
 		int y = actual.get(Calendar.YEAR);
 		int m = actual.get(Calendar.MONTH) + 1;
 		int d = actual.get(Calendar.DAY_OF_MONTH);
-		String fecha = y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d;
+		return y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d;
+	}
+	
+	public static void agregarDatosPar(Par par, double open, double close, double low, double high)
+	{
+		Calendar actual = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		String fecha = darFechaCalendar(actual);
 		if(actual.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && actual.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY)
-			agregarATR(par, fecha, open, close, low, high);
+			agregarDatosPar(par, fecha, open, close, low, high);
+	}
+	
+	
+	public static double[] darDatosPar(Par par, Calendar fechaC)
+	{
+		String fecha = darFechaCalendar(fechaC);
+		lock.lock();
+		try
+		{
+			Statement st = conexion.createStatement();
+			try
+			{
+				ResultSet rs = st.executeQuery("select * from ATR where Par=" + par.ordinal() + " and Fecha='" + fecha + "'");
+				if(rs.next())
+					return new double[] {rs.getDouble("Low"), rs.getDouble("High"), rs.getDouble("Open"), rs.getDouble("Close")};
+				else
+					return new double[] {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
+			}
+			finally
+			{
+				st.close();
+			}
+		}
+		catch (SQLException s)
+		{
+			Error.agregar(s.getMessage() + ": error cargando datos par " + par.toString() + ", fecha " + fecha); 
+			return null;
+		}
+		finally
+		{
+			lock.unlock();
+		}
 	}
 	
 	static class CacheHistoriaPares

@@ -3,6 +3,7 @@ package modelo;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.TimeZone;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -26,6 +27,7 @@ public enum Par
 	private double high = Double.NEGATIVE_INFINITY;
 	private double low = Double.POSITIVE_INFINITY;
 	private double open = Double.NEGATIVE_INFINITY;
+	private Calendar fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 	private LinkedList <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 	private static String mensaje = "";
 	private static int numeroIniciados = 0;
@@ -100,6 +102,10 @@ public enum Par
 				{
 					bidActual = bid;
 					askActual = ask;
+					double[] datosInicio = ConexionMySql.darDatosPar(this, fecha);
+					low = datosInicio[0];
+					high = datosInicio[1];
+					open = datosInicio[2];
 					mensaje += "\nInicializando par " + toString() + ", bid nuevo: " + bid + ", ask nuevo: " + ask;
 				}
 				else
@@ -230,13 +236,12 @@ public enum Par
 			}
 			low = Math.min(low, darPrecioActual(true));
 			high = Math.min(high, darPrecioActual(true));
-			Calendar actual = Calendar.getInstance();
-			int hora = actual.get(Calendar.HOUR_OF_DAY);
-			int minuto = actual.get(Calendar.MINUTE);
-			if(minuto > 15 && open == Double.NEGATIVE_INFINITY)
-				open = darPrecioActual(true);
-			if(hora == 19 && minuto < 15 && open != Double.NEGATIVE_INFINITY)
+			Calendar actual = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+			int dia = actual.get(Calendar.DAY_OF_MONTH);
+			if(dia != fecha.get(Calendar.DAY_OF_MONTH))
 				cerrarDia();
+			else
+				ConexionMySql.agregarDatosPar(this, open, darPrecioActual(true), low, high);
 		}
 		finally
 		{
@@ -249,10 +254,10 @@ public enum Par
 		writeS.lock();
 		try
 		{
-			ConexionMySql.agregarATR(this, open, darPrecioActual(true), low, high);
 			high = Double.NEGATIVE_INFINITY;
 			low = Double.POSITIVE_INFINITY;
-			open = Double.NEGATIVE_INFINITY;
+			open = darPrecioActual(true);
+			fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		}
 		finally
 		{

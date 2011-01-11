@@ -321,7 +321,7 @@ public class Proveedor
 					else
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
-						if(s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra())))
+						if(s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true))
 							afectada.setMagico(1000);
 						else
 							escritor.abrir(afectada);

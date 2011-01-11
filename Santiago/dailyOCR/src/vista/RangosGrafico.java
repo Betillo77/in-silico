@@ -23,14 +23,15 @@ public class RangosGrafico extends JPanel
 	public RangosGrafico(Rangos rangos, List <RegistroHistorial> registros)
 	{
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.setRows(5);
+		gridLayout.setRows(6);
 		gridLayout.setColumns(1);
 		this.setLayout(gridLayout);
 		this.setSize(700, 600);
 		GraficaProgreso graficaProgreso = new GraficaProgreso(rangos, registros);
 		final GraficaIndicador graficaIndicador = new GraficaIndicador(Indicador.VIX.darRango().duplicar(), registros, Indicador.VIX, rangos);
+		GraficaHistorial graficaHistorial = new GraficaHistorial(rangos, registros);
 		for(Indicador i : Indicador.values())
-			this.add(new RangoGrafico(i.darRango().duplicar(), rangos.darRango(i), graficaProgreso, graficaIndicador, i.toString(), i.darEspaciado(), i));
+			this.add(new RangoGrafico(i.darRango().duplicar(), rangos.darRango(i), graficaProgreso, graficaIndicador, graficaHistorial, i));
 		final JCheckBox box = new JCheckBox("Filtrar");
 		box.addActionListener(new ActionListener() 
 		{	

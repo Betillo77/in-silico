@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import modelo.Par;
 import modelo.Estrategia.IdEstrategia;
@@ -18,12 +19,16 @@ public class FormatoPares extends JPanel
 	private static final long serialVersionUID = 1L;
 	private IdProveedor idP;
 	private IdEstrategia idE;
+	private GraficaProgreso graficaProgreso;
+	private GraficaHistorial graficaHistorial;
 	
-	public FormatoPares(IdProveedor i, IdEstrategia ii)
+	public FormatoPares(IdProveedor i, IdEstrategia ii, GraficaProgreso gP, GraficaHistorial gH)
 	{
 		super();
 		idP = i;
 		idE = ii;
+		graficaProgreso = gP;
+		graficaHistorial = gH;
 		initialize();
 	}
 
@@ -75,10 +80,26 @@ public class FormatoPares extends JPanel
 	
 	private void configurar(final Par par, JCheckBox box)
 	{
-    	box.addActionListener(new ActionListener() {
+    	box.addActionListener(new ActionListener()
+    	{
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
 				idP.darProveedor().cambiarActivo(idE, par, ((JCheckBox) e.getSource()).isSelected());
+				SwingUtilities.invokeLater(new Runnable() 
+				{
+                    public void run() 
+                    {
+        				graficaProgreso.actualizarChartProgreso();
+                    }
+                });
+				SwingUtilities.invokeLater(new Runnable() 
+				{
+                    public void run() 
+                    {
+                    	graficaHistorial.actualizarGraficas();
+                    }
+                });
 			}
 		});
 	}

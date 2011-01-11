@@ -90,12 +90,14 @@ public class Rangos
 		return rangos.get(i);
 	}
 	
-	public boolean cumple(RegistroHistorial registro)
+	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo)
 	{
 		for(Indicador i : Indicador.values())
 		{
 			if(!rangos.containsKey(i))
 				rangos.put(i, i.rango.duplicar());
+			if(ignorarInfo && i.esInfo)
+				continue;
 			if(!rangos.get(i).estaDentro(i.calcular(registro)))
 				return false;
 		}

@@ -16,23 +16,19 @@ public class EstrategiaGrafica extends JFrame
 	private static final long serialVersionUID = 7878714258759106938L;
 
 	IdEstrategia idEstrategia;
+	boolean enLinea;
 	
-	public EstrategiaGrafica(IdEstrategia id) 
+	public EstrategiaGrafica(IdEstrategia id, boolean eL) 
 	{	
 		super();
 		idEstrategia = id;
+		enLinea = eL;
 		initialize();
 	}
 	
-	public EstrategiaGrafica()
-	{
-		super();
-		idEstrategia = null;
-		initialize();
-	}
-
 	private void initialize()
 	{
+		new RangosGrafico(new Rangos(), AnalisisLogica.darRegistrosEstrategia(idEstrategia, Par.TODOS));
 		GridLayout gridLayout = new GridLayout(0, 2);
 		this.setLayout(gridLayout);
 		this.setSize(259, 490);
@@ -51,7 +47,7 @@ public class EstrategiaGrafica extends JFrame
 		{
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
-				new RangosGrafico(idEstrategia == null ? new Rangos() : idEstrategia.darEstrategia().getRangos()[par.ordinal()], AnalisisLogica.darRegistrosEstrategia(idEstrategia == null ? IdEstrategia.values()[((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)).ordinal()] : idEstrategia, par));
+				new RangosGrafico(!enLinea ? new Rangos() : idEstrategia.darEstrategia().getRangos()[par.ordinal()], AnalisisLogica.darRegistrosEstrategia(idEstrategia, par));
 			}
 		});
 		return botonNuevo;
@@ -59,6 +55,6 @@ public class EstrategiaGrafica extends JFrame
 	
 	public static void main(String[] args)
 	{
-		new EstrategiaGrafica();
+		new EstrategiaGrafica(IdEstrategia.values()[((IdEstrategia) JOptionPane.showInputDialog(null, "Escoja la estrategia", "Analisis grafico", JOptionPane.QUESTION_MESSAGE, null, IdEstrategia.values(), IdEstrategia.BREAKOUT1)).ordinal()], false);
 	}
 }

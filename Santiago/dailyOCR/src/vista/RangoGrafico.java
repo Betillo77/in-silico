@@ -23,34 +23,39 @@ public class RangoGrafico extends JPanel {
 	
 	private Rango rango;
 	private GraficaProgreso graficaProgreso;
-    private JCheckBox invertido;
     private GraficaIndicador graficaIndicador;
+    private GraficaHistorial graficaHistorial;
+    private JCheckBox invertido;
     private Indicador indicador;
     private JSlider maximo;
     private JSlider minimo;
     private JLabel nombre;
     
-    public RangoGrafico(Rango original, Rango r, GraficaProgreso g, GraficaIndicador gI, String nombreS, int espacio, Indicador i)
+    public RangoGrafico(Rango original, Rango r, GraficaProgreso g, GraficaIndicador gI, GraficaHistorial gH, Indicador i)
     {
     	rango = r;
     	graficaProgreso = g;
-    	indicador = i;
     	graficaIndicador = gI;
+    	graficaHistorial = gH;
+    	indicador = i;
         setLayout(new GridBagLayout());
 		GridBagConstraints gridBagConstraints;
-        nombre = new JLabel(nombreS);
+        nombre = new JLabel(i.toString());
         nombre.setFont(new java.awt.Font("DejaVu Sans", 0, 18));
         invertido = new javax.swing.JCheckBox();
         invertido.setText("invertido");
         minimo = new JSlider((int) original.getMinimo(), (int) original.getMaximo()); 
         minimo.setValue((int) rango.getMinimo());
         minimo.setPreferredSize(new Dimension(600, 39));
-        minimo.setMinorTickSpacing(Math.min(1, espacio));
-        minimo.setMajorTickSpacing(espacio);
+        minimo.setMinorTickSpacing(Math.min(1, i.darEspaciado()));
+        minimo.setMajorTickSpacing(i.darEspaciado());
         minimo.setPaintTicks(true);
         minimo.setSnapToTicks(true);
         minimo.setPaintLabels(true);
-        minimo.setLabelTable(minimo.createStandardLabels(Math.max(espacio, 4)));
+        if(i.tieneLabels())
+        	minimo.setLabelTable(i.darLabels());
+        else
+        	minimo.setLabelTable(minimo.createStandardLabels(Math.max(i.darEspaciado(), 4)));
         minimo.addChangeListener(new ChangeListener() 
         {
 			@Override
@@ -74,7 +79,20 @@ public class RangoGrafico extends JPanel {
                     public void run() 
                     {
         				graficaProgreso.actualizarChartProgreso();
+                    }
+                });
+				SwingUtilities.invokeLater(new Runnable() 
+				{
+                    public void run() 
+                    {
         				graficaIndicador.actualizarGrafica(rango, indicador);
+                    }
+                });
+				SwingUtilities.invokeLater(new Runnable() 
+				{
+                    public void run() 
+                    {
+                    	graficaHistorial.actualizarGraficas();
                     }
                 });
 			}
@@ -88,12 +106,15 @@ public class RangoGrafico extends JPanel {
         maximo = new JSlider((int) original.getMinimo(), (int) original.getMaximo());
         maximo.setValue((int) rango.getMaximo());
         maximo.setPreferredSize(new Dimension(600, 39));
-        maximo.setMinorTickSpacing(Math.min(1, espacio));
-        maximo.setMajorTickSpacing(espacio);
+        maximo.setMinorTickSpacing(Math.min(1, i.darEspaciado()));
+        maximo.setMajorTickSpacing(i.darEspaciado());
         maximo.setPaintTicks(true);
         maximo.setSnapToTicks(true);
         maximo.setPaintLabels(true);
-        maximo.setLabelTable(maximo.createStandardLabels(Math.max(espacio, 4)));
+        if(i.tieneLabels())
+        	maximo.setLabelTable(i.darLabels());
+        else
+        	maximo.setLabelTable(maximo.createStandardLabels(Math.max(i.darEspaciado(), 4)));
         maximo.addChangeListener(new ChangeListener() 
         {
 			@Override
@@ -117,7 +138,20 @@ public class RangoGrafico extends JPanel {
                     public void run() 
                     {
         				graficaProgreso.actualizarChartProgreso();
+                    }
+                });
+				SwingUtilities.invokeLater(new Runnable() 
+				{
+                    public void run() 
+                    {
         				graficaIndicador.actualizarGrafica(rango, indicador);
+                    }
+                });
+				SwingUtilities.invokeLater(new Runnable() 
+				{
+                    public void run() 
+                    {
+                    	graficaHistorial.actualizarGraficas();
                     }
                 });
 			}

@@ -52,7 +52,7 @@ public class ParteGrafica extends JPanel
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
 				new Tabla(id);
-				new EstrategiaGrafica(id);
+				new EstrategiaGrafica(id, true);
 			}
 		});
 		return botonNuevo;
@@ -83,4 +83,3 @@ public class ParteGrafica extends JPanel
 		framePrincipal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 }
-  //  @jve:decl-index=0:visual-constraint="189,13"

@@ -47,7 +47,7 @@ public class GraficaProgreso extends JPanel
 	    int i = 0;
 	    for(RegistroHistorial r : registros)
 	    {
-	    	if(rangos.cumple(r))
+	    	if(rangos.cumple(r, false))
 	    	{
 	    		nTransacciones++;
 	    		acum += r.ganancia;
@@ -58,7 +58,7 @@ public class GraficaProgreso extends JPanel
 	    double media = acum / nTransacciones;
 	    double desviacionD = 0;
 	    for(RegistroHistorial r : registros)
-	    	if(rangos.cumple(r))
+	    	if(rangos.cumple(r, false))
 	    		desviacionD += (r.ganancia - media) * (r.ganancia - media);
 	    desviacionD /= nTransacciones;
 	    desviacionD = Math.sqrt(desviacionD);
