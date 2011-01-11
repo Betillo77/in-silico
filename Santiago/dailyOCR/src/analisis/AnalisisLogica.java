@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import modelo.Par;
 import modelo.Estrategia.IdEstrategia;
@@ -13,17 +14,24 @@ import control.conexion.ConexionMySql;
 
 public class AnalisisLogica 
 {
-	static List <RegistroHistorial> todas = ConexionMySql.darEntradas();
+	static AtomicReference < List <RegistroHistorial> > todas = new AtomicReference < List<RegistroHistorial> > ();
 	
 	static
 	{
-		Collections.sort(todas);
+		todas.set(ConexionMySql.darEntradas());
+		Collections.sort(todas.get());
+	}
+	
+	public static void recargarRegistros()
+	{
+		todas.set(ConexionMySql.darEntradas());
+		Collections.sort(todas.get());
 	}
 	
 	public static List <RegistroHistorial> darRegistrosEstrategia(IdEstrategia id, Par par)
 	{
 		LinkedList <RegistroHistorial> aDevolver = new LinkedList <RegistroHistorial> ();
-		for(RegistroHistorial r : todas)
+		for(RegistroHistorial r : todas.get())
 			if(r.id == id && r.par == par && r.SSI1 != 0)
 				aDevolver.add(r);
 		return aDevolver;
@@ -33,14 +41,14 @@ public class AnalisisLogica
 	{	
 		RegistroHistorial buscado = new RegistroHistorial();
 		buscado.fechaApertura = fecha;
-		int indice = Collections.binarySearch(todas, buscado);
+		int indice = Collections.binarySearch(todas.get(), buscado);
 		if(indice < 0)
 		{
 			indice++;
 			indice *= -1;
 		}
 		List <RegistroHistorial> nueva = new LinkedList <RegistroHistorial> ();
-		List <RegistroHistorial> temporal = todas.subList(indice, todas.size());
+		List <RegistroHistorial> temporal = todas.get().subList(indice, todas.get().size());
 		for(Iterator <RegistroHistorial> it = temporal.iterator(); it.hasNext();)
 		{
 			RegistroHistorial e = it.next();

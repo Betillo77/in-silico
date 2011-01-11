@@ -24,6 +24,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.params.BasicHttpParams;
 
+import analisis.AnalisisLogica;
+
 import control.Error;
 import control.HiloDaily;
 import control.conexion.ConexionServidor;
@@ -284,6 +286,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		    	datos(pagina2);
 		    	cacheSSI = direccion;
 	    		clienteHttp.getConnectionManager().shutdown();
+				AnalisisLogica.recargarRegistros();
 		    	return true;
 		    }
 	    	catch(Exception e)

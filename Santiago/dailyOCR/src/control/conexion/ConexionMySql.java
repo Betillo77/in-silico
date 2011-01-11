@@ -261,7 +261,6 @@ public class ConexionMySql
 		{
 			for(int i = 0; i < Par.values().length; i++)
 				cache[i] = new TreeMap <Date, EntradaHistoriaPares> ();
-			cargarCache();
 		}
 		
 		public static void cargarCache()
@@ -453,6 +452,7 @@ public class ConexionMySql
 	
 	public static LinkedList <RegistroHistorial> darEntradas() 
 	{
+		CacheHistoriaPares.cargarCache();
 		lock.lock();
 		try 
 		{
