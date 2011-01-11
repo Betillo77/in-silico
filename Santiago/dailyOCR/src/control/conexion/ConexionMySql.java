@@ -416,6 +416,7 @@ public class ConexionMySql
 	
 	public static String cargarPersistencia(IdProveedor id) 
 	{
+		lock.lock();
 		try
 		{
 			for(int i = 0; i < 10; i++)
