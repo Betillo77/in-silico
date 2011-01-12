@@ -178,6 +178,7 @@ public class RangoGrafico extends JPanel {
 			}
 		});
         invertido.setText("invertido");
+        invertido.setSelected(rango.isInvertido());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;

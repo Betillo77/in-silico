@@ -15,10 +15,11 @@ public class Rangos implements Serializable
 		private double minimo;
 		private double maximo;
 		
-		public Rango(double min, double max, boolean invertido)
+		public Rango(double min, double max, boolean in)
 		{
 			minimo = min;
 			maximo = max;
+			invertido = in;
 		}
 		
 		public Rango(double min, double max)
