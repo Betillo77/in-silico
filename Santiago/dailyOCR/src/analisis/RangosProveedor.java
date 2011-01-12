@@ -1,6 +1,8 @@
 package analisis;
 
 import modelo.Proveedor.IdProveedor;
+import vista.ParteGrafica;
+import control.Error;
 
 public class RangosProveedor extends Rangos
 {
@@ -15,9 +17,18 @@ public class RangosProveedor extends Rangos
 	@Override
 	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo) 
 	{
-		if(id.darProveedor().darActivo(registro.id, registro.par))
-			return registro.id.darEstrategia().getRangos()[registro.par.ordinal()].cumple(registro, true);
-		else
-			return false;
+		try 
+		{
+			if(ParteGrafica.conexion.darActivoProveedor(id.ordinal(), registro.id.ordinal(), registro.par.ordinal()))
+				return ParteGrafica.conexion.darRangosEstrategia(id.ordinal(), registro.par.ordinal()).cumple(registro, true);
+			else
+				return false;
+		} 
+        catch (Exception e)
+        {        	
+        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	System.exit(0);
+        	return false;
+        }
 	}
 }

@@ -15,6 +15,7 @@ import modelo.Proveedor.IdProveedor;
 import control.Error;
 import control.dailyOCR;
 import control.conexion.ConexionRMI;
+import control.conexion.ConexionServidorRMI;
 
 public class ParteGrafica extends JPanel
 {
@@ -85,7 +86,7 @@ public class ParteGrafica extends JPanel
         {
             String name = "Conexion";
             Registry registry = LocateRegistry.getRegistry("192.168.0.105");
-            conexion = (ConexionRMI) registry.lookup(name);
+            conexion = new ConexionServidorRMI.Local((ConexionRMI) registry.lookup(name));
         } 
         catch (Exception e)
         {        	

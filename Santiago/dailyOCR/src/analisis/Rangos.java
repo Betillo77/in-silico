@@ -65,6 +65,12 @@ public class Rangos implements Serializable
 		{
 			return maximo;
 		}
+		
+		@Override
+		public String toString() {
+			return "Rango [invertido=" + invertido + ", maximo=" + maximo
+					+ ", minimo=" + minimo + "]";
+		}
 	}
 	
 	EnumMap <Indicador, Rango> rangos = new EnumMap <Indicador, Rango> (Indicador.class);
@@ -117,5 +123,10 @@ public class Rangos implements Serializable
 				return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Rangos [rangos=" + rangos + "]";
 	}
 }

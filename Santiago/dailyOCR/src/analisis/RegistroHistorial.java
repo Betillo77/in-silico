@@ -65,8 +65,12 @@ public class RegistroHistorial implements Comparable <RegistroHistorial>
 	}
 	
 	@Override
-	public String toString() 
-	{
-		return par + " " + compra;
+	public String toString() {
+		return "RegistroHistorial [ATR=" + ATR + ", RSI=" + RSI + ", SSI1="
+				+ SSI1 + ", SSI2=" + SSI2 + ", VIX=" + VIX + ", compra="
+				+ compra + ", fechaApertura=" + fechaApertura
+				+ ", fechaCierre=" + fechaCierre + ", ganancia=" + ganancia
+				+ ", high=" + high + ", id=" + id + ", low=" + low + ", par="
+				+ par + "]";
 	}
 }

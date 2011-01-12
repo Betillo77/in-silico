@@ -86,11 +86,11 @@ public class Tabla extends JFrame
 		for(int i = 0; i < listaE.size(); i++)
 		{
 			mostrar[i][0] = listaE.get(i).getEstrategia().toString();
-			mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + listaE.get(i).darTocoStop();
-			mostrar[i][2] = listaE.get(i).getPar().toString();
 			try 
 			{
 				SenalEstrategia esta = ParteGrafica.conexion.darSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
+				mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + esta.isTocoStop();
+				mostrar[i][2] = listaE.get(i).getPar().toString();
 				mostrar[i][3] = df.format(esta.getPrecioEntrada()) + " " + df.format(esta.darStopDaily()) + " " + df.format(esta.darStop());
 				mostrar[i][4] = ParteGrafica.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal()) + " " + listaE.get(i).getMagico();
 			} 
