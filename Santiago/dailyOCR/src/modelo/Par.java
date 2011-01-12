@@ -235,7 +235,7 @@ public enum Par
 				s.setHigh(Math.max(s.getHigh(), diferenciaPips(s)));
 			}
 			low = Math.min(low, darPrecioActual(true));
-			high = Math.min(high, darPrecioActual(true));
+			high = Math.max(high, darPrecioActual(true));
 			if(open == Double.NEGATIVE_INFINITY)
 				open = darPrecioActual(true);
 			Calendar actual = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
