@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import control.conexion.ConexionRMI;
 import control.conexion.ConexionServidorRMI;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
 
@@ -214,7 +215,7 @@ public class dailyOCR
         {
             String name = "Conexion";
             ConexionServidorRMI conexion = new ConexionServidorRMI();
-            ConexionServidorRMI stub = (ConexionServidorRMI) UnicastRemoteObject.exportObject(conexion, 0);
+            ConexionRMI stub = (ConexionRMI) UnicastRemoteObject.exportObject(conexion, 0);
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(name, stub);
         } 
