@@ -2,6 +2,9 @@ package control;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -9,6 +12,7 @@ import java.util.TimeZone;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import control.conexion.ConexionServidorRMI;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
 
 import modelo.Par;
@@ -205,6 +209,20 @@ public class dailyOCR
 		framePrincipal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		Calendar actual = Calendar.getInstance();
 		Error.agregarInfo("Iniciando operaciones automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
+        System.setSecurityManager(new SecurityManager());
+        try 
+        {
+            String name = "Conexion";
+            ConexionServidorRMI conexion = new ConexionServidorRMI();
+            ConexionServidorRMI stub = (ConexionServidorRMI) UnicastRemoteObject.exportObject(conexion, 0);
+            Registry registry = LocateRegistry.getRegistry();
+            registry.rebind(name, stub);
+        } 
+        catch (Exception e)
+        {
+        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	System.exit(0);
+        }
 		cargarEstrategias();
 		cargarProveedores();
 		iniciarHilos();

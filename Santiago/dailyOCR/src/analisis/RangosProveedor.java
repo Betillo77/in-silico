@@ -4,6 +4,8 @@ import modelo.Proveedor.IdProveedor;
 
 public class RangosProveedor extends Rangos
 {
+	private static final long serialVersionUID = 2028970098750246429L;
+	
 	IdProveedor id;
 	
 	public RangosProveedor(IdProveedor i)

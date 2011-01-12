@@ -1,10 +1,14 @@
 package modelo;
 
+import java.io.Serializable;
+
 import modelo.Estrategia.IdEstrategia;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
 
-public class SenalEstrategia
+public class SenalEstrategia implements Serializable
 {	
+	private static final long serialVersionUID = 771057177601632118L;
+	
 	private IdEstrategia estrategia;
 	private boolean compra;
 	private boolean compraPuesta;

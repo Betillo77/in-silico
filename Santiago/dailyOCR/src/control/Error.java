@@ -99,4 +99,9 @@ public class Error
 			}
 		}
 	}
+
+	public static void agregarRMI(String string) {
+		// TODO Auto-generated method stub
+		
+	}
 }

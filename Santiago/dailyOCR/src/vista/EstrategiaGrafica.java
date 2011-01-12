@@ -10,6 +10,7 @@ import modelo.Par;
 import modelo.Estrategia.IdEstrategia;
 import analisis.AnalisisLogica;
 import analisis.Rangos;
+import control.Error;
 
 public class EstrategiaGrafica extends JFrame
 {
@@ -47,7 +48,14 @@ public class EstrategiaGrafica extends JFrame
 		{
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
-				new RangosGrafico(!enLinea ? new Rangos() : idEstrategia.darEstrategia().getRangos()[par.ordinal()], AnalisisLogica.darRegistrosEstrategia(idEstrategia, par));
+				try
+				{
+					new RangosGrafico(!enLinea ? new Rangos() : ParteGrafica.conexion.darRangosEstrategia(idEstrategia.ordinal(), par.ordinal()), AnalisisLogica.darRegistrosEstrategia(idEstrategia, par));
+				}
+				catch(Exception e1)
+				{
+					Error.agregarRMI("Se produjo una excepcion de conexion remota " + e1.getMessage());
+				}
 			}
 		});
 		return botonNuevo;

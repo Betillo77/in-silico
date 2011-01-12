@@ -1,11 +1,16 @@
 package analisis;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 
-public class Rangos 
+public class Rangos implements Serializable
 {
-	static public class Rango
+	private static final long serialVersionUID = -6461964459317876445L;
+
+	static public class Rango implements Serializable
 	{
+		private static final long serialVersionUID = 3013772711096500473L;
+		
 		private boolean invertido;
 		private double minimo;
 		private double maximo;
@@ -88,6 +93,16 @@ public class Rangos
 		if(!rangos.containsKey(i))
 			rangos.put(i, i.rango.duplicar());
 		return rangos.get(i);
+	}
+	
+	public void cambiarRango(Indicador i, Rango rango)
+	{
+		if(!rangos.containsKey(i))
+			rangos.put(i, i.rango.duplicar());
+		Rango aCambiar = rangos.get(i);
+		aCambiar.setMinimo(rango.getMinimo());
+		aCambiar.setMaximo(rango.getMaximo());
+		aCambiar.setInvertido(rango.isInvertido());
 	}
 	
 	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo)

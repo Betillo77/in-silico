@@ -1,11 +1,15 @@
 package modelo;
 
+import java.io.Serializable;
+
 import modelo.Estrategia.IdEstrategia;
 import modelo.Proveedor.IdProveedor;
 import control.Error;
 
-public class SenalProveedor 
+public class SenalProveedor implements Serializable
 {
+	private static final long serialVersionUID = 1205609086382854794L;
+	
 	private IdProveedor proveedor;
 	private IdEstrategia estrategia;
 	private boolean compra;

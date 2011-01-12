@@ -2,6 +2,8 @@ package vista;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,11 +12,15 @@ import javax.swing.WindowConstants;
 
 import modelo.Estrategia.IdEstrategia;
 import modelo.Proveedor.IdProveedor;
+import control.Error;
 import control.dailyOCR;
+import control.conexion.ConexionRMI;
 
 public class ParteGrafica extends JPanel
 {
 	private static final long serialVersionUID = 7878714258759106938L;
+	
+	public static ConexionRMI conexion;
 
 	public ParteGrafica() 
 	{
@@ -74,6 +80,18 @@ public class ParteGrafica extends JPanel
 	
 	public static void main(String[] args)
 	{
+        System.setSecurityManager(new SecurityManager());
+        try 
+        {
+            String name = "Conexion";
+            Registry registry = LocateRegistry.getRegistry("192.168.0.105");
+            conexion = (ConexionRMI) registry.lookup(name);
+        } 
+        catch (Exception e)
+        {        	
+        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	System.exit(0);
+        }
 		JFrame framePrincipal = new JFrame();
 		framePrincipal.setMinimumSize(new Dimension(259, 244));
 		framePrincipal.setSize(259, 244);

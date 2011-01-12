@@ -4,11 +4,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 
+import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import control.Error;
 
 import modelo.Par;
 import modelo.Estrategia.IdEstrategia;
@@ -73,7 +77,15 @@ public class FormatoPares extends JPanel
 		JCheckBox nuevo = new JCheckBox();
 		nuevo.setText(p.toString());
 		nuevo.setSize(new Dimension(30, 30));
-		nuevo.setSelected(idP.darProveedor().darActivo(idE, p));
+		try 
+		{
+			nuevo.setSelected(ParteGrafica.conexion.darActivoProveedor(idP.ordinal(), idE.ordinal(), p.ordinal()));
+		} 
+		catch (RemoteException e) 
+		{
+        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	System.exit(0);
+		}
 		configurar(p, nuevo);
 		return nuevo;
 	}
@@ -85,7 +97,15 @@ public class FormatoPares extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				idP.darProveedor().cambiarActivo(idE, par, ((JCheckBox) e.getSource()).isSelected());
+				try 
+				{
+					ParteGrafica.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), ((AbstractButton) e.getSource()).isSelected());
+				} 
+				catch (RemoteException e1) 
+				{
+		        	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		        	System.exit(0);
+				}
 				SwingUtilities.invokeLater(new Runnable() 
 				{
                     public void run() 

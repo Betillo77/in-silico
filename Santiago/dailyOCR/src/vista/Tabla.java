@@ -11,6 +11,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
+import control.Error;
+
 import modelo.SenalEstrategia;
 import modelo.SenalProveedor;
 import modelo.Estrategia.IdEstrategia;
@@ -42,7 +44,15 @@ public class Tabla extends JFrame
 	private void llenarMostrar(IdEstrategia id)
 	{
 		DecimalFormat df = new DecimalFormat("0.0000");
-		List <SenalEstrategia> listaE = id.darEstrategia().darSenales();
+		List <SenalEstrategia> listaE = null;
+		try
+		{
+			listaE = ParteGrafica.conexion.darSenalesEstrategia(id.ordinal());
+		}
+		catch(Exception e)
+		{
+			Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+		}
 		mostrar = new Object[listaE.size()][5];
 		for(int i = 0; i < listaE.size(); i++)
 		{
@@ -57,7 +67,15 @@ public class Tabla extends JFrame
 	private void llenarMostrar(IdProveedor proveedor) 
 	{
 		DecimalFormat df = new DecimalFormat("0.0000");
-		List <SenalProveedor> listaE = proveedor.darProveedor().darSenales();
+		List <SenalProveedor> listaE = null;
+		try
+		{
+			listaE = ParteGrafica.conexion.darSenalesProveedor(proveedor.ordinal());
+		}
+		catch(Exception e)
+		{
+			Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+		}
 		mostrar = new Object[listaE.size()][5];
 		for(int i = 0; i < listaE.size(); i++)
 		{
