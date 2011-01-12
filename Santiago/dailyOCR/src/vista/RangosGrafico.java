@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JCheckBox;
@@ -12,15 +14,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import modelo.Par;
+import modelo.Estrategia.IdEstrategia;
 import analisis.Indicador;
 import analisis.Rangos;
 import analisis.RegistroHistorial;
+import control.Error;
 
 public class RangosGrafico extends JPanel
 {
 	private static final long serialVersionUID = -3243368885519444393L;
 
-	public RangosGrafico(Rangos rangos, List <RegistroHistorial> registros)
+	public RangosGrafico(final Rangos rangos, List <RegistroHistorial> registros, final IdEstrategia idEstrategia, final Par par)
 	{
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.setRows(6);
@@ -54,6 +59,23 @@ public class RangosGrafico extends JPanel
 			JFrame nuevo = new JFrame();
 			nuevo.setLayout(new BorderLayout());
 			nuevo.add(this, BorderLayout.WEST);
+		    nuevo.addWindowListener(new WindowAdapter() 
+		    {
+		    	@Override
+		        public void windowClosing(WindowEvent e)
+		        {
+		    		try
+		    		{
+		    			if(idEstrategia != null)
+		    				ParteGrafica.conexion.cambiarRangosEstrategia(idEstrategia.ordinal(), par.ordinal(), rangos);
+					}
+		            catch (Exception e1)
+		            {        	
+		            	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		            	System.exit(0);
+		            }
+		        }
+		    });
 			JPanel derecha = new JPanel();
 			derecha.setLayout(new BorderLayout());
 			derecha.add(graficaProgreso, BorderLayout.SOUTH);
@@ -68,6 +90,23 @@ public class RangosGrafico extends JPanel
 		{
 			JFrame izquierda = new JFrame();
 			izquierda.add(this);
+		    izquierda.addWindowListener(new WindowAdapter() 
+		    {
+		    	@Override
+		        public void windowClosing(WindowEvent e)
+		        {
+		    		try
+		    		{		    			
+		    			if(idEstrategia != null)
+		    				ParteGrafica.conexion.cambiarRangosEstrategia(idEstrategia.ordinal(), par.ordinal(), rangos);
+					}
+		            catch (Exception e1)
+		            {        	
+		            	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		            	System.exit(0);
+		            }
+		        }
+		    });
 			JFrame derecha = new JFrame();
 			JPanel panelDerecha = new JPanel();
 			panelDerecha.setLayout(new BorderLayout());

@@ -29,7 +29,7 @@ public class EstrategiaGrafica extends JFrame
 	
 	private void initialize()
 	{
-		new RangosGrafico(new Rangos(), AnalisisLogica.darRegistrosEstrategia(idEstrategia, Par.TODOS));
+		new RangosGrafico(new Rangos(), AnalisisLogica.darRegistrosEstrategia(idEstrategia, Par.TODOS), null, null);
 		GridLayout gridLayout = new GridLayout(0, 2);
 		this.setLayout(gridLayout);
 		this.setSize(259, 490);
@@ -50,7 +50,7 @@ public class EstrategiaGrafica extends JFrame
 			{
 				try
 				{
-					new RangosGrafico(!enLinea ? new Rangos() : ParteGrafica.conexion.darRangosEstrategia(idEstrategia.ordinal(), par.ordinal()), AnalisisLogica.darRegistrosEstrategia(idEstrategia, par));
+					new RangosGrafico(!enLinea ? new Rangos() : ParteGrafica.conexion.darRangosEstrategia(idEstrategia.ordinal(), par.ordinal()), AnalisisLogica.darRegistrosEstrategia(idEstrategia, par), idEstrategia, par);
 				}
 				catch(Exception e1)
 				{

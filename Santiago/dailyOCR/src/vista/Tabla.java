@@ -11,12 +11,11 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 
-import control.Error;
-
 import modelo.SenalEstrategia;
 import modelo.SenalProveedor;
 import modelo.Estrategia.IdEstrategia;
 import modelo.Proveedor.IdProveedor;
+import control.Error;
 	
 public class Tabla extends JFrame
 {
@@ -60,7 +59,14 @@ public class Tabla extends JFrame
 			mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + listaE.get(i).isTocoStop();
 			mostrar[i][2] = listaE.get(i).getPar().toString();
 			mostrar[i][3] = df.format(listaE.get(i).getPrecioEntrada()) + " " + df.format(listaE.get(i).darStopDaily()) + " " + df.format(listaE.get(i).darStop());
-			mostrar[i][4] = listaE.get(i).darGanancia();
+			try
+			{
+				mostrar[i][4] = ParteGrafica.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
+			}
+			catch(Exception e)
+			{
+				Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+			}
 		}
 	}
 	
@@ -82,8 +88,16 @@ public class Tabla extends JFrame
 			mostrar[i][0] = listaE.get(i).getEstrategia().toString();
 			mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + listaE.get(i).darTocoStop();
 			mostrar[i][2] = listaE.get(i).getPar().toString();
-			mostrar[i][3] = df.format(listaE.get(i).darPrecioEntrada()) + " " + df.format(listaE.get(i).darStopDaily()) + " " + df.format(listaE.get(i).darStop());
-			mostrar[i][4] = listaE.get(i).darGanancia() + " " + listaE.get(i).getMagico();
+			try 
+			{
+				SenalEstrategia esta = ParteGrafica.conexion.darSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
+				mostrar[i][3] = df.format(esta.getPrecioEntrada()) + " " + df.format(esta.darStopDaily()) + " " + df.format(esta.darStop());
+				mostrar[i][4] = ParteGrafica.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal()) + " " + listaE.get(i).getMagico();
+			} 
+			catch(Exception e)
+			{
+				Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+			}
 		}
 	}
 

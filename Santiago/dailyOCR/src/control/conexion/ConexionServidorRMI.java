@@ -50,4 +50,16 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 	{
 		return IdProveedor.values()[id].darProveedor().darSenales();
 	}
+
+	@Override
+	public int darGananciaSenalEstrategia(int idEstrategia, int idPar) throws RemoteException 
+	{
+		return IdEstrategia.values()[idEstrategia].darEstrategia().tienePar(Par.values()[idPar]).darGanancia();
+	}
+
+	@Override
+	public SenalEstrategia darSenalEstrategia(int idEstrategia, int idPar) throws RemoteException
+	{
+		return IdEstrategia.values()[idEstrategia].darEstrategia().tienePar(Par.values()[idPar]);
+	}
 }
