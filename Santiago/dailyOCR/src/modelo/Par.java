@@ -256,8 +256,8 @@ public enum Par
 		writeS.lock();
 		try
 		{
-			high = Double.NEGATIVE_INFINITY;
-			low = Double.POSITIVE_INFINITY;
+			high = darPrecioActual(true);
+			low = darPrecioActual(true);
 			open = darPrecioActual(true);
 			fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		}
