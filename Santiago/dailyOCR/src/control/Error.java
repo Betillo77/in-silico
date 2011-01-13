@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
+import javax.swing.JOptionPane;
+
 import modelo.Estrategia.IdEstrategia;
 import modelo.Proveedor.IdProveedor;
 import control.conexion.ConexionServidorMensajes;
@@ -100,8 +102,8 @@ public class Error
 		}
 	}
 
-	public static void agregarRMI(String string) {
-		// TODO Auto-generated method stub
-		
+	public static void agregarRMI(String error) 
+	{
+		JOptionPane.showMessageDialog(null, error);
 	}
 }
