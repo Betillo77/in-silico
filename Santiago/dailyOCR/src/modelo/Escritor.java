@@ -388,6 +388,8 @@ public class Escritor
 		{
 			if(afectada.getMagico() != 0)
 				enConstruccion.add(new EntradaEscritor(afectada.getPar(), afectada.getPar() + ";" + (afectada.isCompra() ? "BUY" : "SELL") + ";" + "CLOSE;" + afectada.getMagico(), true, afectada));
+			else
+				Error.agregar("Senal proveedor: " + afectada.getProveedor() +", estrategia: " + afectada.getEstrategia() + ", par: " + afectada.getPar() + ", se intento cerrar y tiene magico 0");
 		}
 		finally
 		{

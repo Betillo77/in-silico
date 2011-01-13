@@ -70,7 +70,7 @@ public class GraficaIndicador extends JPanel
 	    	}
 	    	else
 	    	{
-		    	if(rangos.cumple(r, false))
+		    	if(rangos.cumple(r, false, false))
 		    	{
 		    		nTransacciones++;
 		    		acum += r.ganancia;
@@ -89,7 +89,7 @@ public class GraficaIndicador extends JPanel
 	    	}
 	    	else
 	    	{
-		    	if(rangos.cumple(r, false))
+		    	if(rangos.cumple(r, false, false))
 		    		desviacionD += (r.ganancia - media) * (r.ganancia - media);
 	    	}
 	    desviacionD /= nTransacciones;

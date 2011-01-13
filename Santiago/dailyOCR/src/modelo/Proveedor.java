@@ -308,7 +308,7 @@ public class Proveedor
 						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar.");
 					else
 					{
-						if(!s.isTocoStop() && afectada.getMagico() != 0 && afectada.getMagico() != 1000)
+						if(!s.isTocoStop() && afectada.getMagico() != 1000)
 							escritor.cerrar(afectada);
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
 					}
@@ -322,14 +322,10 @@ public class Proveedor
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
 						Error.agregarInfo("Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString());
-						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true))
-						{
+						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, true))
 							afectada.setMagico(1000);
-						}
 						else
-						{
 							escritor.abrir(afectada);
-						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
 					}
 				}
@@ -347,7 +343,8 @@ public class Proveedor
 		try
 		{
 			if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] != null)
-				escritor.cerrar(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()]);
+				if(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()].getMagico() != 1000)
+					escritor.cerrar(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()]);
 			else if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] == null)
 				Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar (toco stop).");
 		}
@@ -428,10 +425,13 @@ public class Proveedor
 			{
 				if(senales[id.ordinal()][p.ordinal()] != null)
 				{
-					escritor.cerrar(senales[id.ordinal()][p.ordinal()]);
-					escritor.terminarCiclo();
+					if(senales[id.ordinal()][p.ordinal()].getMagico() != 1000)
+					{
+						escritor.cerrar(senales[id.ordinal()][p.ordinal()]);
+						escritor.terminarCiclo();
+						Error.agregar("Proveedor " + this.id + ", estrategia: " + id + ", par: " + p + " estaba abierta y se desactivo, cerrada manualmente.");
+					}
 					senales[id.ordinal()][p.ordinal()] = null;
-					Error.agregar("Proveedor " + this.id + ", estrategia: " + id + ", par: " + p + " estaba abierta y se desactivo, cerrada manualmente.");
 				}
 			}
 			else if(!activos[id.ordinal()][p.ordinal()] && b)

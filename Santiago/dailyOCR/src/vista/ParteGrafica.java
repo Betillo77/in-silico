@@ -90,7 +90,7 @@ public class ParteGrafica extends JPanel
         } 
         catch (Exception e)
         {        	
-        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
         	System.exit(0);
         }
 		JFrame framePrincipal = new JFrame();

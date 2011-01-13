@@ -181,33 +181,6 @@ public class dailyOCR
 	
 	public static void main(String [] args) throws IOException
 	{
-		Calendar c = Calendar.getInstance();
-		int dia = c.get(Calendar.DAY_OF_WEEK);
-		if(dia == Calendar.SATURDAY || dia == Calendar.SUNDAY)
-		{
-			boolean termino = false;
-			while(!termino)
-			{
-				int hora = c.get(Calendar.HOUR_OF_DAY);
-				if(hora > 16 && dia == Calendar.SUNDAY)
-				{
-					termino = true;
-					break;
-				}
-				HiloDaily.sleep(600000);
-				c = Calendar.getInstance();
-				dia = c.get(Calendar.DAY_OF_WEEK);
-			}
-		}
-		cargarSistemasEstrategias();
-		ParteGrafica pg = new ParteGrafica();
-		JFrame framePrincipal = new JFrame();
-		framePrincipal.setMinimumSize(new Dimension(259, 244));
-		framePrincipal.setSize(259, 244);
-		framePrincipal.add(pg);
-		framePrincipal.pack();
-		framePrincipal.setVisible(true);
-		framePrincipal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		Calendar actual = Calendar.getInstance();
 		Error.agregarInfo("Iniciando operaciones automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
         System.setSecurityManager(new SecurityManager());
@@ -218,14 +191,25 @@ public class dailyOCR
             ConexionRMI stub = (ConexionRMI) UnicastRemoteObject.exportObject(conexion, 0);
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(name, stub);
+            registry = LocateRegistry.getRegistry("192.168.0.105");
+            ParteGrafica.conexion = new ConexionServidorRMI.Local((ConexionRMI) registry.lookup(name));
         } 
         catch (Exception e)
         {
-        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
         	System.exit(0);
         }
+		cargarSistemasEstrategias();
 		cargarEstrategias();
 		cargarProveedores();
 		iniciarHilos();
+		ParteGrafica pg = new ParteGrafica();
+		JFrame framePrincipal = new JFrame();
+		framePrincipal.setMinimumSize(new Dimension(259, 244));
+		framePrincipal.setSize(259, 244);
+		framePrincipal.add(pg);
+		framePrincipal.pack();
+		framePrincipal.setVisible(true);
+		framePrincipal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 }
