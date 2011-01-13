@@ -14,6 +14,7 @@ public class RangosProveedor extends Rangos
 	{
 		id = i;
 	}
+	
 	@Override
 	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo) 
 	{

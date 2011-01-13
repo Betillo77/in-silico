@@ -321,14 +321,13 @@ public class Proveedor
 					else
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
+						Error.agregarInfo("Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString());
 						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true))
 						{
-							Error.agregarInfo(new RegistroHistorial(s.getPar(), s.isCompra()) + " no cumple " + s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()]);
 							afectada.setMagico(1000);
 						}
 						else
 						{
-							Error.agregarInfo(new RegistroHistorial(s.getPar(), s.isCompra()) + " si cumple " + s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()]);
 							escritor.abrir(afectada);
 						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;

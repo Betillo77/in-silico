@@ -1,6 +1,7 @@
 package analisis;
 
 import control.conexion.ConexionMySql;
+import control.conexion.dailyFx.ConexionServidorDailyFx;
 import modelo.Par;
 import modelo.Estrategia.IdEstrategia;
 
@@ -28,9 +29,10 @@ public class RegistroHistorial implements Comparable <RegistroHistorial>
 	{
 		this.par = par;
 		this.compra = compra;
+		this.fechaApertura = System.currentTimeMillis();
+		this.VIX = ConexionServidorDailyFx.darVIX();
 		this.SSI1 = par.darPadreUno().darSSI();
 		this.SSI2 = par.darPadreDos().darSSI();
-		this.fechaApertura = System.currentTimeMillis();
 		this.ATR = ConexionMySql.darATR(this.par, 14, this.fechaApertura);
 		this.RSI = ConexionMySql.darRSI(par, 27, this.fechaApertura);
 		if(!compra)

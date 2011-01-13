@@ -1,7 +1,9 @@
 package analisis;
 
 import java.io.Serializable;
+
 import java.util.EnumMap;
+import control.Error;
 
 public class Rangos implements Serializable
 {
@@ -67,10 +69,12 @@ public class Rangos implements Serializable
 			return maximo;
 		}
 		
-		@Override
-		public String toString() {
-			return "Rango [invertido=" + invertido + ", maximo=" + maximo
-					+ ", minimo=" + minimo + "]";
+		public String toString(double valor) 
+		{
+			if(invertido)
+				return valor + " <= " + minimo + " or " + valor + " >= " + maximo;
+			else
+				return minimo + " <= " + valor + " <= " + maximo;
 		}
 	}
 	
@@ -114,20 +118,29 @@ public class Rangos implements Serializable
 	
 	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo)
 	{
+		String mensaje = registro.toString() + "\n";
 		for(Indicador i : Indicador.values())
 		{
+			mensaje += i.toString();
 			if(!rangos.containsKey(i))
 				rangos.put(i, i.rango.duplicar());
 			if(ignorarInfo && i.esInfo)
+			{
+				mensaje += ", ignorando: " + rangos.get(i).toString(i.calcular(registro)) + "\n";
 				continue;
+			}
 			if(!rangos.get(i).estaDentro(i.calcular(registro)))
+			{
+				mensaje += ", no cumple: " + rangos.get(i).toString(i.calcular(registro)) + ", terminando con false\n";
+				Error.agregarInfo(mensaje);
 				return false;
+			}
+			else
+			{
+				mensaje += ", cumple: " + rangos.get(i).toString(i.calcular(registro)) + "\n";
+			}
 		}
+		Error.agregarInfo(mensaje);
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Rangos [rangos=" + rangos + "]";
 	}
 }
