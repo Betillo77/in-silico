@@ -29,9 +29,9 @@ public class GraficaHistorial extends JFrame
 	private Rangos rangos;
 	private List <RegistroHistorial> registros;
 		
-	public GraficaHistorial(Rangos r, List <RegistroHistorial> re) 
+	public GraficaHistorial(Rangos r, List <RegistroHistorial> re, String titulo) 
 	{
-		super();
+		super(titulo);
 		rangos = r;
 		registros = re;
 		initialize();

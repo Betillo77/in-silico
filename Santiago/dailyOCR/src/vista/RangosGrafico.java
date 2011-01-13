@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -25,7 +26,7 @@ public class RangosGrafico extends JPanel
 {
 	private static final long serialVersionUID = -3243368885519444393L;
 
-	public RangosGrafico(final Rangos rangos, List <RegistroHistorial> registros, final IdEstrategia idEstrategia, final Par par)
+	public RangosGrafico(final Rangos rangos, List <RegistroHistorial> registros, final IdEstrategia idEstrategia, final Par par, String titulo)
 	{
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.setRows(6);
@@ -34,7 +35,7 @@ public class RangosGrafico extends JPanel
 		this.setSize(700, 600);
 		GraficaProgreso graficaProgreso = new GraficaProgreso(rangos, registros);
 		final GraficaIndicador graficaIndicador = new GraficaIndicador(Indicador.VIX.darRango().duplicar(), registros, Indicador.VIX, rangos);
-		GraficaHistorial graficaHistorial = new GraficaHistorial(rangos, registros);
+		GraficaHistorial graficaHistorial = new GraficaHistorial(rangos, registros, titulo);
 		for(Indicador i : Indicador.values())
 			this.add(new RangoGrafico(i.darRango().duplicar(), rangos.darRango(i), graficaProgreso, graficaIndicador, graficaHistorial, i));
 		final JCheckBox box = new JCheckBox("Filtrar");
@@ -56,7 +57,7 @@ public class RangosGrafico extends JPanel
 		this.add(box);
 		if(Toolkit.getDefaultToolkit().getScreenSize().width > 1500)
 		{
-			JFrame nuevo = new JFrame();
+			final JFrame nuevo = new JFrame(titulo);
 			nuevo.setLayout(new BorderLayout());
 			nuevo.add(this, BorderLayout.WEST);
 		    nuevo.addWindowListener(new WindowAdapter() 
@@ -66,7 +67,7 @@ public class RangosGrafico extends JPanel
 		        {
 		    		try
 		    		{
-		    			if(idEstrategia != null)
+		    			if(idEstrategia != null && JOptionPane.showConfirmDialog(nuevo, "Guardar el rango?", "Guardar " + idEstrategia + " " + par, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 		    				ParteGrafica.conexion.cambiarRangosEstrategia(idEstrategia.ordinal(), par.ordinal(), rangos);
 					}
 		            catch (Exception e1)
@@ -88,7 +89,7 @@ public class RangosGrafico extends JPanel
 		}
 		else
 		{
-			JFrame izquierda = new JFrame();
+			final JFrame izquierda = new JFrame(titulo);
 			izquierda.add(this);
 		    izquierda.addWindowListener(new WindowAdapter() 
 		    {
@@ -97,7 +98,7 @@ public class RangosGrafico extends JPanel
 		        {
 		    		try
 		    		{		    			
-		    			if(idEstrategia != null)
+		    			if(idEstrategia != null && JOptionPane.showConfirmDialog(izquierda, "Guardar el rango?", "Guardar " + idEstrategia + " " + par, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 		    				ParteGrafica.conexion.cambiarRangosEstrategia(idEstrategia.ordinal(), par.ordinal(), rangos);
 					}
 		            catch (Exception e1)
@@ -107,7 +108,7 @@ public class RangosGrafico extends JPanel
 		            }
 		        }
 		    });
-			JFrame derecha = new JFrame();
+			JFrame derecha = new JFrame(idEstrategia + " " + par);
 			JPanel panelDerecha = new JPanel();
 			panelDerecha.setLayout(new BorderLayout());
 			panelDerecha.add(graficaProgreso, BorderLayout.SOUTH);
