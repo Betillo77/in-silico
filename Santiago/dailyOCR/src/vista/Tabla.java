@@ -50,7 +50,8 @@ public class Tabla extends JFrame
 		}
 		catch(Exception e)
 		{
-			Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	System.exit(0);
 		}
 		mostrar = new Object[listaE.size()][5];
 		for(int i = 0; i < listaE.size(); i++)
@@ -64,8 +65,9 @@ public class Tabla extends JFrame
 				mostrar[i][4] = ParteGrafica.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
 			}
 			catch(Exception e)
-			{
-				Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+			{        	
+				Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+				System.exit(0);
 			}
 		}
 	}
@@ -80,7 +82,8 @@ public class Tabla extends JFrame
 		}
 		catch(Exception e)
 		{
-			Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	System.exit(0);
 		}
 		mostrar = new Object[listaE.size()][5];
 		for(int i = 0; i < listaE.size(); i++)
@@ -96,7 +99,8 @@ public class Tabla extends JFrame
 			} 
 			catch(Exception e)
 			{
-				Error.agregarRMI("Se produjo una excepcion de conexion remota " + e.getMessage());
+	        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+	        	System.exit(0);
 			}
 		}
 	}

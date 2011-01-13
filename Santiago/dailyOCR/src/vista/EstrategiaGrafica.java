@@ -54,7 +54,8 @@ public class EstrategiaGrafica extends JFrame
 				}
 				catch(Exception e1)
 				{
-					Error.agregarRMI("Se produjo una excepcion de conexion remota " + e1.getMessage());
+		        	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		        	System.exit(0);
 				}
 			}
 		});
