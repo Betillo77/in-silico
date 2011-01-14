@@ -91,7 +91,7 @@ public class dailyOCR
 								 diezYNueveYMedia = ConexionServidorDailyFx.cargarSSI();
 						}
 						ConexionServidorDailyFx.cargarVIX();
-						if(dia == Calendar.FRIDAY && hora > 16)
+						if(dia == Calendar.FRIDAY && hora > 21)
 						{
 							try
 							{
