@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import control.conexion.ConexionMySql;
 import control.conexion.ConexionRMI;
 import control.conexion.ConexionServidorRMI;
 import control.conexion.dailyFx.ConexionServidorDailyFx;
@@ -52,6 +53,7 @@ public class dailyOCR
 	{
 		for(IdEstrategia e : IdEstrategia.values())
 			e.iniciarEstrategia();
+		ConexionMySql.recargarCache();
 	}
 	
 	private static void cargarProveedores()

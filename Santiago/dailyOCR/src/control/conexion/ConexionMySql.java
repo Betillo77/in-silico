@@ -388,6 +388,11 @@ public class ConexionMySql
 		return darATR(par, periodo, Calendar.getInstance().getTimeInMillis());
 	}
 	
+	public static void recargarCache()
+	{
+		CacheHistoriaPares.cargarCache();
+	}
+	
 	public static double darRSI(Par par, int periodo, long fechaCierre)
 	{
 		lock.lock();
@@ -491,7 +496,6 @@ public class ConexionMySql
 	
 	public static LinkedList <RegistroHistorial> darEntradas() 
 	{
-		CacheHistoriaPares.cargarCache();
 		lock.lock();
 		try 
 		{
