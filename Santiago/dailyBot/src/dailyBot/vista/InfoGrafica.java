@@ -1,4 +1,4 @@
-package vista;
+package dailyBot.vista;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;

@@ -12,7 +12,6 @@ import java.util.TimeZone;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import vista.ParteGrafica;
 
 import dailyBot.control.conexion.ConexionRMI;
 import dailyBot.control.conexion.ConexionServidorRMI;
@@ -22,6 +21,7 @@ import dailyBot.modelo.SistemaEstrategias;
 import dailyBot.modelo.Estrategia.IdEstrategia;
 import dailyBot.modelo.Proveedor.IdProveedor;
 import dailyBot.modelo.dailyFx.SistemaDailyFX;
+import dailyBot.vista.ParteGrafica;
 
 public class dailyBot
 {

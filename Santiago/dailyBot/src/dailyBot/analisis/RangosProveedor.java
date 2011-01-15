@@ -1,8 +1,8 @@
 package dailyBot.analisis;
 
-import vista.ParteGrafica;
 import dailyBot.control.Error;
 import dailyBot.modelo.Proveedor.IdProveedor;
+import dailyBot.vista.ParteGrafica;
 
 public class RangosProveedor extends Rangos
 {

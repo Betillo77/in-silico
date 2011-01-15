@@ -1,4 +1,4 @@
-package vista;
+package dailyBot.vista;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
