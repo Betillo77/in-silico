@@ -12,7 +12,8 @@ import java.util.TimeZone;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import dailyBot.ParteGrafica;
+import vista.ParteGrafica;
+
 import dailyBot.control.conexion.ConexionRMI;
 import dailyBot.control.conexion.ConexionServidorRMI;
 import dailyBot.control.conexion.dailyFx.ConexionServidorDailyFx;

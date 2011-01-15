@@ -1,6 +1,6 @@
 package dailyBot.analisis;
 
-import dailyBot.ParteGrafica;
+import vista.ParteGrafica;
 import dailyBot.control.Error;
 import dailyBot.modelo.Proveedor.IdProveedor;
 
