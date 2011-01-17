@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Sun Jan 16 19:53:38 COT 2011
+#Mon Jan 17 05:07:29 COT 2011
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
-jarname=/home/santiago/robotInicio.jar
+jarname=/home/santiago/Desktop/lastBuilds/dailyBot.jar
 manifest.mergeall=true
-manifest.mainclass=dailyBot.control.RobotInicio
+manifest.mainclass=dailyBot.control.DailyBot
 manifest.file=<createnew>
 jarname.isextern=true
 onejar.expand=

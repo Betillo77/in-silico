@@ -176,17 +176,11 @@ public class DailyBot
 	
 	public static void iniciarPropiedades()
 	{
-		if(DailyBot.class.getClassLoader() == null)
-		{
-			System.setProperty("java.rmi.server.codebase", DailyBot.class.getClassLoader().getResource("/").toString());
-			System.setProperty("java.security.policy", DailyBot.class.getClassLoader().getResource("server.policy").toString());
-		}
-		else
-		{
-			System.setProperty("java.rmi.server.codebase", "file:" + System.getProperty("user.dir") + "/bin/");
-			System.setProperty("java.security.policy", "file:" + System.getProperty("user.dir") + "/libs/server.policy");
-		}
+		System.setProperty("java.rmi.server.codebase", "file:" + System.getProperty("user.dir") + "/bin/");
+		System.setProperty("java.security.policy", "file:" + System.getProperty("user.dir") + "/libs/server.policy");
+		Error.agregarRMI(System.getProperty("java.rmi.server.codebase") + " " + System.getProperty("java.security.policy"));
 	}
+	
 	public static void main(String [] args) throws IOException
 	{
 		Calendar actual = Calendar.getInstance();
