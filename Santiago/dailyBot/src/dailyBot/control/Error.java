@@ -18,18 +18,18 @@ public class Error
 	
 	public static void agregar(String error)
 	{
-		enviar("DailyOCR-error", error, true);
+		enviar("DailyBot-error", error, true);
 		chequearHora();
 	}
 	
 	public static void agregarInfo(String info)
 	{
-		enviar("DailyOCR-info", info, true);
+		enviar("DailyBot-info", info, true);
 	}
 
 	public static void agregarSinCorreo(String error) 
 	{
-		enviar("DailyOCR-error", error, false);
+		enviar("DailyBot-error", error, false);
 		chequearHora();
 	}
 	

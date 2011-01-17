@@ -44,7 +44,7 @@ public class Proceso
 						while(true)
 						{
 							ProcessBuilder pb = new ProcessBuilder("");
-							pb.directory(new File("/home/santiago/Desktop/dailyOCR/" + path));
+							pb.directory(new File("/home/santiago/Desktop/dailyBot/" + path));
 							pb.command("wine", "terminal.exe");
 							proceso = pb.start();
 							Error.agregarInfo("Iniciando proceso " + path);
