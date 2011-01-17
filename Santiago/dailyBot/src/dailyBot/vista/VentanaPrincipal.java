@@ -88,7 +88,6 @@ public class VentanaPrincipal extends JFrame
 	
 	public static void iniciar()
 	{
-		DailyBot.iniciarPropiedades();
         System.setSecurityManager(new SecurityManager());
         try 
         {
@@ -106,6 +105,7 @@ public class VentanaPrincipal extends JFrame
 	
 	public static void main(String[] args)
 	{
+		DailyBot.iniciarPropiedades();
 		iniciar();
 	}
 }

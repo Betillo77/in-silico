@@ -178,7 +178,6 @@ public class DailyBot
 	{
 		System.setProperty("java.rmi.server.codebase", "file:" + System.getProperty("user.dir") + "/bin/");
 		System.setProperty("java.security.policy", "file:" + System.getProperty("user.dir") + "/libs/server.policy");
-		Error.agregarRMI(System.getProperty("java.rmi.server.codebase") + " " + System.getProperty("java.security.policy"));
 	}
 	
 	public static void main(String [] args) throws IOException
