@@ -174,11 +174,24 @@ public class DailyBot
 		}	
 	}
 	
+	public static void iniciarPropiedades()
+	{
+		if(DailyBot.class.getClassLoader() == null)
+		{
+			System.setProperty("java.rmi.server.codebase", DailyBot.class.getClassLoader().getResource("/").toString());
+			System.setProperty("java.security.policy", DailyBot.class.getClassLoader().getResource("server.policy").toString());
+		}
+		else
+		{
+			System.setProperty("java.rmi.server.codebase", "file:" + System.getProperty("user.dir") + "/bin/");
+			System.setProperty("java.security.policy", "file:" + System.getProperty("user.dir") + "/libs/server.policy");
+		}
+	}
 	public static void main(String [] args) throws IOException
 	{
 		Calendar actual = Calendar.getInstance();
 		Error.agregarInfo("Iniciando operaciones automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
-//		System.setProperty("java.security.policy", DailyBot.class.getClassLoader().getResource("server.policy").toString());
+		iniciarPropiedades();
 		System.setSecurityManager(new SecurityManager());
         try 
         {
