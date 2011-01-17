@@ -44,7 +44,6 @@ public class Escritor
 	private ArrayList <EntradaEscritor> enConstruccion;
 	private String pathMeta;
 	private Proceso proceso;
-	private String mensaje = "";
 	private volatile String mensajeDebug = "";
 	private ReentrantLock lock = new ReentrantLock(true);
 	private ReentrantLock lockConstruir = new ReentrantLock(true);
@@ -98,16 +97,6 @@ public class Escritor
 		AdministradorHilos.agregarHilo(hiloEscritor);
 	}
 	
-	public void lock()
-	{
-		lock.lock();
-	}
-	
-	public void unlock()
-	{
-		lock.unlock();
-	}
-	
 	private void reiniciarProceso()
 	{
 		proceso.cerrar();
@@ -119,8 +108,9 @@ public class Escritor
 		lockConstruir.lock();
 		try
 		{
-			if(enConstruccion.size() != 0 && mensaje.equals(""))
+			if(enConstruccion.size() != 0)
 			{
+				String mensaje = "";
 				try 
 				{
 					entradas.add(enConstruccion);
@@ -134,11 +124,6 @@ public class Escritor
 				enConstruccion = new ArrayList <EntradaEscritor> ();
 				if(debug)
 					mensajeDebug += " Encolando " + pathMeta + " " + mensaje + " " + System.currentTimeMillis();
-				mensaje = "";
-			}
-			else if(!mensaje.equals(""))
-			{
-				Error.agregar("Error, se encolaron: " + mensaje + " y no se procesaron");
 				mensaje = "";
 			}
 		}
@@ -441,22 +426,25 @@ public class Escritor
 		}
 	}
 	
-	public boolean chequearMagico(SenalProveedor dudosa)
+	public int chequearMagico(SenalProveedor dudosa)
 	{
 		lockConstruir.lock();
+		lock.lock();
 		try
 		{
 			for(EntradaEscritor e : enConstruccion)
 				if(e.afectada == dudosa)
-					return true;
+					return -1;
 			for(ArrayList <EntradaEscritor> ae : entradas)
 				for(EntradaEscritor e : ae)
 					if(e.afectada == dudosa)
-						return true;
-			return false;
+						return -1;
+			int magico = dudosa.getMagico();
+			return magico == -1 ? 0 : magico;
 		}
 		finally
 		{
+			lock.unlock();
 			lockConstruir.unlock();
 		}
 	}

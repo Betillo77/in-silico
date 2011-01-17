@@ -7,25 +7,24 @@ import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import dailyBot.control.DailyBot;
 import dailyBot.control.Error;
-import dailyBot.control.dailyBot;
 import dailyBot.control.conexion.ConexionRMI;
 import dailyBot.control.conexion.ConexionServidorRMI;
 import dailyBot.modelo.Estrategia.IdEstrategia;
 import dailyBot.modelo.Proveedor.IdProveedor;
 
-public class ParteGrafica extends JPanel
+public class VentanaPrincipal extends JFrame
 {
 	private static final long serialVersionUID = 7878714258759106938L;
 	
 	public static ConexionRMI conexion;
 
-	public ParteGrafica() 
+	public VentanaPrincipal() 
 	{
-		super();
+		super("DailyBot");
 		initialize();
 	}
 
@@ -34,8 +33,8 @@ public class ParteGrafica extends JPanel
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.setRows(5);
 		gridLayout.setColumns(2);
-		this.setLayout(gridLayout);
-		this.setSize(259, 290);
+		setLayout(gridLayout);
+		setSize(259, 290);
 		for(IdEstrategia id : IdEstrategia.values())
 			if(id != IdEstrategia.JOEL && id != IdEstrategia.TECHNICAL)
 				this.add(darBotonEstrategia(id));
@@ -43,19 +42,24 @@ public class ParteGrafica extends JPanel
 				this.add(darBotonProveedor(id));
 		JButton salir = new JButton();
 		salir.setText("Salir");
-		salir.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				dailyBot.salir();
+		salir.addActionListener(new java.awt.event.ActionListener()
+		{
+			public void actionPerformed(java.awt.event.ActionEvent e)
+			{
+				DailyBot.salir();
 			}
 		});
-		this.add(salir);
+		add(salir);
+		setSize(new Dimension(259, 244));
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	private JButton darBotonEstrategia(final IdEstrategia id) 
 	{
 		JButton botonNuevo = new JButton();
 		botonNuevo.setText(id.toString());
-		botonNuevo.addActionListener(new java.awt.event.ActionListener() {
+		botonNuevo.addActionListener(new java.awt.event.ActionListener() 
+		{
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
 				new Tabla(id);
@@ -69,7 +73,8 @@ public class ParteGrafica extends JPanel
 	{
 		JButton botonNuevo = new JButton();
 		botonNuevo.setText(id.toString());
-		botonNuevo.addActionListener(new java.awt.event.ActionListener() {
+		botonNuevo.addActionListener(new java.awt.event.ActionListener()
+		{
 			public void actionPerformed(java.awt.event.ActionEvent e)
 			{
 				new Tabla(id);
@@ -79,7 +84,7 @@ public class ParteGrafica extends JPanel
 		return botonNuevo;
 	}
 	
-	public static void main(String[] args)
+	public static void iniciar()
 	{
         System.setSecurityManager(new SecurityManager());
         try 
@@ -93,12 +98,10 @@ public class ParteGrafica extends JPanel
         	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
         	System.exit(0);
         }
-		JFrame framePrincipal = new JFrame();
-		framePrincipal.setMinimumSize(new Dimension(259, 244));
-		framePrincipal.setSize(259, 244);
-		framePrincipal.add(new ParteGrafica());
-		framePrincipal.pack();
-		framePrincipal.setVisible(true);
-		framePrincipal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        new VentanaPrincipal();
+	}
+	public static void main(String[] args)
+	{
+		iniciar();
 	}
 }

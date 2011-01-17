@@ -21,9 +21,9 @@ import dailyBot.modelo.SistemaEstrategias;
 import dailyBot.modelo.Estrategia.IdEstrategia;
 import dailyBot.modelo.Proveedor.IdProveedor;
 import dailyBot.modelo.dailyFx.SistemaDailyFX;
-import dailyBot.vista.ParteGrafica;
+import dailyBot.vista.VentanaPrincipal;
 
-public class dailyBot
+public class DailyBot
 {
 	private static ArrayList <SistemaEstrategias> sistemas;
 	private static Class <?> [] clasesSistemas = {
@@ -191,8 +191,6 @@ public class dailyBot
             ConexionRMI stub = (ConexionRMI) UnicastRemoteObject.exportObject(conexion, 0);
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(name, stub);
-            registry = LocateRegistry.getRegistry("192.168.0.105");
-            ParteGrafica.conexion = new ConexionServidorRMI.Local((ConexionRMI) registry.lookup(name));
         } 
         catch (Exception e)
         {
@@ -203,13 +201,6 @@ public class dailyBot
 		cargarEstrategias();
 		cargarProveedores();
 		iniciarHilos();
-		ParteGrafica pg = new ParteGrafica();
-		JFrame framePrincipal = new JFrame();
-		framePrincipal.setMinimumSize(new Dimension(259, 244));
-		framePrincipal.setSize(259, 244);
-		framePrincipal.add(pg);
-		framePrincipal.pack();
-		framePrincipal.setVisible(true);
-		framePrincipal.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		VentanaPrincipal.iniciar();
 	}
 }

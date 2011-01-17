@@ -54,7 +54,7 @@ public class EstrategiaGrafica extends JFrame
 			{
 				try
 				{
-					new RangosGrafico(!enLinea ? new Rangos() : ParteGrafica.conexion.darRangosEstrategia(idEstrategia.ordinal(), par.ordinal()), AnalisisLogica.darRegistrosEstrategia(idEstrategia, par), idEstrategia, par, idEstrategia + " " + par);
+					new RangosGrafico(!enLinea ? new Rangos() : VentanaPrincipal.conexion.darRangosEstrategia(idEstrategia.ordinal(), par.ordinal()), AnalisisLogica.darRegistrosEstrategia(idEstrategia, par), idEstrategia, par, idEstrategia + " " + par);
 				}
 				catch(Exception e1)
 				{

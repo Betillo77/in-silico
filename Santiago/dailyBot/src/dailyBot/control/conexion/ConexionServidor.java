@@ -1,4 +1,5 @@
 package dailyBot.control.conexion;
+
 /*
  * ====================================================================
  *
@@ -24,7 +25,6 @@ package dailyBot.control.conexion;
  * <http://www.apache.org/>.
  *
  */
-
 
 public abstract class ConexionServidor
 {

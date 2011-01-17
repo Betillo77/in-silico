@@ -79,7 +79,7 @@ public class FormatoPares extends JPanel
 		nuevo.setSize(new Dimension(30, 30));
 		try 
 		{
-			nuevo.setSelected(ParteGrafica.conexion.darActivoProveedor(idP.ordinal(), idE.ordinal(), p.ordinal()));
+			nuevo.setSelected(VentanaPrincipal.conexion.darActivoProveedor(idP.ordinal(), idE.ordinal(), p.ordinal()));
 		} 
 		catch (RemoteException e) 
 		{
@@ -99,7 +99,7 @@ public class FormatoPares extends JPanel
 			{
 				try 
 				{
-					ParteGrafica.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), ((AbstractButton) e.getSource()).isSelected());
+					VentanaPrincipal.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), ((AbstractButton) e.getSource()).isSelected());
 				} 
 				catch (RemoteException e1) 
 				{

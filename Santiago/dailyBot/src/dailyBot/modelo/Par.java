@@ -28,7 +28,7 @@ public enum Par
 	private double low = Double.POSITIVE_INFINITY;
 	private double open = Double.NEGATIVE_INFINITY;
 	private Calendar fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-	private LinkedList <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
+	private final LinkedList <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 	private static String mensaje = "";
 	private static int numeroIniciados = 0;
 	private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
@@ -70,17 +70,11 @@ public enum Par
 	public boolean estaBien(double precio)
 	{
 		if(multiplicador == 100)
-			return precio > 5;
-		return precio < 5;
+			return precio >= 10;
+		else	
+			return precio < 10;
 	}
-	
-	public boolean esDistinto(Par par) 
-	{
-		if(par == TODOS)
-			return false;
-		return !equals(par);
-	}
-	
+
 	public int diferenciaPips(double otro, boolean compra)
 	{
 		double precioActual = darPrecioActual(compra);
@@ -323,5 +317,12 @@ public enum Par
 			if(!a.equals(TODOS) && cuerpo.contains(a.toString()))
 				par = a;
 		return par;
+	}
+	
+	public boolean equals(Par par) 
+	{
+		if(par == TODOS)
+			return true;
+		return super.equals(par);
 	}
 }

@@ -2,7 +2,7 @@ package dailyBot.analisis;
 
 import dailyBot.control.Error;
 import dailyBot.modelo.Proveedor.IdProveedor;
-import dailyBot.vista.ParteGrafica;
+import dailyBot.vista.VentanaPrincipal;
 
 public class RangosProveedor extends Rangos
 {
@@ -20,8 +20,8 @@ public class RangosProveedor extends Rangos
 	{
 		try 
 		{
-			if(id == null || ParteGrafica.conexion.darActivoProveedor(id.ordinal(), registro.id.ordinal(), registro.par.ordinal()))
-				return ParteGrafica.conexion.darRangosEstrategia(registro.id.ordinal(), registro.par.ordinal()).cumple(registro, true, false);
+			if(id == null || VentanaPrincipal.conexion.darActivoProveedor(id.ordinal(), registro.id.ordinal(), registro.par.ordinal()))
+				return VentanaPrincipal.conexion.darRangosEstrategia(registro.id.ordinal(), registro.par.ordinal()).cumple(registro, true, false);
 			else
 				return false;
 		} 

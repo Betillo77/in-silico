@@ -46,7 +46,7 @@ public class Tabla extends JFrame
 		List <SenalEstrategia> listaE = null;
 		try
 		{
-			listaE = ParteGrafica.conexion.darSenalesEstrategia(id.ordinal());
+			listaE = VentanaPrincipal.conexion.darSenalesEstrategia(id.ordinal());
 		}
 		catch(Exception e)
 		{
@@ -62,7 +62,7 @@ public class Tabla extends JFrame
 			mostrar[i][3] = df.format(listaE.get(i).getPrecioEntrada()) + " " + df.format(listaE.get(i).darStopDaily()) + " " + df.format(listaE.get(i).darStop());
 			try
 			{
-				mostrar[i][4] = ParteGrafica.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
+				mostrar[i][4] = VentanaPrincipal.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
 			}
 			catch(Exception e)
 			{        	
@@ -78,7 +78,7 @@ public class Tabla extends JFrame
 		List <SenalProveedor> listaE = null;
 		try
 		{
-			listaE = ParteGrafica.conexion.darSenalesProveedor(proveedor.ordinal());
+			listaE = VentanaPrincipal.conexion.darSenalesProveedor(proveedor.ordinal());
 		}
 		catch(Exception e)
 		{
@@ -91,11 +91,11 @@ public class Tabla extends JFrame
 			mostrar[i][0] = listaE.get(i).getEstrategia().toString();
 			try 
 			{
-				SenalEstrategia esta = ParteGrafica.conexion.darSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
+				SenalEstrategia esta = VentanaPrincipal.conexion.darSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal());
 				mostrar[i][1] = listaE.get(i).isCompra() + " toco: " + esta.isTocoStop();
 				mostrar[i][2] = listaE.get(i).getPar().toString();
 				mostrar[i][3] = df.format(esta.getPrecioEntrada()) + " " + df.format(esta.darStopDaily()) + " " + df.format(esta.darStop());
-				mostrar[i][4] = ParteGrafica.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal()) + " " + listaE.get(i).getMagico();
+				mostrar[i][4] = VentanaPrincipal.conexion.darGananciaSenalEstrategia(listaE.get(i).getEstrategia().ordinal(), listaE.get(i).getPar().ordinal()) + " " + listaE.get(i).getMagico();
 			} 
 			catch(Exception e)
 			{

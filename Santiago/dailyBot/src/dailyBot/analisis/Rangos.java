@@ -30,12 +30,12 @@ public class Rangos implements Serializable
 			this(min, max, false);
 		}
 		
-		public Rango duplicar()
+		public synchronized Rango duplicar()
 		{
 			return new Rango(minimo, maximo, invertido);
 		}
 		
-		public boolean estaDentro(double resultado)
+		public synchronized boolean estaDentro(double resultado)
 		{
 			return !invertido ? minimo <= resultado && resultado <= maximo : minimo >= resultado || resultado >= maximo;
 		}
@@ -70,7 +70,7 @@ public class Rangos implements Serializable
 			return maximo;
 		}
 		
-		public String toString(double valor) 
+		public synchronized String toString(double valor) 
 		{
 			if(invertido)
 				return valor + " <= " + minimo + " or " + valor + " >= " + maximo;

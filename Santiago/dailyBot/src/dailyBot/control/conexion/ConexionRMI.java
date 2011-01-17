@@ -8,7 +8,6 @@ import dailyBot.analisis.Rangos;
 import dailyBot.modelo.SenalEstrategia;
 import dailyBot.modelo.SenalProveedor;
 
-
 public interface ConexionRMI extends Remote
 {
 	public List <SenalEstrategia> darSenalesEstrategia(int id) throws RemoteException;

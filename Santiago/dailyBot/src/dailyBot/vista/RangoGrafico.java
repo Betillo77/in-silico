@@ -18,8 +18,8 @@ import dailyBot.analisis.Indicador;
 import dailyBot.analisis.Rangos.Rango;
 
 
-public class RangoGrafico extends JPanel {
-
+public class RangoGrafico extends JPanel
+{
 	private static final long serialVersionUID = -7783062359910099807L;
 	
 	private Rango rango;

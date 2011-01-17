@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -23,26 +22,30 @@ public class ConexionServidorMensajes
 	private static final String emailFromAddress = "dailyfxstatus@gmail.com";
 	private static final String passwordRoute = "clave.txt";
 	private static final String[] emailList = {"santigutierrez1@gmail.com"};
-	private static AtomicReference <String> SMTP_AUTH_PWD = new AtomicReference <String> ("");
+	private static final String SMTP_AUTH_PWD = cargarClave();
+	private static final Session session = cargarSession();
 	
-	public static void enviarMensaje(String subject, String message)
+	private static String cargarClave()
 	{
-		File file = new File(passwordRoute);
 		try
 		{
-			if(SMTP_AUTH_PWD.get().equals(""))
-			{
-				Scanner sc = new Scanner(file);
-				SMTP_AUTH_PWD.set(sc.next());
-				sc.close();
-				java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-			}
+			File file = new File(passwordRoute);
+			Scanner sc = new Scanner(file);
+			String clave = sc.next();
+			sc.close();
+			java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+			return clave;
 		} 
 		catch(FileNotFoundException e) 
 		{
 			Error.agregarSinCorreo("No se encuentra el archivo con la clave del correo " + e.getMessage());
 			e.printStackTrace();
+			return null;
 		}
+	}
+	
+	private static Session cargarSession() 
+	{
 		Properties props = new Properties();
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -53,12 +56,15 @@ public class ConexionServidorMensajes
 																@Override
 																public PasswordAuthentication getPasswordAuthentication() 
 																{
-																	String username = SMTP_AUTH_USER;
-																	String password = SMTP_AUTH_PWD.get();
-																	return new PasswordAuthentication(username, password);
+																	return new PasswordAuthentication(SMTP_AUTH_USER, SMTP_AUTH_PWD);
 																}
 															}
 													);
+		return session;
+	}
+
+	public static void enviarMensaje(String subject, String message)
+	{
 		try
 		{		
 			session.setDebug(false);

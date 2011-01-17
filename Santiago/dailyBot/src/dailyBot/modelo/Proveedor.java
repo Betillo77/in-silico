@@ -52,7 +52,6 @@ public class Proveedor
 			este.escritor = new Escritor(path);
 			este.iniciarHiloPersistencia();
 		}
-		
 	}
 	
 	protected IdProveedor id;
@@ -115,7 +114,78 @@ public class Proveedor
 		AdministradorHilos.agregarHilo(hiloPersistencia);
 	}
 	
-	protected class ParMagico 
+	public void agregar(SenalEstrategia s, boolean hit)
+	{
+		boolean activo = false;
+		read.lock();
+		try
+		{
+			activo = activos[s.getEstrategia().ordinal()][s.getPar().ordinal()];
+		}
+		finally
+		{
+			read.unlock();
+		}
+		if(activo)
+		{
+			write.lock();
+			try
+			{
+				cambios[s.getEstrategia().ordinal()] = true;
+				if(hit)
+				{
+					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
+					if(afectada == null)
+						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar.");
+					else
+					{
+						if(!s.isTocoStop() && afectada.getMagico() != 1000)
+							escritor.cerrar(afectada);
+						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
+					}
+				}
+				else
+				{
+					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
+					if(afectada != null)
+						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " ya existe y se intento abrir otra vez.");
+					else
+					{
+						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
+						Error.agregarInfo("Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString());
+						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, true))
+							afectada.setMagico(1000);
+						else
+							escritor.abrir(afectada);
+						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
+					}
+				}
+			}
+			finally
+			{
+				write.unlock();
+			}	
+		}
+	}
+	
+	public void tocoStop(SenalEstrategia s) 
+	{
+		read.lock();
+		try
+		{
+			if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] != null)
+				if(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()].getMagico() != 1000)
+					escritor.cerrar(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()]);
+			else if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] == null)
+				Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar (toco stop).");
+		}
+		finally
+		{
+			read.unlock();
+		}
+	}
+	
+	private class ParMagico 
 	{ 
 		Par par; 
 		int magico; 
@@ -196,29 +266,22 @@ public class Proveedor
 			{ 
 				if(activos[pm.id.ordinal()][pm.par.ordinal()] && senales[pm.id.ordinal()][pm.par.ordinal()] != null)
 				{
-					escritor.lock();
-					try
+					int posibleMagico = escritor.chequearMagico(senales[pm.id.ordinal()][pm.par.ordinal()]);
+					if(posibleMagico != -1)
 					{
-						if(!escritor.chequearMagico(senales[pm.id.ordinal()][pm.par.ordinal()]))
+						if(posibleMagico == 0)
 						{
-							if(senales[pm.id.ordinal()][pm.par.ordinal()].getMagico() == 0)
-							{
-								mensaje += pm + " NO_ABIERTO\n";
-								mensajeError += pm + " NO_ABIERTO\n";
-							}
-							else
-							{
-								pm.magico = senales[pm.id.ordinal()][pm.par.ordinal()].getMagico();
-								parMagicosEste.add(pm);
-							}
+							mensaje += pm + " NO_ABIERTO\n";
+							mensajeError += pm + " NO_ABIERTO\n";
 						}
 						else
-							mensaje += pm + " EN_COLA\n";
+						{
+							pm.magico = posibleMagico;
+							parMagicosEste.add(pm);
+						}
 					}
-					finally
-					{
-						escritor.unlock();
-					}
+					else
+						mensaje += pm + " EN_COLA\n";
 				}
 			}
 			ArrayList <ParMagico> parMagicosEsteCopia = new ArrayList <ParMagico> (parMagicosEste);
@@ -247,18 +310,10 @@ public class Proveedor
 				}
 				if(s != null)
 				{ 
-					escritor.lock();
-					try
+					if(escritor.chequearMagico(s) == 0)
 					{
-						if(s.getMagico() == 0)
-						{
-							s.setMagico(pm.magico); 
-							mensajeError += "Asignando magico tentativamente: " + id + " " + s.getPar() + " " + pm.magico;
-						}
-					}
-					finally
-					{
-						escritor.unlock();
+						s.setMagico(pm.magico); 
+						mensajeError += "Asignando magico tentativamente: " + id + " " + s.getPar() + " " + pm.magico;
 					}
 				} 
 				else 
@@ -283,77 +338,6 @@ public class Proveedor
 		}
 	}
 
-	public void agregar(SenalEstrategia s, boolean hit)
-	{
-		boolean activo = false;
-		read.lock();
-		try
-		{
-			activo = activos[s.getEstrategia().ordinal()][s.getPar().ordinal()];
-		}
-		finally
-		{
-			read.unlock();
-		}
-		if(activo)
-		{
-			write.lock();
-			try
-			{
-				cambios[s.getEstrategia().ordinal()] = true;
-				if(hit)
-				{
-					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
-					if(afectada == null)
-						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar.");
-					else
-					{
-						if(!s.isTocoStop() && afectada.getMagico() != 1000)
-							escritor.cerrar(afectada);
-						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
-					}
-				}
-				else
-				{
-					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
-					if(afectada != null)
-						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " ya existe y se intento abrir otra vez.");
-					else
-					{
-						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
-						Error.agregarInfo("Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString());
-						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, true))
-							afectada.setMagico(1000);
-						else
-							escritor.abrir(afectada);
-						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
-					}
-				}
-			}
-			finally
-			{
-				write.unlock();
-			}	
-		}
-	}
-	
-	public void tocoStop(SenalEstrategia s) 
-	{
-		read.lock();
-		try
-		{
-			if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] != null)
-				if(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()].getMagico() != 1000)
-					escritor.cerrar(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()]);
-			else if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] == null)
-				Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar (toco stop).");
-		}
-		finally
-		{
-			read.unlock();
-		}
-	}
-	
 	public void terminarCiclo(IdEstrategia[] estrategias)
 	{
 		write.lock();

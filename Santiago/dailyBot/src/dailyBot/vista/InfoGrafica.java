@@ -9,15 +9,16 @@ public class InfoGrafica extends JPanel
 	private static final long serialVersionUID = 3143214002376719420L;
 	
     JLabel desviacion;
-    private JLabel desviacionL;
+    JLabel desviacionL;
     JLabel ganancia;
-    private JLabel gananciaL;
+    JLabel gananciaL;
     JLabel numeroTransacciones;
-    private JLabel numeroTransaccionesL;
+    JLabel numeroTransaccionesL;
     JLabel promedioPips;
-    private JLabel promedioPipsL;
+    JLabel promedioPipsL;
 	
-	public InfoGrafica() {
+	public InfoGrafica()
+	{
         gananciaL = new JLabel();
         promedioPipsL = new JLabel();
         numeroTransaccionesL = new JLabel();

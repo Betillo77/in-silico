@@ -33,6 +33,11 @@ public class Error
 		chequearHora();
 	}
 	
+	public static void agregarRMI(String error) 
+	{
+		JOptionPane.showMessageDialog(null, error);
+	}
+	
 	private static void enviar(String titulo, String mensaje, boolean correo)
 	{
 		try
@@ -47,6 +52,31 @@ public class Error
 		catch (Exception e)
 		{
 			System.out.println("Error en el gestionador de errores");
+		}
+	}
+	
+	private static void chequearHora() 
+	{
+		Calendar c = Calendar.getInstance();
+		int h = c.get(Calendar.HOUR_OF_DAY);
+		int numeroErroresAnt;
+		synchronized(Error.class.getClass())
+		{
+			if(hora == h)
+			{
+				numeroErrores++;
+			}
+			else
+			{
+				hora = h;
+				numeroErrores = 1;
+			}
+			numeroErroresAnt = numeroErrores;
+		}
+		if(numeroErroresAnt == 200)
+		{
+			enviar("DailyOCR-error", "200 errores en una hora, reiniciando", true);
+			reiniciar();
 		}
 	}
 	
@@ -77,33 +107,5 @@ public class Error
 			Error.agregar("Error reiniciando equipo " + e.getMessage());
 			System.exit(0);
 		}
-	}
-	
-	private static void chequearHora() 
-	{
-		Calendar c = Calendar.getInstance();
-		int h = c.get(Calendar.HOUR_OF_DAY);
-		synchronized(Error.class.getClass())
-		{
-			if(hora == h)
-			{
-				numeroErrores++;
-			}
-			else
-			{
-				hora = h;
-				numeroErrores = 1;
-			}
-			if(numeroErrores == 200)
-			{
-				Error.agregar("200 errores en una hora, reiniciando");
-				reiniciar();
-			}
-		}
-	}
-
-	public static void agregarRMI(String error) 
-	{
-		JOptionPane.showMessageDialog(null, error);
 	}
 }

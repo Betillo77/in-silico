@@ -18,9 +18,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
-import com.mysql.jdbc.Driver;
-
 import dailyBot.analisis.RegistroHistorial;
 import dailyBot.analisis.Estadistica.EntradaHistoriaPares;
 import dailyBot.control.Error;
@@ -29,6 +26,8 @@ import dailyBot.modelo.Par;
 import dailyBot.modelo.SenalEstrategia;
 import dailyBot.modelo.Estrategia.IdEstrategia;
 import dailyBot.modelo.Proveedor.IdProveedor;
+
+import com.mysql.jdbc.Driver;
 
 public class ConexionMySql
 {
@@ -59,6 +58,29 @@ public class ConexionMySql
 		{
 			Error.agregar(e.getMessage() + " Error cerrando un statement");
 		}
+	}
+	
+
+	private static String convertirFecha(long fechaLong)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(fechaLong);
+		String fecha = "'" + calendar.get(Calendar.YEAR);
+		fecha += "-" + (calendar.get(Calendar.MONTH) + 1);
+		fecha += "-" + calendar.get(Calendar.DATE);
+		fecha += " " + calendar.get(Calendar.HOUR_OF_DAY);
+		fecha += ":" + calendar.get(Calendar.MINUTE);
+		fecha += ":" + calendar.get(Calendar.SECOND);
+		fecha += "'";
+		return fecha;
+	}
+	
+	private static String darFechaCalendar(Calendar actual)
+	{
+		int y = actual.get(Calendar.YEAR);
+		int m = actual.get(Calendar.MONTH) + 1;
+		int d = actual.get(Calendar.DAY_OF_MONTH);
+		return y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d;
 	}
 	
 	public static void agregarEntrada(IdEstrategia id, SenalEstrategia afectada) 
@@ -104,8 +126,8 @@ public class ConexionMySql
 			try
 			{
 				st = conexion.createStatement();
+				st.setQueryTimeout(60);
 			    st.executeUpdate("INSERT Historial (IdEstrategia,Fecha,Par,Ganancia,VIX,SSI1,SSI2,EsCompra,FechaA,High,Low) VALUES(" + id.ordinal() + "," + convertirFecha(fechaLong) + "," + afectada.getPar().ordinal() + "," + ganancia + "," + VIX + "," + SSI1 + "," + SSI2 + "," + (afectada.isCompra() ? 1 : 0) + "," + convertirFecha(afectada.getFechaInicio()) + "," + afectada.getHigh() + "," + afectada.getLow() + ")");
-			    st.close();
 			}
 			catch (SQLException s)
 			{
@@ -122,28 +144,6 @@ public class ConexionMySql
 		}
 	}
 
-	private static String convertirFecha(long fechaLong)
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(fechaLong);
-		String fecha = "'" + calendar.get(Calendar.YEAR);
-		fecha += "-" + (calendar.get(Calendar.MONTH) + 1);
-		fecha += "-" + calendar.get(Calendar.DATE);
-		fecha += " " + calendar.get(Calendar.HOUR_OF_DAY);
-		fecha += ":" + calendar.get(Calendar.MINUTE);
-		fecha += ":" + calendar.get(Calendar.SECOND);
-		fecha += "'";
-		return fecha;
-	}
-	
-	private static String darFechaCalendar(Calendar actual)
-	{
-		int y = actual.get(Calendar.YEAR);
-		int m = actual.get(Calendar.MONTH) + 1;
-		int d = actual.get(Calendar.DAY_OF_MONTH);
-		return y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d;
-	}
-	
 	public static void guardarPersistencia(IdEstrategia id, String xml) 
 	{
 		Connection conexion = darConexion();
@@ -155,8 +155,8 @@ public class ConexionMySql
 				try
 				{
 					st = conexion.createStatement();
+					st.setQueryTimeout(60);
 				    st.executeUpdate("UPDATE Estrategias set Datos='" + xml + "' where IdEstrategia=" + (id.ordinal() + 1));
-				    st.close();
 				    return;
 				}
 				catch (SQLException s)
@@ -188,6 +188,7 @@ public class ConexionMySql
 				try 
 				{
 					st = conexion.createStatement();
+					st.setQueryTimeout(60);
 					rs = st.executeQuery("select * from Estrategias where IdEstrategia=" + (id.ordinal() + 1));
 					if(rs.next())
 						return rs.getString(2);
@@ -225,8 +226,8 @@ public class ConexionMySql
 				try
 				{
 					st = conexion.createStatement();
+					st.setQueryTimeout(60);
 					st.executeUpdate("UPDATE Proveedores set Datos='" + xml + "' where IdProveedor=" + (id.ordinal() + 1));
-			    	st.close();
 			    	return;
 				}
 				catch (SQLException s)
@@ -253,9 +254,9 @@ public class ConexionMySql
 		try
 		{
 			st = conexion.createStatement();
+			st.setQueryTimeout(60);
 			st.executeUpdate("delete from ATR where Par=" + par.ordinal() + " and Fecha='" + fecha + "'");		
 			st.executeUpdate("INSERT ATR (Par,Fecha,Open,Close,Low,High) VALUES(" + par.ordinal() + ",'" + fecha + "'," + open + "," + close + "," + low + "," + high + ")");		
-			st.close();
 		}
 		catch (SQLException s)
 		{
@@ -281,21 +282,16 @@ public class ConexionMySql
 		String fecha = darFechaCalendar(fechaC);
 		Connection conexion = darConexion();
 		Statement st = null;
+		ResultSet rs = null;
 		try
 		{
 			st = conexion.createStatement();
-			try
-			{
-				ResultSet rs = st.executeQuery("select * from ATR where Par=" + par.ordinal() + " and Fecha='" + fecha + "'");
-				if(rs.next())
-					return new double[] {rs.getDouble("Low"), rs.getDouble("High"), rs.getDouble("Open"), rs.getDouble("Close")};
-				else
-					return new double[] {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
-			}
-			finally
-			{
-				st.close();
-			}
+			st.setQueryTimeout(60);
+			rs = st.executeQuery("select * from ATR where Par=" + par.ordinal() + " and Fecha='" + fecha + "'");
+			if(rs.next())
+				return new double[] {rs.getDouble("Low"), rs.getDouble("High"), rs.getDouble("Open"), rs.getDouble("Close")};
+			else
+				return new double[] {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
 		}
 		catch (SQLException s)
 		{
@@ -304,6 +300,7 @@ public class ConexionMySql
 		}
 		finally
 		{
+			cerrar(rs);
 			cerrar(st);
 	 		regresarConexion(conexion);	
 		}
@@ -325,6 +322,7 @@ public class ConexionMySql
 			try
 			{
 				st = conexion.createStatement();
+				st.setQueryTimeout(60);
 				rs = st.executeQuery("select * from ATR");
 				while(rs.next())
 				{
@@ -377,14 +375,16 @@ public class ConexionMySql
 			for(int i = 0; i < 10; i++)
 			{
 				Statement st = null;
+				ResultSet rs = null;
 				try 
 				{
 					st = conexion.createStatement();
-						ResultSet rs = st.executeQuery("select * from Proveedores where IdProveedor=" + (id.ordinal() + 1));
-						if(rs.next())
-							return rs.getString(2);
-						else
-							return "";
+					st.setQueryTimeout(60);
+					rs = st.executeQuery("select * from Proveedores where IdProveedor=" + (id.ordinal() + 1));
+					if(rs.next())
+						return rs.getString(2);
+					else
+						return "";
 				} 
 				catch (SQLException e) 
 				{
@@ -392,6 +392,7 @@ public class ConexionMySql
 				}
 				finally
 				{
+					cerrar(rs);
 					cerrar(st);
 				}
 			}
@@ -412,6 +413,7 @@ public class ConexionMySql
 		try 
 		{
 			st = conexion.createStatement();
+			st.setQueryTimeout(60);
 			rs = st.executeQuery("select * from Historial");
 			LinkedList <RegistroHistorial> entradasNuevas = new LinkedList <RegistroHistorial> ();
 			while(rs.next())
@@ -480,7 +482,7 @@ public class ConexionMySql
 		Connection posible = poolConexiones.peek();
 		if(posible == null)
 		{
-			if(numeroConexiones.get() >= 20)
+			if(numeroConexiones.getAndAdd(0) >= 20)
 			{
 				boolean excepcion = false;
 				try 

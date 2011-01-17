@@ -17,29 +17,29 @@ public class AnalisisLogica
 
 	public static void recargarRegistros()
 	{
-		todas.set(ConexionMySql.darEntradas());
+		todas.getAndSet(ConexionMySql.darEntradas());
 	}
 	
 	public static List <RegistroHistorial> darRegistros()
 	{
-		if(ultimaActualizacion.get() != Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+		if(ultimaActualizacion.getAndAdd(0) != Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 		{
 			recargarRegistros();
-			ultimaActualizacion.set(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+			ultimaActualizacion.getAndSet(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		}
 		return todas.get();
 	}
 	
 	public static List <RegistroHistorial> darRegistrosEstrategia(IdEstrategia id, Par par)
 	{
-		if(ultimaActualizacion.get() != Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+		if(ultimaActualizacion.getAndAdd(0) != Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
 		{
 			recargarRegistros();
-			ultimaActualizacion.set(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+			ultimaActualizacion.getAndSet(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		}
 		LinkedList <RegistroHistorial> aDevolver = new LinkedList <RegistroHistorial> ();
 		for(RegistroHistorial r : todas.get())
-			if(r.id == id && !r.par.esDistinto(par))
+			if(r.id == id && r.par.equals(par))
 				aDevolver.add(r);
 		return aDevolver;
 	}

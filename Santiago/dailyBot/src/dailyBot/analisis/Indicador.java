@@ -101,7 +101,7 @@ public enum Indicador
 		
 	}, new Rango(0, 100), 5, false);
 	
-	interface Calculable
+	private interface Calculable
 	{
 		double calcular(RegistroHistorial registro);
 	}
@@ -111,8 +111,7 @@ public enum Indicador
 	int espaciado;
 	boolean esInfo;
 	boolean tieneLabels;
-	@SuppressWarnings("unchecked")
-	Hashtable labels;
+	Hashtable <Integer, JLabel> labels;
 	
 	private Indicador(Calculable c, Rango r, int es, boolean info)
 	{
@@ -123,12 +122,11 @@ public enum Indicador
 		tieneLabels = false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private Indicador(Calculable c, Rango r, int es, boolean info, Object[][] aLabels)
 	{
 		this(c, r, es, info);
 		tieneLabels = true;
-		labels = new Hashtable();
+		labels = new Hashtable <Integer, JLabel> ();
 		for(Object[] l : aLabels)
 			labels.put(new Integer((Integer) l[0]), new JLabel((String) l[1]));
 	}
@@ -143,8 +141,7 @@ public enum Indicador
 		return espaciado;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public Hashtable darLabels()
+	public Hashtable <Integer, JLabel> darLabels()
 	{
 		return labels;
 	}
