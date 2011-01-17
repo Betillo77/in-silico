@@ -1,6 +1,5 @@
 package dailyBot.control;
 
-import java.awt.Dimension;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -8,10 +7,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 
 import dailyBot.control.conexion.ConexionRMI;
 import dailyBot.control.conexion.ConexionServidorRMI;
