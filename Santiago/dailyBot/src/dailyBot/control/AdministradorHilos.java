@@ -1,5 +1,6 @@
 package dailyBot.control;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -70,13 +71,13 @@ public class AdministradorHilos
 								{
 									HiloDaily.sleep(random.nextInt(1000));
 									StackTraceElement[] stack = h.getStackTrace();
-									mensaje += "+ " + (System.currentTimeMillis() - inicio) + " ms :" + (stack.length == 0 ? " null" : " " + stack[0]) + "\n"; 
+									mensaje += "+ " + (System.currentTimeMillis() - inicio) + " ms :" + (stack.length == 0 ? " null" : " " + Arrays.toString(stack)) + "\n"; 
 								}
 								for(int i = 0; i < 50; i++)
 								{
 									HiloDaily.sleep(random.nextInt(5000));
 									StackTraceElement[] stack = h.getStackTrace();
-									mensaje += "+ " + (System.currentTimeMillis() - inicio) + " ms :" + (stack.length == 0 ? " null" : " " + stack[0]) + "\n"; 
+									mensaje += "+ " + (System.currentTimeMillis() - inicio) + " ms :" + (stack.length == 0 ? " null" : " " + Arrays.toString(stack)) + "\n"; 
 								}
 								Error.agregar("Debug :\n" + mensaje);
 								Error.reiniciar();

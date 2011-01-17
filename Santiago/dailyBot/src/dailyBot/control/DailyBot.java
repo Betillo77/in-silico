@@ -178,7 +178,8 @@ public class DailyBot
 	{
 		Calendar actual = Calendar.getInstance();
 		Error.agregarInfo("Iniciando operaciones automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
-        System.setSecurityManager(new SecurityManager());
+//		System.setProperty("java.security.policy", DailyBot.class.getClassLoader().getResource("server.policy").toString());
+		System.setSecurityManager(new SecurityManager());
         try 
         {
             String name = "Conexion";

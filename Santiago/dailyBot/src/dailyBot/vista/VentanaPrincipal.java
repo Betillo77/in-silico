@@ -52,6 +52,8 @@ public class VentanaPrincipal extends JFrame
 		add(salir);
 		setSize(new Dimension(259, 244));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		pack();
+		setVisible(true);
 	}
 
 	private JButton darBotonEstrategia(final IdEstrategia id) 

@@ -1,14 +1,14 @@
 #Fat Jar Configuration File
-#Sun Oct 03 21:36:14 COT 2010
+#Sun Jan 16 19:53:38 COT 2011
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
-jarname=/home/santiago/Desktop/lastBuilds/dailyOCR.jar
+jarname=/home/santiago/robotInicio.jar
 manifest.mergeall=true
-manifest.mainclass=control.dailyOCR
+manifest.mainclass=dailyBot.control.RobotInicio
 manifest.file=<createnew>
 jarname.isextern=true
 onejar.expand=
 excludes=
-includes=
+includes=<inc|dailyBot/libs>~server.policy

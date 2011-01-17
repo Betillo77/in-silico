@@ -314,7 +314,7 @@ public enum Par
 	{
 		Par par = null;
 		for(Par a : values())
-			if(!a.equals(TODOS) && cuerpo.contains(a.toString()))
+			if(a != TODOS && cuerpo.contains(a.toString()))
 				par = a;
 		return par;
 	}

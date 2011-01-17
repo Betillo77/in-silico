@@ -512,17 +512,10 @@ public class ConexionMySql
 		boolean excepcion = false;
 		try 
 		{
-			try 
-			{
-				if(conexion != null && conexion.isValid(60))
-					poolConexiones.put(conexion);
-				else
-					excepcion = true;
-			}
-			catch (SQLException e) 
-			{
+			if(conexion != null)
+				poolConexiones.put(conexion);
+			else
 				excepcion = true;
-			}
 		}
 		catch (InterruptedException e)
 		{
