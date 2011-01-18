@@ -146,4 +146,17 @@ public class Rangos implements Serializable
 			Error.agregarInfo(mensaje);
 		return true;
 	}
+	
+	public Rangos duplicar()
+	{
+		Rangos nuevos = new Rangos();
+		for(Indicador i : Indicador.values())
+		{
+			if(!rangos.containsKey(i))
+				rangos.put(i, i.rango.duplicar());
+			Rango este = rangos.get(i);
+			nuevos.cambiarRango(i, este);
+		}
+		return nuevos;
+	}
 }

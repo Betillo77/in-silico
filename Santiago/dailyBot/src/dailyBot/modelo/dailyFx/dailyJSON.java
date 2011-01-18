@@ -18,7 +18,7 @@ public class dailyJSON
 	private List <IndicadorJSON> Indicator;
 	private List <AlertaJSON> Alert;
 	private List <SenalJSON> Signal;
-	private static Gson gson = new Gson();
+	private static Gson gson;
 	
 	public List <EstrategiaJSON> getStrategy() 
 	{
@@ -60,12 +60,16 @@ public class dailyJSON
 		Signal = signal;
 	}
 	
+
+	static ArrayList <SenalEstrategia> nuevasSenales = new ArrayList <SenalEstrategia> ();
+	
 	public static ArrayList <SenalEstrategia> leer(String entrada)
 	{
 		try
 		{
+			nuevasSenales.clear();
+			gson = new Gson();
 			dailyJSON dailyJson = gson.fromJson(entrada, dailyJSON.class);
-			ArrayList <SenalEstrategia> nuevasSenales = new ArrayList <SenalEstrategia> ();
 			for(SenalJSON s : dailyJson.Signal)
 			{
 				boolean compra = s.direction.equals("Buy");
@@ -82,17 +86,19 @@ public class dailyJSON
 						else
 							stop = Math.min(stop, c.value);
 				}
+				s.components = null;
 				SenalEstrategia actual = new SenalEstrategia(darEstrategia(s.strategyId), compra, Par.convertirPar(s.symbol), s.curOpLots, s.entryPrice, stop);
 				nuevasSenales.add(actual);
 			}
+			dailyJson.Signal = null;
 			for(IndicadorJSON i : dailyJson.Indicator)
 			{
 				Par actual = Par.convertirPar(i.currency);
 				if(actual != null)
-				{
 					actual.ponerPrecioActual(i.bid, i.ask);
-				}
 			}
+			dailyJson.Indicator = null;
+			gson = null;
 			return nuevasSenales;
 		}
 		catch(Exception e)

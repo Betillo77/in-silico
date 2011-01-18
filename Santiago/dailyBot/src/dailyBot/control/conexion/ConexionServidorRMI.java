@@ -55,7 +55,13 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 				return dpRangos[idEstrategia][idPar];
 			return dpRangos[idEstrategia][idPar] = servidor.darRangosEstrategia(idEstrategia, idPar);
 		}
-
+		
+		@Override
+		public Rangos darRangosEstrategiaCopia(int idEstrategia, int idPar) throws RemoteException
+		{
+			return darRangosEstrategia(idEstrategia, idPar).duplicar();
+		}
+		
 		@Override
 		public synchronized List <SenalEstrategia> darSenalesEstrategia(int id) throws RemoteException 
 		{
@@ -107,6 +113,12 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 		return IdEstrategia.values()[idEstrategia].darEstrategia().getRangos()[idPar];
 	}
 
+	@Override
+	public Rangos darRangosEstrategiaCopia(int idEstrategia, int idPar) throws RemoteException
+	{
+		return null;
+	}
+	
 	@Override
 	public List <SenalEstrategia> darSenalesEstrategia(int id) throws RemoteException 
 	{

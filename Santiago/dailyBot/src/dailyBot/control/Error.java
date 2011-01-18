@@ -98,6 +98,14 @@ public class Error
 	{
 		try 
 		{
+			String mensaje = "Reiniciando, stack:\n";
+			StackTraceElement[] st = Thread.currentThread().getStackTrace();
+			if(st != null)
+				for(StackTraceElement s : st)
+				{
+					mensaje += s + "\n";
+				}
+			Error.agregar(mensaje);
 			Runtime.getRuntime().exec("shutdown now -r");
 			System.exit(0);
 			throw(new RuntimeException());
