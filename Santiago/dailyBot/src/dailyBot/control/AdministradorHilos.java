@@ -26,7 +26,6 @@ public class AdministradorHilos
 					{
 						HiloDaily.sleep(300000);
 						Calendar c = Calendar.getInstance();
-						int hora = c.get(Calendar.HOUR_OF_DAY);
 						int minuto = c.get(Calendar.MINUTE);
 						if(minuto > 40)
 						{
@@ -34,7 +33,7 @@ public class AdministradorHilos
 						}
 						else
 						{
-							if(!mensajeEnviado && (hora % 2 == 1))
+							if(!mensajeEnviado)
 							{
 								String mensaje = "";
 								for(HiloDaily h : hilos)
@@ -48,6 +47,12 @@ public class AdministradorHilos
 								}
 								for(Par p : Par.values())
 									mensaje += p.debugSenales();
+								Runtime runtime = Runtime.getRuntime();
+								double mb = 1024 * 1024;
+								mensaje += "\nMemoria usada: " + ((runtime.totalMemory() - runtime.freeMemory()) / mb);
+								mensaje += "\nMemoria libre:" + (runtime.freeMemory() / mb);
+								mensaje += "\nMemoria total:" + (runtime.totalMemory() / mb);
+								mensaje += "\nMemoria limite:" + (runtime.maxMemory() / mb);
 								Error.agregarInfo(mensaje);
 								mensajeEnviado = true;
 							}
