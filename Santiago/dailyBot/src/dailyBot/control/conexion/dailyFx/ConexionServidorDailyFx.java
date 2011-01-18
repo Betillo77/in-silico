@@ -47,6 +47,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		
 		public String leerRespuesta(HttpResponse respuesta) throws IllegalStateException, IOException
 		{
+			sb.setLength(0);
 	        HttpEntity entidadHttp = respuesta.getEntity();
 	        respuesta.getStatusLine();
 	        if (entidadHttp != null)
