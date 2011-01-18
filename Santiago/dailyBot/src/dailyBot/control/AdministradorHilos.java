@@ -48,11 +48,11 @@ public class AdministradorHilos
 								for(Par p : Par.values())
 									mensaje += p.debugSenales();
 								Runtime runtime = Runtime.getRuntime();
-								double mb = 1024 * 1024;
-								mensaje += "\nMemoria usada: " + ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-								mensaje += "\nMemoria libre:" + (runtime.freeMemory() / mb);
-								mensaje += "\nMemoria total:" + (runtime.totalMemory() / mb);
-								mensaje += "\nMemoria limite:" + (runtime.maxMemory() / mb);
+								long kb = 1024L;
+								mensaje += "\nMemoria usada: " + ((runtime.totalMemory() - runtime.freeMemory()) / kb) + " kb";
+								mensaje += "\nMemoria libre: " + (runtime.freeMemory() / kb) + " kb";
+								mensaje += "\nMemoria total: " + (runtime.totalMemory() / kb) + " kb";
+								mensaje += "\nMemoria limite: " + (runtime.maxMemory() / kb) + " kb";
 								Error.agregarInfo(mensaje);
 								mensajeEnviado = true;
 							}

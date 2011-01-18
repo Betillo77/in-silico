@@ -6,7 +6,7 @@ public class RobotInicio
 {
 	public static void main(String [] args) throws InterruptedException, IOException
 	{
-		ProcessBuilder pb = new ProcessBuilder("sudo", "java", "-server", "-jar", "dailyBot.jar", "-Xmx1536m", "-Xms512m");
+		ProcessBuilder pb = new ProcessBuilder("sudo", "java", "-server", "-Xms512m", "-Xmx1536m", "-jar", "dailyBot.jar");
 		pb.directory(new File("/home/santiago/Desktop/dailyBot/"));
 		pb.start();
 	}
