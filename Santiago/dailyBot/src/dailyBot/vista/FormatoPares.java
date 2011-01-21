@@ -83,7 +83,7 @@ public class FormatoPares extends JPanel
 		} 
 		catch (RemoteException e) 
 		{
-        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
         	System.exit(0);
 		}
 		configurar(p, nuevo);
@@ -103,7 +103,7 @@ public class FormatoPares extends JPanel
 				} 
 				catch (RemoteException e1) 
 				{
-		        	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		        	Error.agregarRMI(e1.getMessage() + " Error haciendo la conexion RMI");
 		        	System.exit(0);
 				}
 				SwingUtilities.invokeLater(new Runnable() 

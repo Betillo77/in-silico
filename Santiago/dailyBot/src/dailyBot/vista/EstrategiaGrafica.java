@@ -58,7 +58,7 @@ public class EstrategiaGrafica extends JFrame
 				}
 				catch(Exception e1)
 				{
-		        	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		        	Error.agregarRMI(e1.getMessage() + " Error haciendo la conexion RMI");
 		        	System.exit(0);
 				}
 			}
@@ -80,7 +80,7 @@ public class EstrategiaGrafica extends JFrame
 				}
 				catch(Exception e1)
 				{
-		        	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		        	Error.agregarRMI(e1.getMessage() + " Error haciendo la conexion RMI");
 		        	System.exit(0);
 				}
 			}
@@ -107,7 +107,7 @@ public class EstrategiaGrafica extends JFrame
 				}
 				catch(Exception e1)
 				{
-		        	Error.agregar(e1.getMessage() + " Error haciendo la conexion RMI");
+		        	Error.agregarRMI(e1.getMessage() + " Error haciendo la conexion RMI");
 		        	System.exit(0);
 				}
 			}

@@ -66,7 +66,7 @@ public class Tabla extends JFrame
 			}
 			catch(Exception e)
 			{        	
-				Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+				Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
 				System.exit(0);
 			}
 		}
@@ -82,7 +82,7 @@ public class Tabla extends JFrame
 		}
 		catch(Exception e)
 		{
-        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
         	System.exit(0);
 		}
 		mostrar = new Object[listaE.size()][5];
@@ -99,7 +99,7 @@ public class Tabla extends JFrame
 			} 
 			catch(Exception e)
 			{
-	        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+	        	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
 	        	System.exit(0);
 			}
 		}
