@@ -16,7 +16,7 @@ public abstract class SistemaEstrategias
 	
 	protected abstract ArrayList <SenalEstrategia> leer(String [] lecturas);
 	
-	protected abstract void procesar();
+	protected abstract void procesar(String[] lectura);
 	
 	public void lockSistema()
 	{
@@ -28,11 +28,11 @@ public abstract class SistemaEstrategias
 		lockSistema.unlock();
 	}
 	
-	public void iniciarProcesamiento()
+	public void iniciarProcesamiento(String[] lectura)
 	{
 		try
 		{
-			procesar();
+			procesar(lectura);
 			for(IdProveedor id : IdProveedor.values())
 				id.darProveedor().terminarCiclo(estrategias);
 		}

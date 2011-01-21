@@ -84,6 +84,12 @@ public class Proveedor
 			{
 				while(true)
 				{
+					if(id.darProveedor() == null || verificarConsistencia())
+					{
+						Error.agregar("Error de consistencia en " + id);
+						id.iniciarProveedor();
+						return;
+					}
 					esperarCambio();
 					Calendar c = Calendar.getInstance();
 					int hora = c.get(Calendar.HOUR_OF_DAY);
@@ -384,6 +390,19 @@ public class Proveedor
 		finally
 		{
 			write.unlock();
+		}
+	}
+	
+	public boolean verificarConsistencia() 
+	{
+		read.lock();
+		try
+		{
+			return senales == null || id == null || activos == null || escritor == null || cambios == null;
+		}
+		finally
+		{
+			read.unlock();
 		}
 	}
 	

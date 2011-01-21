@@ -31,7 +31,10 @@ public class SistemaDailyFX extends SistemaEstrategias
 	{
 		for(IdEstrategia e : estrategias)
 			if(e.darEstrategia() == null || e.darEstrategia().verificarConsistencia())
+			{
+				Error.agregar("Error de consistencia en " + e);
 				e.iniciarEstrategia();
+			}
 	}
 
 	@Override
@@ -64,10 +67,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 						System.gc();
 						verificarConsistencia();
 						HiloDaily.sleep(1000);
+						String[] lectura = ConexionServidorDailyFx.leerServidorDailyFX();
 						lockSistema.lock();
 						try
 						{
-							iniciarProcesamiento();
+							iniciarProcesamiento(lectura);
 							verificarConsistencia();
 							if(cambio)
 								cambioSistema.signalAll();
@@ -100,7 +104,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
-		}, 600000L);
+		}, 900000L);
 		hiloPrincipal.setName("Principal " + getClass().getCanonicalName());
 		AdministradorHilos.agregarHilo(hiloPrincipal);
 		HiloDaily hiloPersistencia = new HiloDaily(new RunnableDaily()
@@ -134,11 +138,11 @@ public class SistemaDailyFX extends SistemaEstrategias
 	}
 
 	@Override
-	protected void procesar()
+	protected void procesar(String[] lectura)
 	{
 		try
 		{
-			ArrayList <SenalEstrategia> senalesLeidas = leer(ConexionServidorDailyFx.leerServidorDailyFX());
+			ArrayList <SenalEstrategia> senalesLeidas = leer(lectura);
 			for(SenalEstrategia senal : senalesLeidas)
 			{
 				Estrategia actual = senal.getEstrategia().darEstrategia();

@@ -126,6 +126,13 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		        		Error.agregar("Error en lectura interna servidor DailyFX, reiniciando despues de 10 minutos");
 		        		Error.reiniciar();
 		        	}
+		        	if(j % 10 == 0)
+		        	{
+			    		AyudanteLeerServidorDailyFX.instancia.lock.unlock();
+			    		AyudanteLeerServidorDailyFX.instancia = new AyudanteLeerServidorDailyFX();
+			    		AyudanteLeerServidorDailyFX.instancia.lock.lock();
+			    		HiloDaily.sleep(9000);
+		        	}
 					HiloDaily.sleep(6000);
 		    		continue;
 		        }

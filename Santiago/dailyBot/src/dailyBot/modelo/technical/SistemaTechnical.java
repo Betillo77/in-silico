@@ -63,7 +63,7 @@ public class SistemaTechnical extends SistemaEstrategias
 					{
 						verificarConsistencia();
 						HiloDaily.sleep(10000);
-						iniciarProcesamiento();
+						iniciarProcesamiento(null);
 //						synchronized(this)
 //						{
 //						    escritor.terminarCiclo();
@@ -147,7 +147,7 @@ public class SistemaTechnical extends SistemaEstrategias
 	}
 	
 	@Override
-	protected void procesar()
+	protected void procesar(String[] entrada)
 	{
 /*		try
 		{

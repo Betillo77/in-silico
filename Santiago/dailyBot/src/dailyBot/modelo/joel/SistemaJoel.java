@@ -68,7 +68,7 @@ public class SistemaJoel extends SistemaEstrategias
 					{
 						verificarConsistencia();
 						HiloDaily.sleep(1200000);
-						iniciarProcesamiento();
+						iniciarProcesamiento(null);
 //						synchronized(this)
 //						{
 //						    escritor.terminarCiclo();
@@ -205,7 +205,7 @@ public class SistemaJoel extends SistemaEstrategias
 	}
 	
 	@Override
-	protected void procesar() 
+	protected void procesar(String[] entrada) 
 	{
 /*		try
 		{
