@@ -106,6 +106,7 @@ public class Error
 					mensaje += s + "\n";
 				}
 			Error.agregar(mensaje);
+			HiloDaily.sleep(60000);
 			Runtime.getRuntime().exec("shutdown now -r");
 			System.exit(0);
 			throw(new RuntimeException());
