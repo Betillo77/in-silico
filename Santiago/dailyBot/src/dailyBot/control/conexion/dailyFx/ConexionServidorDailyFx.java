@@ -30,7 +30,7 @@ import dailyBot.modelo.Par;
 
 public class ConexionServidorDailyFx extends ConexionServidor
 {
-	private static abstract class RespuestaHttp implements Callable <HttpResponse>
+	private static abstract class RespuestaHttp implements Callable <String>
 	{
 		protected DefaultHttpClient clienteHttp;
 		protected HttpGet peticionGet;
@@ -40,9 +40,9 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		protected ReentrantLock lock = new ReentrantLock();
 		
 		@Override
-		public HttpResponse call() throws Exception
+		public String call() throws Exception
 		{
-			return clienteHttp.execute(peticionGet);
+			return leerRespuesta(clienteHttp.execute(peticionGet));
 		}
 		
 		public String leerRespuesta(HttpResponse respuesta) throws IllegalStateException, IOException
@@ -101,7 +101,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 	        peticionGet = new HttpGet("https://fxsignals.dailyfx.com/fxsignals-ds/json/all.do");
 	        executor = Executors.newSingleThreadExecutor();
 	        sb = new StringBuilder("");
-	        lectura = new byte[2048];
+	        lectura = new byte[32768];
 		}
 	}
 
@@ -113,8 +113,8 @@ public class ConexionServidorDailyFx extends ConexionServidor
         	AyudanteLeerServidorDailyFX.instancia.lock.lock();
 	    	try
 	    	{ 	
-		        Future <HttpResponse> future = AyudanteLeerServidorDailyFX.instancia.executor.submit(AyudanteLeerServidorDailyFX.instancia);
-		        HttpResponse respuesta;
+		        Future <String> future = AyudanteLeerServidorDailyFX.instancia.executor.submit(AyudanteLeerServidorDailyFX.instancia);
+		        String respuesta;
 		        try
 		        {
 		        	respuesta = future.get(10, TimeUnit.SECONDS);
@@ -137,7 +137,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		    		continue;
 		        }
 		        String [] resultado = new String[1];
-		        resultado[0] = AyudanteLeerServidorDailyFX.instancia.leerRespuesta(respuesta);
+		        resultado[0] = respuesta;
 		        return resultado;
 	    	}
 	    	catch(Exception e)
@@ -178,9 +178,8 @@ public class ConexionServidorDailyFx extends ConexionServidor
     		AyudanteCargarVIX.instancia.lock.lock();
 	    	try
 	    	{
-	    		Future <HttpResponse> future = AyudanteCargarVIX.instancia.executor.submit(AyudanteCargarVIX.instancia);
-		        HttpResponse respuesta = future.get(10, TimeUnit.SECONDS);
-		        String salida = AyudanteCargarVIX.instancia.leerRespuesta(respuesta);
+	    		Future <String> future = AyudanteCargarVIX.instancia.executor.submit(AyudanteCargarVIX.instancia);
+		        String salida = future.get(10, TimeUnit.SECONDS);
 		        Pattern pattern = Pattern.compile("Index Value");
 		        Pattern pattern2 = Pattern.compile("\\d+.\\d+<");
 				Matcher matcher = pattern.matcher(salida);
@@ -232,7 +231,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 	    	{
 	    		Scanner sc = new Scanner(new File("js.txt"));
 				peticionGet = new HttpGet("https://plus.dailyfx.com/login/loginForm.jsp");
-	    		Future <HttpResponse> future = executor.submit(this);
+	    		Future <String> future = executor.submit(this);
 		        future.get(60, TimeUnit.SECONDS);
 		        peticionGet.abort();
 		        peticionGet = new HttpGet("https://plus.dailyfx.com/login/j_security_check?" + sc.next());
@@ -260,9 +259,8 @@ public class ConexionServidorDailyFx extends ConexionServidor
 	    	try
 	    	{
 	    		peticionGet = new HttpGet(url);
-	    		Future <HttpResponse> future = executor.submit(this);
-	    		HttpResponse respuesta = future.get(120, TimeUnit.SECONDS);
-	    		String salida = leerRespuesta(respuesta);
+	    		Future <String> future = executor.submit(this);
+	    		String salida = future.get(120, TimeUnit.SECONDS);
 	    		peticionGet.abort();
 	    		return salida;
 	    	}

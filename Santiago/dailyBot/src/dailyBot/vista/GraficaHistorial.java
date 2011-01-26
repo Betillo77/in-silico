@@ -66,7 +66,7 @@ public class GraficaHistorial extends JFrame
 		int cuentaActual = 0;
 		for(RegistroHistorial registro : registros)
 		{
-			if(rangos.cumple(registro, false, false))
+			if(rangos.cumple(registro, false, ""))
 			{
 				temp.setTimeInMillis(registro.fechaApertura);
 				if(temp.get(Calendar.MONTH) != actual.get(Calendar.MONTH))
@@ -96,7 +96,7 @@ public class GraficaHistorial extends JFrame
 		int i = 0;
 		for(RegistroHistorial registro : registros)
 		{
-			if(rangos.cumple(registro, false, false))
+			if(rangos.cumple(registro, false, ""))
 			{
 				ganancia += registro.ganancia;
 				i++;

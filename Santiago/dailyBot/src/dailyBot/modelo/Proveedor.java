@@ -158,8 +158,8 @@ public class Proveedor
 					else
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
-						Error.agregarInfo("Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString());
-						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, true))
+						String mensaje = "Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString();
+						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, mensaje))
 							afectada.setMagico(1000);
 						else
 							escritor.abrir(afectada);

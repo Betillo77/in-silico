@@ -16,12 +16,12 @@ public class RangosProveedor extends Rangos
 	}
 	
 	@Override
-	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo, boolean enviarMensaje) 
+	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo, String enviarMensaje) 
 	{
 		try 
 		{
 			if(id == null || VentanaPrincipal.conexion.darActivoProveedor(id.ordinal(), registro.id.ordinal(), registro.par.ordinal()))
-				return VentanaPrincipal.conexion.darRangosEstrategia(registro.id.ordinal(), registro.par.ordinal()).cumple(registro, true, false);
+				return VentanaPrincipal.conexion.darRangosEstrategia(registro.id.ordinal(), registro.par.ordinal()).cumple(registro, true, "");
 			else
 				return false;
 		} 

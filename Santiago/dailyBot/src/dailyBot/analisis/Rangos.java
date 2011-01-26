@@ -117,9 +117,9 @@ public class Rangos implements Serializable
 		aCambiar.setInvertido(rango.isInvertido());
 	}
 	
-	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo, boolean enviarMensaje)
+	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo, String enviarMensaje)
 	{
-		String mensaje = registro.toString() + "\n";
+		String mensaje = enviarMensaje + "\n\n" + registro.toString() + "\n\n";
 		for(Indicador i : Indicador.values())
 		{
 			mensaje += i.toString();
@@ -133,7 +133,7 @@ public class Rangos implements Serializable
 			if(!rangos.get(i).estaDentro(i.calcular(registro)))
 			{
 				mensaje += ", no cumple: " + rangos.get(i).toString(i.calcular(registro)) + ", terminando con false\n";
-				if(enviarMensaje)
+				if(!enviarMensaje.equals(""))
 					Error.agregarInfo(mensaje);
 				return false;
 			}
@@ -142,7 +142,7 @@ public class Rangos implements Serializable
 				mensaje += ", cumple: " + rangos.get(i).toString(i.calcular(registro)) + "\n";
 			}
 		}
-		if(enviarMensaje)
+		if(!enviarMensaje.equals(""))
 			Error.agregarInfo(mensaje);
 		return true;
 	}
