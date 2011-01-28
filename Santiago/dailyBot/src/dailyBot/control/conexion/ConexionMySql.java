@@ -22,6 +22,7 @@ import dailyBot.analisis.RegistroHistorial;
 import dailyBot.analisis.Estadistica.EntradaHistoriaPares;
 import dailyBot.control.Error;
 import dailyBot.control.HiloDaily;
+import dailyBot.control.Propiedades;
 import dailyBot.modelo.Par;
 import dailyBot.modelo.SenalEstrategia;
 import dailyBot.modelo.Estrategia.IdEstrategia;
@@ -313,9 +314,8 @@ public class ConexionMySql
 		static synchronized EnumMap < Par, TreeMap <Date, EntradaHistoriaPares> > darCache()
 		{
 			EnumMap < Par, TreeMap <Date, EntradaHistoriaPares> > cache = new EnumMap < Par, TreeMap <Date, EntradaHistoriaPares> >(Par.class);
-			if(cache.isEmpty())
-				for(Par par : Par.values())
-					cache.put(par, new TreeMap <Date, EntradaHistoriaPares> ());
+			for(Par par : Par.values())
+				cache.put(par, new TreeMap <Date, EntradaHistoriaPares> ());
 			Connection conexion = darConexion();
 			Statement st = null;
 			ResultSet rs = null;
@@ -345,23 +345,15 @@ public class ConexionMySql
 			}
 			return cache;
 		}
-		
-		static synchronized void recargarCache()
-		{
-			cache = darCache();
-		}
-		
+
 		static synchronized SortedMap <Date, EntradaHistoriaPares> darHasta(Par par, Date fecha)
 		{
+			if(cache.get(par).tailMap(fecha).isEmpty())
+				cache = darCache();
 			return cache.get(par).subMap(java.sql.Date.valueOf("1900-01-01"), fecha);
 		}
 	}
-	
-	public static void iniciarDia()
-	{
-		CacheHistoriaPares.recargarCache();
-	}
-	
+
 	public static SortedMap <Date, EntradaHistoriaPares> darHistoriaPares(Par par, Date date) 
 	{
 		return CacheHistoriaPares.darHasta(par, date);
@@ -438,7 +430,7 @@ public class ConexionMySql
     {
     	String db_connect_string = "jdbc:mysql://192.168.0.105:3306/DailyFX";
     	String db_userid = "root";
-    	String db_password = "CalidadIngesis";
+    	String db_password = Propiedades.darPropiedad("dailyBot.control.conexion.ConexionMySql.claveDB");
     	for(int intento = 0; intento < 11; intento++)
     	{
 	        try

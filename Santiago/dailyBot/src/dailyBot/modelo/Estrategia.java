@@ -110,26 +110,30 @@ public class Estrategia
 					continue;
 				if(afectada.isCompra())
 				{
-					if(afectada.getPar().darPrecioActual(true) <= afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() > afectada.darStopDaily()))
+					if(afectada.getPar().darPrecioActual(true) < afectada.darStop() && afectada.getPar().darPrecioActual(false) < afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() > afectada.darStopDaily()))
 					{
 						if(!afectada.isTocoStop())
+						{
 							Error.agregarInfo(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(true) + ", stop -> " + afectada.darStop());
-						for(IdProveedor p : IdProveedor.values())
-							if(!afectada.isTocoStop())
-								p.darProveedor().tocoStop(afectada);
-						afectada.setTocoStop(true);
+							for(IdProveedor p : IdProveedor.values())
+								if(!afectada.isTocoStop())
+									p.darProveedor().tocoStop(afectada);
+							afectada.setTocoStop(true);
+						}
 					}
 				}
 				else
 				{
-					if(afectada.getPar().darPrecioActual(false) >= afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() < afectada.darStopDaily()))
+					if(afectada.getPar().darPrecioActual(false) > afectada.darStop() && afectada.getPar().darPrecioActual(true) > afectada.darStop() && (afectada.getNumeroLotes() < 4 || afectada.darStop() < afectada.darStopDaily()))
 					{
 						if(!afectada.isTocoStop())
+						{
 							Error.agregarInfo(afectada.toString() + " toco stop: precio actual -> " + afectada.getPar().darPrecioActual(false) + ", stop -> " + afectada.darStop());
-						for(IdProveedor p : IdProveedor.values())
-							if(!afectada.isTocoStop())
-								p.darProveedor().tocoStop(afectada);
-						afectada.setTocoStop(true);
+							for(IdProveedor p : IdProveedor.values())
+								if(!afectada.isTocoStop())
+									p.darProveedor().tocoStop(afectada);
+							afectada.setTocoStop(true);
+						}
 					}
 				}
 			}

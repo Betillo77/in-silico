@@ -19,7 +19,6 @@ public class SenalEstrategia implements Serializable
 	private double SSI1;
 	private double SSI2;
 	private long fechaInicio;
-	public transient int numeroTrailing = 0;
 	private int low = Short.MAX_VALUE;
 	private int high = Short.MIN_VALUE;
 	private boolean tocoStop = false;

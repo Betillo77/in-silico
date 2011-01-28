@@ -177,29 +177,22 @@ public class SistemaDailyFX extends SistemaEstrategias
 							afectada.ponerStop(senal.darStop());
    					    else
 						{
-							int diferenciaPips = afectada.getPar().diferenciaPips(afectada.darStop(), afectada.isCompra());
-							if(ganancia > 150 && diferenciaPips > 150)
-							{
-								afectada.ponerStop(afectada.getPar().darPrecioMenos(150, afectada.isCompra()));
-								if(afectada.numeroTrailing++ % 50 == 0)
-									Error.agregarInfo("Actualizando trailing stop, actual: " + afectada.getPar().darPrecioActual(afectada.isCompra()) + ", stop daily: " + senal.darStop() + ", trailing stop: " + afectada.darStop());
-							}
 							if(ganancia > 100)
 							{
 								double mejorStop = afectada.isCompra() ? Math.max(afectada.darStop(), afectada.getPrecioEntrada()) : Math.min(afectada.darStop(), afectada.getPrecioEntrada());
 								if(mejorStop != afectada.darStop())
 								{
 									afectada.ponerStop(mejorStop);
-									if(afectada.numeroTrailing++ % 50 == 0)
-										Error.agregarInfo("Actualizando trailing stop a los 100 pips, actual: " + afectada.getPar().darPrecioActual(afectada.isCompra()) + ", stop daily: " + senal.darStop() + ", trailing stop: " + afectada.darStop());	
+									Error.agregarInfo("Actualizando trailing a break-even a los 100 pips, actual: " + afectada.getPar().darPrecioActual(afectada.isCompra()) + ", stop daily: " + senal.darStop() + ", trailing stop: " + afectada.darStop());	
 								}
 							}
 						}
+						boolean igual = Math.abs(afectada.darStop() - afectada.getPrecioEntrada()) < 10e-4d;
 						if(afectada.isCompra())
 						{
 							if(afectada.darStop() < senal.darStop())
 								afectada.ponerStop(senal.darStop());
-							if(afectada.darStop() > senal.darStop() && (afectada.darStop() < (afectada.getPrecioEntrada() - 10e-4d)))
+							if(afectada.darStop() > senal.darStop() && ((afectada.darStop() < afectada.getPrecioEntrada() && !igual) || senal.darStop() >= afectada.getPrecioEntrada()))
 								afectada.ponerStop(senal.darStop());
 							afectada.ponerStopDaily(senal.darStop());
 						}
@@ -207,7 +200,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 						{
 							if(afectada.darStop() > senal.darStop())
 								afectada.ponerStop(senal.darStop());
-							if(afectada.darStop() < senal.darStop() && (afectada.darStop() > (afectada.getPrecioEntrada() + 10e-4d)))
+							if(afectada.darStop() < senal.darStop() && ((afectada.darStop() > afectada.getPrecioEntrada() && !igual) || senal.darStop() <= afectada.getPrecioEntrada()))
 								afectada.ponerStop(senal.darStop());
 							afectada.ponerStopDaily(senal.darStop());
 						}

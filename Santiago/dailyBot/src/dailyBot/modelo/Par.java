@@ -254,8 +254,6 @@ public enum Par
 			low = darPrecioActual(true);
 			open = darPrecioActual(true);
 			fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-			if(ordinal() == 0)
-				ConexionMySql.iniciarDia();
 		}
 		finally
 		{

@@ -1,10 +1,8 @@
 package dailyBot.control.conexion.dailyFx;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,6 +23,7 @@ import org.apache.http.params.BasicHttpParams;
 
 import dailyBot.control.Error;
 import dailyBot.control.HiloDaily;
+import dailyBot.control.Propiedades;
 import dailyBot.control.conexion.ConexionServidor;
 import dailyBot.modelo.Par;
 
@@ -229,12 +228,12 @@ public class ConexionServidorDailyFx extends ConexionServidor
 	    {
 	    	try
 	    	{
-	    		Scanner sc = new Scanner(new File("js.txt"));
+	    		String datos = Propiedades.darPropiedad("dailyBot.control.conexion.dailyFx.ConexionServidorDailyFx.js");
 				peticionGet = new HttpGet("https://plus.dailyfx.com/login/loginForm.jsp");
 	    		Future <String> future = executor.submit(this);
 		        future.get(60, TimeUnit.SECONDS);
 		        peticionGet.abort();
-		        peticionGet = new HttpGet("https://plus.dailyfx.com/login/j_security_check?" + sc.next());
+		        peticionGet = new HttpGet("https://plus.dailyfx.com/login/j_security_check?" + datos);
 	    		future = executor.submit(this);
 		        future.get(60, TimeUnit.SECONDS);
 		        peticionGet.abort();
