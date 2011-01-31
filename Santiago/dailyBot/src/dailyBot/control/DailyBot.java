@@ -196,13 +196,13 @@ public class DailyBot
         } 
         catch (Exception e)
         {
-        	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
-        	System.exit(0);
+        	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+        	Error.reiniciarSinPersistir();
         }
 		cargarSistemasEstrategias();
 		cargarEstrategias();
 		cargarProveedores();
 		iniciarHilos();
-		VentanaPrincipal.iniciar();
+		VentanaPrincipal.iniciar(true);
 	}
 }

@@ -86,7 +86,7 @@ public class VentanaPrincipal extends JFrame
 		return botonNuevo;
 	}
 	
-	public static void iniciar()
+	public static void iniciar(boolean servidor)
 	{
         System.setSecurityManager(new SecurityManager());
         try 
@@ -97,8 +97,16 @@ public class VentanaPrincipal extends JFrame
         } 
         catch (Exception e)
         {        	
-        	Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
-        	System.exit(0);
+        	if(servidor)
+        	{
+            	Error.agregar(e.getMessage() + " Error haciendo la conexion RMI");
+            	Error.reiniciarSinPersistir();
+        	}
+        	else
+        	{
+        		Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
+        		System.exit(0);
+        	}
         }
         new VentanaPrincipal();
 	}
@@ -106,6 +114,6 @@ public class VentanaPrincipal extends JFrame
 	public static void main(String[] args)
 	{
 		DailyBot.iniciarPropiedades();
-		iniciar();
+		iniciar(false);
 	}
 }
