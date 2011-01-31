@@ -30,6 +30,8 @@ public class Proceso
 	private boolean cerrado = false;
 	private ReentrantLock lock = new ReentrantLock(true);
 	
+
+	
 	public Proceso(String p)
 	{
 		try
@@ -41,44 +43,56 @@ public class Proceso
 				{
 					try 
 					{
+						lock.lock();
 						while(true)
 						{
-							ProcessBuilder pb = new ProcessBuilder("");
-							pb.directory(new File("/home/santiago/Desktop/dailyBot/" + path));
-							pb.command("wine", "terminal.exe");
-							proceso = pb.start();
-							Error.agregarInfo("Iniciando proceso " + path);
-							iniciarSocket();
-							Error.agregarInfo("Conexion establecida " + path);
-							HiloDaily.sleep(30000);
-							proceso.waitFor();
-							lock.lock();
 							try
 							{
-								try
+								Error.agregarInfo("Iniciando proceso " + path);
+								for(int i = 0; i < 11; i++)
 								{
-									proceso.destroy();
+									ProcessBuilder pb = new ProcessBuilder("");
+									pb.directory(new File("/home/santiago/Desktop/dailyBot/" + path));
+									pb.command("wine", "terminal.exe");
+									proceso = pb.start();
+									if(iniciarSocket())
+									{
+										Error.agregarInfo("Conexion establecida " + path);
+										HiloDaily.sleep(20000);
+										break;
+									}
+									else if(i == 10)
+									{
+										Error.agregar("Error iniciando socket en 10 intentos, " + path + ", reiniciando");
+										Error.reiniciar();
+									}
+									else
+									{
+										cerrar();
+										HiloDaily.sleep(60000);
+									}
 								}
-								catch(Exception e)
-								{
-									Error.agregar("Proceso no se pudo cerrar en: " + path + ", reiniciando");
-									Error.reiniciar();
-								}
-								try
-								{
-									cerrarSocket();
-								}
-								catch(Exception e)
-								{
-									Error.agregar("Error reiniciando proceso, reinicando equipo");
-									Error.reiniciar();
-								}
-								if(cerrado)
-									return;
 							}
 							finally
 							{
 								lock.unlock();
+							}
+							proceso.waitFor();
+							lock.lock();
+							try
+							{
+								cerrarSocket();
+								cerrar();
+							}
+							catch(Exception e)
+							{
+								Error.agregar("Error reiniciando proceso, reinicando equipo");
+								Error.reiniciar();
+							}
+							if(cerrado)
+							{
+								lock.unlock();
+								return;
 							}
 							Error.agregar("Reiniciando proceso y socket: " + path);
 							HiloDaily.sleep(100000);
@@ -87,6 +101,7 @@ public class Proceso
 					catch (Exception e)
 					{
 						Error.agregar(e.getMessage() + " error en el vigilante del proceso: " + path);
+						Error.reiniciar();
 					}
 				}
 			}, Long.MAX_VALUE);
@@ -101,7 +116,7 @@ public class Proceso
 		}
 	}
 
-	private void iniciarSocket()
+	private boolean iniciarSocket()
 	{
 		lock.lock();
 		try
@@ -111,11 +126,11 @@ public class Proceso
 			socket = new Socket((String) null, sc.nextInt());
 			socketOut = new PrintWriter(socket.getOutputStream(), true);
 			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			return true;
 		}
 		catch(Exception e)
 		{
-			Error.agregar(e.getMessage() + " error iniciando socket, " + path);
-			Error.reiniciar();
+			return false;
 		}
 		finally
 		{

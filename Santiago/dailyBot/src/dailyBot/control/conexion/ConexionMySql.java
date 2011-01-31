@@ -449,6 +449,7 @@ public class ConexionMySql
 	        		Error.agregar("No se pudo conectar a la base de datos en 10 intentos, reiniciando");
 	        		Error.reiniciarSinPersistir();
 	        	}
+	        	HiloDaily.sleep(10000);
 	        }
     	}
     	return null;
