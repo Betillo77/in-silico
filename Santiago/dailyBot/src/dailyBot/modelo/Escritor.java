@@ -66,11 +66,12 @@ public class Escritor
 					{
 						ponerUltimaActulizacion(System.currentTimeMillis());
 						ArrayList <EntradaEscritor> leidas = entradas.poll(600000L, TimeUnit.MILLISECONDS);
+						String mensajeDebug = Escritor.this.mensajeDebug;
+						Escritor.this.mensajeDebug = "";
 						try
 						{						
 							lock.lock();
 							ponerUltimaActulizacion(System.currentTimeMillis());
-							mensajeDebug = "";
 							if(leidas == null)
 								continue;
 							if(debug)
@@ -82,7 +83,8 @@ public class Escritor
 						{
 							lock.unlock();
 						}
-						Error.agregarInfo(mensajeDebug);
+						if(debug)
+							Error.agregarInfo(mensajeDebug);
 						ponerUltimaActulizacion(System.currentTimeMillis());
 					}
 					catch(Exception e)
@@ -113,18 +115,25 @@ public class Escritor
 				String mensaje = "";
 				try 
 				{
-					entradas.add(enConstruccion);
 					for(EntradaEscritor e : enConstruccion)
 						mensaje += e.linea + ";";
+					if(debug)
+					{
+						if(mensajeDebug.length() != 0)
+						{
+							HiloDaily.sleep(1000);
+							if(mensajeDebug.length() != 0)
+								Error.agregar("Mensaje debug no era vacio: " + mensajeDebug);
+						}
+						mensajeDebug += "Encolando " + pathMeta + " " + mensaje + " " + System.currentTimeMillis();
+					}
+					entradas.add(enConstruccion);
 				} 
 				catch (Exception e)
 				{
 					Error.agregar(e.getMessage() + ", Error agregando a la cola en path: " + pathMeta);
 				}
 				enConstruccion = new ArrayList <EntradaEscritor> ();
-				if(debug)
-					mensajeDebug += " Encolando " + pathMeta + " " + mensaje + " " + System.currentTimeMillis();
-				mensaje = "";
 			}
 		}
 		finally

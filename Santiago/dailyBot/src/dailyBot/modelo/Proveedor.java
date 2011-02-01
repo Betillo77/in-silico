@@ -100,14 +100,15 @@ public class Proveedor
 					}
 					else
 					{
-						if(!mensajeEnviado && (hora == 4 || hora == 10 || hora == 16 || hora == 22))
+						if(!mensajeEnviado && (hora == 10 || hora == 22))
 						{
 							este.chequearSenales(true);
 							mensajeEnviado = true;
+							chequeoRealizado = true;
 						}
 						if(!chequeoRealizado)
 						{
-							este.chequearSenales(true);
+							este.chequearSenales(false);
 							chequeoRealizado = true;
 						}
 					}

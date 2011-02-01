@@ -27,13 +27,14 @@ public class AdministradorHilos
 						HiloDaily.sleep(300000);
 						Calendar c = Calendar.getInstance();
 						int minuto = c.get(Calendar.MINUTE);
+						int hora = c.get(Calendar.HOUR_OF_DAY);
 						if(minuto > 40)
 						{
 							mensajeEnviado = false;
 						}
 						else
 						{
-							if(!mensajeEnviado)
+							if(!mensajeEnviado && (hora == 10 || hora == 22))
 							{
 								String mensaje = "";
 								for(HiloDaily h : hilos)
