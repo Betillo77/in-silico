@@ -1,5 +1,5 @@
 
-\documentclass{article}
+\documentclass[10pt,journal]{IEEEtran}
 
 \usepackage{mathtools}
 \usepackage{algorithmic}
@@ -8,13 +8,33 @@
 
 \begin{document}
 \title {Shape recognition using machine learning}
-\author {Sebastian Gomez}
+%\author {Sebastian Gomez}
 \date {July of 2010}
-\maketitle
+
+	\markboth{VI Congreso Colombiano de Computacion,~Vol.~6, No.~1, December 2010}
+	{Sebastian Gomez: Shape recognition using machine learning}
+
+	\maketitle
+
+	\begin{abstract}
+		Computer vision is a growing field of computer science that intends to extract
+		some useful information from images, usually taken from cameras or scanners.
+		The ability to recognize shapes in images is often necessary in computer vision
+		programs. 
+		This article describes how to make a program able to recognize basic 
+		geometrical figures by using machine learning. This article shows the image 
+		processing stages until	feature extraction; Giving to the reader an idea of how
+		to apply computer vision for other problems that involve shape recognition.
+	\end{abstract}
+	
+	\begin{IEEEkeywords}
+	Artificial Intelligence, Machine learning, Computer vision, Pattern Recognition
+	\end{IEEEkeywords}
+
 
 	\section{Introduction}
-	When you teach a child how to recognize basic geometrical figures such as
-	a triangle, a square, or a rectangle, you do not tell the child "a square has four
+	\IEEEPARstart{W}{hen} you teach a child how to recognize basic geometrical figures such
+	as a triangle, a square, or a rectangle, you do not tell the child "a square has four
 	equal sides, and four 90-degree angles". Such academic language can be challenging for 
 	a young and still unschooled child. You may more likely show him several examples
 	of shapes and the child, after repeatedly being exposed to the different shapes, may 
@@ -43,13 +63,20 @@
 	value above it is taken to 255, and any value below it is taken to 0.
 	To choose T as a constant value is not a good idea, since it will make the
 	system too dependent on light conditions. We used an approach called
-	adaptative threshold, that choose the value of T for each pixel by averaging
+	adaptive threshold, that choose the value of T for each pixel by averaging
 	its neighbors. If $I_2(x,y)$ represents the binarized image and $\mu(x,y)$
 	represents the mean in some area $A_2$ around $(x,y)$; We would have:
 	\[ I_2(x,y) = \left\{ \begin{array}{ll}
-		0   & \mbox{if $I_1(x,y) < u(x,y)$} \\
+		0   & \mbox{if $I_1(x,y) < \mu(x,y)$} \\
 		255 & \mbox{otherwise}
 	\end{array} \right. \]
+	The computation of $\mu(x,y)$ for each $(x,y)$ in the usual way would
+	be very computational expensive. A better approach for doing so was proposed by
+	Shafait, Keysers and Breuel \cite{ocropus2}. They use integral images for computing
+	the sum around $A_2$ in constant time for each pixel $(x,y)$; With this approach they
+	can binarize the image in time $O(N^2)$ instead of the $O(N^2W^2).$ \footnote{For the
+	complexity computation, they supposed that the image has size NxN pixels; And that
+	the area $A_2$ around each pixel is a square of side W.}
 	
 	\section{Obtaining the features}
 	The second stage receives as input $I_2(x,y)$, the output image of the first
@@ -59,7 +86,7 @@
 	binarized. The contour is a sequence of $(x,y)$ points at the border of an image,
 	that we are going to approximate with polygon using the function 
 	\textit{cvApproxPoly} of the library\footnote {If you want to know how the 
-	functions \textit{cvFindContours} and \textit{cvApproxPoly} do work, please 
+	functions \textit{cvFindContours} and \textit{cvApproxPoly} work, please 
 	refer to OpenCV	documentation (See bibliography)}.
 	Now we must compute a set of features from the set of points of our 
 	approximated polygon. Those features must follow the following constrains:
@@ -86,7 +113,7 @@
 	$a_4$ is the magnitude of the angle closest to 180 degrees\newline
 	
 	As our goal is to recognize geometrical figures drawn by hand, the formal definitions
-	of the geometrical figures are not really useful. For example, you can't expect that 
+	of the geometrical figures are not enough for classification. For example, you can't expect that 
 	a square drawn by hand has all its sides with the same length; But you can expect 
 	that the standard deviation of those lengths should be less than in a rectangle.
 	Similarly, you can't expect the all the internal angles of a rectangle are
@@ -101,6 +128,21 @@
 	To be able to recognize between triangles the other quadrilaterals, the number of
 	sides should be enough in the general case.
 	
+	\subsubsection{Image moments}
+	When the shapes that you want to recognize are complex and it is no easy to device which
+	features are enough to recognize those shapes, you should try the image moments. An image
+	moment is a feature obtained by integrating or summing the pixels intensities of an image
+	giving different weight to each pixel. Let $I(x,y)$ be the value of the pixel $(x,y)$ in
+	the image, and let $f(x,y)$ be the weight for the same pixel. Then we could define an
+	image moment as:
+	\[ M = \iint f(x,y)I(x,y) dx dy \]
+	Very often, we desire a moment that doesn't change very much when the image is rotated or
+	scaled, for example if our goal were to recognize characters. Those moments are called 
+	moment invariants. They were firstly introduced by Hu \cite{Hu}, who derived his seven
+	famous invariants to the rotation of 2D objects. Later, Fluzzer \cite{fluzzer} shown that
+	Hu moments were incomplete and dependent and proposed a method to derive an independent
+	and complete set of invariant moments of arbitrary order.
+	
 	\section{Learning and classification}
 	Before being able to recognize any shape, we must learn; Learning is achieved
 	through a training process.  Lets say there is function $g(\vec{x})$ that 
@@ -112,7 +154,7 @@
 	where $\vec{p}$ is a vector containing some parameters and $\vec{x}$ has
 	the same meaning as above. Then, the objective of training is to find the
 	parameters $\vec{p}$ such that the error of $f$ with the data in the training
-	set is minimized. Assuming that a boolean operator return 1 if they are true
+	set is minimized. Assuming that a Boolean operator return 1 if they are true
 	or 0 if false, we would have:
 	\[ min_{\vec{p}} \left[ E = \sum_{i=1}^{\| X \|}  
 		( y_i \not= f(\vec{x_i},\vec{p}) ) \right] \]
@@ -125,25 +167,24 @@
 	
 	\section{Results and Conclusions}
 	The results of the image processing stage can be seen in \textit{figure 1}. The
-	figure 1-A shows an image of a rectange as it is taken from the camera. The 
+	figure 1-A shows an image of a rectangle as it is taken from the camera. The 
 	figure 1-B shows the image after being transformed to gray-scale, filtered and 
-	binarized using	the thresholding method explained. The figure 1-C shows the
-	polygon that aproximates the shape in figure 1-B with an allowed error of 10
+	binarized using	the thresholding method explained above. The figure 1-C shows the
+	polygon that approximates the shape in figure 1-B with an allowed error of 10
 	pixels.\newline
 	After the binary decision tree was trained, it was proved against 22 different
 	shapes that were not shown to the training algorithm. Only one of those shapes
 	was not correctly recognized, which means an accuracy of 95.45\%. The accuracy can
 	be improved even more adding more features.
-	The binary decision tree model is almost ideal to solve this problem, because it
-	is easy to solve this problems only using conditions on the input variables. For
+	The binary decision tree model is almost ideal to solve this problem. For
 	more complex problems such as optical character recognition or face recognition,
-	it is possible that more complex models such as neural networks or support vector
-	machines are needed.
+	complex models such as neural networks or support vector should be used instead.
+	
 	\begin{figure}
 	\centering
 		\subfloat[Original]{\label{fig:org}\includegraphics[height=2cm]{img1}}
 		\subfloat[Binarized]{\label{fig:bin}\includegraphics[height=2cm]{img2}}
-		\subfloat[Polygon Aproximation]{\label{fig:shp}\includegraphics[height=2cm]{img3}}
+		\subfloat[Polygon Approximation]{\label{fig:shp}\includegraphics[height=2cm]{img3}}
 	\caption{Original image and its transformations}
 	\end{figure}
 	
@@ -173,6 +214,24 @@
 			"The C++ Resources Network",
 			http://www.cplusplus.com/,
 			2010.
+			
+		\bibitem{ocropus2}
+			SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. 
+			\emph{Efficient Implementation of Local Adaptive Thersholding Techniques Using Integral Images.}
+			DOCUMENT RECOGNITION AND RETRIEVAL. 
+			February of 2008.
+			
+		\bibitem{Hu}
+			M.K. Hu.
+			\emph{Visual pattern recognition by moment invariants.}
+			IRE Trans. Inform. Theory,
+			1962.
+			
+		\bibitem{fluzzer}
+			FLUZZER Jan.
+			\emph{On the independence of rotation moment invariants}
+			Pattern recognition,
+			1999.
 			
 	\end{thebibliography}
 	
