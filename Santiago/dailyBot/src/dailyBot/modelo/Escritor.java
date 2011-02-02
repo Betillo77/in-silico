@@ -45,6 +45,7 @@ public class Escritor
 	private String pathMeta;
 	private Proceso proceso;
 	private volatile String mensajeDebug = "";
+	private volatile String mensajeDebugHilo = "";
 	private ReentrantLock lock = new ReentrantLock(true);
 	private ReentrantLock lockConstruir = new ReentrantLock(true);
 	public volatile boolean debug = true;
@@ -77,7 +78,9 @@ public class Escritor
 							if(debug)
 								mensajeDebug += " Notificado " + pathMeta + " " + System.currentTimeMillis();
 							ponerUltimaActulizacion(System.currentTimeMillis());
+							mensajeDebugHilo = "";
 							procesar(leidas);
+							mensajeDebug += mensajeDebugHilo;
 						}
 						finally
 						{
@@ -163,7 +166,7 @@ public class Escritor
 			fw.close();
 			proceso.escribir(lineaEnvio);
 			if(debug)
-				mensajeDebug += " Escribiendo " + mensaje;
+				mensajeDebugHilo += " Escribiendo " + mensaje;
 		}
 		catch(Exception e)
 		{
@@ -183,7 +186,7 @@ public class Escritor
 			String magicos = proceso.leer();
 			fw.write(magicos + "\n");
 			if(debug)
-				mensajeDebug += " Leido: " + magicos + ", " + System.currentTimeMillis();
+				mensajeDebugHilo += " Leido: " + magicos + ", " + System.currentTimeMillis();
 			if(magicos == null)
 				return null;
 			String [] magicosPartidos = magicos.split("-");
@@ -262,7 +265,7 @@ public class Escritor
 	        	{
 	        		actual.setMagico(magico);
 	        		if(debug)
-	        			mensajeDebug += " Procesado " + lectura + " -> " + " " + par.toString() + " " + magico + " " + System.currentTimeMillis();
+	        			mensajeDebugHilo += " Procesado " + lectura + " -> " + " " + par.toString() + " " + magico + " " + System.currentTimeMillis();
 	        	}
 	        	else
 	        		Error.agregar("Error leyendo magicos en path: " + pathMeta + ", no se encuentra par: " + entrada.par);
