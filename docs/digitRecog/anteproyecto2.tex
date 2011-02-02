@@ -117,18 +117,18 @@
 
 	\section{Objetivo}
 	\subsection{Objetivo general}
-	Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos, usando para el reconocimiento una
-	distribución normal multivariable, en teorema de Bayes y un vector de características invariantes.
+	Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, 
+	usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes
+	y un vector de características invariantes (Momentos de Hu y Fluzzer).
 	\subsection{Objetivos específicos}
 	\begin{itemize}
 	\item Realizar un estudio del funcionamiento de la distribución normal multivariable en el problema de reconocimiento usando
 	el teorema de Bayes.
 	\item Realizar la extracción de características de un conjunto de imágenes de dígitos. Las características a extraer serán
-	invariantes a la rotación, translación y escalamiento.
+	invariantes a la rotación, translación y escalamiento (Momentos de Hu y Fluzzer).
 	\item Diseñar e implementar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de dígitos.
 	\item Realizar pruebas de la aplicación implementada.
-	\item Comparar el resultado obtenido por la aplicación implementada con el resultado obtenido por aplicaciones libres para
-	el reconocimiento óptico de caracteres.
+	\item Realizar un análisis comparativo de los resultados obtenidos.
 	\end{itemize}
 	\clearpage
 	
@@ -164,6 +164,9 @@
     y $|y_1-y_2| \le 1$
     \item Componente conectado: Después de tener una imagen binarizada (blanco y negro), un
     componente conectado es un conjunto de píxeles negros adyacentes rodeados por un fondo blanco.
+    \item Características o momentos invariantes: Son vectores numéricos que se calculan a partir
+    de una imagen, y dependen de la forma de la imagen. Pero son independientes de la rotación,
+    translación y escalamiento.
     \footnote{Shafait, Keysers y Breuel. Performance Evaluation and Benchmarking of Six-Page segmentation
     Algorithms, IEEE Transactions on Pattern Analysis And Machine Intelligence, 2008, p.6}
    
@@ -326,53 +329,51 @@
 	\section{Diseño metodológico preliminar}
 	
 	\subsection{Hipótesis}
-	Es posible desarrollar un sistema de reconocimiento óptico de caracteres, que sea mas rápido o
-	tenga una mayor efectividad a el de los sistemas OCR de licenciamiento libre disponibles
-	en la actualidad, al procesar una misma imagen de un documento que cumpla con las restricciones
-	establecidas (Ver población), tomando la imagen con una cámara de un celular inteligente y
-	ejecutando el programa en el mismo sistema de cómputo.	
-	
+	Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema
+	de Bayes con una distribución normal multivariable y tomando como características los
+	momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que 
+	cumpla con las restricciones establecidas (Ver población), tomando la imagen con
+	una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
+		
 	\subsection{Tipo de investigación}
 	En esta investigación se utilizará un enfoque cuantitativo.
 	
 	\subsection{Población}
-	Los documentos impresos en lenguaje español, que cumplan con las siguientes restricciones:
+	Los documentos impresos que solo contengan dígitos numéricos, que cumplan con las siguientes restricciones:
 	\begin{itemize}
 	\item Forma rectangular.
 	\item Fondo blanco.
-	\item Letra de tamaño constante dentro del documento y en color negro.
-	\item Máximo dos columnas, sin imágenes.
-	\item Inclinación cercana a los 0 grados.
+	\item Letra de color negro y con un único tipo de letra o fuente.
+	\item El tamaño de los dígitos varía entre 12 y 20 puntos
+	\item La inclinación de los dígitos varía entre -30° y 30°.
 	\end{itemize}
 	
 	\subsection{Unidad de análisis}
-	Fotos de textos con las condiciones mencionadas en la población, con tamaño de letra y fuente 
-	específica.
+	Fotos de textos con las condiciones mencionadas en la población, con una única fuente.
 
 	\subsection{Muestra}
-	Se tomará una muestra de 30 textos con un tamaño y tipo de fuente específicas. Se tomarán
-	fotos con el celular de dichos textos para realizar la medición de variables, estas fotos deben ser
-	tomadas desde un punto perpendicular al papel y el eje central de la cámara debe estar paralelo a 
-	los limites del papel, las condiciones de luz deben ser controladas, proporcionando una luminosidad
-	uniforme a todo el papel.
+	Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100
+	y 120 instancias de cada dígito con una unica fuente pero con diferentes tamaños de letra en el
+	rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango
+	de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel.
 	
 	\subsection{Variables}
 	Las variables a tener en cuenta para ejecución de la aplicación son:
 	\begin{itemize}
-	\item Cantidad de caracteres reconocidos exitosamente.
-	\item Cantidad de memoria utilizada.
-	\item Tiempo de CPU utilizado.
-	\item Cantidad de caracteres en el documento impreso.
+	\item Porcentaje de caracteres reconocidos exitosamente en total.
+	\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
+	\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
+	\item Porcentaje de seguridad con el que se reconoció cada dígito.
 	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
 	\end{itemize}
 		
 	\subsection{Esquema temático}
 	\begin{itemize}
 		\item Algoritmos de reconocimiento de caracteres y aprendizaje de máquinas
-		\item Selección de un buen conjunto de características
-		\item Selección de algoritmo de aprendizaje a usar en el OCR
-		\item Diseño e implementación del reconocimiento óptico de caracteres
-		\item Pruebas y comparación de la aplicación con otras aplicaciones OCR libres
+		\item Selección de un conjunto de características (Momento invariante)
+		\item Comprensión del algoritmo de aprendizaje, el teorema de Bayes y distribución multivariable
+		\item Diseño e implementación del reconocimiento óptico de dígitos
+		\item Pruebas y análisis de resultados.
 	\end{itemize}
 	\clearpage
 	
@@ -386,10 +387,6 @@ Santigutierrez1@hotmail.com
 Estudiante Ingeniería de Sistemas y Computación\\
 Universidad Tecnológica de Pereira\\
 sebasutp@gmail.com
-   \item Jorge Adrián Martinez\\
-Estudiante Ingeniería de Sistemas y Computación\\
-Universidad Tecnológica de Pereira\\
-nogardark@hotmail.com
    \item Saulo de Jesús Torres\\
 Doctorado en Informática: Ingeniería de Software (Universidad Pontificia de Salamanca)\\
 Universidad Tecnológica de Pereira\\
@@ -410,10 +407,9 @@ saulo.torres@utp.edu.co
 	
 	\section{Posibilidades de publicación}
 	\begin{itemize}
-		\item Un artículo en la selección de un conjunto de características apropiadas para reconocer caracteres usando algoritmos de aprendizaje
-		no supervisado.
-		\item Un artículo en selección de un algoritmo de aprendizaje con sus respectivos parámetros, que sea apropiado para el problema
-		del reconocimiento de caracteres.
+		\item Un artículo en el reconocimiento de figuras geométricas básicas usando métodos de aprendizaje de máquinas
+		\item Un artículo en la aplicación de momentos invariantes para el reconocimiento de dígitos numéricos
+		\item Un artículo en el reconocimiento de dígitos usando la distribución normal multivariable
 	\end{itemize}
 	
 	\clearpage
