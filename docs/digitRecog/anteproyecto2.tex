@@ -59,21 +59,47 @@
 	\end{titlepage}
 }
 
+\newcommand\contraportada{
+	\begin{titlepage}
+		\begin{center}
+			{\large \bf ANTEPROYECTO DE INVESTIGACION }
+			\vfill
+% 			{\large\bf PRESENTADO POR \par}
+			{\large\bf SEBASTIÁN GÓMEZ GONZÁLEZ \par}
+			{\large\bf SANTIAGO GUTIERREZ ALZATE \par}
+			\vfill
+			{\large\bf Documento del anteproyecto de grado presentado como requisito para optar al título de Ingeniero(a) de Sistemas y Computación\par}
+			\vfill
+			{\large\bf UNIVERSIDAD TECNOLÓGICA DE PEREIRA  \par}
+			{\large\bf FACULTAD DE INGENIERÍAS \par}
+			{\large\bf INGENIERÍA DE SISTEMAS Y COMPUTACIÓN \par}
+			{\large\bf PEREIRA\par}
+			{\large\bf SEPTIEMBRE DE 2010 \par}
+		\end{center}
+	\end{titlepage}
+}
+
 
 \begin{document}
 \portada
-%\contraportada
+\contraportada
+
+	\tableofcontents
 
 	\clearpage
+	\begin{center}
 	\section{Título}
-
+	\end{center}
 	Desarrollo de un sistema de reconocimiento óptico de caracteres para celulares, que funcione bajo condiciones controladas.
+	\clearpage
 	
+	\begin{center}
 	\section{Formulación del problema}
+	\end{center}
 
 	Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
 
-	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Esto puede ser logrado a traves un sistema de reconocimiento optico de caracteres que reconozca el texto escrito en estos documentos y le lea a la persona invidente lo que dicen. Sin embargo, para que sea una solución efectiva al problema, se requiere de un sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen multiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los telefonos inteligentes parecen ser una buena alternativa, no obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
+	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y le lea a la persona invidente lo que dicen. Sin embargo, para que sea una solución efectiva al problema, se requiere de un sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa, no obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
 	
 	\begin{itemize}
 	
@@ -85,24 +111,27 @@
 
 	\end{itemize}
 
-	La diferencia mas importante, sin embargo, es que en los computadores de escritorio las imágenes son obtienidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento optico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podria tomar la fotografia inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
+	La diferencia mas importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podría tomar la fotografía inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
 
-	Para dar solucion al problema de limitación en la capacidad de procesamiento de los telefonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los telefonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el telefono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendráa las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también a incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+	Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los teléfonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendrá las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también a incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
 
-	Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imagenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento optico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
+	Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imágenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
 
-Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y iluminosidad antes presentados. 	
+Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y luminosidad antes presentados. 	
 	
 	\subsection{Definición del problema}
 
 	No existe \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}
     un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para
-    ser utilizado por personas invidentes utilizando la camara de celulares inteligentes, que sea de código abierto, y con un 
+
+    ser utilizado por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, y con un 
     porcentaje de reconocimiento satisfactorio.
 	
 	\clearpage
 
+	\begin{center}
 	\section{Justificación}
+	\end{center}
 	
 	Además de esto, un sistema móvil para reconocer texto de documentos impresos presentaría los siguientes beneficios respecto de los sistemas tradicionales como las impresoras braille y los lectores basados en escáner:
 
@@ -118,7 +147,10 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\end{itemize}
 	\clearpage
 
+	\begin{center}
 	\section{Objetivo}
+	\end{center}
+	
 	\subsection{Objetivo general}
 	Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, 
 	usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes
@@ -135,7 +167,9 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\end{itemize}
 	\clearpage
 	
+	\begin{center}
 	\section{Marco referencial}
+	\end{center}
 	
 	\subsection{Marco conceptual}
 	\begin{itemize}
@@ -308,7 +342,7 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones; 
 	modelos inspirados en la biología como los que usan redes neuronales. Otros modelos
 	son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos
-	como la distibución normal multivariable aplicando el teorema de Bayes.
+	como la distribución normal multivariable aplicando el teorema de Bayes.
 
 	
 	Estos métodos para el reconocimiento de patrones tienen en común que necesitan como
@@ -317,10 +351,10 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	muy poco frente a ciertos cambios en la imagen como el escalamiento o la rotación.
 	Ejemplos de este tipo de características son los momentos de Hu y de Fluzzer, estos
 	momentos se calculan realizando una integral, que en una imagen se convierte en sumatoria
-	por el hecho de ser discreta. En esta sumatoria se le dan diferentes pesos a cada pixel
+	por el hecho de ser discreta. En esta sumatoria se le dan diferentes pesos a cada píxel
 	dependiendo de la posición, y luego se realizan operaciones sobre estos que permite
 	obtener un conjunto limitado de características independientes de la rotación, translación
-	y al escalamiento. Al ser características que no varian significativamente con estos 
+	y al escalamiento. Al ser características que no varían significativamente con estos 
 	cambios se les ha dado el nombre de momentos invariantes.
 	
 	Para el entrenamiento, lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
@@ -337,7 +371,9 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	procesar.
 	\newpage
 		
+	\begin{center}
 	\section{Diseño metodológico preliminar}
+	\end{center}
 	
 	\subsection{Hipótesis}
 	Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema
@@ -364,7 +400,7 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 
 	\subsection{Muestra}
 	Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100
-	y 120 instancias de cada dígito con una unica fuente pero con diferentes tamaños de letra en el
+	y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el
 	rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango
 	de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel.
 	De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los
@@ -390,9 +426,15 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 		\item Diseño e implementación del reconocimiento óptico de dígitos
 		\item Pruebas y análisis de resultados.
 	\end{itemize}
+	
+	\subsection{Diseño de instrumentos}
+	
+	
 	\clearpage
 	
+	\begin{center}
 	\section{Personas que participan en el proyecto}
+	\end{center}
 	\begin{itemize}
    \item Santiago Gutierrez\\
 Estudiante Ingeniería de Sistemas y Computación\\
@@ -409,7 +451,9 @@ saulo.torres@utp.edu.co
 	\end{itemize}
 	\clearpage
 	
+	\begin{center}
 	\section{Recursos disponibles}
+	\end{center}
 	\begin{itemize}
 		\item Computador portátil Dell Inspiron 1420\\
 			Intel Centrino Duo, 2GB de memoria RAM
@@ -420,7 +464,9 @@ saulo.torres@utp.edu.co
 	    \item Recursos bibliográficos de la biblioteca de la Universidad Tecnológica de Pereira y propios en el área de inteligencia artificial, reconocimiento óptico de caracteres y procesamiento digital de imágenes.
 	\end{itemize}
 	
+	\begin{center}
 	\section{Posibilidades de publicación}
+	\end{center}
 	\begin{itemize}
 		\item Un artículo en el reconocimiento de figuras geométricas básicas usando métodos de aprendizaje de máquinas
 		\item Un artículo en la aplicación de momentos invariantes para el reconocimiento de dígitos numéricos
@@ -429,7 +475,9 @@ saulo.torres@utp.edu.co
 	
 	\clearpage
 	
+	\begin{center}
 	\section{Cronograma}
+	\end{center}
 	La investigación y desarrollo del proyecto tendrán una duración aproximada de 16 semanas,
 	trabajando 24 horas semanales cada uno de los miembros del grupo. Para un total de 1152
 	horas hombre.
