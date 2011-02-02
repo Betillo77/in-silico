@@ -428,7 +428,15 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\end{itemize}
 	
 	\subsection{Diseño de instrumentos}
-	
+	Para realizar las mediciones de las variables, se utilizará un programa que entrege las estadísticas
+	del reconocimiento de los dígitos; Estas estadísticas serán el porcentaje de dígitos reconocidos
+	correctamente en total $A$ y para cada dígito $A_i$, y el porcentaje de seguridad para cada dígito $S_i$
+	y en total $S$. Donde $A$ y $A_i$ se calculan dividiendo la cantidad de caracteres reconocidos correctamente
+	sobre la cantidad de caracteres a reconocer. Y $S,S_i$ se calcula así: 
+	\[ S_i = \frac{ \sum_{j=0}^{N_i}P(C_i|\vec{x}) }{N} \]
+	\[ S = prom(S_i) \]
+	Donde $N_i$ es la cantidad de instancias de la clase $C_i$ y $P(C_i|\vec{x})$ es la probabilidad de que el
+	vector de características $\vec{x}$ sea de la clase $C_i$ calculada con el teorema de Bayes.
 	
 	\clearpage
 	
@@ -479,17 +487,21 @@ saulo.torres@utp.edu.co
 	\section{Cronograma}
 	\end{center}
 	La investigación y desarrollo del proyecto tendrán una duración aproximada de 16 semanas,
-	trabajando 24 horas semanales cada uno de los miembros del grupo. Para un total de 1152
+	trabajando 24 horas semanales cada uno de los miembros del grupo. Para un total de 768
 	horas hombre.
 	\begin{itemize}
-	\item Realizar un estudio acerca de los algoritmos existentes ( 288 horas )
-	\item Realizar una comparación técnica para seleccionar los mejores algoritmos ( 72 horas )
-	\item Implementar cada uno de los algoritmos escogidos ( 360 horas )
-	\item Diseñar una aplicación que integre estos algoritmos ( 72 horas )
-	\item Realizar pruebas de la aplicación implementada ( 72 horas )
-	\item Comparar el resultado obtenido por la aplicación implementada con el resultado obtenido por aplicaciones para el reconocimiento óptico de caracteres, tantos libres, como comerciales. ( 72 horas )
+	\item Implementar y probar el algoritmo de binarización de Sauvola ( 14 horas )
+	\item Diseñar, implementar y probar un módulo que separe los caracteres en una imagen 
+	(segmentar la imagen), y que calcule los momentos invariantes de Hu y Fluzzer para 
+	estos componentes ( 144 horas )
+	\item Diseñar, implementar y probar un módulo que permita entrenar y utilizar el
+	método de aprendizaje que calcula probabilidades posteriores usando el teorema de Bayes
+	y una distribución normal multivariable ( 144 horas )
+	\item Realizar las mediciones de las variables mencionadas en el diseño metodológico,
+	y hacer un análisis de los datos arrojados por esta (98 horas)
 	\item Redacción del informe de proyecto de grado ( 144 horas )
-	\item Holgura ( 72 horas )
+	\item Correcciones del proyecto de grado (72 horas)
+	\item Holgura ( 152 horas )
 	\end{itemize}
 	\clearpage
 	
