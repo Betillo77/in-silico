@@ -67,47 +67,51 @@
 
 	\clearpage
 	\section{Título}
+
 	Desarrollo de un sistema de reconocimiento óptico de caracteres para celulares, que funcione bajo condiciones controladas.
 	
 	\section{Formulación del problema}
-	Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
-	
-	Entre las soluciones que existen en el mercado para este problema, no se encontró un software económico para que las personas invidentes puedan tener acceso rápido a documentos escritos. Esto es debido a que el software tradicionalmente construido para reconocer caracteres ópticamente no esta diseñado para ser usado en dispositivos móviles. Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para teléfonos inteligentes y que sea de código libre y abierto.
 
-	Existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
+	Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
+
+	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes, esto puede ser logrado a traves un sistema de reconocimiento optico de caracteres que reconozca el texto escrito en estos documentos y le lea a la persona invidente lo que dicen. Sin embargo, para que sea una solución efectiva al problema, se requiere de un sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen multiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los telefonos inteligentes son una buena alternativa, no obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
+	
 	\begin{itemize}
+	
 	\item La memoria y la capacidad de procesamiento son muy reducidas en los teléfonos inteligentes con respecto a los computadores de escritorio.
 
-	\item En los computadores de escritorio las imágenes se obtienen por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes. En los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica, haciendo más relevantes diversas variables, como por ejemplo: la inclinación del texto, iluminación no uniforme, deformaciones elásticas del texto debido a la forma del papel en reposo.
-
-	\item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios Mbytes.
+	\item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios megabytes.
 
 	\item Un computador de escritorio normalmente tiene instaladas múltiples librerías de propósito general que son utilizadas por distintos programas, un teléfono inteligente, en cambio, solo provee las librerías más básicas.
+
 	\end{itemize}
 
-	Sin embargo una ventaja de los teléfonos inteligentes, es que son por naturaleza dispositivos
-	de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad
-	de redes inalámbricas en diferentes sitios públicos como institutos educativos y bibliotecas. 
+	La diferencia mas importante, sin embargo, es que en los computadores de escritorio las imágenes son obtienidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento optico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podria tomar la fotografia inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
+
+	Para dar solucion al problema de limitación en la capacidad de procesamiento de los telefonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los telefonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento optico de caracteres con una arquitectura cliente-servidor, en la cual el telefono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendria las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también a incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+
+	Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imagenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento optico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
+
+Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y iluminosidad antes presentados. 	
 	
 	\subsection{Definición del problema}
+
 	No existe \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}
-    un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para 
-    celulares inteligentes, que sea de código abierto, y con un porcentaje de reconocimiento 
-    satisfactorio sobre imágenes tomadas con cámara.
+    un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para
+    ser utilizado por personas invidentes utilizando la camara de celulares inteligentes, que sea de código abierto, y con un 
+    porcentaje de reconocimiento satisfactorio.
 	
 	\clearpage
 
 	\section{Justificación}
-	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Un sistema que solucionase este problema, le posibilitaría a las personas con discapacidades visuales mejorar enormemente su calidad de vida, ya que les permitiría una mejor educación, al poder acceder a los mismos libros de texto que el resto de la sociedad, y no solo, como actualmente sucede, a los pocos libros que se encuentran disponibles en formato braille.
-
-	Para dar una solución efectiva al problema se requiere de algún sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y lo suficientemente poderoso para hacer el trabajo en un tiempo razonable. Los celulares comunes cumplen las primeras dos características, pero no la tercera, ya que su poder de procesamiento es varias veces inferior al de un computador común. Sin embargo, gracias a la conectividad que poseen los celulares, estos pueden enviar la imagen por la red para que sea procesada por un servidor que tenga la capacidad de computo necesaria.	
-	Cabe anotar que la capacidad de proceso de los celulares también a incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y ahorrar dinero a los usuarios.
-
+	
 	Además de esto, un sistema móvil para reconocer texto de documentos impresos presentaría los siguientes beneficios respecto de los sistemas tradicionales como las impresoras braille y los lectores basados en escáner:
+
 	\begin{itemize}
+
 	\item Un menor costo, al no ser necesario adquirir un computador de escritorio, escáner o impresora braille.
 
-	\item Portabilidad: ninguno de los sistemas anteriormente mencionados esta diseñado para ser llevado en todo momento por el usuario, dificultando el acceso al conocimiento e información que no se encuentre en el lugar físico en el que se encuentra alguno de estos sistemas.
+	\item Portabilidad: ninguno de los sistemas tradicionales esta diseñado para ser llevado en todo momento por el usuario, dificultando el acceso al conocimiento e información que no se encuentre en el lugar físico en el que se encuentra alguno de estos sistemas.
 	
 	\item Una solución económica que pueda ejecutarse en un dispositivo móvil, sin necesidad de hardware adicional, haría posible que cada invidente pudiera tener su propio sistema de OCR personal, mientras que los otros sistemas usualmente (por su costo) son adquiridos por instituciones en cantidad limitada.
 
