@@ -37,7 +37,6 @@
 % inserción url's notas de pie.
 \usepackage{url}
 
-
 % Paquetes de la AMS:
 \usepackage{amsmath, amsthm, amsfonts}
 \addto\captionsspanish{\def\refname{\textsc{Bibliografía}}}
@@ -45,7 +44,7 @@
 \newcommand\portada{
 	\begin{titlepage}
 		\begin{center}
-			{\large \bf DESARROLLO DE UN SISTEMA DE RECONOCIMIENTO ÓPTICO DE CARACTERES PARA CELULARES, QUE FUNCIONE BAJO CONDICIONES CONTROLADAS }
+			{\large \bf DESARROLLO DE UN SISTEMA PROTOTIPO DE RECONOCIMIENTO DE DÍGITOS USANDO MOMENTOS INVARIANTES }
 			\vfill
 % 			{\large\bf PRESENTADO POR \par}
 			{\large\bf SEBASTIÁN GÓMEZ GONZÁLEZ \par}
@@ -88,7 +87,7 @@
 
 	La diferencia mas importante, sin embargo, es que en los computadores de escritorio las imágenes son obtienidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento optico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podria tomar la fotografia inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
 
-	Para dar solucion al problema de limitación en la capacidad de procesamiento de los telefonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los telefonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento optico de caracteres con una arquitectura cliente-servidor, en la cual el telefono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendria las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también ha incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+	Para dar solucion al problema de limitación en la capacidad de procesamiento de los telefonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los telefonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el telefono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendráa las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también a incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
 
 	Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imagenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento optico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
 
@@ -307,14 +306,24 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\subsubsection{Reconocimiento óptico de caracteres OCR}
 	Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones.
 	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones; 
-	modelos inspirados en la biología como los que usan redes neuronales. Otros
-	basados en modelos matemáticos como los momentos invariables de hu, o los
-	descriptores de Fourier. El principio fundamental de esta clase de algoritmos son
-	los descriptores invariantes, estos son: funciones para evaluar imágenes, que retornan valores 
-	parecidos o idénticos cuando se aplican	transformaciones afines a estas, como la rotación,
-	el cambio de escala, la traslación, entre otras. \newline	
+	modelos inspirados en la biología como los que usan redes neuronales. Otros modelos
+	son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos
+	como la distibución normal multivariable aplicando el teorema de Bayes.
+
 	
-	Generalmente lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
+	Estos métodos para el reconocimiento de patrones tienen en común que necesitan como
+	entrada un vector de características. Para el problema de reconocimiento de dígitos
+	o caracteres para las personas invidentes, es deseable que estas características cambien
+	muy poco frente a ciertos cambios en la imagen como el escalamiento o la rotación.
+	Ejemplos de este tipo de características son los momentos de Hu y de Fluzzer, estos
+	momentos se calculan realizando una integral, que en una imagen se convierte en sumatoria
+	por el hecho de ser discreta. En esta sumatoria se le dan diferentes pesos a cada pixel
+	dependiendo de la posición, y luego se realizan operaciones sobre estos que permite
+	obtener un conjunto limitado de características independientes de la rotación, translación
+	y al escalamiento. Al ser características que no varian significativamente con estos 
+	cambios se les ha dado el nombre de momentos invariantes.
+	
+	Para el entrenamiento, lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
 	número o una forma. Medir sus características aplicando descriptores invariantes, y manualmente 
     etiquetar esta imagen, (una a, un 1, un rombo etc) guardando esta información en una base de
     datos. Luego cuando el sistema se pone en marcha se obtienen las características de la imagen,
@@ -347,7 +356,7 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\item Fondo blanco.
 	\item Letra de color negro y con un único tipo de letra o fuente.
 	\item El tamaño de los dígitos varía entre 12 y 20 puntos
-	\item La inclinación de los dígitos varía entre -30° y 30°.
+	\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
 	\end{itemize}
 	
 	\subsection{Unidad de análisis}
@@ -358,6 +367,10 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	y 120 instancias de cada dígito con una unica fuente pero con diferentes tamaños de letra en el
 	rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango
 	de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel.
+	De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los
+	datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación otro 15\% para
+	el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del
+	método de aprendizaje, sobre datos que no se le mostraron en el entrenamiento.
 	
 	\subsection{Variables}
 	Las variables a tener en cuenta para ejecución de la aplicación son:
