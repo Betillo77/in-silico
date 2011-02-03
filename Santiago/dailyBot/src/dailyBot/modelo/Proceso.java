@@ -2,7 +2,6 @@ package dailyBot.modelo;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -30,8 +29,6 @@ public class Proceso
 	private boolean cerrado = false;
 	private ReentrantLock lock = new ReentrantLock(true);
 	
-
-	
 	public Proceso(String p)
 	{
 		try
@@ -43,56 +40,36 @@ public class Proceso
 				{
 					try 
 					{
-						lock.lock();
 						while(true)
 						{
+							lock.lock();
 							try
 							{
-								Error.agregarInfo("Iniciando proceso " + path);
-								for(int i = 0; i < 11; i++)
-								{
-									ProcessBuilder pb = new ProcessBuilder("");
-									pb.directory(new File("/home/santiago/Desktop/dailyBot/" + path));
-									pb.command("wine", "terminal.exe");
-									proceso = pb.start();
-									if(iniciarSocket())
-									{
-										Error.agregarInfo("Conexion establecida " + path);
-										HiloDaily.sleep(20000);
-										break;
-									}
-									else if(i == 10)
-									{
-										Error.agregar("Error iniciando socket en 10 intentos, " + path + ", reiniciando");
-										Error.reiniciar();
-									}
-									else
-									{
-										cerrar();
-										HiloDaily.sleep(60000);
-									}
-								}
+								iniciarProceso();
 							}
 							finally
 							{
 								lock.unlock();
 							}
-							proceso.waitFor();
-							lock.lock();
-							try
+							while(true)
 							{
-								cerrarSocket();
-								cerrar();
-							}
-							catch(Exception e)
-							{
-								Error.agregar("Error reiniciando proceso, reinicando equipo");
-								Error.reiniciar();
-							}
-							if(cerrado)
-							{
-								lock.unlock();
-								return;
+								HiloDaily.sleep(300000);
+								if(cerrado)
+									return;
+								lock.lock();
+								try
+								{
+									if(chequear() == null)
+									{
+										cerrarSocket();
+										cerrarProceso();
+										break;
+									}
+								}
+								finally
+								{
+									lock.unlock();
+								}
 							}
 							Error.agregar("Reiniciando proceso y socket: " + path);
 							HiloDaily.sleep(100000);
@@ -106,8 +83,8 @@ public class Proceso
 				}
 			}, Long.MAX_VALUE);
 			hiloMonitor.setName("Monitor proceso " + path);
-			AdministradorHilos.agregarHilo(hiloMonitor);
 			executor = Executors.newSingleThreadExecutor();
+			AdministradorHilos.agregarHilo(hiloMonitor);
 		}
 		catch(Exception e)
 		{
@@ -116,6 +93,69 @@ public class Proceso
 		}
 	}
 
+	private void iniciarProceso()
+	{
+		lock.lock();
+		try
+		{
+			Error.agregarInfo("Iniciando proceso " + path);
+			for(int i = 0; i < 10; i++)
+			{
+				if(iniciarProcesoMeta())
+					return;
+				else if(i == 9)
+				{
+					Error.agregar("Error iniciando proceso en 10 intentos, " + path + ", reiniciando");
+					Error.reiniciar();
+				}
+				else
+				{
+					cerrarSocket();
+					cerrarProceso();
+					HiloDaily.sleep(100000);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			Error.agregar("Error iniciando proceso, " + path + ", reiniciando");
+			Error.reiniciar();
+		}
+		finally
+		{
+			lock.unlock();
+		}
+	}
+	
+	private boolean iniciarProcesoMeta()
+	{
+		lock.lock();
+		try
+		{
+			ProcessBuilder pb = new ProcessBuilder("");
+			pb.directory(new File("/home/santiago/Desktop/dailyBot/" + path));
+			pb.command("wine", "terminal.exe");
+			proceso = pb.start();
+			if(iniciarSocket())
+			{
+				Error.agregarInfo("Conexion establecida " + path);
+				HiloDaily.sleep(20000);
+				return true;
+			}
+			else
+				return false;
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error, proceso no se pudo iniciar");
+			return false;
+		}
+		finally
+		{
+			lock.unlock();
+		}
+	}
+	
 	private boolean iniciarSocket()
 	{
 		lock.lock();
@@ -130,6 +170,7 @@ public class Proceso
 		}
 		catch(Exception e)
 		{
+			Error.agregar(e.getMessage() + " Error, socket no se pudo iniciar");
 			return false;
 		}
 		finally
@@ -138,16 +179,17 @@ public class Proceso
 		}
 	}
 	
-	public void escribir(String mensaje)
+	private void cerrarSocket()
 	{
 		lock.lock();
 		try
 		{
-			socketOut.println(mensaje);
+			if(socket != null)
+				socket.close();
 		}
 		catch(Exception e)
 		{
-			Error.agregar(e.getMessage() + " error escribiendo en el socket, " + path);
+			Error.agregar(e.getMessage() + " Error, socket no se pudo cerrar");
 		}
 		finally
 		{
@@ -155,7 +197,44 @@ public class Proceso
 		}
 	}
 	
-	class CallableSocket implements Callable <String>
+	private void cerrarProceso()
+	{
+		lock.lock();
+		try
+		{
+			if(proceso != null)
+				proceso.destroy();
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " Error, proceso no se pudo cerrar");
+		}
+		finally
+		{
+			lock.unlock();
+		}
+	}
+	
+	private boolean escribirMeta(String mensaje)
+	{
+		lock.lock();
+		try
+		{
+			socketOut.println(mensaje);
+			return true;
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + " error escribiendo en el socket, " + path);
+			return false;
+		}
+		finally
+		{
+			lock.unlock();
+		}
+	}
+	
+	private class CallableSocket implements Callable <String>
 	{
 		@Override
 		public String call() throws Exception 
@@ -176,12 +255,17 @@ public class Proceso
 		}
 	}
 	
-	public String leer()
+	private String leerMeta()
 	{
+		int cuenta = lock.getHoldCount();
+		while(lock.getHoldCount() != 0)
+			lock.unlock();
 		try
 		{
 			Future <String> futureResultado = executor.submit(new CallableSocket());
 			String resultado = futureResultado.get(600, TimeUnit.SECONDS);
+			if(resultado == null || resultado.equals(""))
+				return null;
 			return resultado.equals(" ") ? "" : resultado;
 		}
 		catch(Exception e)
@@ -189,14 +273,79 @@ public class Proceso
 			Error.agregar(e.getMessage() + ", error de lectura en el socket: " + path);
 			return null;
 		}
+		finally
+		{
+			while(lock.getHoldCount() < cuenta)
+				lock.lock();
+		}
 	}
 	
-	private void cerrarSocket() throws IOException
+	private String chequear() 
 	{
 		lock.lock();
 		try
 		{
-			socket.close();
+			escribirMeta("GBPCHF;LIST;CLOSE;0");
+			return leerMeta();
+		}
+		catch(Exception e)
+		{
+			Error.agregar(e.getMessage() + ", error chequeando senales: " + path);
+			return null;
+		}
+		finally
+		{
+			lock.unlock();
+		}
+	}
+	
+	public String enviar(String s)
+	{
+		lock.lock();
+		try
+		{
+			for(int i = 0; i < 10; i++)
+			{
+				if(escribirMeta(s))
+				{
+					String salida = leerMeta();
+					if(salida != null)
+						return salida;
+				}
+				else if(i == 9)
+				{
+					Error.agregar("Error enviando a meta en 10 intentos, " + path + ", reiniciando");
+					Error.reiniciar();
+					return null;
+				}
+				else
+				{
+					cerrarSocket();
+					cerrarProceso();
+					HiloDaily.sleep(100000);
+					iniciarProceso();
+				}
+			}
+			return null;
+		}
+		catch(Exception e)
+		{
+			Error.agregar("Error enviando a meta, " + path + ", reiniciando");
+			Error.reiniciar();
+			return null;
+		}
+		finally
+		{
+			lock.unlock();
+		}
+	}
+	
+	public String chequearSenales()
+	{
+		lock.lock();
+		try
+		{
+			return enviar("GBPCHF;LIST;CLOSE;0");
 		}
 		finally
 		{
@@ -209,21 +358,8 @@ public class Proceso
 		lock.lock();
 		try
 		{
-			proceso.destroy();
-		}
-		finally
-		{
-			lock.unlock();
-		}
-	}
-	
-	public void cerrarProceso()
-	{
-		lock.lock();
-		try
-		{
 			cerrado = true;
-			proceso.destroy();
+			cerrarProceso();
 		}
 		finally
 		{

@@ -102,12 +102,6 @@ public class Escritor
 		AdministradorHilos.agregarHilo(hiloEscritor);
 	}
 	
-	private void reiniciarProceso()
-	{
-		proceso.cerrar();
-		HiloDaily.sleep(100000);
-	}
-	
 	public void terminarCiclo()
 	{
 		lockConstruir.lock();
@@ -145,7 +139,7 @@ public class Escritor
 		}
 	}
 	
-	private void escribir(ArrayList <EntradaEscritor> trabajoActual) 
+	private String enviar(ArrayList <EntradaEscritor> trabajoActual) 
 	{
 		try
 		{
@@ -164,17 +158,18 @@ public class Escritor
 			}
 			lineaEnvio = lineaEnvio.substring(0, lineaEnvio.length() - 1);
 			fw.close();
-			proceso.escribir(lineaEnvio);
 			if(debug)
 				mensajeDebugHilo += " Escribiendo " + mensaje;
+			return proceso.enviar(lineaEnvio);
 		}
 		catch(Exception e)
 		{
-			Error.agregar(e.getMessage() + " error escribiendo en el socket " + pathMeta);
+			Error.agregar(e.getMessage() + " error enviando en el path " + pathMeta);
+			return null;
 		}
 	}
 
-	private ArrayList <String> leer()
+	private ArrayList <String> leer(String magicos)
 	{
 		try
 		{
@@ -183,7 +178,6 @@ public class Escritor
 				archivoEscritura.createNewFile();
 			FileWriter fw = new FileWriter(archivoEscritura, true);
 			ArrayList <String> leidos = new ArrayList <String> ();
-			String magicos = proceso.leer();
 			fw.write(magicos + "\n");
 			if(debug)
 				mensajeDebugHilo += " Leido: " + magicos + ", " + System.currentTimeMillis();
@@ -203,8 +197,7 @@ public class Escritor
 	
 	private ArrayList <String> cargarEntradas(ArrayList <EntradaEscritor> trabajoActual)
 	{
-		escribir(trabajoActual);
-		return leer();
+		return leer(enviar(trabajoActual));
 	}
 
 	private boolean procesar(EntradaEscritor entrada, String lectura)
@@ -281,26 +274,7 @@ public class Escritor
 
 	public void procesar(ArrayList <EntradaEscritor> trabajoActual)
 	{
-		ArrayList <String> entradas = null;
-		for(int i = 0; i < 11; i++)
-		{
-			entradas = cargarEntradas(trabajoActual);
-			if(entradas != null)
-				break;
-			else
-			{
-				if(i == 10)
-				{
-					Error.agregar("Error en la lecutura del socket, reiniciando despues de diez intentos");
-					Error.reiniciar();
-				}
-				else
-				{
-					Error.agregar("Error en la lectura del socket, reiniciando proceso");
-					reiniciarProceso();
-				}
-			}
-		}
+		ArrayList <String> entradas = cargarEntradas(trabajoActual);
 		if(trabajoActual.size() != entradas.size())
 		{
 			Error.agregar("Error procesando magicos en path: " + pathMeta + ", tamanos distintos");
@@ -336,33 +310,10 @@ public class Escritor
 		try
 		{
 			debug = false;
-			ArrayList <EntradaEscritor> trabajoActual = new ArrayList <EntradaEscritor> ();
-			trabajoActual.add(new EntradaEscritor("GBPCHF;LIST;CLOSE;0"));
-			ArrayList <String> entradas = null;
-			for(int i = 0; i < 11; i++)
-			{
-				entradas = cargarEntradas(trabajoActual);
-				if(entradas != null)
-					break;
-				else
-				{
-					if(i == 10)
-					{
-						Error.agregar("Error en la lecutura del socket, reiniciando despues de diez intentos");
-						Error.reiniciar();
-					}
-					else
-					{
-						Error.agregar("Error en la lecutura del socket, reiniciando proceso");
-						reiniciarProceso();
-					}
-				}
-			}
+			ArrayList <String> entradas = leer(proceso.chequearSenales());
 			for(Iterator <String> it = entradas.iterator(); it.hasNext();)
-			{
-				if(it.next().equals(""))
+				if(it.next().trim().equals(""))
 					it.remove();
-			}
 			debug = true;
 			return entradas;
 		}
@@ -467,7 +418,7 @@ public class Escritor
 		lockConstruir.lock();
 		try
 		{
-			proceso.cerrarProceso();
+			proceso.cerrar();
 		}
 		finally
 		{

@@ -52,7 +52,7 @@ public class HiloDaily extends Thread
 			while(rwl.getReadHoldCount() != 0)
 				rwl.readLock().unlock();
 			super.lock();
-			while(rwl.getReadHoldCount() != numLocks)
+			while(rwl.getReadHoldCount() < numLocks)
 				rwl.readLock().lock();
 		}
 	};
