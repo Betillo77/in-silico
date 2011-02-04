@@ -100,7 +100,7 @@ public class Proveedor
 					}
 					else
 					{
-						if(!mensajeEnviado && (hora == 10 || hora == 22))
+						if(!mensajeEnviado && (hora % 2 == 0))
 						{
 							este.chequearSenales(true);
 							mensajeEnviado = true;
