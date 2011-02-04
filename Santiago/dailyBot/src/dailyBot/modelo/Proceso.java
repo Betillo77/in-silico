@@ -285,8 +285,10 @@ public class Proceso
 		lock.lock();
 		try
 		{
-			escribirMeta("GBPCHF;LIST;CLOSE;0");
-			return leerMeta();
+			if(escribirMeta("GBPCHF;LIST;CLOSE;0"))
+				return leerMeta();
+			else
+				return null;
 		}
 		catch(Exception e)
 		{
@@ -306,12 +308,9 @@ public class Proceso
 		{
 			for(int i = 0; i < 10; i++)
 			{
-				if(escribirMeta(s))
-				{
-					String salida = leerMeta();
-					if(salida != null)
-						return salida;
-				}
+				String salida;
+				if(escribirMeta(s) && ((salida = leerMeta()) != null))
+					return salida;
 				else if(i == 9)
 				{
 					Error.agregar("Error enviando a meta en 10 intentos, " + path + ", reiniciando");
