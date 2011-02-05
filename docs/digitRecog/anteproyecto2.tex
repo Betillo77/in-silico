@@ -90,7 +90,7 @@
 	\begin{center}
 	\section{Título}
 	\end{center}
-	Desarrollo de un sistema de reconocimiento óptico de caracteres para celulares, que funcione bajo condiciones controladas.
+	Desarrollo de un sistema prototipo de reconocimiento de dígitos usando momentos invariantes.
 	\clearpage
 	
 	\begin{center}
@@ -113,7 +113,7 @@
 
 	La diferencia mas importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podría tomar la fotografía inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
 
-	Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los teléfonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendrá las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también a incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+	Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los teléfonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendrá las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también ha incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
 
 	Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imágenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
 
@@ -122,10 +122,9 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\subsection{Definición del problema}
 
 	No existe \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}
-    un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para
-
-    ser utilizado por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, y con un 
-    porcentaje de reconocimiento satisfactorio.
+    un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para ser utilizado 
+    por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, 
+    y con un porcentaje de reconocimiento satisfactorio.
 	
 	\clearpage
 
@@ -174,7 +173,7 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\subsection{Marco conceptual}
 	\begin{itemize}
     \item Análisis de documentos: Proceso que consiste en encontrar características de un documento,
-    y dividirlo en sus componentes básicos ( párrafos, líneas, palabras y caracteres).\footnote{
+    y dividirlo en sus componentes básicos (párrafos, líneas, palabras y caracteres).\footnote{
 	BREUEL Thomas M. The OCRopus Open Source OCR System, Proceedings IS\&T/SPIE 20th Annual Symposium, 2008.}
     \item Reconocimiento óptico de caracteres (OCR): Un OCR como proceso de cómputo, es un conjunto de
     algoritmos cuyo resultado esperado es la extracción de información  que este contenida dentro de
@@ -191,7 +190,7 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
     \item Binarización:	Es el proceso de asignar un valor binario (uno o cero por ejemplo) a una
     variable dependiendo de	ciertas condiciones, en el contexto del procesamiento de imágenes se le
     llama binarización a el proceso de cambiar el valor de un píxel dentro de un formato de imagen
-    estándar a 1 o 0, dependiendo generalmente de un valor límite generalmente llamado threshold.
+    estándar a 1 o 0, dependiendo generalmente de un valor límite llamado threshold.
     \footnote{Ibid., p.2}
     \item Filtrado de imagen: Consiste en remover de una imagen elementos indeseables, que no
     son interesantes para el procesamiento requerido de la imagen y en algunos casos dificultan
@@ -211,53 +210,59 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	
 	\subsection {Antecedentes}
 	La tecnología actual ha permitido a las personas invidentes tener acceso a información
-	y a conocimiento al que antes no tenían acceso; Entre estas tecnologías se encuentran los
-	lectores de pantalla, impresoras y sistemas refrescables de Braille, entre otros.
-	Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira, permite
-	a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes
-	frecuencias (Llamado Proyecto IRIS); Para ello, usan un guante con imanes 
+	y a conocimiento al que antes no tenían acceso. Entre estas tecnologías se encuentran los
+	lectores de pantalla, y las impresoras y sistemas refrescables de Braille.
+	
+	Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira (llamado 
+    Proyecto IRIS), permite a los invidentes reconocer imágenes con colores a través de 
+    vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes 
 	permanentes y una matriz de electroimanes conectada al computador por el puerto USB.
-	\newline \newline
-	En el área de acceso al texto, existen sistemas que pasan el texto en ASCII a voz
-	conocidos como sistemas \textit{Text-To-Speech}. Y también sistemas para el computador
-	que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR; Estos funcionan
-	usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por
-	la UNLV, los OCRs libres con mejores resultados son	\textit{Tesseract} y el 
-	\textit{Ocropus}. Cuando el problema cambia de tomar la imagen con un escáner a tomarla
-	con una cámara, se deben seguir diferentes enfoques, en 
-	\footnote{Ray Smith. Progress in camera-based document image analysis.} se halló que los
-	retos más importantes son la proyección de la imagen en perspectiva en el plano y la 
-	resolución requerida para poder reconocer bien los caracteres.
+
+	En el área de acceso al texto, existen sistemas que convierten el texto en ASCII a voz,
+	conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas para el computador
+	que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR, los cuales funcionan
+	usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por la TUK
+    \footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. 
+    (15: 29-31, febrero, 2008: San Jose, Estados Unidos). Memorias, 2008, p. 68-150},
+    los OCRs libres con mejores resultados son \textit{Tesseract} y el  \textit{Ocropus}. 
+
+    Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara, 
+    se deben seguir diferentes enfoques, en \footnote{Ray Smith. Progress in camera-based 
+    document image analysis.} se halló que los retos más importantes son la proyección de 
+    la imagen en perspectiva en el plano y la  resolución requerida para poder reconocer 
+    bien los caracteres.
+
 	En cuanto a hacer que el OCR sea realizado por un celular, se encontraron investigaciones
 	como \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}, 
 	en la que se trabajaban con imágenes de muy baja resolución (640x480) y como resultado solo
-    pueden reconocer textos muy cortos, tales como avisos
-	y carteles,	pero no documentos completos.
+    pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos.
 	En \footnote{Senda, Nishiyama, Asahi and Yamada. Camera-Typing Interface for Ubiquitous
 	Information Services}, para tratar de equilibrar el hecho de tener una cámara de baja
-	resolución, toman varias imágenes de baja resolución en lugar de una sola, uniéndolas
-	luego para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la
-	carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular.
-	Así que restringieron su solución para que usando Internet se enviaran las imágenes a un
-	servidor, que fuera este quien las procesara y enviara los resultados.\newline
-	Cabe anotar además que ninguna de las tecnologías anteriormente mencionadas para hacer
-	el OCR en el celular, fue diseñada para ser usada por personas invidentes. Ya que el 
+	resolución, se toman varias imágenes de baja resolución en lugar de una sola, uniéndolas
+	posteriormente para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la
+	carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular,
+	por lo cual la solución se restringe para que se envien las imagenes a un servidor usando 
+    Internet, el cual las procesa y envia los resultados.
+
+	Cabe anotar que ninguna de las tecnologías anteriormente mencionadas para hacer
+	el OCR en el celular fue diseñada para ser usada por personas invidentes. Ya que el 
 	primero no fue diseñado para reconocer documentos, y el segundo requeriría que la persona
 	invidente supiera con anterioridad como está la estructura del documento para poder mover
-	la cámara del celular en el orden en el que está el texto en el documento.
+	la cámara del celular en la dirección en la que está el texto en el documento.
 	
 	\subsubsection{Proyectos de grado relacionados en la Universidad Tecnológica de Pereira}
-	Si bien en Ingeniería en la Universidad Tecnológica de Pereira no se ha planteado un proyecto 
-    de grado directamente sobre reconocimiento óptico de caracteres, estudiantes de la maestría en
-    Ingeniería Eléctrica construyeron un sistema para el reconocimiento de algunos caracteres 
-    y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes:
+	Si bien en Ingeniería de Sistemas en la Universidad Tecnológica de Pereira no se ha planteado un 
+    proyecto de grado directamente sobre reconocimiento óptico de caracteres, estudiantes de la 
+    maestría en Ingeniería Eléctrica construyeron un sistema para el reconocimiento de algunos 
+    caracteres y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes:
 	el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de
 	soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes
     neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran 
-    utilidad en la construcción de un sistema de reconocimiento óptico de caracteres.\newline
+    utilidad en la construcción de un sistema de reconocimiento óptico de caracteres.
     
 	En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por 
-    estudiantes de Ingeniería Eléctrica:    
+    estudiantes de Ingeniería Eléctrica:
+    
     En la tesis \footnote{Jaime Varela Rincón, Johan Eric Loaiza Pulgarín. Reconocimiento de palabras
     aisladas mediante redes neuronales sobre FPGA} se utilizaron redes neuronales para reconocimiento
     de voz en hardware sobre una FPGA. 
@@ -266,35 +271,34 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
     de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las 
     misma en un dispositivo móvil. También es de anotar que las redes neuronales demostraron porcentajes 
     de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
-	\newline \newline
+
 	En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en
-    una imagen utilizando un sistema de visión artificial ``Registro de transeúntes en tiempo real utilizando
-    un sistema de visión artificial sobre un ambiente controlado''. Considerando el bajo nivel de
-	resolución (imágenes de 324 x 240 píxeles a 30 frames por segundo) y el hecho de que la cámara no
-	fue calibrada, se identificaron correctamente muchos transeúntes, de lo que se puede inferir que los 
-    sistemas de visión artificial funcionan correctamente con cámaras económicas. Los resultados muestran que
-	el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de 
-    píxeles. Así mismo, también permiten entender distintos problemas que se pueden presentar a la hora de
-    separar estos componentes correctamente, como por ejemplo la identificación de varios transeúntes como 
-    uno solo. Si bien en el reconocimiento óptico de caracteres se distinguen letras y no personas, problemas 
-    similares a los evidenciados en este proyecto se presentan al separar los caracteres en un sistema de 
-	OCR.\newline
+    una imagen utilizando un sistema de visión artificial \footnote{Joan Mauricio Valencia López, Mauricio 
+    Abril Cañas. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre 
+    un ambiente controlado}. Considerando el bajo nivel de resolución (imágenes de 324 x 240 píxeles a 30 
+    frames por segundo) y el hecho de que la cámara no fue calibrada, se identificaron correctamente muchos
+    transeúntes, de lo que se puede inferir que los sistemas de visión artificial funcionan correctamente 
+    con cámaras económicas. Los resultados muestran que el uso de histogramas puede ser de gran utilidad a 
+    la hora de distinguir componentes conectados de píxeles. Así mismo, también permiten entender distintos 
+    problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo
+    la identificación de varios transeúntes como uno solo. Si bien en el reconocimiento óptico de caracteres 
+    se distinguen letras y no personas, problemas similares a los evidenciados en este proyecto se presentan 
+    al separar los caracteres en un sistema de OCR.
 	
-	Finalmente, en el tema de procesamiento de señales, en ``Acondicionamiento de Señales Bioeléctricas''
-	se utilizan filtros para adquirir señales bioeléctricas utilizando filtros análogos y digitales.
-	En este proyecto se lograron filtrar señales muy pequeñas y finas, como las producidas en el cuerpo humano, 
-	mediante filtros digitales, y se obtuvieron errores pequeños.
-	Aunque las señales bioeléctricas son muy diferentes a las imágenes, es posible 
-    convertir estas ultimas en señales y, por tanto, los filtros digitales expuestos en este proyecto podrían 
-    ser de utilidad a la hora de eliminar errores en imágenes tomadas por una cámara, ya que logran filtrar
-	correctamente señales con gran cantidad de ruido.\newline
+	Finalmente, en el tema de procesamiento de señales, en \footnote{Lorena Alvarez Osorio. Acondicionamiento 
+    de Señales Bioeléctricas} se adquieren señales bioeléctricas utilizando filtros análogos y digitales. 
+    En este proyecto se lograron filtrar señales muy pequeñas y finas, como las producidas en el cuerpo humano,
+    mediante filtros digitales, y se obtuvieron errores pequeños. Aunque las señales bioeléctricas son muy 
+    diferentes a las imágenes, es posible convertir estas ultimas en señales y, por tanto, los filtros digitales 
+    expuestos en este proyecto podrían ser de utilidad a la hora de eliminar errores en imágenes tomadas por una
+    cámara, ya que logran filtrar correctamente señales con gran cantidad de ruido.\newline
 	
 	\subsection {Marco teórico}
 	\subsubsection{Reconocimiento de caracteres y análisis de documentos}
 	En esta sección se hablará de algunas investigaciones realizadas en el área
 	de reconocimiento de caracteres y de análisis de documentos.
 	Las etapas necesarias para llevar a cabo el proceso de análisis de documentos
-	y reconocimiento de caracteres son: Binarización de la imagen, análisis y
+	y reconocimiento de caracteres son: binarización de la imagen, análisis y
 	segmentación del documento y reconocimiento óptico de caracteres (OCR).
 	
 	\subsubsection{Binarización de imagen}
@@ -331,6 +335,8 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	Otro método	llamativo es el \textit{RLSA}, que llama la atención por su sencillez y puede brindar
 	buenos resultados en documentos \textit{Manhattan-Layout}.
 	Probablemente la mejor solución para un sistema OCR pueda resultar de la mezcla de
+
+
 	varios de los algoritmos existentes, en \footnote{Kise, Sato and Matsumoto. "Document Image 
 	Segmentation as Selection of Voronoi Edges"} se observa como se pueden mejorar
 	los resultados mezclando los beneficios de diferentes algoritmos para soluciones
