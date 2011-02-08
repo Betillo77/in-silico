@@ -33,6 +33,11 @@ public class Error
 		chequearHora();
 	}
 	
+	public static void agregarConTitulo(String titulo, String info)
+	{
+		enviar("DailyBot-" + titulo, info, true);
+	}
+	
 	public static void agregarRMI(String error) 
 	{
 		JOptionPane.showMessageDialog(null, error);

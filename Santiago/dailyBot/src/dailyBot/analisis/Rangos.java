@@ -143,7 +143,7 @@ public class Rangos implements Serializable
 			}
 		}
 		if(!enviarMensaje.equals(""))
-			Error.agregarInfo(mensaje);
+			Error.agregarConTitulo("rangos", mensaje);
 		return true;
 	}
 	

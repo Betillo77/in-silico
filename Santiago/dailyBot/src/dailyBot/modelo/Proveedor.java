@@ -147,7 +147,10 @@ public class Proveedor
 					else
 					{
 						if(!s.isTocoStop() && afectada.getMagico() != 1000)
+						{
+							Error.agregarConTitulo("escritor", id + " cerrando " + s.getEstrategia() + ", " + s.getPar());
 							escritor.cerrar(afectada);
+						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
 					}
 				}
@@ -163,7 +166,10 @@ public class Proveedor
 						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, mensaje))
 							afectada.setMagico(1000);
 						else
+						{
+							Error.agregarConTitulo("escritor", id + " abriendo " + s.getEstrategia() + ", " + s.getPar());
 							escritor.abrir(afectada);
+						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
 					}
 				}
@@ -182,7 +188,10 @@ public class Proveedor
 		{
 			if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] != null)
 				if(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()].getMagico() != 1000)
+				{
+					Error.agregarConTitulo("escritor", id + " cerrando por stop " + s.getEstrategia() + ", " + s.getPar());
 					escritor.cerrar(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()]);
+				}
 			else if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] == null)
 				Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar (toco stop).");
 		}
@@ -325,6 +334,7 @@ public class Proveedor
 				} 
 				else 
 				{
+					Error.agregarConTitulo("escritor", id + " cerrando inexistente " + pm.par + ", " + pm.magico);
 					escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
 					mensajeError += pm + " no existe en la bd, eliminado\n";       
 				} 
