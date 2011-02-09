@@ -134,7 +134,7 @@ public class Rangos implements Serializable
 			{
 				mensaje += ", no cumple: " + rangos.get(i).toString(i.calcular(registro)) + ", terminando con false\n";
 				if(!enviarMensaje.equals(""))
-					Error.agregarInfo(mensaje);
+					Error.agregarConTitulo("rangos", mensaje);
 				return false;
 			}
 			else
