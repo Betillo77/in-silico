@@ -94,13 +94,13 @@ public class Proveedor
 					Calendar c = Calendar.getInstance();
 					int hora = c.get(Calendar.HOUR_OF_DAY);
 					int minuto = c.get(Calendar.MINUTE);
-					if(minuto > 10)
+					if(minuto > 40)
 					{
 						mensajeEnviado = chequeoRealizado = false;
 					}
 					else
 					{
-						if(!mensajeEnviado && (hora % 2 == 0))
+						if(!mensajeEnviado && (hora == 7 || hora == 19))
 						{
 							este.chequearSenales(true);
 							mensajeEnviado = true;
