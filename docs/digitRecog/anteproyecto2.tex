@@ -121,10 +121,11 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	
 	\subsection{Definición del problema}
 
-	No existe \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}
-    un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para ser utilizado 
-    por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, 
-    y con un porcentaje de reconocimiento satisfactorio.
+	No existe \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using
+    Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San Jose, California, Estados 
+    Unidos). Memorias, 2008, vol. 6821, p. 41-46} un sistema de reconocimiento óptico de caracteres 
+    que halla sido desarrollado para ser utilizado por personas invidentes utilizando la cámara de 
+    celulares inteligentes, que sea de código abierto, y con un porcentaje de reconocimiento satisfactorio.
 	
 	\clearpage
 
@@ -153,7 +154,7 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\subsection{Objetivo general}
 	Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, 
 	usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes
-	y un vector de características invariantes (Momentos de Hu y Fluzzer).
+	y un vector de características invariantes (momentos de Hu y Fluzzer).
 	\subsection{Objetivos específicos}
 	\begin{itemize}
 	\item Realizar un estudio del funcionamiento de la distribución normal multivariable en el problema de reconocimiento usando
@@ -173,8 +174,9 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	\subsection{Marco conceptual}
 	\begin{itemize}
     \item Análisis de documentos: Proceso que consiste en encontrar características de un documento,
-    y dividirlo en sus componentes básicos (párrafos, líneas, palabras y caracteres).\footnote{
-	BREUEL Thomas M. The OCRopus Open Source OCR System, Proceedings IS\&T/SPIE 20th Annual Symposium, 2008.}
+    y dividirlo en sus componentes básicos (párrafos, líneas, palabras y caracteres).\footnote{BREUEL,
+    Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero,
+    2008: San Jose, Estados Unidos). Memorias, 2008, p. 68-150}
     \item Reconocimiento óptico de caracteres (OCR): Un OCR como proceso de cómputo, es un conjunto de
     algoritmos cuyo resultado esperado es la extracción de información  que este contenida dentro de
     una imagen, que sean parte de un sistema de escritura humano, y que pueda ser codificada
@@ -227,22 +229,25 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
     los OCRs libres con mejores resultados son \textit{Tesseract} y el  \textit{Ocropus}. 
 
     Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara, 
-    se deben seguir diferentes enfoques, en \footnote{Ray Smith. Progress in camera-based 
-    document image analysis.} se halló que los retos más importantes son la proyección de 
-    la imagen en perspectiva en el plano y la  resolución requerida para poder reconocer 
-    bien los caracteres.
+    se deben seguir diferentes enfoques, en \footnote{SMITH, Ray. Progress in Camera-Based Document
+    Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto,
+    2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} se halló que los retos más importantes 
+    son la proyección de la imagen en perspectiva en el plano y la  resolución requerida para poder
+    reconocer bien los caracteres.
 
 	En cuanto a hacer que el OCR sea realizado por un celular, se encontraron investigaciones
-	como \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}, 
-	en la que se trabajaban con imágenes de muy baja resolución (640x480) y como resultado solo
-    pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos.
-	En \footnote{Senda, Nishiyama, Asahi and Yamada. Camera-Typing Interface for Ubiquitous
-	Information Services}, para tratar de equilibrar el hecho de tener una cámara de baja
-	resolución, se toman varias imágenes de baja resolución en lugar de una sola, uniéndolas
-	posteriormente para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la
-	carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular,
-	por lo cual la solución se restringe para que se envíen las imágenes a un servidor usando 
-    Internet, el cual las procesa y envía los resultados.
+	como \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using
+    Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San Jose, California, Estados 
+    Unidos). Memorias, 2008, vol. 6821, p. 41-46}, en la que se trabajaban con imágenes de muy baja 
+    resolución (640x480) y como resultado solo pueden reconocer textos muy cortos, tales como avisos 
+    y carteles, pero no documentos completos. En \footnote{SENDA, Shuji, et al. Camera-Typing Interface
+    for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS
+    (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372}, para tratar 
+    de equilibrar el hecho de tener una cámara de baja resolución, se toman varias imágenes de baja 
+    resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto sin 
+    embargo conlleva a un incremento la carga de procesamiento, haciendo que no sea posible el procesamiento 
+    dentro del celular, por lo cual la solución se restringe para que se envíen las imágenes a un servidor 
+    usando internet, el cual las procesa y envía los resultados.
 
 	Cabe anotar que ninguna de las tecnologías anteriormente mencionadas para hacer
 	el OCR en el celular fue diseñada para ser usada por personas invidentes. Ya que el 
@@ -252,20 +257,23 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	
 	\subsubsection{Proyectos de grado relacionados en la Universidad Tecnológica de Pereira}
 	Si bien en Ingeniería de Sistemas en la Universidad Tecnológica de Pereira no se ha planteado un 
-    proyecto de grado directamente sobre reconocimiento óptico de caracteres, estudiantes de la 
-    maestría en Ingeniería Eléctrica construyeron un sistema para el reconocimiento de algunos 
+    proyecto de grado directamente sobre reconocimiento óptico de caracteres, un estudiante de la 
+    maestría en Ingeniería Eléctrica construyo un sistema para el reconocimiento de algunos 
     caracteres y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes:
 	el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de
 	soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes
     neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran 
-    utilidad en la construcción de un sistema de reconocimiento óptico de caracteres.
+    utilidad en la construcción de un sistema de reconocimiento óptico de caracteres. \footnote{MUÑOZ, 
+    Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de 
+    Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnologica de Pereira, 2005}
+
     
 	En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por 
     estudiantes de Ingeniería Eléctrica:
     
-    En la tesis \footnote{Jaime Varela Rincón, Johan Eric Loaiza Pulgarín. Reconocimiento de palabras
-    aisladas mediante redes neuronales sobre FPGA} se utilizaron redes neuronales para reconocimiento
-    de voz en hardware sobre una FPGA. 
+    En la tesis \footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante
+    redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia 
+    de Pereira, 2008} se utilizaron redes neuronales para reconocimiento de voz en hardware sobre una FPGA. 
     Si bien la implementación fue en hardware y no en software, sus resultados permiten inferir que es 
     posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso
     de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las 
@@ -273,25 +281,26 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
     de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
 
 	En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en
-    una imagen utilizando un sistema de visión artificial \footnote{Joan Mauricio Valencia López, Mauricio 
-    Abril Cañas. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre 
-    un ambiente controlado}. Considerando el bajo nivel de resolución (imágenes de 324 x 240 píxeles a 30 
-    frames por segundo) y el hecho de que la cámara no fue calibrada, se identificaron correctamente muchos
-    transeúntes, de lo que se puede inferir que los sistemas de visión artificial funcionan correctamente 
-    con cámaras económicas. Los resultados muestran que el uso de histogramas puede ser de gran utilidad a 
-    la hora de distinguir componentes conectados de píxeles. Así mismo, también permiten entender distintos 
-    problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo
-    la identificación de varios transeúntes como uno solo. Si bien en el reconocimiento óptico de caracteres 
-    se distinguen letras y no personas, problemas similares a los evidenciados en este proyecto se presentan 
-    al separar los caracteres en un sistema de OCR.
+    una imagen utilizando un sistema de visión artificial \footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio.
+    Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente 
+    controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007}.
+    Considerando el bajo nivel de resolución (imágenes de 324 x 240 píxeles a 30 frames por segundo) y el 
+    hecho de que la cámara no fue calibrada, se identificaron correctamente muchos transeúntes, de lo que se
+    puede inferir que los sistemas de visión artificial funcionan correctamente con cámaras económicas. Los 
+    resultados muestran que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes
+    conectados de píxeles. Así mismo, también permiten entender distintos problemas que se pueden presentar a 
+    la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios transeúntes 
+    como uno solo. Si bien en el reconocimiento óptico de caracteres se distinguen letras y no personas, problemas
+    similares a los evidenciados en este proyecto se presentan al separar los caracteres en un sistema de OCR.
 	
-	Finalmente, en el tema de procesamiento de señales, en \footnote{Lorena Alvarez Osorio. Acondicionamiento 
-    de Señales Bioeléctricas} se adquieren señales bioeléctricas utilizando filtros análogos y digitales. 
-    En este proyecto se lograron filtrar señales muy pequeñas y finas, como las producidas en el cuerpo humano,
-    mediante filtros digitales, y se obtuvieron errores pequeños. Aunque las señales bioeléctricas son muy 
-    diferentes a las imágenes, es posible convertir estas ultimas en señales y, por tanto, los filtros digitales 
-    expuestos en este proyecto podrían ser de utilidad a la hora de eliminar errores en imágenes tomadas por una
-    cámara, ya que logran filtrar correctamente señales con gran cantidad de ruido.\newline
+	Finalmente, en el tema de procesamiento de señales, en \footnote{ALVAREZ, Lorena. Acondicionamiento de Señales
+    Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007} 
+    se adquieren señales bioeléctricas utilizando filtros análogos y digitales. En este proyecto se lograron filtrar
+    señales muy pequeñas y finas, como las producidas en el cuerpo humano, mediante filtros digitales, y se obtuvieron
+    errores pequeños. Aunque las señales bioeléctricas son muy diferentes a las imágenes, es posible convertir estas
+    ultimas en señales y, por tanto, los filtros digitales expuestos en este proyecto podrían ser de utilidad a la hora
+    de eliminar errores en imágenes tomadas por una cámara, ya que logran filtrar correctamente señales con gran cantidad
+    de ruido.\newline
 	
 	\subsection {Marco teórico}
 	\subsubsection{Reconocimiento de caracteres y análisis de documentos}
@@ -319,8 +328,9 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
     proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
 	
 	\subsubsection{Análisis del documento}
-	Según \footnote{Song Mao, Azriel Rosenfeld and Tapas Kanungo. "Document Structure Analysis
-	Algorithms: A literature Survey"}, esta etapa puede ser vista como un análisis sintáctico,
+	Según \footnote{MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms:
+    A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San Jose, Estados Unidos). 
+    Memorias, 2003, p. 197-207}, esta etapa puede ser vista como un análisis sintáctico,
 	en el que el documento se divide en sus partes estructurales como un árbol de análisis
 	sintáctico. Como todo análisis gramatical, se puede seguir los enfoques
 	\textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde
@@ -328,26 +338,29 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	o Párrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imagen de un
 	documento y comenzaría a dividirla hasta llegar a sus componentes.
 	Cada algoritmo tiene limitaciones, ventajas y distintos requerimientos de máquina.
-	Una investigación realizada sobre diferentes algoritmos \footnote{Shafait, Keysers and Breuel.
-	"Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms"}, indica que los
-	mejores resultados sobre diferentes documentos, con distintas estructuras físicas,
-	fueron para Docstrum y para Voronoi, con porcentajes de error del 4.3\% y 4.7\% respectivamente.
-	Otro método	llamativo es el \textit{RLSA}, que llama la atención por su sencillez y puede brindar
-	buenos resultados en documentos \textit{Manhattan-Layout}.
+	Una investigación realizada sobre diferentes algoritmos \footnote{SHAFAITA Faisal; KEYSERSA, 
+    Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms.
+    \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. 
+    Junio, 2008. vol. 30, no. 6, p. 941-954}, indica que los mejores resultados sobre diferentes
+    documentos, con distintas estructuras físicas, fueron para Docstrum y para Voronoi, con porcentajes
+    de error del 4.3\% y 4.7\% respectivamente. Otro método	llamativo es el \textit{RLSA}, que llama 
+    la atención por su sencillez y puede brindar buenos resultados en documentos \textit{Manhattan-Layout}.
+	
 	Probablemente la mejor solución para un sistema OCR pueda resultar de la mezcla de
-
-
-	varios de los algoritmos existentes, en \footnote{Kise, Sato and Matsumoto. "Document Image 
-	Segmentation as Selection of Voronoi Edges"} se observa como se pueden mejorar
-	los resultados mezclando los beneficios de diferentes algoritmos para soluciones
-	particulares, y cada uno de los artículos mencionados aporta elementos importantes para
-    escoger cual de estos algoritmos es ventajoso para una solución particular.
+	varios de los algoritmos existentes, en \footnote{KISE, Koichi; SATO Akinori y MATSUMOTO, 
+    Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY:
+    CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan, 
+    Puerto Rico). Memorias, 1997, p. 32-39} se observa como se pueden mejorar los resultados 
+    mezclando los beneficios de diferentes algoritmos para soluciones particulares, y cada uno de
+    los artículos mencionados aporta elementos importantes para escoger cual de estos algoritmos 
+    es ventajoso para una solución particular.
 	
 	\subsubsection{Reconocimiento óptico de caracteres OCR}
 	Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones.
-	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones; 
-	modelos inspirados en la biología como los que usan redes neuronales. Otros modelos
-	son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos
+	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones.
+     
+	Entre ellos algunos modelos son inspirados en la biología, como los que usan redes neuronales.
+    Otros modelos son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos
 	como la distribución normal multivariable aplicando el teorema de Bayes.
 
 	
@@ -435,7 +448,7 @@ Después de una búsqueda en más de 20 artículos científicos relacionados al 
 	
 	\subsection{Diseño de instrumentos}
 	Para realizar las mediciones de las variables, se utilizará un programa que entrege las estadísticas
-	del reconocimiento de los dígitos; Estas estadísticas serán el porcentaje de dígitos reconocidos
+	del reconocimiento de los dígitos; estas estadísticas serán el porcentaje de dígitos reconocidos
 	correctamente en total $A$ y para cada dígito $A_i$, y el porcentaje de seguridad para cada dígito $S_i$
 	y en total $S$. Donde $A$ y $A_i$ se calculan dividiendo la cantidad de caracteres reconocidos correctamente
 	sobre la cantidad de caracteres a reconocer. Y $S,S_i$ se calcula así: 
@@ -477,6 +490,8 @@ saulo.torres@utp.edu.co
 		\item Código fuente del OCR experimental de licencia libre Ocropus
 	    \item Recursos bibliográficos de la biblioteca de la Universidad Tecnológica de Pereira y propios en el área de inteligencia artificial, reconocimiento óptico de caracteres y procesamiento digital de imágenes.
 	\end{itemize}
+
+	\clearpage
 	
 	\begin{center}
 	\section{Posibilidades de publicación}
@@ -515,49 +530,48 @@ saulo.torres@utp.edu.co
 	\begin{center}
 	\section{Bibliografía}
 	\end{center}
-	AGRAWAL, Mudit y DOERMANN, David. Voronoi++: A Dynamic Page Segmentation approach based on Voronoi and Docstrum features. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION. (10: 26-29, julio, 2009: Barcelona, Spain). Memorias, 2009. p. 1011-1015
-	
-	O'GORMAN Lawrence. The Document Spectrum for Page Layout Analysis. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Noviembre, 1993. vol. 15, no. 11, p. 1162-1173
-	
-	BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San Jose, Estados Unidos). Memorias, 2008, p. 68-150
-	
-	SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. Efficient Implementation of Local Adaptative Thersholding Techniques Using Integral Images. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San Jose, Estados Unidos). Memorias, 2008, p. 61-67
-	
-	MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San Jose, Estados Unidos). Memorias, 2003, p. 197-207
-	
-	SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Junio, 2008. vol. 30, no. 6, p. 941-954
-	
-	KISE, Koichi; SATO Akinori y MATSUMOTO, Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY: CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan, Puerto Rico). Memorias, 1997, p. 32-39
-	
-	WONG, Kwan; CASEY, Richard y WAHL, Friedrich. Document Analysis System. \underline{En}: IBM Journal of Research and Development. Noviembre, 1982. vol. 26, no. 6, p. 647-656
-	
-	Ray Smith. An Overview of the Tesseract OCR Engine. IEEE COMPUTER SOCIETY: INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (9: 23-26, septiembre, 2007: Curitiba, Paraná, Brazil). Memorias, 2007, p. 629-633
-	
-	ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San Jose, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 682104.1-682104.6
-	
-	SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372
-	
-	SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617
-	
-	HU, Ming-Kuei. Visual pattern recognition by moment invariants. \underline{En}: IRE Transactions on Information Theory. Febrero, 1962, vol. 8, no. 2, p. 179-187
-	
-	SEUL, Machael , O'GORMAN Lawrence y SAMMON, Michael J. Practical Algorithms for Image Analysis. Nueva York: Cambridge University Press, 2000. 301 p.
-	
-	FLUSSER Jan, SUK, Tomas Suk y ZITOVA, Barbara. Moments and Moment Invariants in Pattern Recognition. Sussex, Reino Unido: Jhon Wiley \& Sons Ltd, 2009. 291 p.
-	
-	ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004. 415 p.
-	
-	CHERIET, Mohamed; KHARMA, Nawwaf y LIU Cheng-Lin. Character recognition systems: Guide for students and practitioners. New Jersey, Estados Unidos: Jhon Wiley \& Sons Ltd, 2007. 326 p.
-	
-	GUERRA, John Alexis; ZUNIGA, Maria Fernanda y RESTREPO, Felipe. Proyecto Iris. Trabajo de grado Ingeniero de Sistemas y Computación, Pereira: Universidad Tecnologia de Pereira, 2004
-	
-	MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnologica de Pereira, 2005
-	
-	RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2008
-	
-	VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007
-	
-	ALVAREZ, Lorena. Acondicionamiento de Señales Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007
-	
+AGRAWAL, Mudit y DOERMANN, David. Voronoi++: A Dynamic Page Segmentation approach based on Voronoi and Docstrum features. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION. (10: 26-29, julio, 2009: Barcelona, Spain). Memorias, 2009. p. 1011-1015
+
+ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004. 415 p.
+
+ALVAREZ, Lorena. Acondicionamiento de Señales Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007
+
+BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San Jose, Estados Unidos). Memorias, 2008, p. 68-150
+
+CHERIET, Mohamed; KHARMA, Nawwaf y LIU Cheng-Lin. Character recognition systems: Guide for students and practitioners. New Jersey, Estados Unidos: Jhon Wiley \& Sons Ltd, 2007. 326 p.
+
+FLUSSER Jan, SUK, Tomas Suk y ZITOVA, Barbara. Moments and Moment Invariants in Pattern Recognition. Sussex, Reino Unido: Jhon Wiley \& Sons Ltd, 2009. 291 p.
+
+GUERRA, John Alexis; ZUNIGA, Maria Fernanda y RESTREPO, Felipe. Proyecto Iris. Trabajo de grado Ingeniero de Sistemas y Computación, Pereira: Universidad Tecnologia de Pereira, 2004
+
+HU, Ming-Kuei. Visual pattern recognition by moment invariants. \underline{En}: IRE Transactions on Information Theory. Febrero, 1962, vol. 8, no. 2, p. 179-187
+
+KISE, Koichi; SATO Akinori y MATSUMOTO, Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY: CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan, Puerto Rico). Memorias, 1997, p. 32-39
+
+MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San Jose, Estados Unidos). Memorias, 2003, p. 197-207
+
+MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnologica de Pereira, 2005
+
+O'GORMAN Lawrence. The Document Spectrum for Page Layout Analysis. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Noviembre, 1993. vol. 15, no. 11, p. 1162-1173
+
+RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2008
+
+SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372
+
+SEUL, Machael , O'GORMAN Lawrence y SAMMON, Michael J. Practical Algorithms for Image Analysis. Nueva York: Cambridge University Press, 2000. 301 p.
+
+SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. Efficient Implementation of Local Adaptative Thersholding Techniques Using Integral Images. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San Jose, Estados Unidos). Memorias, 2008, p. 61-67
+
+SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Junio, 2008. vol. 30, no. 6, p. 941-954
+
+SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617
+
+SMITH, Ray. An Overview of the Tesseract OCR Engine. IEEE COMPUTER SOCIETY: INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (9: 23-26, septiembre, 2007: Curitiba, Paraná, Brazil). Memorias, 2007, p. 629-633
+
+VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007
+
+WONG, Kwan; CASEY, Richard y WAHL, Friedrich. Document Analysis System. \underline{En}: IBM Journal of Research and Development. Noviembre, 1982. vol. 26, no. 6, p. 647-656
+
+ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San Jose, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46
 	\clearpage
 \end{document}
