@@ -86,6 +86,7 @@ public class Proveedor
 			boolean mensajeEnviado = false, chequeoRealizado = false;
 			public void run() 
 			{
+				HiloDaily.sleep(120000);
 				while(true)
 				{
 					if(id.darProveedor() == null || verificarConsistencia())
@@ -272,7 +273,7 @@ public class Proveedor
 			String mensaje = id + " OK\n"; 
 	        DateFormat df = new SimpleDateFormat("MM/dd/yy hh:ss");
 	        Date hoy = Calendar.getInstance().getTime();
-			String mensajeCorto = df.format(hoy) + " OK\n";
+			String mensajeCorto = df.format(hoy) + " " + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 11 ? "PM" : "AM") + " OK\n";
 			String mensajeError = "";
 			ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
 			ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
