@@ -34,7 +34,7 @@ public class AdministradorHilos
 						}
 						else
 						{
-							if(!mensajeEnviado && (hora == 10 || hora == 22))
+							if(!mensajeEnviado && (hora == 7 || hora == 19))
 							{
 								String mensaje = "";
 								for(HiloDaily h : hilos)
