@@ -4,8 +4,12 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -224,6 +228,15 @@ public class Proveedor
 			return posible.darTocoStop();
 		}
 		
+		public int darGanancia()
+		{
+			SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
+			double precioEntrada = posible == null ? 0 : posible.darPrecioEntrada();
+			double precioActual = par.darPrecioActual(esCompra);
+			double precioParActual = esCompra ? precioActual - precioEntrada : precioEntrada - precioActual; 
+			return precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
+		}
+		
 		@Override
 		public boolean equals(Object obj)  
 		{ 
@@ -235,13 +248,11 @@ public class Proveedor
 		public String toString() 
 		{
 			SenalProveedor posible = id == null ? null : senales[id.ordinal()][par.ordinal()];
-			double precioEntrada = posible == null ? 0 : posible.darPrecioEntrada();
 			double trailingStop = posible == null ? 0 : posible.darStop();
 			double stopDaily = posible == null ? 0 : posible.darStopDaily();
+			double precioEntrada = posible == null ? 0 : posible.darPrecioEntrada();
 			double precioActual = par.darPrecioActual(esCompra);
-			double precioParActual = esCompra ? precioActual - precioEntrada : precioEntrada - precioActual; 
-			int resultado = precioEntrada > 10 ? (int) Math.round((precioParActual) * 100) : (int) Math.round((precioParActual) * 10000); 
-			String salida = id + " " + par + " " + magico + " " + esCompra + " Entrada: " + precioEntrada + " Actual: " + precioActual + " P/L: " + resultado;
+			String salida = id + " " + par + " " + magico + " " + esCompra + " Entrada: " + precioEntrada + " Actual: " + precioActual + " P/L: " + darGanancia();
 			if(stopDaily != -1)
 				salida += " Trailing stop: " + trailingStop + " Stop daily: " + stopDaily;
 			return salida;
@@ -259,6 +270,9 @@ public class Proveedor
 					if(senales[i][j] != null)
 						senalesEste.add(senales[i][j]);
 			String mensaje = id + " OK\n"; 
+	        DateFormat df = new SimpleDateFormat("MM/dd/yy hh:ss");
+	        Date hoy = Calendar.getInstance().getTime();
+			String mensajeCorto = df.format(hoy) + "OK\n";
 			String mensajeError = "";
 			ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
 			ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
@@ -305,7 +319,21 @@ public class Proveedor
 				parMagicosEsteCopia.remove(pm); 
 			for(ParMagico pm : parMagicosEste) 
 				if(parMagicosRealesEste.remove(pm)) 
+				{
 					mensaje += pm + " OK\n"; 
+					if(id == IdProveedor.HFT)
+					{
+						mensajeCorto += pm.id.toString().charAt(0) + pm.id.toString().charAt(pm.id.toString().length() - 1) + " " + (pm.darGanancia() >= 0 ? "+" : "-") + pm.darGanancia();
+						for(IdProveedor id : IdProveedor.values())
+						{
+							if(id.darProveedor().darActivo(pm.id, pm.par))
+								mensajeCorto += " " + id.toString().charAt(0);
+							else
+								mensajeCorto += " -";
+						}
+						mensajeCorto += "\n";
+					}
+				}
 			for(ParMagico pm : parMagicosEsteCopia) 
 				if(activos[pm.id.ordinal()][pm.par.ordinal()] && pm.magico != 1000)
 				{
@@ -340,6 +368,12 @@ public class Proveedor
 				} 
 			} 
 			escritor.terminarCiclo(); 
+			if(id == IdProveedor.HFT)
+			{
+				FileWriter fw = new FileWriter("/var/www/dailyBot.txt", false);
+				fw.write(mensajeCorto);
+				fw.close();
+			}
 			if(!mensajeError.equals("")) 
 				Error.agregar(mensajeError); 
 			if(enviarMensaje) 
