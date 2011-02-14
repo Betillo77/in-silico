@@ -323,7 +323,9 @@ public class Proveedor
 					mensaje += pm + " OK\n"; 
 					if(id == IdProveedor.HFT)
 					{
-						mensajeCorto += pm.id.toString().charAt(0) + pm.id.toString().charAt(pm.id.toString().length() - 1) + " " + (pm.darGanancia() >= 0 ? "+" : "-") + pm.darGanancia();
+						mensajeCorto += pm.id.toString().charAt(0) + "";
+						mensajeCorto += (char) pm.id.toString().charAt(pm.id.toString().length() - 1) + "";
+						mensajeCorto += " " + pm.par + " " + (pm.darGanancia() >= 0 ? "+" : "") + pm.darGanancia();
 						for(IdProveedor id : IdProveedor.values())
 						{
 							if(id.darProveedor().darActivo(pm.id, pm.par))
