@@ -272,7 +272,7 @@ public class Proveedor
 			String mensaje = id + " OK\n"; 
 	        DateFormat df = new SimpleDateFormat("MM/dd/yy hh:ss");
 	        Date hoy = Calendar.getInstance().getTime();
-			String mensajeCorto = df.format(hoy) + "OK\n";
+			String mensajeCorto = df.format(hoy) + " OK\n";
 			String mensajeError = "";
 			ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
 			ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
@@ -325,7 +325,7 @@ public class Proveedor
 					{
 						mensajeCorto += pm.id.toString().charAt(0) + "";
 						mensajeCorto += (char) pm.id.toString().charAt(pm.id.toString().length() - 1) + "";
-						mensajeCorto += " " + pm.par + " " + (pm.darGanancia() >= 0 ? "+" : "") + pm.darGanancia();
+						mensajeCorto += " " + pm.par;
 						for(IdProveedor id : IdProveedor.values())
 						{
 							if(id.darProveedor().darActivo(pm.id, pm.par))
@@ -333,6 +333,7 @@ public class Proveedor
 							else
 								mensajeCorto += " -";
 						}
+						mensajeCorto += " " + (pm.darGanancia() >= 0 ? "+" : "") + pm.darGanancia();
 						mensajeCorto += "\n";
 					}
 				}
