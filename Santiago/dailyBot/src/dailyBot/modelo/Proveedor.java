@@ -271,7 +271,7 @@ public class Proveedor
 					if(senales[i][j] != null)
 						senalesEste.add(senales[i][j]);
 			String mensaje = id + " OK\n"; 
-	        DateFormat df = new SimpleDateFormat("MM/dd/yy hh:ss");
+	        DateFormat df = new SimpleDateFormat("MM/dd/yy hh:mm");
 	        Date hoy = Calendar.getInstance().getTime();
 			String mensajeCorto = df.format(hoy) + " " + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 11 ? "PM" : "AM") + " OK\n";
 			String mensajeError = "";
