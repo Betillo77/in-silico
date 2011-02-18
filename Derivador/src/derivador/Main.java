@@ -25,8 +25,13 @@ public class Main {
             parser p = new parser(new scanner(new FileReader("hola.txt")));
             p.parse();
             LinkedList<Funcion> funciones = p.getFunciones();
+            System.out.println("Evaluado en x=2:");
             for (Funcion f : funciones) {
                 System.out.println(f.evaluar(tab));
+            }
+            System.out.println("Evaluando la derivada en x=2:");
+            for (Funcion f : funciones) {
+                System.out.println(f.derivar("x").evaluar(tab));
             }
         } catch (Error er) {
             System.out.println("Error sintáctico: " + er.getMessage());

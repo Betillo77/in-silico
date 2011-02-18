@@ -1,0 +1,50 @@
+// CUP specification for a simple expression evaluator (w/ actions)
+
+import java_cup.runtime.*;
+import derivador.*;
+import java.util.*;
+
+parser code {: 
+    LinkedList<Funcion> funciones = new LinkedList<Funcion>(); 
+    
+    public LinkedList<Funcion> getFunciones() {
+        return funciones;
+    }
+:}
+
+/* Terminals (tokens returned by the scanner). */
+terminal Funcion   SEMI, PLUS, MINUS, TIMES, DIVIDE;
+terminal Funcion   LPAREN, RPAREN, SEN, COS, TAN, LN, POW;
+terminal Double   NUMBER;
+terminal String   VAR;
+
+/* Non-terminals */
+non terminal            expr_list;
+non terminal Funcion    expr;
+
+/* Precedences */
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
+precedence left POW;
+precedence left SEN, COS, TAN, LN;
+
+
+/* The grammar */
+expr_list ::= expr_list expr:e SEMI {: parser.funciones.add(e); :} 
+	      | expr:e   SEMI           {: parser.funciones.add(e); :}
+	      ;
+
+expr      ::= expr:e1 PLUS expr:e2    {: RESULT = new Suma(e1, e2); :} 
+	      | expr:e1 MINUS expr:e2     {: RESULT = new Suma(e1, e2); :} 
+	      | expr:e1 TIMES expr:e2     {: RESULT = new Mult(e1, e2); :} 
+	      | expr:e1 DIVIDE expr:e2    {: RESULT = new Div(e1, e2); :} 
+	      | expr:e1 POW expr:e2       {: RESULT = new Potencia(e1, e2); :}
+	      | SEN expr:e                {: RESULT = new Seno(e); :}
+	      | COS expr:e                {: RESULT = new Cos(e); :}
+	      | TAN expr:e                {: RESULT = new Tan(e); :}
+	      | LN expr:e                 {: RESULT = new Ln(e); :}
+	      | NUMBER:n                  {: RESULT = new Numero(n); :}
+	      | VAR:v                     {: RESULT = new Variable(v); :}
+	      | LPAREN expr:e RPAREN      {: RESULT = e; :} 	          
+	      ;
+
