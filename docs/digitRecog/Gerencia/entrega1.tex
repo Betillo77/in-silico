@@ -143,13 +143,19 @@
 	
 	\subsection{Metas}
 	\begin{itemize}
-	\item Realizar un estudio de mercado, técnico y financiero de la idea de proyecto.
-	\item Realizar una investigación científica de los algoritmos y técnicas para llevar a cabo este proyecto.
-	\item Diseñar e implementar una aplicación con las especificaciones antes mecionadas.
+	\item Realizar un estudio de mercado, técnico y financiero de la idea de proyecto usando
+		como plazo no mas de 6 meses.
+	\item Realizar una investigación científica de los algoritmos y técnicas para llevar a cabo este proyecto,
+		escribir artículos de las investigaciones, revisando cada dos meses los avances y resultados de la
+		investigación.
+	\item Diseñar e implementar una aplicación con las especificaciones antes mecionadas, en los plazos
+	definidos en la etapa de investigación.
 	\item Buscar financiamiento en varias instituciones para proyectos de emprendimiento y
-	 de impacto social.
-	\item Buscar convenios con empresas prestadoras de servicios de celulares y con las instituciones
-	 para personas invidentes en cada país para iniciar la implantación del servicio en el mercado.
+	 de impacto social, a las que se puedan aplicar y en los plazos establecidos por cada uno de estos
+	 programas de financiamiento.
+	\item Buscar convenios con empresas prestadoras de servicios de celulares ofreciendo el servicio
+	 y los clientes por un determinado porcentaje de el plan tomado por la persona invidente. Primero
+	 se hablará con las compañías celulares de Colombia y con el INCI (Instituto nacional para ciegos).
 	\end{itemize}
 	
 	\clearpage
@@ -158,10 +164,57 @@
 	\end{center}
 	
 	\subsection{Indicadores de monitoreo}
+	\begin{itemize}
+		\item {\bf Velocidad de desarrollo}($M_1$): Para medir el avance de desarrollo se tomarán la cantidad
+			de líneas de código $l$ y se dividiran entre el tiempo que ha transcurrido $t$.
+			\[M_1 = \frac{l}{t}\]
+		\item {\bf Avance de desarrollo}($M_2$): Para medir el avance de desarrollo se tomarán la cantidad
+			de casos de uso terminados $C_f$ y se dividiran entre la cantidad de casos de uso que se deberían
+			llevar $C_p$.
+			\[M_2 = \frac{C_f}{C_p}\]
+		\item {\bf Efectividad del aplicativo}($M_3$): Se define efectividad como la cantidad de caracteres(Letras)
+			que se leen exitosamente a la persona invidente. Si $L_c$ son las letras leídas exitosamente y $L_t$
+			son el total de letras entonces:
+			\[M_3 = \frac{L_c}{L_t}\]	
+		\item {\bf Búsqueda de financiamento}($M_4$): Este es un indicador para comparar la cantidad adicional de
+			financiamiento recibida por unidad de tiempo. Si $\Delta f$ es la cantidad de dinero adicional recibida
+			y $\Delta t$ es la cantidad de tiempo en la que se recibió este financiamiento, entonces:
+			\[M_4 = \frac{\Delta f}{\Delta t}\]
+	\end{itemize}
 	
 	\subsection{Indicadores de impacto}
+	\begin{itemize}
+		\item {\bf Personas beneficiadas}($I_1$): Cantidad de personas beneficiadas $P_b$ sobre el total
+			de personas afectadas por el problema (Personas invidentes) $P_i$.
+			\[I_1 = \frac{P_b}{P_i}\]
+		\item {\bf Reconocimiento}($I_2$): Una manera indiracta de medir el reconocimiento del proyecto por su
+		 finalidad social es por la cantidad de premios $P$ que otorgados por este fin. Aunque solo sería útil
+		 al principio.
+			\[I_2 = \frac{P}{\Delta t}\]
+		\item {\bf Calidad de vida de los usuarios}($I_3,I_4$): Al terminar el proyecto para ser usado comercialmente,
+			se podrían hacer encuestas que ayuden a medir el mejoramiento de la calidad de vida de los usuarios.
+			Si $S$ es el promedio de los salarios de los usuarios, un primer indicador que mida el aumento porcentual
+			en sus salarios podría ser:
+			\[I_3 = \frac{\Delta S}{S}\]
+			Si $F$ es el promedio de una medida subjetiva de su nivel de felicidad, otro posible indicador sería:
+			\[I_4 = \frac{\Delta F}{F}\]
+	\end{itemize}
 	
 	\subsection{Indicadores de resultado}
+	\begin{itemize}
+		\item {\bf Costo/Beneficio monetario del proyecto}($R_1$): Si la cantidad de personas horas hombre $H$,
+			el costo promedio de la hora $C_h$, y el nivel de ingresos de los $N$ beneficiarios aumenta en
+			$I_3$(Ver definición en indicadores de impacto) puntos porcentuales. Se calcularía:
+			\[R_1 = \frac{N \times I_3 \times S}{H \times C_h}\]
+			E indicaría cuanto aumentaron los ingresos en general de los usuarios por cada peso invertido
+			al proyecto.
+		\item {\bf Crecimiento empresarial}($R_2$): Si en un periodo de tiempo $t$, entran unos ingresos $I$ y
+			se tienen unos gastos $C$; Este indicador se da por:
+			\[R_2 = \frac{I-C}{t}\]
+		\item {\bf Incremento de usuarios}($R_3$): Si N es el número de usuarios, este indicador se calcularía:
+			\[R_3 = \frac{\Delta N}{N}\]
+			E indicaría un incremento porcentual de los usuarios del servicio.
+	\end{itemize}
 	
 	\clearpage
 	\begin{center}
