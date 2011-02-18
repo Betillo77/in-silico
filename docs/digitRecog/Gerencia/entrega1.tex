@@ -1,0 +1,563 @@
+\documentclass[a4paper, 11pt, oneside]{article}
+
+
+% idioma
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+%tablas
+\usepackage{booktabs}
+
+%rotar tablas
+\usepackage{rotating}
+
+%color tablas
+\usepackage{colortbl}
+
+
+
+%espaciado
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
+
+
+%margenes según n. icontec
+\usepackage{vmargin}
+\setmarginsrb           { 4.0cm}  % left margin
+                        { 3.0cm}  % top margcm
+                        { 2.0cm}  % right margcm
+                        { 2.0cm}  % bottom margcm
+                        {   0pt}  % head height
+                        {0.0 cm}  % head sep
+                        {   9pt}  % foot height
+                        { 1.0cm}  % foot sep
+
+% inserción url's notas de pie.
+\usepackage{url}
+
+% Paquetes de la AMS:
+\usepackage{amsmath, amsthm, amsfonts}
+\addto\captionsspanish{\def\refname{\textsc{Bibliografía}}}
+
+\newcommand\portada{
+	\begin{titlepage}
+		\begin{center}
+			{\large \bf DESARROLLO DE UN SISTEMA PROTOTIPO DE RECONOCIMIENTO DE DÍGITOS USANDO MOMENTOS INVARIANTES }
+			\vfill
+% 			{\large\bf PRESENTADO POR \par}
+			{\large\bf SEBASTIÁN GÓMEZ GONZÁLEZ \par}
+			{\large\bf SANTIAGO GUTIERREZ ALZATE \par}
+			\vfill
+			{\large\bf UNIVERSIDAD TECNOLÓGICA DE PEREIRA  \par}
+			{\large\bf FACULTAD DE INGENIERÍAS \par}
+			{\large\bf INGENIERÍA DE SISTEMAS Y COMPUTACIÓN \par}
+			{\large\bf PEREIRA\par}
+			{\large\bf SEPTIEMBRE DE 2010 \par}
+		\end{center}
+	\end{titlepage}
+}
+
+\newcommand\contraportada{
+	\begin{titlepage}
+		\begin{center}
+			{\large \bf DESARROLLO DE UN SISTEMA PROTOTIPO DE RECONOCIMIENTO DE DÍGITOS USANDO MOMENTOS INVARIANTES }
+			\vfill
+% 			{\large\bf PRESENTADO POR \par}
+			{\large\bf SEBASTIÁN GÓMEZ GONZÁLEZ \par}
+			{\large\bf SANTIAGO GUTIERREZ ALZATE \par}
+			\vfill
+			{\large\bf Documento del anteproyecto de grado presentado como requisito para optar al título de Ingeniero(a) de Sistemas y Computación\par}
+			\vfill
+			{\large\bf UNIVERSIDAD TECNOLÓGICA DE PEREIRA  \par}
+			{\large\bf FACULTAD DE INGENIERÍAS \par}
+			{\large\bf INGENIERÍA DE SISTEMAS Y COMPUTACIÓN \par}
+			{\large\bf PEREIRA\par}
+			{\large\bf SEPTIEMBRE DE 2010 \par}
+		\end{center}
+	\end{titlepage}
+}
+
+
+\begin{document}
+\portada
+\contraportada
+
+	\tableofcontents
+
+	\clearpage
+	\begin{center}
+	\section{Título}
+	\end{center}
+	Desarrollo de un sistema prototipo de reconocimiento de dígitos usando momentos invariantes.
+	\clearpage
+	
+	\begin{center}
+	\section{Formulación del problema}
+	\end{center}
+
+	Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
+
+	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y le lea a la persona invidente lo que dicen. Sin embargo, para que sea una solución efectiva al problema, se requiere de un sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa, no obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
+	
+	\begin{itemize}
+	
+	\item La memoria y la capacidad de procesamiento son muy reducidas en los teléfonos inteligentes con respecto a los computadores de escritorio.
+
+	\item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios megabytes.
+
+	\item Un computador de escritorio normalmente tiene instaladas múltiples librerías de propósito general que son utilizadas por distintos programas, un teléfono inteligente, en cambio, solo provee las librerías más básicas.
+
+	\end{itemize}
+
+	La diferencia mas importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podría tomar la fotografía inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
+
+	Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son mas económicos y hay mas disponibilidad de redes inalámbricas, a las cuales los teléfonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de computo mucho mayor. Este sistema tendrá las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también ha incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+
+	Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imágenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
+
+Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y luminosidad antes presentados. 	
+	
+	\subsection{Definición del problema}
+
+	No existe \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}
+    un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para ser utilizado 
+    por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, 
+    y con un porcentaje de reconocimiento satisfactorio.
+	
+	\clearpage
+
+	\begin{center}
+	\section{Justificación}
+	\end{center}
+	
+	Además de esto, un sistema móvil para reconocer texto de documentos impresos presentaría los siguientes beneficios respecto de los sistemas tradicionales como las impresoras braille y los lectores basados en escáner:
+
+	\begin{itemize} 
+
+	\item Un menor costo, al no ser necesario adquirir un computador de escritorio, escáner o impresora braille.
+
+	\item Portabilidad: ninguno de los sistemas tradicionales esta diseñado para ser llevado en todo momento por el usuario, dificultando el acceso al conocimiento e información que no se encuentre en el lugar físico en el que se encuentra alguno de estos sistemas.
+	
+	\item Una solución económica que pueda ejecutarse en un dispositivo móvil, sin necesidad de hardware adicional, haría posible que cada invidente pudiera tener su propio sistema de OCR personal, mientras que los otros sistemas usualmente (por su costo) son adquiridos por instituciones en cantidad limitada.
+
+	\item Aportar al conocimiento: Al desarrollar este aplicativo se tendrán que hacer pruebas experimentales cuyos resultados aporten a otras investigaciones.
+	\end{itemize}
+	\clearpage
+
+	\begin{center}
+	\section{Objetivo}
+	\end{center}
+	
+	\subsection{Objetivo general}
+	Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, 
+	usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes
+	y un vector de características invariantes (Momentos de Hu y Fluzzer).
+	\subsection{Objetivos específicos}
+	\begin{itemize}
+	\item Realizar un estudio del funcionamiento de la distribución normal multivariable en el problema de reconocimiento usando
+	el teorema de Bayes.
+	\item Realizar la extracción de características de un conjunto de imágenes de dígitos. Las características a extraer serán
+	invariantes a la rotación, translación y escalamiento (Momentos de Hu y Fluzzer).
+	\item Diseñar e implementar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de dígitos.
+	\item Realizar pruebas de la aplicación implementada.
+	\item Realizar un análisis comparativo de los resultados obtenidos.
+	\end{itemize}
+	\clearpage
+	
+	\begin{center}
+	\section{Marco referencial}
+	\end{center}
+	
+	\subsection{Marco conceptual}
+	\begin{itemize}
+    \item Análisis de documentos: Proceso que consiste en encontrar características de un documento,
+    y dividirlo en sus componentes básicos (párrafos, líneas, palabras y caracteres).\footnote{
+	BREUEL Thomas M. The OCRopus Open Source OCR System, Proceedings IS\&T/SPIE 20th Annual Symposium, 2008.}
+    \item Reconocimiento óptico de caracteres (OCR): Un OCR como proceso de cómputo, es un conjunto de
+    algoritmos cuyo resultado esperado es la extracción de información  que este contenida dentro de
+    una imagen, que sean parte de un sistema de escritura humano, y que pueda ser codificada
+    posteriormente como texto entendible.\footnote{Ibid., p.2}
+    \item Manhatan layout: Es una forma de distribución de los elementos de un documento escrito o
+    impreso, en los que los elementos como párrafos o imágenes se pueden inscribir
+    dentro de rectángulos de área mínima, de modo que la pendiente entre dos lados sea igual para
+    todos los rectángulos.\footnote{Ibid., p.5}
+    \item Escala de grises: Una imagen en la que cada píxel es representado como un valor entre 0 y
+    255, siendo 0 negro y 255 blanco y cualquier otro valor intermedio algún tipo de gris. \footnote{
+    BREUEL Thomas M. Efficient implementation of local adaptative thersholding techniques using integral 
+    images. Image Understanding and Pattern Recognition (IUPR) Research Group, 2008.}
+    \item Binarización:	Es el proceso de asignar un valor binario (uno o cero por ejemplo) a una
+    variable dependiendo de	ciertas condiciones, en el contexto del procesamiento de imágenes se le
+    llama binarización a el proceso de cambiar el valor de un píxel dentro de un formato de imagen
+    estándar a 1 o 0, dependiendo generalmente de un valor límite llamado threshold.
+    \footnote{Ibid., p.2}
+    \item Filtrado de imagen: Consiste en remover de una imagen elementos indeseables, que no
+    son interesantes para el procesamiento requerido de la imagen y en algunos casos dificultan
+    o imposibilitan obtener los resultados deseados.
+    \footnote{Ibid., p.2}
+    \item Píxel adyacente: Dos píxeles $(x_1,y_1)$, $(x_2,y_2)$ son adyacentes, si $|x_1-x_2| \le 1$
+    y $|y_1-y_2| \le 1$
+    \item Componente conectado: Después de tener una imagen binarizada (blanco y negro), un
+    componente conectado es un conjunto de píxeles negros adyacentes rodeados por un fondo blanco.
+    \item Características o momentos invariantes: Son vectores numéricos que se calculan a partir
+    de una imagen, y dependen de la forma de la imagen. Pero son independientes de la rotación,
+    translación y escalamiento.
+    \footnote{Shafait, Keysers y Breuel. Performance Evaluation and Benchmarking of Six-Page segmentation
+    Algorithms, IEEE Transactions on Pattern Analysis And Machine Intelligence, 2008, p.6}
+   
+	\end{itemize}
+	
+	\subsection {Antecedentes}
+	La tecnología actual ha permitido a las personas invidentes tener acceso a información
+	y a conocimiento al que antes no tenían acceso. Entre estas tecnologías se encuentran los
+	lectores de pantalla, y las impresoras y sistemas refrescables de Braille.
+	
+	Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira (llamado 
+    Proyecto IRIS), permite a los invidentes reconocer imágenes con colores a través de 
+    vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes 
+	permanentes y una matriz de electroimanes conectada al computador por el puerto USB.
+
+	En el área de acceso al texto, existen sistemas que convierten el texto en ASCII a voz,
+	conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas para el computador
+	que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR, los cuales funcionan
+	usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por la TUK
+    \footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. 
+    (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150},
+    los OCRs libres con mejores resultados son \textit{Tesseract} y el  \textit{Ocropus}. 
+
+    Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara, 
+    se deben seguir diferentes enfoques, en \footnote{Ray Smith. Progress in camera-based 
+    document image analysis.} se halló que los retos más importantes son la proyección de 
+    la imagen en perspectiva en el plano y la  resolución requerida para poder reconocer 
+    bien los caracteres.
+
+	En cuanto a hacer que el OCR sea realizado por un celular, se encontraron investigaciones
+	como \footnote{Zhou, Gilani and Winkler. Open Source OCR Framework Using Mobile Devices}, 
+	en la que se trabajaban con imágenes de muy baja resolución (640x480) y como resultado solo
+    pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos.
+	En \footnote{Senda, Nishiyama, Asahi and Yamada. Camera-Typing Interface for Ubiquitous
+	Information Services}, para tratar de equilibrar el hecho de tener una cámara de baja
+	resolución, se toman varias imágenes de baja resolución en lugar de una sola, uniéndolas
+	posteriormente para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la
+	carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular,
+	por lo cual la solución se restringe para que se envíen las imágenes a un servidor usando 
+    Internet, el cual las procesa y envía los resultados.
+
+	Cabe anotar que ninguna de las tecnologías anteriormente mencionadas para hacer
+	el OCR en el celular fue diseñada para ser usada por personas invidentes. Ya que el 
+	primero no fue diseñado para reconocer documentos, y el segundo requeriría que la persona
+	invidente supiera con anterioridad como está la estructura del documento para poder mover
+	la cámara del celular en la dirección en la que está el texto en el documento.
+	
+	\subsubsection{Proyectos de grado relacionados en la Universidad Tecnológica de Pereira}
+	Si bien en Ingeniería de Sistemas en la Universidad Tecnológica de Pereira no se ha planteado un 
+    proyecto de grado directamente sobre reconocimiento óptico de caracteres, estudiantes de la 
+    maestría en Ingeniería Eléctrica construyeron un sistema para el reconocimiento de algunos 
+    caracteres y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes:
+	el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de
+	soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes
+    neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran 
+    utilidad en la construcción de un sistema de reconocimiento óptico de caracteres.
+    
+	En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por 
+    estudiantes de Ingeniería Eléctrica:
+    
+    En la tesis \footnote{Jaime Varela Rincón, Johan Eric Loaiza Pulgarín. Reconocimiento de palabras
+    aisladas mediante redes neuronales sobre FPGA} se utilizaron redes neuronales para reconocimiento
+    de voz en hardware sobre una FPGA. 
+    Si bien la implementación fue en hardware y no en software, sus resultados permiten inferir que es 
+    posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso
+    de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las 
+    misma en un dispositivo móvil. También es de anotar que las redes neuronales demostraron porcentajes 
+    de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
+
+	En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en
+    una imagen utilizando un sistema de visión artificial \footnote{Joan Mauricio Valencia López, Mauricio 
+    Abril Cañas. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre 
+    un ambiente controlado}. Considerando el bajo nivel de resolución (imágenes de 324 x 240 píxeles a 30 
+    frames por segundo) y el hecho de que la cámara no fue calibrada, se identificaron correctamente muchos
+    transeúntes, de lo que se puede inferir que los sistemas de visión artificial funcionan correctamente 
+    con cámaras económicas. Los resultados muestran que el uso de histogramas puede ser de gran utilidad a 
+    la hora de distinguir componentes conectados de píxeles. Así mismo, también permiten entender distintos 
+    problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo
+    la identificación de varios transeúntes como uno solo. Si bien en el reconocimiento óptico de caracteres 
+    se distinguen letras y no personas, problemas similares a los evidenciados en este proyecto se presentan 
+    al separar los caracteres en un sistema de OCR.
+	
+	Finalmente, en el tema de procesamiento de señales, en \footnote{Lorena Alvarez Osorio. Acondicionamiento 
+    de Señales Bioeléctricas} se adquieren señales bioeléctricas utilizando filtros análogos y digitales. 
+    En este proyecto se lograron filtrar señales muy pequeñas y finas, como las producidas en el cuerpo humano,
+    mediante filtros digitales, y se obtuvieron errores pequeños. Aunque las señales bioeléctricas son muy 
+    diferentes a las imágenes, es posible convertir estas ultimas en señales y, por tanto, los filtros digitales 
+    expuestos en este proyecto podrían ser de utilidad a la hora de eliminar errores en imágenes tomadas por una
+    cámara, ya que logran filtrar correctamente señales con gran cantidad de ruido.\newline
+	
+	\subsection {Marco teórico}
+	\subsubsection{Reconocimiento de caracteres y análisis de documentos}
+	En esta sección se hablará de algunas investigaciones realizadas en el área
+	de reconocimiento de caracteres y de análisis de documentos.
+	Las etapas necesarias para llevar a cabo el proceso de análisis de documentos
+	y reconocimiento de caracteres son: binarización de la imagen, análisis y
+	segmentación del documento y reconocimiento óptico de caracteres (OCR).
+	
+	\subsubsection{Binarización de imagen}
+	Esto se refiere a tomar una imagen en escala de grises y convertirla a una 
+	imagen en blanco y negro. También se puede ver como separar la parte que nos interesa
+	(foreground o primer plano) de la parte que no nos interesa (background o fondo).
+	Una técnica que da buen resultado es la binarización de Sauvola,
+	que realiza una binarización basada en un análisis local de la imagen. El hecho de
+	que sea local le brinda una mejor binarización en condiciones de luz variable. Los 
+    resultados obtenidos en el artículo "Efficient Implementation of Local Adaptative 
+    Thersholding Techniques Using Integral Images" indican que esta técnica puede ser
+    optimizada para lograr un tiempo de ejecución comparable con las técnicas globales de 
+    binarización (al correr en O(N) \footnote{La función $O(f)$ se usa para indicar que la complejidad
+    algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de 
+    ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que 
+    $\forall N ( K*f(N) < T(N) ) $}, siendo N el numero de píxeles de la imagen),
+    conservando	las ventajas de ser local, por lo que seria un buen candidato para implementarlo en un 
+    proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
+	
+	\subsubsection{Análisis del documento}
+	Según \footnote{Song Mao, Azriel Rosenfeld and Tapas Kanungo. "Document Structure Analysis
+	Algorithms: A literature Survey"}, esta etapa puede ser vista como un análisis sintáctico,
+	en el que el documento se divide en sus partes estructurales como un árbol de análisis
+	sintáctico. Como todo análisis gramatical, se puede seguir los enfoques
+	\textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde
+	los píxeles y luego los relacionaría en grupos mas grandes (Caracteres, Palabras, Lineas
+	o Párrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imagen de un
+	documento y comenzaría a dividirla hasta llegar a sus componentes.
+	Cada algoritmo tiene limitaciones, ventajas y distintos requerimientos de máquina.
+	Una investigación realizada sobre diferentes algoritmos \footnote{Shafait, Keysers and Breuel.
+	"Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms"}, indica que los
+	mejores resultados sobre diferentes documentos, con distintas estructuras físicas,
+	fueron para Docstrum y para Voronoi, con porcentajes de error del 4.3\% y 4.7\% respectivamente.
+	Otro método	llamativo es el \textit{RLSA}, que llama la atención por su sencillez y puede brindar
+	buenos resultados en documentos \textit{Manhattan-Layout}.
+	Probablemente la mejor solución para un sistema OCR pueda resultar de la mezcla de
+
+
+	varios de los algoritmos existentes, en \footnote{Kise, Sato and Matsumoto. "Document Image 
+	Segmentation as Selection of Voronoi Edges"} se observa como se pueden mejorar
+	los resultados mezclando los beneficios de diferentes algoritmos para soluciones
+	particulares, y cada uno de los artículos mencionados aporta elementos importantes para
+    escoger cual de estos algoritmos es ventajoso para una solución particular.
+	
+	\subsubsection{Reconocimiento óptico de caracteres OCR}
+	Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones.
+	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones; 
+	modelos inspirados en la biología como los que usan redes neuronales. Otros modelos
+	son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos
+	como la distribución normal multivariable aplicando el teorema de Bayes.
+
+	
+	Estos métodos para el reconocimiento de patrones tienen en común que necesitan como
+	entrada un vector de características. Para el problema de reconocimiento de dígitos
+	o caracteres para las personas invidentes, es deseable que estas características cambien
+	muy poco frente a ciertos cambios en la imagen como el escalamiento o la rotación.
+	Ejemplos de este tipo de características son los momentos de Hu y de Fluzzer, estos
+	momentos se calculan realizando una integral, que en una imagen se convierte en sumatoria
+	por el hecho de ser discreta. En esta sumatoria se le dan diferentes pesos a cada píxel
+	dependiendo de la posición, y luego se realizan operaciones sobre estos que permite
+	obtener un conjunto limitado de características independientes de la rotación, translación
+	y al escalamiento. Al ser características que no varían significativamente con estos 
+	cambios se les ha dado el nombre de momentos invariantes.
+	
+	Para el entrenamiento, lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
+	número o una forma. Medir sus características aplicando descriptores invariantes, y manualmente 
+    etiquetar esta imagen, (una a, un 1, un rombo etc) guardando esta información en una base de
+    datos. Luego cuando el sistema se pone en marcha se obtienen las características de la imagen,
+    y se aplica un algoritmo de aprendizaje sobre dichas características. Uno de los métodos mas
+	sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma
+	clase y en clases diferentes. Con esto se pueden crear regiones en el hiper-espacio (un
+	espacio de varias dimensiones) para las diferentes clases, y así cuando llegue una imagen
+	nueva a clasificar solo se deben tomar las características y ubicar en que que región del
+	hiper-espacio se encuentra este objeto. En los artículos se puede observar como  
+	cada aproximación tiene sus ventajas, dependiendo de las características de las imágenes a
+	procesar.
+	\newpage
+		
+	\begin{center}
+	\section{Diseño metodológico preliminar}
+	\end{center}
+	
+	\subsection{Hipótesis}
+	Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema
+	de Bayes con una distribución normal multivariable y tomando como características los
+	momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que 
+	cumpla con las restricciones establecidas (Ver población), tomando la imagen con
+	una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
+		
+	\subsection{Tipo de investigación}
+	En esta investigación se utilizará un enfoque cuantitativo.
+	
+	\subsection{Población}
+	Los documentos impresos que solo contengan dígitos numéricos, que cumplan con las siguientes restricciones:
+	\begin{itemize}
+	\item Forma rectangular.
+	\item Fondo blanco.
+	\item Letra de color negro y con un único tipo de letra o fuente.
+	\item El tamaño de los dígitos varía entre 12 y 20 puntos
+	\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
+	\end{itemize}
+	
+	\subsection{Unidad de análisis}
+	Fotos de textos con las condiciones mencionadas en la población, con una única fuente.
+
+	\subsection{Muestra}
+	Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100
+	y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el
+	rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango
+	de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel.
+	De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los
+	datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación otro 15\% para
+	el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del
+	método de aprendizaje, sobre datos que no se le mostraron en el entrenamiento.
+	
+	\subsection{Variables}
+	Las variables a tener en cuenta para ejecución de la aplicación son:
+	\begin{itemize}
+	\item Porcentaje de caracteres reconocidos exitosamente en total.
+	\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
+	\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
+	\item Porcentaje de seguridad con el que se reconoció cada dígito.
+	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
+	\end{itemize}
+		
+	\subsection{Esquema temático}
+	\begin{itemize}
+		\item Algoritmos de reconocimiento de caracteres y aprendizaje de máquinas
+		\item Selección de un conjunto de características (Momento invariante)
+		\item Comprensión del algoritmo de aprendizaje, el teorema de Bayes y distribución multivariable
+		\item Diseño e implementación del reconocimiento óptico de dígitos
+		\item Pruebas y análisis de resultados.
+	\end{itemize}
+	
+	\subsection{Diseño de instrumentos}
+	Para realizar las mediciones de las variables, se utilizará un programa que entrege las estadísticas
+	del reconocimiento de los dígitos; Estas estadísticas serán el porcentaje de dígitos reconocidos
+	correctamente en total $A$ y para cada dígito $A_i$, y el porcentaje de seguridad para cada dígito $S_i$
+	y en total $S$. Donde $A$ y $A_i$ se calculan dividiendo la cantidad de caracteres reconocidos correctamente
+	sobre la cantidad de caracteres a reconocer. Y $S,S_i$ se calcula así: 
+	\[ S_i = \frac{ \sum_{j=0}^{N_i}P(C_i|\vec{x}) }{N} \]
+	\[ S = prom(S_i) \]
+	Donde $N_i$ es la cantidad de instancias de la clase $C_i$ y $P(C_i|\vec{x})$ es la probabilidad de que el
+	vector de características $\vec{x}$ sea de la clase $C_i$ calculada con el teorema de Bayes.
+	
+	\clearpage
+	
+	\begin{center}
+	\section{Personas que participan en el proyecto}
+	\end{center}
+	\begin{itemize}
+   \item Santiago Gutierrez\\
+Estudiante Ingeniería de Sistemas y Computación\\
+Universidad Tecnológica de Pereira\\
+Santigutierrez1@hotmail.com
+   \item Sebastián Gómez\\
+Estudiante Ingeniería de Sistemas y Computación\\
+Universidad Tecnológica de Pereira\\
+sebasutp@gmail.com
+   \item Saulo de Jesús Torres\\
+Doctorado en Informática: Ingeniería de Software (Universidad Pontificia de Salamanca)\\
+Universidad Tecnológica de Pereira\\
+saulo.torres@utp.edu.co
+	\end{itemize}
+	\clearpage
+	
+	\begin{center}
+	\section{Recursos disponibles}
+	\end{center}
+	\begin{itemize}
+		\item Computador portátil Dell Inspiron 1420\\
+			Intel Centrino Duo, 2GB de memoria RAM
+		\item Celular Nexus One, con sistema operativo Android\\
+			Procesador ARM, 512 MB de memoria RAM, Cámara 5 MPixeles
+		\item Base de datos de artículos publicados en IEEE explore
+		\item Código fuente del OCR experimental de licencia libre Ocropus
+	    \item Recursos bibliográficos de la biblioteca de la Universidad Tecnológica de Pereira y propios en el área de inteligencia artificial, reconocimiento óptico de caracteres y procesamiento digital de imágenes.
+	\end{itemize}
+	
+	\begin{center}
+	\section{Posibilidades de publicación}
+	\end{center}
+	\begin{itemize}
+
+		\item Un artículo en el reconocimiento de figuras geométricas básicas usando métodos de aprendizaje de máquinas
+		\item Un artículo en la aplicación de momentos invariantes para el reconocimiento de dígitos numéricos
+		\item Un artículo en el reconocimiento de dígitos usando la distribución normal multivariable
+	\end{itemize}
+	
+	\clearpage
+	
+	\begin{center}
+	\section{Cronograma}
+	\end{center}
+	La investigación y desarrollo del proyecto tendrán una duración aproximada de 16 semanas,
+	trabajando 24 horas semanales cada uno de los miembros del grupo. Para un total de 768
+	horas hombre.
+	\begin{itemize}
+	\item Implementar y probar el algoritmo de binarización de Sauvola ( 14 horas )
+	\item Diseñar, implementar y probar un módulo que separe los caracteres en una imagen 
+	(segmentar la imagen), y que calcule los momentos invariantes de Hu y Fluzzer para 
+	estos componentes ( 144 horas )
+	\item Diseñar, implementar y probar un módulo que permita entrenar y utilizar el
+	método de aprendizaje que calcula probabilidades posteriores usando el teorema de Bayes
+	y una distribución normal multivariable ( 144 horas )
+	\item Realizar las mediciones de las variables mencionadas en el diseño metodológico,
+	y hacer un análisis de los datos arrojados por esta (98 horas)
+	\item Redacción del informe de proyecto de grado ( 144 horas )
+	\item Correcciones del proyecto de grado (72 horas)
+	\item Holgura ( 152 horas )
+	\end{itemize}
+	\clearpage
+	
+	\begin{center}
+	\section{Bibliografía}
+	\end{center}
+	AGRAWAL, Mudit y DOERMANN, David. Voronoi++: A Dynamic Page Segmentation approach based on Voronoi and Docstrum features. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION. (10: 26-29, julio, 2009: Barcelona, Spain). Memorias, 2009. p. 1011-1015
+	
+	O'GORMAN Lawrence. The Document Spectrum for Page Layout Analysis. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Noviembre, 1993. vol. 15, no. 11, p. 1162-1173
+	
+	BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San Jose, Estados Unidos). Memorias, 2008, p. 68-150
+	
+	SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. Efficient Implementation of Local Adaptative Thersholding Techniques Using Integral Images. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San Jose, Estados Unidos). Memorias, 2008, p. 61-67
+	
+	MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San Jose, Estados Unidos). Memorias, 2003, p. 197-207
+	
+	SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Junio, 2008. vol. 30, no. 6, p. 941-954
+	
+	KISE, Koichi; SATO Akinori y MATSUMOTO, Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY: CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan, Puerto Rico). Memorias, 1997, p. 32-39
+	
+	WONG, Kwan; CASEY, Richard y WAHL, Friedrich. Document Analysis System. \underline{En}: IBM Journal of Research and Development. Noviembre, 1982. vol. 26, no. 6, p. 647-656
+	
+	Ray Smith. An Overview of the Tesseract OCR Engine. IEEE COMPUTER SOCIETY: INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (9: 23-26, septiembre, 2007: Curitiba, Paraná, Brazil). Memorias, 2007, p. 629-633
+	
+	ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San Jose, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 682104.1-682104.6
+	
+	SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372
+	
+	SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617
+	
+	HU, Ming-Kuei. Visual pattern recognition by moment invariants. \underline{En}: IRE Transactions on Information Theory. Febrero, 1962, vol. 8, no. 2, p. 179-187
+	
+	SEUL, Machael , O'GORMAN Lawrence y SAMMON, Michael J. Practical Algorithms for Image Analysis. Nueva York: Cambridge University Press, 2000. 301 p.
+	
+	FLUSSER Jan, SUK, Tomas Suk y ZITOVA, Barbara. Moments and Moment Invariants in Pattern Recognition. Sussex, Reino Unido: Jhon Wiley \& Sons Ltd, 2009. 291 p.
+	
+	ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004. 415 p.
+	
+	CHERIET, Mohamed; KHARMA, Nawwaf y LIU Cheng-Lin. Character recognition systems: Guide for students and practitioners. New Jersey, Estados Unidos: Jhon Wiley \& Sons Ltd, 2007. 326 p.
+	
+	GUERRA, John Alexis; ZUNIGA, Maria Fernanda y RESTREPO, Felipe. Proyecto Iris. Trabajo de grado Ingeniero de Sistemas y Computación, Pereira: Universidad Tecnologia de Pereira, 2004
+	
+	MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnologica de Pereira, 2005
+	
+	RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2008
+	
+	VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007
+	
+	ALVAREZ, Lorena. Acondicionamiento de Señales Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologia de Pereira, 2007
+	
+	\clearpage
+\end{document}
