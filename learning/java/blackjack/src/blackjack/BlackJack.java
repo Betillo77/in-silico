@@ -12,26 +12,26 @@ import java.util.*;
  * @author seb
  */
 public class BlackJack {
-    LinkedList<Integer>[] players;
-    boolean []playing;
+    LinkedList<State> [] players;
+    boolean [] playing;
     int nPlayers;
     int turn;
-    Random r;
 
-    public BlackJack(int nPlayers) {
+    @SuppressWarnings("unchecked")
+	public BlackJack(int nPlayers) {
         this.nPlayers = nPlayers;
         playing = new boolean[nPlayers];
         players = new LinkedList[nPlayers];
-        r = new Random();
         for (int i=0; i<nPlayers; i++) {
-            players[i] = new LinkedList<Integer>();
-            newCard(i); newCard(i);
+            players[i] = new LinkedList<State>();
+            players[i].add(State.drawFirst());
+            players[i].add(players[i].peekLast().drawCard());
             playing[i]=true;
         }
     }   
 
     public final void newCard(int player) {
-        players[player].add(r.nextInt(11)+1);
+    	players[player].add(players[player].peekLast().drawCard());
     }
 
     //Deals a card according to the rules and returns winner if game over,
@@ -90,27 +90,27 @@ public class BlackJack {
     public String verCartas(int player, boolean hidden) {
         StringBuilder sb = new StringBuilder();
         int count = 0, n = players[player].size();
-        for (Integer card : players[player]) {
+        int lastCount = 0;
+        for (State card : players[player]) {
             if (count==0 && hidden)
-                sb.append("*,");
+                sb.append("*, ");
             else {
-                sb.append(card);
-                if ((count+1) < n) sb.append(",");
+            	int carta = card.getMinPoints() - lastCount;
+                sb.append(carta == 1 ? "A" : carta);
+                if ((count+1) < n) sb.append(", ");
             }
+            lastCount = card.getMinPoints();
             count++;
         }
+        if(hidden)
+        	sb.append(" -> " + State.getBestPoints(players[player].peekLast().visible));
+        else
+        	sb.append(" -> " + players[player].peekLast().getBestPoints());
         return sb.toString();
     }
 
     public int getSum(int player, boolean hidden) {
-        int sum=0, count=0;
-        for (Integer card : players[player]) {
-            if (count>0 || !hidden) {
-                sum += card;
-            }
-            count++;
-        }
-        return sum;
+    	return hidden ? State.getBestPoints(players[player].peekLast().visible) : players[player].peekLast().getBestPoints();
     }
     
 }
