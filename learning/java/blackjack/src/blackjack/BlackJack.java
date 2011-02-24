@@ -31,6 +31,8 @@ public class BlackJack {
     }   
 
     public final void newCard(int player) {
+    	if(players[player].peekLast().getMinPoints() > 21)
+    		return;
     	players[player].add(players[player].peekLast().drawCard());
     }
 
