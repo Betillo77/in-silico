@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -45,6 +46,17 @@ public class Proceso
 							lock.lock();
 							try
 							{
+								Calendar c = Calendar.getInstance();
+								int dia = c.get(Calendar.DAY_OF_WEEK);
+								while(dia == Calendar.SATURDAY || dia == Calendar.SUNDAY)
+								{
+									int hora = c.get(Calendar.HOUR_OF_DAY);
+									if(hora > 16 && dia == Calendar.SUNDAY)
+										break;
+									HiloDaily.sleep(300000L);
+									c = Calendar.getInstance();
+									dia = c.get(Calendar.DAY_OF_WEEK);
+								}
 								iniciarProceso();
 							}
 							finally

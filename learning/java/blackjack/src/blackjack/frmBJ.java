@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author seb
+ * @author seb 
  */
 public class frmBJ extends javax.swing.JPanel {
 
