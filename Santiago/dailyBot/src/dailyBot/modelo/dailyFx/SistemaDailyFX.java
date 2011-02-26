@@ -45,6 +45,18 @@ public class SistemaDailyFX extends SistemaEstrategias
 		{
 			public void run() 
 			{
+				Calendar c = Calendar.getInstance();
+				int dia = c.get(Calendar.DAY_OF_WEEK);
+				while(dia == Calendar.SATURDAY || dia == Calendar.SUNDAY)
+				{
+					int hora = c.get(Calendar.HOUR_OF_DAY);
+					if(hora > 16 && dia == Calendar.SUNDAY)
+						break;
+					HiloDaily.sleep(300000L);
+					c = Calendar.getInstance();
+					dia = c.get(Calendar.DAY_OF_WEEK);
+					ponerUltimaActulizacion(System.currentTimeMillis());
+				}
 				HiloDaily.sleep(120000);
 				Error.agregarInfo("Iniciando hilo " + este.getClass().getCanonicalName());
 				int numeroErrores = 0;
