@@ -22,6 +22,17 @@ public class AdministradorHilos
 				boolean mensajeEnviado = false;
 				while(true)
 				{
+					Calendar c1 = Calendar.getInstance();
+					int dia = c1.get(Calendar.DAY_OF_WEEK);
+					while(dia == Calendar.SATURDAY || dia == Calendar.SUNDAY)
+					{
+						int hora = c1.get(Calendar.HOUR_OF_DAY);
+						if(hora > 16 && dia == Calendar.SUNDAY)
+							break;
+						HiloDaily.sleep(300000L);
+						c1 = Calendar.getInstance();
+						dia = c1.get(Calendar.DAY_OF_WEEK);
+					}
 					try 
 					{
 						HiloDaily.sleep(300000);
