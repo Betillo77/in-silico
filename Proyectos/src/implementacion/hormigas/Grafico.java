@@ -14,8 +14,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 
 public class Grafico extends Canvas implements MouseListener, ActionListener
@@ -24,9 +27,13 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 	public ArrayList <Integer> mejoresActual = new ArrayList <Integer> ();
 	public double solucionActual = 0;
 	public ArrayList <Ciudad> ciudades;
+	public ArrayList <Ciudad> mejores;
+	public double mejorDistancia;
 	public boolean modoEdicion = true;
+	public boolean mostrarMejor = false;
 	public static Grafico este;
 	public boolean terminar = false;
+	public boolean instantaneo = false;
 	
 	// Imagen hormiga en 36-al
 	public static String imagenHormiga = 
@@ -915,8 +922,6 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 		"93j2nmudvs4x8vaac3cpvqwvb6nfafqgzsy5lr9w4g11yfp1oew08qpznywu" +
 		"1ymtr6ovoulqdbl83j77k3y3vswgkcvuj";
 	
-	
-	
 	public static BufferedImage imagen;
 	
 	static
@@ -936,6 +941,24 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 		addMouseListener(this);
 	}
 	
+	public static double[][] generarDistancias(ArrayList <Ciudad> ciudades)
+	{
+		double [][] datosPrueba = new double[ciudades.size()][ciudades.size()];
+		for(int i = 0; i < ciudades.size(); i++)
+			for(int j = 0; j < ciudades.size(); j++)
+			{
+				if(i == j)
+				{
+					datosPrueba[i][j] = Double.POSITIVE_INFINITY;
+				}
+				else
+				{
+					datosPrueba[i][j] = Math.sqrt((ciudades.get(i).x - ciudades.get(j).x) * (ciudades.get(i).x - ciudades.get(j).x) + (ciudades.get(i).y - ciudades.get(j).y) * (ciudades.get(i).y - ciudades.get(j).y));
+				}
+			}
+		return datosPrueba;
+	}
+	
 	@Override
 	public synchronized void paint(Graphics g)
 	{
@@ -949,7 +972,7 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 		}
 		if(!modoEdicion)
 		{
-			g.drawString((int)solucionActual  + "", 400, 400);
+			g.drawString((int) solucionActual + "", 400, 400);
 			for(int i = 0; i < mejoresActual.size() - 1; i++)
 			{
 				if(i != 0)
@@ -959,8 +982,11 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 				g.setColor(Color.BLACK);
 				try 
 				{
-					Thread.yield();
-					Thread.sleep(150);
+					if(!instantaneo)
+					{
+						Thread.yield();
+						Thread.sleep(150);
+					}
 				}
 				catch (InterruptedException e) 
 				{
@@ -969,6 +995,19 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 			if(mejoresActual.size() > 1)
 				g.drawLine(ciudades.get(mejoresActual.get(mejoresActual.size() - 2)).x + 3, ciudades.get(mejoresActual.get(mejoresActual.size() - 2)).y + 3,ciudades.get(mejoresActual.get(mejoresActual.size() - 1)).x + 3, ciudades.get(mejoresActual.get(mejoresActual.size() - 1)).y + 3);
 		}
+		if(!modoEdicion && mostrarMejor)
+		{
+			calcularMejor();
+			g.setColor(Color.BLUE);
+			g.drawString((int) mejorDistancia + "", 400, 370);
+			for(int i = 0; i < mejores.size(); i++)
+			{
+				if(i != 0)
+					g.drawLine(mejores.get(i - 1).x + 3, mejores.get(i - 1).y + 3, mejores.get(i).x + 3, mejores.get(i).y + 3);
+			}
+			g.drawLine(mejores.get(mejores.size() - 1).x + 3, mejores.get(mejores.size() - 1).y + 3, mejores.get(0).x + 3, mejores.get(0).y + 3);
+		}
+		instantaneo = false;
 	}
 	
 	public synchronized void terminar()
@@ -1002,7 +1041,7 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 								}).start();
 	}
 	
-	public void modoEdicion()
+	public synchronized void modoEdicion()
 	{
 		modoEdicion = true;
 		ciudades.clear();
@@ -1012,15 +1051,28 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 		repaint();
 	}
 
-	public void modoSolucion()
+	public synchronized void modoSolucion()
 	{
 		modoEdicion = false;
 		HiloHormiga hh = new HiloHormiga();
-		hh.matrizDistancias = Lectura.generarDistancias(ciudades);
+		hh.matrizDistancias = generarDistancias(ciudades);
 		ModeloHormigasTSP modelo = new ModeloHormigasTSP();
 		hh.modelo = modelo;
 		iniciar();
 		new Thread(hh).start();
+	}
+	
+	static Random r = new Random();
+	
+	public synchronized void modoAleatorio() 
+	{
+		modoEdicion = false;
+		ciudades.clear();
+		instantaneo = false;
+		int n = r.nextInt(10) + 5;
+		for(int i = 0; i < n; i++)
+			ciudades.add(new Ciudad(r.nextInt(400), r.nextInt(400)));
+		repaint();
 	}
 	
 	@Override
@@ -1046,7 +1098,7 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 	long anterior = 0;
 	
 	@Override
-	public void mouseReleased(MouseEvent e) 
+	public synchronized void mouseReleased(MouseEvent e) 
 	{
 		if(e.getWhen() != anterior && modoEdicion)
 		{
@@ -1059,9 +1111,93 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 		}
 	}
 	
+	static double[][] dp = new double[1 << 20][22];
+	static int[][] dpD = new int[1 << 20][22];
+	static double[][] distancias;
+	
+	public synchronized double dp(int history, int actual)
+	{
+		if(dp[history][actual] != 0)
+			return dp[history][actual];
+		double min = Integer.MAX_VALUE;
+		int nHistory = history ^ (1 << actual); 
+		int donde = 0;
+		for(int i = 0; i < ciudades.size(); i++)
+		{
+			if((nHistory & (1 << i)) > 0)
+			{
+				double valor = dp(nHistory, i) + distancias[i][actual];
+				if(valor < min)
+				{
+					min = valor;
+					donde = i;
+				}
+			}
+		}
+		if(min == Integer.MAX_VALUE)
+		{
+			min = distancias[0][actual];
+		}
+		dp[history][actual] = min;
+		dpD[history][actual] = donde;
+		return dp[history][actual];
+	}
+	
+	public synchronized void calcularMejor()
+	{
+		if(ciudades.size() > 19)
+		{
+			mejores = null;
+			return;
+		}
+		distancias = generarDistancias(ciudades);
+		int numero = 1 << ciudades.size();
+		for(int i = 0; i < numero; i++)
+			for(int j = 0; j < ciudades.size(); j++)
+				dp[i][j] = 0;
+		double min = Integer.MAX_VALUE;
+		int cual = 0;
+		for(int j = 1; j < ciudades.size(); j++)
+		{
+			double valor = dp((1 << (ciudades.size())) - 2, j) + distancias[j][0];
+			if(valor < min)
+			{
+				min = valor;
+				cual = j;
+			}
+		}
+		mejorDistancia = min;
+		mejores = new ArrayList <Ciudad> ();
+		mejores.add(ciudades.get(0));
+		int acumulado = (1 << (ciudades.size())) - 2;
+		while(Integer.bitCount(acumulado) >= 1)
+		{
+			mejores.add(ciudades.get(cual));
+			if(Integer.bitCount(acumulado) == 1)
+				break;
+			int cualAnt = cual;
+			cual = dpD[acumulado][cual];
+			acumulado ^= (1 << cualAnt);
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		if(e.getSource() instanceof JCheckBox)
+		{
+			mostrarMejor = !mostrarMejor;
+			instantaneo = true;
+			repaint();
+			while(modoEdicion && instantaneo)
+				Thread.yield();
+			return;
+		}
+		if(e.getSource() instanceof JButton)
+		{
+			modoAleatorio();
+			return;
+		}
 		JRadioButton boton = (JRadioButton) e.getSource();
 		boton.getModel().setSelected(true);
 		if(boton.getText().equals("Modo edicion"))
@@ -1073,4 +1209,8 @@ public class Grafico extends Canvas implements MouseListener, ActionListener
 			modoSolucion();
 		}
 	}
+}
+
+class Lectura 
+{	
 }

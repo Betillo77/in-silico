@@ -52,7 +52,8 @@ public class OchoPuzzle implements AStarState
 		return darDistanciaManhattan() + nPasos;
 	}
 
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings("rawtypes")
 	public Comparable getKey() 
 	{
 		int acum = 0;
@@ -73,7 +74,7 @@ public class OchoPuzzle implements AStarState
 		this.padre = padre;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public LinkedList sigEstados() 
 	{
 		String tableroNuevo = tablero;
@@ -142,8 +143,8 @@ public class OchoPuzzle implements AStarState
 	public static boolean contar(String tablero)
 	{
 		int acumulado = 0;
-		int tamaño = tablero.length();
-		for(int i = 0; i < tamaño; i++)
+		int tamano = tablero.length();
+		for(int i = 0; i < tamano; i++)
 		{
 			int actual = Integer.parseInt(tablero.substring(0, 1));
 			if(actual != 0)

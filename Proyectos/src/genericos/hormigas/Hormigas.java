@@ -1,18 +1,15 @@
 package genericos.hormigas;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Scanner;
  
 public class Hormigas 
 {	
 	Method metodoCambio;
 	
     /**
-     * Función que soluciona un problema utilizando el algoritmo de colonia de hormigas
+     * Funcion que soluciona un problema utilizando el algoritmo de colonia de hormigas
      * @param matrizCostos: Matriz de adyacencia con los costos entre los nodos
      * @param modelo: Modelo establecido para seleccionar los vecinos y los parametros
      * @return solucionOptima: Mejor solucion encontrada
@@ -93,37 +90,8 @@ public class Hormigas
 				pesoOptimo = mejorPeso;
 				modelo.establecerMejorActual(mejorSolucion, mejorPeso);
 				solucionOptima = mejorSolucion;
-				double init = modelo.darM() / (modelo.darQ() * mejorPeso);
-				for(int i = 0; i < matrizCostos.length; i++)
-					for(int j = 0; j < matrizCostos.length; j++)
-						feromonas[i][j] = init;
 			}
 		}
 		return solucionOptima;
-	}
-	
-	public static double [][] leer(String nombreArchivo)
-	{
-		
-		Scanner scanner;
-		double dato;
-		try {
-			scanner = new Scanner(new File(nombreArchivo));
-		} catch (FileNotFoundException e) {
-			scanner = new Scanner("");
-			e.printStackTrace();
-		}
-		int tam = scanner.nextInt();
-		double [][] datosPrueba = new double[tam][tam];
-		for(int i = 0; i < datosPrueba.length; i++)
-			for(int j = 0; j < datosPrueba.length; j++){
-				dato = scanner.nextDouble();
-				if (dato < 0)
-					datosPrueba[i][j] = Double.POSITIVE_INFINITY;
-				else
-					datosPrueba[i][j] = dato;
-			}
-		
-		return datosPrueba;
 	}
 }

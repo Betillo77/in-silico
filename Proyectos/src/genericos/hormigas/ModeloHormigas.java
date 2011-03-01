@@ -15,22 +15,22 @@ public interface ModeloHormigas
 	int darQ();
 	
     /**
-     * @return Inicial: Aproximación inicial, no tiene que ser buena
+     * @return Inicial: Aproximacion inicial, no tiene que ser buena
      */
 	int darInicial();
 	
     /**
-     * @return NumeroIteraciones: Numero de veces que se van a simular las M hormigas
+     * @return NumeroIteraciones: Numero de veces que se van a simular las N hormigas
      */
 	int darNumeroIteraciones();
 	
     /**
-     * @return A: Importancia relativa de las feromonas con relación a B
+     * @return A: Importancia relativa de las feromonas con relacion a B
      */
 	double darA();
 	
     /**
-     * @return B: Importancia relativa de la distancia con relación a A
+     * @return B: Importancia relativa de la distancia con relacion a A
      */
 	double darB();
 	
@@ -40,21 +40,20 @@ public interface ModeloHormigas
 	double darP();
 	
     /**
-     * @return E: Indice de evaporacion global, es decir, cada iteración
+     * @return E: Indice de evaporacion global, es decir, cada iteracion
      */
 	double darE();
 	
-	
     /**
-     * Función que escoge un vecino, de entre los posibles
+     * Funcion que escoge un vecino, de entre los posibles
      * @param posibles: Lista de los vecinos, con la probabilidad de cada uno
      * @return escogido: Indice del vecino escogido
      */
 	int escoger(double [] posibles);
 
     /**
-     * Función que establece la mejor solucion encontrada hasta el momento
-     * @param mejorSolucion: Solución encontrada
+     * Funcion que establece la mejor solucion encontrada hasta el momento
+     * @param mejorSolucion: Solucion encontrada
      */
 	void establecerMejorActual(ArrayList <Integer> mejorSolucion, double valor);
 }

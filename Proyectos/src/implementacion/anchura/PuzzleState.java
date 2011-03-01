@@ -10,7 +10,7 @@ import java.util.LinkedList;
  *
  * @author sebastian
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class PuzzleState implements Estado, Comparable {
     
     MyKey tablero;
