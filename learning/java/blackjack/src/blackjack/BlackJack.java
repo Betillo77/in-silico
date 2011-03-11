@@ -23,9 +23,8 @@ public class BlackJack {
         playing = new boolean[nPlayers];
         players = new LinkedList[nPlayers];
         for (int i=0; i<nPlayers; i++) {
-            players[i] = new LinkedList<State>();
+            players[i] = new LinkedList <State> ();
             players[i].add(State.drawFirst());
-            players[i].add(players[i].peekLast().drawCard());
             playing[i]=true;
         }
     }   
@@ -105,14 +104,13 @@ public class BlackJack {
             count++;
         }
         if(hidden)
-        	sb.append(" -> " + State.getBestPoints(players[player].peekLast().visible));
+        	sb.append(" -> ").append(State.getBestPoints(players[player].peekLast().visible));
         else
-        	sb.append(" -> " + players[player].peekLast().getBestPoints());
+        	sb.append(" -> ").append(players[player].peekLast().getBestPoints());
         return sb.toString();
     }
 
     public int getSum(int player, boolean hidden) {
     	return hidden ? State.getBestPoints(players[player].peekLast().visible) : players[player].peekLast().getBestPoints();
-    }
-    
+    }   
 }

@@ -10,7 +10,7 @@ public interface ModeloHormigas
 	int darM();
 	
     /**
-     * @return M: Parametro de inicializacion de feromonas
+     * @return Q: Parametro de inicializacion de feromonas
      */
 	int darQ();
 	
