@@ -95,6 +95,7 @@ public class State
 	{
 		return getState(VisibleState.fromId(0).add(r.nextInt(10) + 1), VisibleState.fromId(0).add(r.nextInt(10) + 1), r.nextInt(10) + 1);
 	}
+        
 	public State drawCard(boolean mine)
 	{
 		int next = r.nextInt(10) + 1;
