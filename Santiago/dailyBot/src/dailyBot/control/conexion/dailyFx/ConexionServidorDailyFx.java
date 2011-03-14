@@ -243,7 +243,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		    	}
 		    	catch(Exception e)
 		    	{
-		    		Error.agregarSinCorreo(e.getClass() + " " + e.getMessage() + " error loggeando");
+		    		Error.agregarInfo(e.getClass() + " " + e.getMessage() + " error loggeando");
 		    		HiloDaily.sleep(30000);
 		    	}
 	    	}
@@ -316,6 +316,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		    	String pagina2 = AyudanteCargarSSI.instancia.leerPagina(direccion);
 		    	AyudanteCargarSSI.instancia.datos(pagina2);
 		    	AyudanteCargarSSI.instancia.cacheSSI = direccion;
+		    	Error.agregarInfo("SSI cargado");
 		    	return true;
 		    }
 	    	catch(Exception e)
