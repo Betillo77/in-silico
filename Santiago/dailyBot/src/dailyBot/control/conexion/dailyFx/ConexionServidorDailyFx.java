@@ -226,22 +226,28 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		
 	    private void loggear()
 	    {
-	    	try
+	    	for(int i = 0; i < 10; i++)
 	    	{
-	    		String datos = Propiedades.darPropiedad("dailyBot.control.conexion.dailyFx.ConexionServidorDailyFx.js");
-				peticionGet = new HttpGet("https://plus.dailyfx.com/login/loginForm.jsp");
-	    		Future <String> future = executor.submit(this);
-		        future.get(60, TimeUnit.SECONDS);
-		        peticionGet.abort();
-		        peticionGet = new HttpGet("https://plus.dailyfx.com/login/j_security_check?" + datos);
-	    		future = executor.submit(this);
-		        future.get(60, TimeUnit.SECONDS);
-		        peticionGet.abort();
+		    	try
+		    	{
+		    		String datos = Propiedades.darPropiedad("dailyBot.control.conexion.dailyFx.ConexionServidorDailyFx.js");
+					peticionGet = new HttpGet("https://plus.dailyfx.com/login/loginForm.jsp");
+		    		Future <String> future = executor.submit(this);
+			        future.get(60, TimeUnit.SECONDS);
+			        peticionGet.abort();
+			        peticionGet = new HttpGet("https://plus.dailyfx.com/login/j_security_check?" + datos);
+		    		future = executor.submit(this);
+			        future.get(60, TimeUnit.SECONDS);
+			        peticionGet.abort();
+			        return;
+		    	}
+		    	catch(Exception e)
+		    	{
+		    		HiloDaily.sleep(30000);
+		    	}
 	    	}
-	    	catch(Exception e)
-	    	{
-	    		Error.agregar(e.getMessage() + " Error logeando a DailyFX");
-	    	}
+	    	Error.agregar("Error logeando a DailyFX despues de 10 intentos, reiniciando");
+	    	Error.reiniciar();
 	    }
 	    
 	    private String url(String pagina)
