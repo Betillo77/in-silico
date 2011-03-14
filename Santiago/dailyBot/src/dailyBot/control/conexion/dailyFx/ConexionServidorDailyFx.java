@@ -243,6 +243,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		    	}
 		    	catch(Exception e)
 		    	{
+		    		Error.agregarSinCorreo(e.getClass() + " " + e.getMessage() + " error loggeando");
 		    		HiloDaily.sleep(30000);
 		    	}
 	    	}

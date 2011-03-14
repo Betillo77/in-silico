@@ -30,7 +30,8 @@ public class Error
 	public static void agregarSinCorreo(String error) 
 	{
 		enviar("DailyBot-error", error, false);
-		chequearHora();
+		if(!error.contains("quota") && !error.contains("Daily"))
+			chequearHora();
 	}
 	
 	public static void agregarConTitulo(String titulo, String info)
