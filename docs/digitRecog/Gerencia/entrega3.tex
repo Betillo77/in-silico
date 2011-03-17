@@ -475,9 +475,18 @@
 
 	
 	\subsection{Análisis del medio}
+	\subsubsection{Factores socioculturales}
+	Entre los factores socioculturales que afectan mas al proyecto, estan el idioma y alfabeto de la población de destino. Dado que el objetivo es leer el texto para el usuario, es crítico que el lenguaje sea soportado por la aplicación y que el alfabeto pueda ser reconocido por el aplicativo responsable de esto.
+	
+	\subsubsection{Factores económicos}
+	
+	\subsubsection{Factores político-legales}
+	
+	\subsubsection{Factores tecnológicos}
+	Entre los factores tecnológicos mas importantes a tener en cuenta, se encuentra la portabilidad del proyecto. Es claro que la tecnología cambia constantemente y es muy importante que el aplicativo se pueda portar rápidamente a las plataformas de software nuevas para mantener a la vanguardia de la tecnología. Es también importante que el servicio sea escalable, es decir, que cuando entren mas usuarios la calidad del servicio se pueda mantener sin incrementar mucho los costos de brindar el servicio.
 	
 	\subsection{Determinación de la demanda}
-	Para determinar la demanda, se escogió como instrumento de recolección de información la encuesta. En la figura \ref{fig:encuesta} se presenta el instrumento. El instrumento puede aplicarse virtualmente al ser una página web, y con los datos recolectados se calculan los parámetros del mercado como se mecionó en la sección de estrategia comercial. Se determinan los coeficientes $A_1$, $A_2$ y $A_3$ realizando una regresión lineal sobre los datos tomados en la encuesta. Se debe recordar que una regresión lineal es un método que aproxima los puntos a una función lineal $f(x) = ax + b$, tal que se minimize el error al cuadrado. A este método se le conoce como minimos cuadrados.
+	Para determinar la demanda, se escogió como instrumento de recolección de información la encuesta. En la figura \ref{fig:encuesta} se presenta el instrumento. El instrumento puede aplicarse virtualmente al ser una página web, y con los datos recolectados se calculan los parámetros del mercado como se mecionó en la sección de estrategia comercial. Se determinan los coeficientes $A_1$, $A_2$ y $A_3$ realizando una regresión lineal sobre los datos tomados en la encuesta y tomando el coeficiente $a$ como mejor estimador de el parámetro a determinar. Se debe recordar que una regresión lineal es un método que aproxima los puntos a una función lineal $f(x) = ax + b$, tal que se minimize el error al cuadrado. A este método se le conoce como minimos cuadrados.
 	
 	\begin{figure}[htb]
 	\begin{center}
@@ -489,7 +498,14 @@
 	\end{figure}
 	
 	\subsection{Técnica de Proyección de mercado}
-	bla bla
+	Después de estimar los 7 factores que influyen en las técnicas de proyección de mercado y los 5 criterios de validación, se llegó a la conclusión que el modelo causal es el mas apropiado. Las razones para la decisión son:
+	\begin{itemize}
+		\item No se han encontrado servicios iguales al servicio prestado actualmente, y no se encuentran tampoco servicios similares en el país. Por tanto un análisis histórico pierde validez, y el análisis de series de tiempo no tiene la presición adecuada.
+		\item Se encuentran numerosas estadísticas de entidades fiables como el DANE y el INCI que permiten relacionar las variables del mercado. Y una vez se tienen modelos que permiten relacionar las variables se puede hacer análisis matemáticos sobre estas relaciónes para encontrar parámentros óptimos. Ya sea para minimizar el error en los modelos o para optimizar la ganancia.
+		\item Dado que existen fuentes secundarias confiables, el costo de la recolección de datos no será tan alto.
+		\item Al revisar el estado del ciclo de vida en el que se encuentra el producto, en el cual aun no se posee experiencia, no se puede aplicar el método de pronósticos visionarios.
+	\end{itemize}
+	Dentro de los modelos causales, se plantea utilizar el método de regresión lineal para determinar los parámetros de la demanda $A_1$, $A_2$ y $A_3$. Y la regresión se realiza sobre los datos recolectados en la encuesta de intensión de compra presentada previamente.
 	
 	\clearpage
 	
