@@ -184,6 +184,7 @@
 	\end{itemize}
 	
 	\subsection{Indicadores de impacto}
+
 	\begin{itemize}
 		\item {\bf Personas beneficiadas}($I_1$): Cantidad de personas beneficiadas $P_b$ sobre el total
 			de personas afectadas por el problema (Personas invidentes) $P_i$.
@@ -408,9 +409,70 @@
 		
 	\subsection{Estrategia comercial}
 	 
-	\subsection{Producto}
+	\subsubsection{Producto}
 	El producto que se va a ofrecer es en realidad un servicio de reconocimiento optico de caracteres para personas invidentes. Este servicio incluye una aplicación para distintos
-	sistemas operativos de telefonos mobiles
+	sistemas operativos de telefonos mobiles, la cual no tendra costo.
+
+	\subsubsection{Precio}
+	Para determinar el precio se va a hacer una encuesta que permita establecer los parametros A1-A4, Y, Pb, Pub, de la siguiente ecuación:
+
+	\begin{equation}
+	Q = A1 \times P + A2 \times Y + A3 \times Pb + A4 \times Pub 
+	\end{equation}
+
+	Donde:
+
+	\begin{itemize}
+	      \item $Q$ : cantidad demandada en el periodo
+	      \item $A1$ : parametros de la demanda
+	      \item $Y$ : ingresos per capita
+	      \item $Pb$ : población
+	      \item $Pub$ : publicidad
+	      \item $P$ : precio
+	\end{itemize}
+
+	Como se desea determinar el precio que maximice la utilidad entonces utilizamos la ecuación:
+
+	\begin{equation}
+	P = -(A2 \times Y + A3 \times Pb + A4 \times Pub  - A1 \times Cv) / (2 \times A1)
+	\end{equation}
+
+	En esta ecuación el unico parametro nuevo es Cv, que es el costo variable. En el caso del software, y en especial del software para telefonos inteligentes el costo variable
+	depende del precio. Esto es debido a que los productos se comercializan en mercados virtuales creados para telefonos inteligentes como el Android Market y el Apple App Store.
+	Estos mercado cobran una comisión la cual se llamara Cm, y sera un numero entre 0 y 1 que indica el porcentaje de comisión que cobra el distribuidor (sea Apple, Google,
+	o cualquier otro) sobre el producto. Ingresando esta nueva variable la ecuación queda:
+
+	\begin{equation}
+	P = -(A2 \times Y + A3 \times Pb + A4 \times Pub  - A1 \times Cm \times P) / (2 \times A1)
+	\end{equation}
+
+	Simplificando se llega a la ecuación final que maximiza la utilidad:
+
+	\begin{equation}
+	P = -(A2 \times Y + A3 \times Pb + A4 \times Pub) / (2 \times A1 - Cm \times A1)
+	\end{equation}
+
+	En esta ecuación todas las variables son conocidas, pues se van a obtener de la siguiente  manera:
+
+	\begin{itemize}
+	      \item $A1$ : A partir de la pregunta 5 de la encuesta. Dada la cantidad de personas que esten dispuestas a pagar en cada uno de los rangos, se determinara, a traves de regresión
+		           lineal, la variación en la demanda con respecto al precio. Esta variación, que en realidad es la pendiente de la grafica de esa pregunta, seria A1.
+	      \item $A2$ : A partir de las preguntas 4 y 5 de la encuesta. Dado el numero de personas que estan dispuestas a pagar por el servicio en cada uno de los rangos de ingreso per              	     capita, se puede estimar a traves de una regresión lineal que tanto varia la demanda con respecto al ingreso per capita de los encuestados. Dicha pendiente seria A2.
+	      \item $A3$ : Dado que esta constante especifica que tanto varia la demanda con respecto al tamaño de la población, se utilizara la pregunta 5 de la encuesta para determinar que
+			   porcentaje de los encuestados estarian dispuestos a pagar por el servicio, ademas tambien se utilizaran las preguntas 1 y 2 para filtrar las personas invidentes que
+		           estarian dispuestas a pagar por el servicio pero no tienen un celular con camara.
+	      \item $A4$ : En este proyecto no se va a considerar la publicidad, ya que la publicidad viene implicita en la comisión, pues los proveedores publicitan el producto para ganar 
+		           la comisión.
+	      \item $Y$ : Se utilizara el valor del ingreso per capita de la persona invidente promedio suministrado por el Dane.
+	      \item $Pb$ : Se utilizara la población total de personas invidentes en nuestro país, segun el Dane.
+	      \item $Pub$ : Igual que $A4$
+	      \item $Cm$ : Comisión cobrada por cada uno de los proveedores. Dado que cada proveedor cobra una comisión distinta, se utilizara un precio diferenciado, por cuanto los sistemas
+		     operativos de cada proveedor tambien son diferenciados.
+	\end{itemize}
+
+
+    
+
 	
 	\subsection{Análisis del medio}
 	
