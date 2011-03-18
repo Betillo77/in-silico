@@ -527,18 +527,38 @@
 	\subsection{Ingeniería del proyecto}
 	
 	\subsubsection{Proceso de producción}
-Es la elaboración del producto mediante una tecnología, un proceso que lleva la materia prima al producto 
-final. Puede ser en {\bf serie, por pedido o por proyecto}.
+	Para este proyecto, se escogió un modelo de producción por proyecto en lugar de utilizar modelos de producción en serie o pedido, dado que se desea prestar un servicio. En el caso de este servicio, el producto debe estar listo antes de atender los pedidos, y por esta razón la producción por pedido es descartada como opción. En el caso de la producción en serie, se debe tener en cuenta que lo que se desea producir es el software que va a prestar el servicio, y por esta razón, solo se necesita producir un único producto; este único producto tendrá la capacidad de atender peticiones de muchos usuarios.
 
 	\subsubsection{Efectos económicos de la ingeniería}
-El proceso productivo y la tecnología seleccionada influirán directamente en la cuantía de las inversiones,
-costos e ingresos del proyecto.
+	En esta sección determinaremos el costo de la prestación del servicio. El costo variable de atender cada petición de servicio de los usuarios depende del costo del servicio de internet, y del costo de mantenimiento y operación de los equipos servidores.\newline
+	Sea entonces $I_p$ el costo del servicio de internet de responder una petición $p$, y $S_p$ el costo del cómputo de la petición $p$. Entonces el costo total de responder la petición $p$ es denotado $C_p$ y se calcula como:
+	\begin{equation}
+		C_p = I_p + S_p
+		\label{eq:opCost}
+	\end{equation}
+	Dado que los equipos no tendrán la misma carga todo el tiempo, sino que tendrán momentos de horas pico y de baja carga, se asume el modelo general de ingeniería para estos procesos en el que la carga se modela como $y=\sin(x)$ en el intervalo $[0,\frac{\pi}{2}]$, y se toma como valor promedio la integral de la función $y$ dividida entre el periodo; se a demostrado que independiente del periodo la función es $\frac{1}{\sqrt{2}}$. Lo que quiere decir que asumiendo este modelo y un uso eficiente de los recursos, se puede concluir que el porcentaje promedio de uso óptimo de la capacidad de prestación del servicio sin disminuir la calidad esta dado por:
+	\[ \mu_p=\frac{1}{\pi}\int_0^{\frac{\pi}{2}}{\sin(x)dx} = \frac{1}{\sqrt{2}} = 70.71\% \]
+	Para calcular $I_p$ y $S_p$, se asume que se conoce el costo del Internet en un mes $I_m$ y el del mantenimiento y operación de los servicios de cómputo por mes $S_m$. Este costo $S_m$ contendrá el costo de la energía eléctrica requerida por los equipos de cómputo, así como su mantenimiento y operación. Además se debe conocer el tiempo promedio que toma responder una solicitud $t_p$, donde $t_p$ se mide en milisegundos. Entonces, dado que un mes tiene aproximadamente $2.6 \times 10^9$ milisegundos, entoces $I_p$ y $S_p$ son:
+	\begin{align}
+		I_p &= \frac{1}{2.6 \times 10^9 \times \mu_p}I_m \\
+		S_p &= \frac{1}{2.6 \times 10^9 \times \mu_p}S_m
+	\end{align}
 
 	\subsubsection{Masa crítica técnica}
-Deslandes plantéa que para medir la capacidad de competir, debe estimarse el costo fabril en distintos niveles de la
-capacidad de producción, a partir de los componentes mas relevantes del costo. El costo fabril definido debe 
-compararse con la capacidad de producción y el monto de la inversión, a esta relación se le denomina masa crítica
-técnica.
+	Recordemos las ecuaciones de masa crítica técnica:
+	\[\frac{P_2}{P_1} = \frac{C_2}{C_1}^{-a} \]
+
+	Donde $P$ es el costo unitario de la operación, $C$ es la capacidad de la planta en unidades de producto, $a$ es el factor de volumen.
+
+	\[ \frac{Q_2}{Q_1} = \frac{C_2}{C_1}^{-b} \]
+
+	Donde $Q$ es el costo de equipos por unidad de capacidad y $b$ es un factor de volumen.
+
+	\[ \frac{I_2}{I_1} = \frac{C_2}{C_1}^{f} \]
+
+	Donde $I$ es inversión total y $f$ es un factor de volumen. 
+	
+	Un factor de volumen es la capacidad máxima de alguna variable que tiene una planta en un momento determinado. Antes de hallar los coeficientes requeridos en la masa 
 
 	\subsection{Elección entre alternativas tecnológicas}
 	
@@ -547,9 +567,40 @@ técnica.
 	Por otro lado, los recursos humanos no son tan fáciles de conseguir en la ciudad, dado que el desarrollo de este tipo de aplicativos requiere profesionales con conocimientos científicos, en los temas de algoritmia e inteligencia artificial, así como una buena competencia en ciencias básicas. Por fortuna algunos profesionales de la universidad tecnológica de Pereira son competentes en estas áreas, y en la medida en que se necesiten mas profesionales con este tipo de conocimientos, se espera que la universidad se preocupe mas en graduar profesionales con estos perfiles. Ya que hasta el momento el perfil del ingeniero de sistemas en la ciudad es principalmente el de sacar egresados con conocimientos técnicos en configuración de redes, que es lo que hasta el momento ha requerido la industria local.
 	
 	\subsubsection{Factores cuantitativos}
+	Para hacer el análisis cuantitativo se propone utilizar en método de Lange. Lo primero que se debe hacer en este caso es determinar cual es el costo operativo y la inversión inicial en función del costo operativo. El costo operativo $C_p$ esta dado en la ecuación \ref{eq:opCost}. Dado que la inversión inicial $I_0$ depende del equipo de computo a comprar, y el costo $S_p$ también depende del equipo entonces la inversión inicial en función del costo se podría definir como:
+	\begin{equation}
+		I_0(C_p) = K_sS_p = K_s((S_p+I_p) - I_p) = K_s(C_p - I_p)
+		\label{eq:InvCost}
+	\end{equation}
+	Donde $K_s$ es una constante que relaciona el costo inicial de los equipos y con el costo de mantenimiento, tal que $K_s=\frac{I_0}{S_p}$. Entonces si $n$ es el número de meses que dura el proyecto, por lange tenemos:
+	\begin{align*}
+		min\{D&=I_o(C)+nC\} \\
+		\frac{dI_o}{dC}&=-n \\
+		K_s &= -n
+	\end{align*}
 	
 	\subsection{Valoración económica de las variables}
+	Las inversiones en obra física se muestran en la tabla \ref{tb:invFisica}, se decidió que la planta de producción de software y de alojamiento de los equipos servidores caben en un lote de aproximadamente $100m^2$, de los que se toma como área de máquinas un área de $10m \times 10m = 100m^2$ del segundo piso de la planta, en el tercer y cuarto piso de la planta están los desarrolladores de software y en el primero está la oficina de atención al cliente con un patio para el perro guardian. 
 	
+	\begin{table}
+		\caption{Inversiones en obra física}
+		\begin{tabular}{ | p{3cm} | p{2cm} | p{2cm} | p{2cm} | p{2cm} | p{2cm} | }
+		\hline
+		Item & Cantidad & Costo unitario & Costo total & Vida útil & Valor residual \\
+		\hline					
+		Lote & $100m^2$ & \$100.000 & \$10.000.000 & N/A & \$10.000.000 \\
+		\hline					
+		Planta & 1 & \$100.000.000 & \$100.000.000 & 20 años & \$80.000.000 \\
+		\hline
+		Caseta del perro & 1 & \$200.000 & \$200.000 & 10 años & \$10.000 \\ 
+		\hline
+		Cercos & $400m$ & \$5.000 & \$2.000.000 & 10 años & \$200.000 \\
+		\hline
+		\end{tabular}
+		\label{tb:invFisica}
+	\end{table}
+	
+		
 	\subsection{Desiciones de tamaño}
 	
 	\subsection{Desiciones de localización}
