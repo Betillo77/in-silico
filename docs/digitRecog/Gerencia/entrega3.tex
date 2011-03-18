@@ -685,8 +685,28 @@
 	\end{table}
 		
 	\subsection{Desiciones de tamaño}
+	Suponiendo que se tienen U usuarios potencial, y que el tiempo de respuesta de una petición es $t_p$, y que cada usuario envia una petición en promedio cada $t_u$, se calcula la cantidad de usuarios que puede atender un servidor $U_s$ como:
+  
+	\begin{equation}
+	U_s = \frac{t_u}{t_p \times \mu_p} 
+	\label{eq:capacidad}
+	\end{equation}
+
+	\begin{itemize}
+	 \item Capacidad teorica: $U_s$
+	 \item Capacidad maxima: $max(U, U_s)$
+	 \item Capacidad normal: $min(U, U_s)$
+	\end{itemize}
 	
 	\subsection{Desiciones de localización}
+	Se decidió localizar el proyecto en la ciudad de Pereira, ya que los factores más relevantes para este proyecto se cumplen: 
+
+	\begin{itemize}
+	 \item Existe una gran cantidad de ingenieros de sistemas y cada semestre se graduan muchos más.
+	 \item Debido a la crisis economica y al alto desempleo los costos de los terrenos han bajado, igual que el costo de construcción.
+	 \item Hay una buena disponibilidad de internet, con varios proveedores potenciales, y tambien de agua y electricidad.
+	\end{itemize}
+ , 
 	
 	
 	
