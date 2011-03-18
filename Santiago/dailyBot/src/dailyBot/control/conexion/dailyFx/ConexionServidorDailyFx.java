@@ -226,7 +226,7 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		
 	    private void loggear()
 	    {
-	    	for(int i = 0; i < 10; i++)
+	    	for(int i = 0; i < 100; i++)
 	    	{
 		    	try
 		    	{
@@ -243,11 +243,10 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		    	}
 		    	catch(Exception e)
 		    	{
-		    		Error.agregarInfo(e.getClass() + " " + e.getMessage() + " error loggeando");
 		    		HiloDaily.sleep(30000);
 		    	}
 	    	}
-	    	Error.agregar("Error logeando a DailyFX despues de 10 intentos, reiniciando");
+	    	Error.agregar("Error logeando a DailyFX despues de 100 intentos, reiniciando");
 	    	Error.reiniciar();
 	    }
 	    

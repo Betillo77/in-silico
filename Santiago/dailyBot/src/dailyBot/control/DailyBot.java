@@ -114,7 +114,7 @@ public class DailyBot
 					ponerUltimaActulizacion(System.currentTimeMillis());
 				}
 			}
-		}, 1200000);
+		}, 12000000);
 		hiloSSIVix.setName("Monitor VIX-SSI");
 		AdministradorHilos.agregarHilo(hiloSSIVix);
 		HiloDaily hiloPares = new HiloDaily(new RunnableDaily()
