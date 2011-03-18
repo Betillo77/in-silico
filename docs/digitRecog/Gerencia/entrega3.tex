@@ -580,26 +580,109 @@
 	\end{align*}
 	
 	\subsection{Valoración económica de las variables}
-	Las inversiones en obra física se muestran en la tabla \ref{tb:invFisica}, se decidió que la planta de producción de software y de alojamiento de los equipos servidores caben en un lote de aproximadamente $100m^2$, de los que se toma como área de máquinas un área de $10m \times 10m = 100m^2$ del segundo piso de la planta, en el tercer y cuarto piso de la planta están los desarrolladores de software y en el primero está la oficina de atención al cliente con un patio para el perro guardian. 
+	Las inversiones en obra física se muestran en la tabla \ref{tb:invFisica}, se decidió que la planta de producción de software y de alojamiento de los equipos servidores caben en un lote de aproximadamente $100m^2$, de los que se toma como área de máquinas un área de $10m \times 10m = 100m^2$ del segundo piso de la planta, en el tercer y cuarto piso de la planta están los desarrolladores de software y en el primero está la oficina de atención al cliente con un patio para el perro guardian y un baño. Para los valores residuales se asume una depreciación lineal con una duración del proyecto de 5 años.
+
+	Las inversiones en personal se muestran en la tabla \ref{tb:invPersonal}, se considero que el proyecto, al tener un alto porcentaje investigativo, necesita al menos dos analistas. Los tres programadores son necesarios para la programación del codigo y el mantenimiento y actualización del mismo durante los 5 años. La secretaria es necesaria para atender el telefono y a los clientes institucionales.
+
+	Las inversiones en maquinaria se muestran en la tabla \ref{tb:invMaquinaria}, los calculos se hicieron teniendo en cuenta un proyecto de 5 años. Cada miembro del personal tendra un computador, y habra un servidor para prestar el servicio. El perro guardian esta en esta tabla ya que esta parece ser la unica tabla en la que tiene sentido ponerlo. Toda la maquinaria es necesaria para el correcto funcionamiento del proyecto y por tanto se comprara al inicio del mismo. De igual manera, toda la maquinaria se tiene presupuestada para durar los 5 años que dura el proyecto y por tanto se vendera cuando termine el mismo \footnote{Por esta razón no estan las tablas calendario de inversiones e ingreso por ventas}.
+	
+	Las inversiones en materiales se muestran en la tabla \ref{tb:invMateriales}, los calculos se hicieron teniendo en cuenta el personal y los requerimientos de la prestación del servicio.
+
+	Las inversiones en insumos se muestran en la tabla \ref{tb:invInsumos}. Se calculo que los dispositivos utilizaran 1 kWh durante todo el año, los demas insumos se calcularon teniendo en cuenta el numero de personal. Las sillas y las mesas se clasificaron como insumos ya que se considero que esta era la categoria más logica para estos elementos.
 	
 	\begin{table}
 		\caption{Inversiones en obra física}
-		\begin{tabular}{ | p{3cm} | p{2cm} | p{2cm} | p{2cm} | p{2cm} | p{2cm} | }
+		\begin{tabular}{ | p{3cm} | p{1cm} | p{2.5cm} | p{2.5cm} | p{1cm} | p{2.2cm} | }
 		\hline
-		Item & Cantidad & Costo unitario & Costo total & Vida útil & Valor residual \\
+		Item & Cant. & Costo unit. & Costo total & Vida útil & Valor residual \\
 		\hline					
 		Lote & $100m^2$ & \$100.000 & \$10.000.000 & N/A & \$10.000.000 \\
 		\hline					
-		Planta & 1 & \$100.000.000 & \$100.000.000 & 20 años & \$80.000.000 \\
+		Planta & 1 & \$200.000.000 & \$200.000.000 & 20 años & \$150.000.000 \\
 		\hline
-		Caseta del perro & 1 & \$200.000 & \$200.000 & 10 años & \$10.000 \\ 
+		Caseta del perro & 1 & \$200.000 & \$200.000 & 10 años & \$100.000 \\ 
 		\hline
-		Cercos & $400m$ & \$5.000 & \$2.000.000 & 10 años & \$200.000 \\
+		Cercos & $400m$ & \$5.000 & \$2.000.000 & 10 años & \$1.000.000 \\
 		\hline
 		\end{tabular}
 		\label{tb:invFisica}
 	\end{table}
-	
+
+	\begin{table}
+		\caption{Inversiones en maquinaria}
+		\begin{tabular}{ | p{3cm} | p{1cm} | p{2.5cm} | p{2.5cm} | p{1cm} | p{2cm} | }
+		\hline
+		Maquina & Cant. & Valor unit. & Valor total & Vida útil & Valor residual \\
+		\hline					
+		Servidores & 1 & \$5.000.000 & \$5.000.000 & 7 años & \$2.142.857 \\
+		\hline					
+		Computadores & 5 & \$1.500.000 & \$7.500.000 & 5 años & \$0 \\
+		\hline
+		Impresoras & 1 & \$200.000 & \$200.000 & 5 años & \$0 \\ 
+		\hline
+		Routers & 1 & \$200.000 & \$200.000 & 5 años & \$0 \\
+		\hline
+		Ups & 2 & \$200.000 & \$400.000 & 10 años & \$200.000 \\
+		\hline
+		Perro & 1 & \$200.000 & \$200.000 & 10 años & \$100.000 \\
+		\hline
+		\end{tabular}
+		\label{tb:invMaquinaria}
+	\end{table}
+
+	\begin{table}
+		\caption{Inversiones en materiales}
+		\begin{tabular}{ | p{3cm} | p{1.5cm} | p{1.5cm} | p{2cm} | p{2cm} | }
+		\hline
+		Material & Unidad & Cantidad & Costo unitario & Costo total \\
+		\hline
+		Tinta & unid. & 10 & \$50.000 & \$500.000 \\ 
+		\hline					
+		Papeleria & hojas & 10000 & \$10 & \$100.000 \\
+		\hline
+		DVDs & unid. & 100 & \$1.000 & \$100.000 \\
+		\hline
+		USBs & unid. & 6 & \$50.000 & \$300.000 \\
+		\hline
+		\end{tabular}
+		\label{tb:invMateriales}
+	\end{table}
+
+	\begin{table}
+		\caption{Inversiones en personal}
+		\begin{tabular}{ | p{3cm} | p{2cm} | p{2cm} | p{2cm} | }
+		\hline
+		Cargo & Numero & Rem. unit. & Rem. total \\
+		\hline
+		Analista & 2 & \$2.500.000 & \$60.000.000 \\
+		\hline					
+		Programador & 3 & \$1.200.000 & \$43.200.000 \\
+		\hline
+		Secretaria & 1 & \$800.000 & \$9.600.000 \\
+		\hline
+		\end{tabular}
+		\label{tb:invPersonal}
+	\end{table}
+
+	\begin{table}
+		\caption{Inversiones en insumos}
+		\begin{tabular}{ | p{2.5cm} | p{1.5cm} | p{1.5cm} | p{2cm} | p{2cm} | }
+		\hline
+		Insumo & Unidad & Cantidad & Costo unitario & Costo total \\
+		\hline					
+		Energia & kWh & 8760 & \$250 & \$2.190.000 \\
+		\hline					
+		Agua potable & $m^{3}$ & 1825 & \$2.000 & \$3.650.000 \\
+		\hline
+		Papel h. & rollos & 50 & \$1.000 & \$50.000 \\
+		\hline
+		Mesas & unid. & 6 & \$150.000 & \$900.000 \\
+		\hline
+		Sillas & unid. & 5 & \$50.000 & \$250.000 \\
+		\hline
+		\end{tabular}
+		\label{tb:invInsumos}
+	\end{table}
 		
 	\subsection{Desiciones de tamaño}
 	
