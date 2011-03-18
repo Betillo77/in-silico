@@ -37,6 +37,9 @@
 % inserción url's notas de pie.
 \usepackage{url}
 
+%otras
+\usepackage{verbatim}
+
 % Paquetes de la AMS:
 \usepackage{amsmath, amsthm, amsfonts}
 \addto\captionsspanish{\def\refname{\textsc{Bibliografía}}}
@@ -63,8 +66,8 @@
 \begin{document}
 \portada
 
-	%\clearpage
 	\tableofcontents
+	\clearpage
 	
 	\begin{center}
 	\section{Formulación del problema}
@@ -293,10 +296,10 @@
 	Para el proyecto, se plantea que se pueden tener líneas para clientes institucionales y para individuales:
 
 	\subsubsection{Clientes Institucionales}
-	A corto plazo, el mercado de clientes institucionales es el mas llamativo. Instituciones como el INCI en Colombia y la ONCE en españa, tienen recursos para invertir en tecnología de asistencia a personas invidentes. Una ventaja adicional que tiene atender a este mercado, es que los usuarios de los servicios de estas instituciones, al conocer el servicio prestado por la empresa, pueden adquirir este servicio como individuos. Así, al atender a este mercado se podría abrir el mercado de clientes individuales.
+	A corto plazo, el mercado de clientes institucionales es el mas llamativo. Instituciones como el INCI en Colombia y la ONCE en España, tienen recursos para invertir en tecnología de asistencia a personas invidentes. Una ventaja adicional que tiene atender a este mercado, es que los usuarios de los servicios de estas instituciones, al conocer el servicio prestado por la empresa, pueden adquirir este servicio como individuos. Así, al atender a este mercado se podría abrir el mercado de clientes individuales.
 
 	\subsubsection{Clientes individuales}
-	Este mercado es dificil de abrir al corto plazo, pero al ser muchas mas personas las usuarias del servicio se convierten en un mercado muy prometedor. Además, no solo hay que limitarse al mercado nacional, y la tendencia en el mundo ha mostrado que las personas invidentes se integran cada vez mas a la sociedad.	
+	Este mercado es difícil de abrir al corto plazo, pero al ser muchas mas personas las usuarias del servicio se convierten en un mercado muy prometedor. Además, no solo hay que limitarse al mercado nacional, y la tendencia en el mundo ha mostrado que las personas invidentes se integran cada vez mas a la sociedad.	
 	
 	\begin{table}
 		\caption{Análisis histórico, situación vigente en el submercado de proveedores}
@@ -305,7 +308,7 @@
 		Situación & Análisis \\
 		\hline					
 		Análisis histórico & 
-		Haciendo un análisis en retrospectiva, hace unos 20 años los proveedores de equipos de cómputo para atender multiples usuarios eran muy pocos, vendían sus equipos a costos muy elevados y la mayoría no tenían oficinas en el país. Por tanto los costos de los equipos era mucho mas elevado, además de los costos y riesgos de información, y la falta de personal técnico que pudiera utilizar esos equipos y prestarles el debido mantenimiento. \\
+		Haciendo un análisis en retrospectiva, hace unos 20 años los proveedores de equipos de cómputo para atender múltiples usuarios eran muy pocos, vendían sus equipos a costos muy elevados y la mayoría no tenían oficinas en el país. Por tanto los costos de los equipos era mucho mas elevado, además de los costos y riesgos de información, y la falta de personal técnico que pudiera utilizar esos equipos y prestarles el debido mantenimiento. \\
 		\hline
 		Situación Vigente &
 		En la actualidad, la cantidad de proveedores de equipos ha aumentado y han bajado los precios para llegar a los mercados de la pequeña y mediana empresa. Dado que el mercado (compradores y proveedores) de equipos es mas grande, hay empresas locales que importan grandes cantidades de equipos, teniendo menos costos, mas técnicos especializados y mejor servicio. \\
@@ -330,7 +333,7 @@
 		En la actualidad, existen productos tecnológicos que pueden competir con nuestro producto. Entre estos productos de encuentran las impresoras y pantallas Braille dinámicas, lectores de pantalla de computadores y lectores de texto basados en computador de escritorio utilizando Scanner. Aunque el director nacional del INCI (Instituto Nacional de Ciegos), ha confirmado que en el país no existe ningún sistema de este tipo para dispositivos móviles. \\
 		\hline
 		Situación proyectada &
-		En un futuro cercano no se ven evidencias de que nuevas empresas quieran entrar a competir en nuestro servicio, al menos a nivel nacional. De hecho en la actualidad los competidores no son empresas nacionales, y sus clientes son insituciones y no personas individuales. (Fuente, Director del INCI)\\
+		En un futuro cercano no se ven evidencias de que nuevas empresas quieran entrar a competir en nuestro servicio, al menos a nivel nacional. De hecho en la actualidad los competidores no son empresas nacionales, y sus clientes son instituciones y no personas individuales. (Fuente, Director del INCI)\\
 		\hline
 		\end{tabular}
 		\label{compHistorico}
@@ -343,17 +346,17 @@
 		Situación & Análisis \\
 		\hline					
 		Análisis histórico & 
-		El primer celular comercial fue lanzado en el año de 1979 en Japón, a partir de ese momento el uso de celulares se empezo a masificar poco a poco. Sin embargo, los celulares tuvieron una mayor penetración en las ciudades y areas desarrolladas, en las areas rurales la penetración siempre fue mucho menor.
+		El primer celular comercial fue lanzado en el año de 1979 en Japón, a partir de ese momento el uso de celulares se empezó a masificar poco a poco. Sin embargo, los celulares tuvieron una mayor penetración en las ciudades y áreas desarrolladas, en las áreas rurales la penetración siempre fue mucho menor.
 		\\
 		\hline
 		Situación vigente &
-		Hoy en día los celulares son ubicuos en los paises desarrollados, e incluso en el mundo la penetración es del 75\%. Esto puede ser apreciado en la figura \ref{fig:usocel1}.
-		Sin embargo los celulares inteligentes (smartphones) todavia no son muy utilizados, pues solo aproximadamente 200 millones de personas los utilizan.
+		Hoy en día los celulares son ubicuos en los países desarrollados, e incluso en el mundo la penetración es del 75\%. Esto puede ser apreciado en la figura \ref{fig:usocel1}.
+		Sin embargo los celulares inteligentes (smartphones) todavía no son muy utilizados, pues solo aproximadamente 200 millones de personas los utilizan.
 		 \\
 		\hline
 		Situación proyectada &
-		Se espera que el mercado de los celulares continue hasta el punto que practicamente todos los habitantes del planeta poseean un celular. La tendencia de los celulares
-		inteligentes es a masificarse, es por ello que las compañias de tecnologia más grandes del mundo estan promocionandolos mucho, incluso de una manera no justificada
+		Se espera que el mercado de los celulares continúe hasta el punto que prácticamente todos los habitantes del planeta posean un celular. La tendencia de los celulares
+		inteligentes es a masificarse, es por ello que las compañías de tecnología más grandes del mundo están promocionándolos mucho, incluso de una manera no justificada
 		por la demanda actual, por cuanto esperan que este sector les de muchas ganancias en el futuro.
 		 \\
 		\hline
@@ -377,13 +380,13 @@
 		Situación & Análisis \\
 		\hline					
 		Análisis histórico & 
-		En el pasado las personas invidentes se resagaban del resto de la sociedad, dado que no podian desempeñar las mismas labores y escribir de la misma forma que el resto de las personas. La sociedad tampoco les brindaba oportunidades a las personas invidentes. \\
+		En el pasado las personas invidentes se rezagaban del resto de la sociedad, dado que no podían desempeñar las mismas labores y escribir de la misma forma que el resto de las personas. La sociedad tampoco les brindaba oportunidades a las personas invidentes. \\
 		\hline
 		Situación Vigente &
 		El nivel de oportunidades para las personas invidentes ha mejorado, la legislación colombiana proteje el derecho a la igualdad de las personas con discapacidades brindándoles ventajas. En muchos casos, el gobierno ofrece beneficios a las empresas que contraten personas con discapacidades y se aumenta la inclusión en la sociedad; aunque la diferencia de oportunidades es aun alta con respecto al resto de la sociedad. Las instituciones como el INCI, han adquirido tecnologías que les permita a las personas invidentes tener acceso a los documentos escritos en texto común. \\
 		\hline
 		Situación proyectada &
-		Las personas invidentes se van a vincular cada vez mas en la sociedad, y necesitarán tecnología que les permita leer documentos en formatos legibles por el resto de las personas. También crecerá la tendencia de el nivel de educación alcancado por las personas invidentes y las instituciones educativas necesitarán también esta tecnología, como ha mostrado la tendencia hasta el momento en el INCI.
+		Las personas invidentes se van a vincular cada vez mas en la sociedad, y necesitarán tecnología que les permita leer documentos en formatos legibles por el resto de las personas. También crecerá la tendencia de el nivel de educación alcanzado por las personas invidentes y las instituciones educativas necesitarán también esta tecnología, como ha mostrado la tendencia hasta el momento en el INCI.
 		 \\
 		\hline
 		\end{tabular}
@@ -400,10 +403,10 @@
 		En el mercado externo, muchos gobiernos en el pasado han dado beneficios a las personas invidentes que les ha permitido tener recursos para hacer sus propias compras. Como un ejemplo particular, a la ONCE (Organización Nacional de Ciegos de España) se la adjudico una lotería. \\
 		\hline
 		Situación Vigente &
-		Algunas compañías extrangeras se dedican a producir soluciones para personas invidentes, y no solamente compañías de tecnología, pero que cuentan con gran apoyo de los estados. Por ejemplo hay compañías dedicadas a entrenar perros para asistir a las personas invidentes, y el entrenamiento de estos animales es muy costoso dado que se necesita personal altamente capacitado; ya que la persona invidente le confía la vida al animal y por tanto se tiene una gran responsabilidad. \\
+		Algunas compañías extranjeras se dedican a producir soluciones para personas invidentes, y no solamente compañías de tecnología, pero que cuentan con gran apoyo de los estados. Por ejemplo hay compañías dedicadas a entrenar perros para asistir a las personas invidentes, y el entrenamiento de estos animales es muy costoso dado que se necesita personal altamente capacitado; ya que la persona invidente le confía la vida al animal y por tanto se tiene una gran responsabilidad. \\
 		\hline
 		Situación proyectada &
-		Se espera que la tendencia en el exterior continue, así como se espera que incremente la demanda al darle mayores recursos a las asociaciones de personas invidentes, también se espera que incremente la oferta de servicios para este grupo poblacional. \\
+		Se espera que la tendencia en el exterior continúe, así como se espera que incremente la demanda al darle mayores recursos a las asociaciones de personas invidentes, también se espera que incremente la oferta de servicios para este grupo poblacional. \\
 		\hline
 		\end{tabular}
 		\label{extHistorico}
@@ -412,11 +415,11 @@
 	\subsection{Estrategia comercial}
 	 
 	\subsubsection{Producto}
-	El producto que se va a ofrecer es en realidad un servicio de reconocimiento optico de caracteres para personas invidentes. Este servicio incluye una aplicación para distintos
-	sistemas operativos de telefonos mobiles, la cual no tendra costo, pues se cobrara el servicio.
+	El producto que se va a ofrecer es en realidad un servicio de reconocimiento óptico de caracteres para personas invidentes. Este servicio incluye una aplicación para distintos
+	sistemas operativos de teléfonos móviles, la cual no tendrá costo, pues se cobrara el servicio.
 
 	\subsubsection{Precio}
-	Para determinar el precio se va a hacer una encuesta que permita establecer los parametros A1-A4, Y, Pb, Pub, de la siguiente ecuación:
+	Para determinar el precio se va a hacer una encuesta que permita establecer los parámetros A1-A4, Y, Pb, Pub, de la siguiente ecuación:
 
 	\begin{equation}
 	Q = A1 \times P + A2 \times Y + A3 \times Pb + A4 \times Pub 
@@ -426,7 +429,7 @@
 
 	\begin{itemize}
 	      \item $Q$ : cantidad demandada en el periodo
-	      \item $A1 A4$ : parametros de la demanda
+	      \item $A1 A4$ : parámetros de la demanda
 	      \item $Y$ : ingresos per capita
 	      \item $Pb$ : población
 	      \item $Pub$ : publicidad
@@ -439,8 +442,8 @@
 	P = -(A2 \times Y + A3 \times Pb + A4 \times Pub  - A1 \times Cv) / (2 \times A1)
 	\end{equation}
 
-	En esta ecuación el unico parametro nuevo es Cv, que es el costo variable. En el caso del software, y en especial del software para telefonos inteligentes el costo variable
-	depende del precio. Esto es debido a que los productos se comercializan en mercados virtuales creados para telefonos inteligentes como el Android Market y el Apple App Store.
+	En esta ecuación el único parámetro nuevo es Cv, que es el costo variable. En el caso del software, y en especial del software para teléfonos inteligentes el costo variable
+	depende del precio. Esto es debido a que los productos se comercializan en mercados virtuales creados para teléfonos inteligentes como el Android Market y el Apple App Store.
 	Estos mercado cobran una comisión la cual se llamara Cm, y sera un numero entre 0 y 1 que indica el porcentaje de comisión que cobra el distribuidor (sea Apple, Google,
 	o cualquier otro) sobre el producto. Ingresando esta nueva variable la ecuación queda:
 
@@ -457,36 +460,36 @@
 	En esta ecuación todas las variables son conocidas, pues se van a obtener de la siguiente  manera:
 
 	\begin{itemize}
-	      \item $A1$ : A partir de la pregunta 5 de la encuesta. Dada la cantidad de personas que esten dispuestas a pagar en cada uno de los rangos, se determinara, a traves de regresión
-		           lineal, la variación en la demanda con respecto al precio. Esta variación, que en realidad es la pendiente de la grafica de esa pregunta, seria A1.
-	      \item $A2$ : A partir de las preguntas 4 y 5 de la encuesta. Dado el numero de personas que estan dispuestas a pagar por el servicio en cada uno de los rangos de ingreso per              	     capita, se puede estimar a traves de una regresión lineal que tanto varia la demanda con respecto al ingreso per capita de los encuestados. Dicha pendiente seria A2.
+	      \item $A1$ : A partir de la pregunta 5 de la encuesta. Dada la cantidad de personas que estén dispuestas a pagar en cada uno de los rangos, se determinara, a través de regresión
+		           lineal, la variación en la demanda con respecto al precio. Esta variación, que en realidad es la pendiente de la gráfica de esa pregunta, seria A1.
+	      \item $A2$ : A partir de las preguntas 4 y 5 de la encuesta. Dado el numero de personas que están dispuestas a pagar por el servicio en cada uno de los rangos de ingreso per              	     capita, se puede estimar a través de una regresión lineal que tanto varia la demanda con respecto al ingreso per capita de los encuestados. Dicha pendiente seria A2.
 	      \item $A3$ : Dado que esta constante especifica que tanto varia la demanda con respecto al tamaño de la población, se utilizara la pregunta 5 de la encuesta para determinar que
-			   porcentaje de los encuestados estarian dispuestos a pagar por el servicio, ademas tambien se utilizaran las preguntas 1 y 2 para filtrar las personas invidentes que
-		           estarian dispuestas a pagar por el servicio pero no tienen un celular con camara.
-	      \item $A4$ : En este proyecto no se va a considerar la publicidad, ya que la publicidad viene implicita en la comisión, pues los proveedores publicitan el producto para ganar 
+			   porcentaje de los encuestados estarían dispuestos a pagar por el servicio, además también se utilizaran las preguntas 1 y 2 para filtrar las personas invidentes que
+		           estarían dispuestas a pagar por el servicio pero no tienen un celular con cámara.
+	      \item $A4$ : En este proyecto no se va a considerar la publicidad, ya que la publicidad viene implícita en la comisión, pues los proveedores publicitan el producto para ganar 
 		           la comisión.
-	      \item $Y$ : Se utilizara el valor del ingreso per capita de la persona invidente promedio suministrado por el Dane.
-	      \item $Pb$ : Se utilizara la población total de personas invidentes en nuestro país, segun el Dane.
+	      \item $Y$ : Se utilizara el valor del ingreso per capita de la persona invidente promedio suministrado por el DANE.
+	      \item $Pb$ : Se utilizara la población total de personas invidentes en nuestro país, según el DANE.
 	      \item $Pub$ : Igual que $A4$
 	      \item $Cm$ : Comisión cobrada por cada uno de los proveedores. Dado que cada proveedor cobra una comisión distinta, se utilizara un precio diferenciado, por cuanto los sistemas
-		     operativos de cada proveedor tambien son diferenciados.
+		     operativos de cada proveedor también son diferenciados.
 	\end{itemize}
 
 	\subsubsection{Promoción}
-	El producto se dara con descuento en instituciones de educación, tanto superior, como media y basica. Esto con el fin de abarcar mercados poco accesibles, pero ademas, el precio sera
+	El producto se dará con descuento en instituciones de educación, tanto superior, como media y básica. Esto con el fin de abarcar mercados poco accesibles, pero además, el precio sera
 	mucho menor para beneficiar a los estudiantes de bajos recursos.
 	
 	\subsubsection{Distribución}
-	El producto se distribuira a traves de internet, en los mercados virtuales para aplicaciones de telefonos inteligentes. Tambien se intentaran hacer acuerdos con compañias celulares y
+	El producto se distribuirá a través de internet, en los mercados virtuales para aplicaciones de teléfonos inteligentes. También se intentaran hacer acuerdos con compañías celulares y
 	asociaciones como el INCI.
 
 	\subsection{Análisis del medio}
 
 	\subsubsection{Factores socioculturales}
-	Entre los factores socioculturales que afectan mas al proyecto, estan el idioma y alfabeto de la población de destino. Dado que el objetivo es leer el texto para el usuario, es crítico que el lenguaje sea soportado por la aplicación y que el alfabeto pueda ser reconocido por el aplicativo responsable de esto.
+	Entre los factores socioculturales que afectan mas al proyecto, están el idioma y alfabeto de la población de destino. Dado que el objetivo es leer el texto para el usuario, es crítico que el lenguaje sea soportado por la aplicación y que el alfabeto pueda ser reconocido por el aplicativo responsable de esto.
 	
 	\subsubsection{Factores político-legales}
-	Los factores politico-legales solo podrian tener incidencia positiva. Esto es debido a que la constitución politica de Colombia establece que el estado debe promoveer programas para
+	Los factores político-legales solo podrían tener incidencia positiva. Esto es debido a que la constitución política de Colombia establece que el estado debe promover programas para
 	garantizar una igualdad real, es decir, programas que beneficien a los más desfavorecidos, como son las personas con discapacidades visuales. El gobierno entonces promueve
 	constantemente proyectos como este, y por tanto se puede buscar una financiación parcial del proyecto por parte del estado.
 	
@@ -494,7 +497,7 @@
 	Entre los factores tecnológicos mas importantes a tener en cuenta, se encuentra la portabilidad del proyecto. Es claro que la tecnología cambia constantemente y es muy importante que el aplicativo se pueda portar rápidamente a las plataformas de software nuevas para mantener a la vanguardia de la tecnología. Es también importante que el servicio sea escalable, es decir, que cuando entren mas usuarios la calidad del servicio se pueda mantener sin incrementar mucho los costos de brindar el servicio.
 	
 	\subsection{Determinación de la demanda}
-	Para determinar la demanda, se escogió como instrumento de recolección de información la encuesta. En la figura \ref{fig:encuesta} se presenta el instrumento. El instrumento puede aplicarse virtualmente al ser una página web, y con los datos recolectados se calculan los parámetros del mercado como se mecionó en la sección de estrategia comercial. Se determinan los coeficientes $A_1$, $A_2$ y $A_3$ realizando una regresión lineal sobre los datos tomados en la encuesta y tomando el coeficiente $a$ como mejor estimador de el parámetro a determinar. Se debe recordar que una regresión lineal es un método que aproxima los puntos a una función lineal $f(x) = ax + b$, tal que se minimize el error al cuadrado. A este método se le conoce como minimos cuadrados.
+	Para determinar la demanda, se escogió como instrumento de recolección de información la encuesta. En la figura \ref{fig:encuesta} se presenta el instrumento. El instrumento puede aplicarse virtualmente al ser una página web, y con los datos recolectados se calculan los parámetros del mercado como se mencionó en la sección de estrategia comercial. Se determinan los coeficientes $A_1$, $A_2$ y $A_3$ realizando una regresión lineal sobre los datos tomados en la encuesta y tomando el coeficiente $a$ como mejor estimador de el parámetro a determinar. Se debe recordar que una regresión lineal es un método que aproxima los puntos a una función lineal $f(x) = ax + b$, tal que se minimice el error al cuadrado. A este método se le conoce como mínimos cuadrados.
 	
 	\begin{figure}[htb]
 	\begin{center}
@@ -508,8 +511,8 @@
 	\subsection{Técnica de Proyección de mercado}
 	Después de estimar los 7 factores que influyen en las técnicas de proyección de mercado y los 5 criterios de validación, se llegó a la conclusión que el modelo causal es el mas apropiado. Las razones para la decisión son:
 	\begin{itemize}
-		\item No se han encontrado servicios iguales al servicio prestado actualmente, y no se encuentran tampoco servicios similares en el país. Por tanto un análisis histórico pierde validez, y el análisis de series de tiempo no tiene la presición adecuada.
-		\item Se encuentran numerosas estadísticas de entidades fiables como el DANE y el INCI que permiten relacionar las variables del mercado. Y una vez se tienen modelos que permiten relacionar las variables se puede hacer análisis matemáticos sobre estas relaciónes para encontrar parámentros óptimos. Ya sea para minimizar el error en los modelos o para optimizar la ganancia.
+		\item No se han encontrado servicios iguales al servicio prestado actualmente, y no se encuentran tampoco servicios similares en el país. Por tanto un análisis histórico pierde validez, y el análisis de series de tiempo no tiene la precisión adecuada.
+		\item Se encuentran numerosas estadísticas de entidades fiables como el DANE y el INCI que permiten relacionar las variables del mercado. Y una vez se tienen modelos que permiten relacionar las variables se puede hacer análisis matemáticos sobre estas relaciones para encontrar parámetros óptimos. Ya sea para minimizar el error en los modelos o para optimizar la ganancia.
 		\item Dado que existen fuentes secundarias confiables, el costo de la recolección de datos no será tan alto.
 		\item Al revisar el estado del ciclo de vida en el que se encuentra el producto, en el cual aun no se posee experiencia, no se puede aplicar el método de pronósticos visionarios.
 	\end{itemize}
@@ -517,6 +520,7 @@
 	
 	\clearpage
 	
+	\begin{comment}
 	\begin{center}
 	\section{Estudio técnico}
 	\end{center}
@@ -528,6 +532,7 @@
 	\subsection{Factores cuantitativos}
 	
 	\clearpage
+	\end{comment}
 
 	\begin{center}
 	\section{Consideraciones adicionales}
