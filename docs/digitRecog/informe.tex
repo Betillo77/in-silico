@@ -205,7 +205,7 @@ Las ventajas y desventajas de las redes neuronales son:
 
 \section{Algunos elementos de probabilidad}
 
-Un experimento aleatorio es aquel del que no se conoce el resultado con certeza\footnote{Ross, S.M. Introduction to Probability and Statistics for Engineers and Scientists. New York: Wiley 1987.}. El conjunto de todos los posibles resultados se llama espacio muestral $S$, y a cualquier subconjunto de $S$ se le llama evento $E$. Se puede interpretar la probabilidad como una frecuencia: cuando un experimiento es repetido continuamente bajo las mismas condiciones, la proporción de veces que ocurre el evento $E$ en el tiempo se aproxima a un valor constante; a esto lo denotamos $P(E)$ e indica la probabilidad que el evento $E$ ocurra.
+Un experimento aleatorio es aquel del que no se conoce el resultado con certeza \footnote{Ross, S.M. Introduction to Probability and Statistics for Engineers and Scientists. New York: Wiley 1987.}. El conjunto de todos los posibles resultados se llama espacio muestral $S$, y a cualquier subconjunto de $S$ se le llama evento $E$. Se puede interpretar la probabilidad como una frecuencia: cuando un experimiento es repetido continuamente bajo las mismas condiciones, la proporción de veces que ocurre el evento $E$ en el tiempo se aproxima a un valor constante; a esto lo denotamos $P(E)$ e indica la probabilidad que el evento $E$ ocurra. De igual manera, una variable aleatoria es aquella que puede tomar cualquier valor en distintos experimentos, es decir, su valor no se puede determinar con certeza.
 
 \subsection{Probabilidad condicional y el teorema de Bayes}
 
@@ -239,10 +239,57 @@ Entonces, reemplazando Eq.\eqref{bayesDenominator} en Eq.\eqref{bayes}, tenemos:
 	\end{equation}
 	
 \subsection{La esperanza matemática}
-Supongamos que se realiza un experimento sobre una variable aleatoria $x$ un número infinito de veces, entonces la esperanza de la variable $x$ es el promedio del valor de $x$ en los infinitos experimentos y se denota $E[x]$ (Que se lee valor esperado de $x$ o esperanza). El concepto de esperanza es importante en la probabilidad porque además de tener usualmente un significado de interés en la variable aleatoria estudiada, se espera que independiente de la distribución de probabilidad que sigue la variable $x$, la esperanza de $x$ converge a un valor constante si las condiciones del experimento no cambian.
+
+Supongamos que se realiza un experimento sobre una variable aleatoria $x$ un número infinito de veces, entonces la esperanza de la variable $x$ es el promedio del valor de $x$ en los infinitos experimentos y se denota $E[x]$ (que se lee valor esperado de $x$ o esperanza). El concepto de esperanza es importante en la probabilidad porque además de tener usualmente un significado de interés en la variable aleatoria estudiada, se espera que independiente de la distribución de probabilidad que sigue la variable $x$, la esperanza de $x$ converge a un valor constante si las condiciones del experimento no cambian. Matematicamente el valor de la esperanza de una variable aleatoria $x$ es el siguiente:
+
+	\[ E(X) = \left\{ \begin{array}{ll}
+		\sum_{i}{x_iP(x_i)}   & \mbox{si X es una variable discreta} \\
+		\int {xp(x)dx} & \mbox{si X es una variable continua}
+	\end{array} \right. \]
+
+La esperanza es entonces un promedio ponderado, en donde el peso de cada valor tomado es la probabilidad de que la variable X tome dicho valor. Suponiendo que $X$ y $Y$ son dos variables aleatorias, la esperanza cumpla las siguientes propiedades:
+
+	\[E[aX + b] = aE[X] + b\]
+	\[E[X + Y] = E[X] + E[Y]\]
+
+La esperanza de toda función g para la cual $imagen(g) \in \Re$ es:
+
+	\[ E[g(X)] = \left\{ \begin{array}{ll}
+		\sum_{i}{g(x_i)P(x_i)}   & \mbox{si X es una variable discreta} \\
+		\int {g(x)p(x)dx} & \mbox{si X es una variable continua}
+	\end{array} \right. \]
+
+Una función especial se da cuando $g(X) = x^n$:
+
+	\[ E[X^n] = \left\{ \begin{array}{ll}
+		\sum_{i}{x_i^nP(x_i)}   & \mbox{si X es una variable discreta} \\
+		\int {x^np(x)dx} & \mbox{si X es una variable continua}
+	\end{array} \right. \]
+
+Esta función se denomina el enésimo momento de X. El primer momento, por ejemplo, es la media.
+
+\subsection{Desviación estandar, varianza y covarianza}
+
+La varianza mide que tanto varia X alrededor de el valor esperado, si X es una variable aleatoria entonces la varianza se define como el segundo momento menos el cuadrado del primer momento:
+
+	\[Var(X) = E[X^2] - E[X]^2 = E[X^2] - \mu^2\]
+
+La desviación estandar es la raiz cuadrada de la varianza, y como se expresa en las mismas unidades de X entonces es más utilizada que la varianza, pues puede ser interpretada de una manera más facil. La desviación estandar se denota usualmente con el simbolo $\sigma$.
+
+La covarianza indica la relación que existe entre dos variables aleatorias X y Y. Si la ocurrencia de X hace más probable la occurrencia de Y, entonces la covarianza es positiva. Si por el contrario la ocurrencia de X hace menos probable la ocurrencia de Y, entonces la covarianza es negativa. Si las dos variables no estan relacionadas, entonces la covarianza sera 0. La covarianza se define matematicamente como:
+
+	\[Cov(X, Y) = E[XY] - mu_Xmu_Y\]
+
 
 \subsection{Distribución de probabilidad}
-Una distribución de probabilidad es ...
+
+Una distribución de probabilidad de una variable aleatoria X es una función que asigna una probabilidad a cada posible valor que puede tomar la variable X. Cuando X es una variable discreta, la función definira un valor de probabilidad para cada uno de los valores que puede tomar, sin embargo, cuando la variable X es continua, existen infinitos valores posible que puede tomar y por tanto la probabilidad de obtener un valor especifico es 0. Por esta razón tiene poco sentido hablar de la probabilidad de un valor especifico y la distribución de probabilidad se convierte en una función de distribución, la cual define, para cada real x, la probabilidad de que la variable X sea menor o igual a x. En esto caso la distribución de probabilidad D se definiria matematicamente como:
+
+	\[D(x) = P(X \leq x) = \int_{-\infty}^x{f(t)dt}\]
+
+Donde f(t) es una función de densidad continua, que debe ser positiva para todo t, y que debe cumplir la propiedad:
+
+	\[\int_{-\infty}^{\infty}{f(t)dt} = 1\]
 	
 \subsection{La distribución normal}
 
@@ -396,5 +443,11 @@ Incorporar significa publicar o re-publicar un Documento, como un todo o parcial
 Un sitio CMM es elegible para re-licenciamiento si es licenciado bajo esta Licencia, y si todos los trabajos que fueron publicados originalmente bajo esta Licencia en algún otro lugar diferente a esta CMM, y subsecuentemente incorporado como un todo o parcialmente a la CMM, (1)no tenía textos de cubierta o secciones invariantes, y (2) fueron incorporados previo a Noviembre 1, 2008.
 
 El operador de un Sitio CMM puede volver a publicar una CMM contenida en el sitio bajo CC-BY-SA en el mismo sitio en cualquier momento antes de Agosto 1, 2009, siempre que la CMM sea elegible para re-licenciamiento.
+
+\chapter{Bibliografía}
+
+Everitt, B.S. (2006) The Cambridge Dictionary of Statistics, Third Edition. pp. 313–314. Cambridge University Press, Cambridge. ISBN 0521690277
+
+Weisstein, Eric W. "Probability Density Function." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/ProbabilityDensityFunction.html
 
 \end{document}
