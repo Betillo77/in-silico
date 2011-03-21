@@ -314,7 +314,7 @@
 		En la actualidad, la cantidad de proveedores de equipos ha aumentado y han bajado los precios para llegar a los mercados de la pequeña y mediana empresa. Dado que el mercado (compradores y proveedores) de equipos es mas grande, hay empresas locales que importan grandes cantidades de equipos, teniendo menos costos, mas técnicos especializados y mejor servicio. \\
 		\hline
 		Situación proyectada &
-		La tendencia es que cada vez es mas fácil conseguir equipos y son mas económicos. Esto plantéa un escenario próspero en cuanto a la disponibilidad de los recursos materiales necesarios para el desarrollo del proyecto. Hablando cuantitativamente, la ley de Moore establece que cada 3 años de duplica la capacidad de los equipos de cómputo (cabe anotar que Moore es ejecutivo de la compañía multinacional Intel, y que su ley se ha mantenido hasta el momento). \\
+		La tendencia es que cada vez es mas fácil conseguir equipos y son mas económicos. Esto plantea un escenario próspero en cuanto a la disponibilidad de los recursos materiales necesarios para el desarrollo del proyecto. Hablando cuantitativamente, la ley de Moore establece que cada 3 años de duplica la capacidad de los equipos de cómputo (cabe anotar que Moore es ejecutivo de la compañía multinacional Intel, y que su ley se ha mantenido hasta el momento). \\
 		\hline
 		\end{tabular}
 		\label{provHistorico}
@@ -538,7 +538,7 @@
 	\end{equation}
 	Dado que los equipos no tendrán la misma carga todo el tiempo, sino que tendrán momentos de horas pico y de baja carga, se asume el modelo general de ingeniería para estos procesos en el que la carga se modela como $y=\sin(x)$ en el intervalo $[0,\frac{\pi}{2}]$, y se toma como valor promedio la integral de la función $y$ dividida entre el periodo; se a demostrado que independiente del periodo la función es $\frac{1}{\sqrt{2}}$. Lo que quiere decir que asumiendo este modelo y un uso eficiente de los recursos, se puede concluir que el porcentaje promedio de uso óptimo de la capacidad de prestación del servicio sin disminuir la calidad esta dado por:
 	\[ \mu_p=\frac{1}{\pi}\int_0^{\frac{\pi}{2}}{\sin(x)dx} = \frac{1}{\sqrt{2}} = 70.71\% \]
-	Para calcular $I_p$ y $S_p$, se asume que se conoce el costo del Internet en un mes $I_m$ y el del mantenimiento y operación de los servicios de cómputo por mes $S_m$. Este costo $S_m$ contendrá el costo de la energía eléctrica requerida por los equipos de cómputo, así como su mantenimiento y operación. Además se debe conocer el tiempo promedio que toma responder una solicitud $t_p$, donde $t_p$ se mide en milisegundos. Entonces, dado que un mes tiene aproximadamente $2.6 \times 10^9$ milisegundos, entoces $I_p$ y $S_p$ son:
+	Para calcular $I_p$ y $S_p$, se asume que se conoce el costo del Internet en un mes $I_m$ y el del mantenimiento y operación de los servicios de cómputo por mes $S_m$. Este costo $S_m$ contendrá el costo de la energía eléctrica requerida por los equipos de cómputo, así como su mantenimiento y operación. Además se debe conocer el tiempo promedio que toma responder una solicitud $t_p$, donde $t_p$ se mide en milisegundos. Entonces, dado que un mes tiene aproximadamente $2.6 \times 10^9$ milisegundos, entonces $I_p$ y $S_p$ son:
 	\begin{align}
 		I_p &= \frac{1}{2.6 \times 10^9 \times \mu_p}I_m \\
 		S_p &= \frac{1}{2.6 \times 10^9 \times \mu_p}S_m
@@ -572,7 +572,7 @@
 		I_0(C_p) = K_sS_p = K_s((S_p+I_p) - I_p) = K_s(C_p - I_p)
 		\label{eq:InvCost}
 	\end{equation}
-	Donde $K_s$ es una constante que relaciona el costo inicial de los equipos y con el costo de mantenimiento, tal que $K_s=\frac{I_0}{S_p}$. Entonces si $n$ es el número de meses que dura el proyecto, por lange tenemos:
+	Donde $K_s$ es una constante que relaciona el costo inicial de los equipos y con el costo de mantenimiento, tal que $K_s=\frac{I_0}{S_p}$. Entonces si $n$ es el número de meses que dura el proyecto, por Lange tenemos:
 	\begin{align*}
 		min\{D&=I_o(C)+nC\} \\
 		\frac{dI_o}{dC}&=-n \\
@@ -580,15 +580,15 @@
 	\end{align*}
 	
 	\subsection{Valoración económica de las variables}
-	Las inversiones en obra física se muestran en la tabla \ref{tb:invFisica}, se decidió que la planta de producción de software y de alojamiento de los equipos servidores caben en un lote de aproximadamente $100m^2$, de los que se toma como área de máquinas un área de $10m \times 10m = 100m^2$ del segundo piso de la planta, en el tercer y cuarto piso de la planta están los desarrolladores de software y en el primero está la oficina de atención al cliente con un patio para el perro guardian y un baño. Para los valores residuales se asume una depreciación lineal con una duración del proyecto de 5 años.
+	Las inversiones en obra física se muestran en la tabla \ref{tb:invFisica}, se decidió que la planta de producción de software y de alojamiento de los equipos servidores caben en un lote de aproximadamente $100m^2$, de los que se toma como área de máquinas un área de $10m \times 10m = 100m^2$ del segundo piso de la planta, en el tercer y cuarto piso de la planta están los desarrolladores de software y en el primero está la oficina de atención al cliente con un patio para el perro guardián y un baño. Para los valores residuales se asume una depreciación lineal con una duración del proyecto de 5 años.
 
-	Las inversiones en personal se muestran en la tabla \ref{tb:invPersonal}, se considero que el proyecto, al tener un alto porcentaje investigativo, necesita al menos dos analistas. Los tres programadores son necesarios para la programación del codigo y el mantenimiento y actualización del mismo durante los 5 años. La secretaria es necesaria para atender el telefono y a los clientes institucionales.
+	Las inversiones en personal se muestran en la tabla \ref{tb:invPersonal}, se considero que el proyecto, al tener un alto porcentaje investigativo, necesita al menos dos analistas. Los tres programadores son necesarios para la programación del código y el mantenimiento y actualización del mismo durante los 5 años. La secretaria es necesaria para atender el teléfono y a los clientes institucionales.
 
-	Las inversiones en maquinaria se muestran en la tabla \ref{tb:invMaquinaria}, los calculos se hicieron teniendo en cuenta un proyecto de 5 años. Cada miembro del personal tendra un computador, y habra un servidor para prestar el servicio. El perro guardian esta en esta tabla ya que esta parece ser la unica tabla en la que tiene sentido ponerlo. Toda la maquinaria es necesaria para el correcto funcionamiento del proyecto y por tanto se comprara al inicio del mismo. De igual manera, toda la maquinaria se tiene presupuestada para durar los 5 años que dura el proyecto y por tanto se vendera cuando termine el mismo \footnote{Por esta razón no estan las tablas calendario de inversiones e ingreso por ventas}.
+	Las inversiones en maquinaria se muestran en la tabla \ref{tb:invMaquinaria}, los cálculos se hicieron teniendo en cuenta un proyecto de 5 años. Cada miembro del personal tendrá un computador, y habrá un servidor para prestar el servicio. El perro guardián esta en esta tabla ya que esta parece ser la única tabla en la que tiene sentido ponerlo. Toda la maquinaria es necesaria para el correcto funcionamiento del proyecto y por tanto se comprara al inicio del mismo. De igual manera, toda la maquinaria se tiene presupuestada para durar los 5 años que dura el proyecto y por tanto se venderá cuando termine el mismo \footnote{Por esta razón no están las tablas calendario de inversiones e ingreso por ventas}.
 	
-	Las inversiones en materiales se muestran en la tabla \ref{tb:invMateriales}, los calculos se hicieron teniendo en cuenta el personal y los requerimientos de la prestación del servicio.
+	Las inversiones en materiales se muestran en la tabla \ref{tb:invMateriales}, los cálculos se hicieron teniendo en cuenta el personal y los requerimientos de la prestación del servicio.
 
-	Las inversiones en insumos se muestran en la tabla \ref{tb:invInsumos}. Se calculo que los dispositivos utilizaran 1 kWh durante todo el año, los demas insumos se calcularon teniendo en cuenta el numero de personal. Las sillas y las mesas se clasificaron como insumos ya que se considero que esta era la categoria más logica para estos elementos.
+	Las inversiones en insumos se muestran en la tabla \ref{tb:invInsumos}. Se calculo que los dispositivos utilizaran 1 kWh durante todo el año, los demás insumos se calcularon teniendo en cuenta el numero de personal. Las sillas y las mesas se clasificaron como insumos ya que se considero que esta era la categoría más lógica para estos elementos.
 	
 	\begin{table}
 		\caption{Inversiones en obra física}
@@ -638,7 +638,7 @@
 		\hline
 		Tinta & unid. & 10 & \$50.000 & \$500.000 \\ 
 		\hline					
-		Papeleria & hojas & 10000 & \$10 & \$100.000 \\
+		Papelería & hojas & 10000 & \$10 & \$100.000 \\
 		\hline
 		DVDs & unid. & 100 & \$1.000 & \$100.000 \\
 		\hline
@@ -670,7 +670,7 @@
 		\hline
 		Insumo & Unidad & Cantidad & Costo unitario & Costo total \\
 		\hline					
-		Energia & kWh & 8760 & \$250 & \$2.190.000 \\
+		Energía & kWh & 8760 & \$250 & \$2.190.000 \\
 		\hline					
 		Agua potable & $m^{3}$ & 1825 & \$2.000 & \$3.650.000 \\
 		\hline
@@ -684,8 +684,8 @@
 		\label{tb:invInsumos}
 	\end{table}
 		
-	\subsection{Desiciones de tamaño}
-	Suponiendo que se tienen U usuarios potencial, y que el tiempo de respuesta de una petición es $t_p$, y que cada usuario envia una petición en promedio cada $t_u$, se calcula la cantidad de usuarios que puede atender un servidor $U_s$ como:
+	\subsection{Decisiones de tamaño}
+	Suponiendo que se tienen U usuarios potencial, y que el tiempo de respuesta de una petición es $t_p$, y que cada usuario envía una petición en promedio cada $t_u$, se calcula la cantidad de usuarios que puede atender un servidor $U_s$ como:
   
 	\begin{equation}
 	U_s = \frac{t_u}{t_p \times \mu_p} 
@@ -693,18 +693,18 @@
 	\end{equation}
 
 	\begin{itemize}
-	 \item Capacidad teorica: $U_s$
-	 \item Capacidad maxima: $max(U, U_s)$
+	 \item Capacidad teórica: $U_s$
+	 \item Capacidad máxima: $max(U, U_s)$
 	 \item Capacidad normal: $min(U, U_s)$
 	\end{itemize}
 	
-	\subsection{Desiciones de localización}
+	\subsection{Decisiones de localización}
 	Se decidió localizar el proyecto en la ciudad de Pereira, ya que los factores más relevantes para este proyecto se cumplen: 
 
 	\begin{itemize}
-	 \item Existe una gran cantidad de ingenieros de sistemas y cada semestre se graduan muchos más.
-	 \item Debido a la crisis economica y al alto desempleo los costos de los terrenos han bajado, igual que el costo de construcción.
-	 \item Hay una buena disponibilidad de internet, con varios proveedores potenciales, y tambien de agua y electricidad.
+	 \item Existe una gran cantidad de ingenieros de sistemas y cada semestre se gradúan muchos más.
+	 \item Debido a la crisis económica y al alto desempleo los costos de los terrenos han bajado, igual que el costo de construcción.
+	 \item Hay una buena disponibilidad de internet, con varios proveedores potenciales, y también de agua y electricidad.
 	\end{itemize}
  , 
 	

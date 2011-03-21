@@ -527,16 +527,36 @@ Esto se denota como $\vec{x} \sim N(\vec{\mu},\Sigma)$ y significa que $\vec{x}$
 		p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}\right]
 	\end{equation}
 	
-	La distribución normal multivariable puede ser utilizada como un algoritmo de clasificación, y este modelo ha demostrado ser robusto para varias aplicaciones diferentes\footnote{Jerome H. Friedman. Regularized discriminant analysis. Journal of the american statistical association, 84:165–175, 1989.}.	El objetivo de este modelo es encontrar $P(C_i|x)$,	que es la probabilidad posterior de que el vector $\vec{x}$ pertenezca a la clase $C_i$. Si se calcula $P(C_i|x)$ para cada clase $i$, se escoje como la clase correcta la que poseea la probabilidad posterior mas alta. \newline \newline
-	Es importante notar que en lugar de simplemente determinar a que clase pertenece la instancia dada, se estan calculando también las probabilidades que representan la seguridad con la que el algoritmo está concluyendo su respuesta. Esto es una ventaja para el problema de reconocimiento óptico de caracteres, ya que algunas correcciones pueden realizarse en etapas posteriores, por ejemplo, usando un diccionario. \newline \newline
-	Como se muestra en la ecuación \eqref{eq:multivariate}, lo que permite calcular la distribución normal multivariable es $p(x|C_i)$, que es la desidad de probabilidad de la variable aleatoria $\vec{x}$ dada la clase $C_i$; lo que se desea calcular en cambio es la probabilidad de que un $\vec{x}$ dado pertenezca a la clase $C_i$, es decir, la probabilidad posterior $P(C_i|\vec{x})$. Para eso se usa el teorema de Bayes (Ecuación \ref{eq:bayes2}). Entonces la probabilidad posterior se calcula como:
+La distribución normal multivariable puede ser utilizada como un algoritmo de clasificación, y este modelo ha demostrado ser robusto para varias aplicaciones diferentes\footnote{Jerome H. Friedman. Regularized discriminant analysis. Journal of the american statistical association, 84:165–175, 1989.}.	El objetivo de este modelo es encontrar $P(C_i|x)$,	que es la probabilidad posterior de que el vector $\vec{x}$ pertenezca a la clase $C_i$. Si se calcula $P(C_i|x)$ para cada clase $i$, se escoje como la clase correcta la que poseea la probabilidad posterior mas alta. \newline \newline
+Es importante notar que en lugar de simplemente determinar a que clase pertenece la instancia dada, se estan calculando también las probabilidades que representan la seguridad con la que el algoritmo está concluyendo su respuesta. Esto es una ventaja para el problema de reconocimiento óptico de caracteres, ya que algunas correcciones pueden realizarse en etapas posteriores, por ejemplo, usando un diccionario. \newline \newline
+Como se muestra en la ecuación \eqref{eq:multivariate}, lo que permite calcular la distribución normal multivariable es $p(x|C_i)$, que es la desidad de probabilidad de la variable aleatoria $\vec{x}$ dada la clase $C_i$; lo que se desea calcular en cambio es la probabilidad de que un $\vec{x}$ dado pertenezca a la clase $C_i$, es decir, la probabilidad posterior $P(C_i|\vec{x})$. Para eso se usa el teorema de Bayes (Ecuación \ref{eq:bayes2}). Entonces la probabilidad posterior se calcula como:
 	\begin{equation}\label{eq:multBayes}
 		P(C_i|\vec{x}) = \frac{p(\vec{x}|C_i)P(C_i)}{p(x)} = \frac{p(\vec{x}|C_i)P(C_i)}{ \sum_j{p(\vec{x}|C_j)P(C_j)} }
 	\end{equation}
 	
-	De la ecuación \ref{eq:multBayes} se puede ver inmediatamente que $\sum_i{P(C_i|\vec{x})}=1$, y que $0 \le P(C_i|\vec{x}) \le 1$
-	para todas las clases.
-
+De la ecuación \ref{eq:multBayes} se puede ver inmediatamente que $\sum_i{P(C_i|\vec{x})}=1$, y que $0 \le P(C_i|\vec{x}) \le 1$ para todas las clases.
+	
+	\subsection{Entrenamiento}
+	Ya se ha visto como se puede llevar a cabo la clasificación una vez que los parámetros $\vec{\mu_i}$ y $\Sigma_i$ han sido calculados para cada clase $C_i$. Entonces el entrenamiento consiste en calcular los parámetros $\vec{\mu_i}$ y $\Sigma_i$ a partir de un conjunto de entrenamiento $T$. Primero, el conjunto de entrenamiento debe ser partido en diferentes conjuntos de entrenamiento $T_i$, donde cada conjunto $T_i$ contiene solamente instancias cuya clase es $C_i$. Entonces, los parámetros se calculan con las ecuaciones \ref{eq:multiParams}.
+	\begin{equation}\label{eq:multiParams}
+	\begin{aligned}
+		\vec{\mu_i} &= E[ \vec{x_i} ] \\
+		\Sigma_i(a,b) &= E[ (\vec{x_i}-\vec{\mu_a})(\vec{x_i}-\vec{\mu_b}) ]
+	\end{aligned}
+	\end{equation}
+	Donde $\vec{x_i}$ son las instancias del conjunto $T_i$, $E[x]$ es el valor esperado o media de $x$ y $\Sigma_i(a,b)$ es el valor en la fila $a$ y la columna $b$ de la matriz $\Sigma_i$.
+	
+	\subsection{Simplificaciones de la distribución normal multivariable}
+	El número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones d, dado que la matriz de covarianza es de tamaño $d \times d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada \footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de trés instancias se desea calcular la media y la varianza de la población; Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuanto mas parámetros se deban calcular se necesitan mas datos para una mejor generalización.\newline \newline
+	Entonces, algunas veces es deseable reducir la cantidad de parámetros para obtener una mejor generalización. En el caso de una distribución normal multivariable, un enfoque para simplificar el modelo es usar una matriz de covarianza compartida por todas las clases. Las probabilidades posteriores pueden ser calculadas de la misma manera, y se sigue escojiendo la clase con mayor probabilidad posterior. Esto es equivalente a calcular la distancia Mahalanobis entre la entrada y la media de cada clase y escojer la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, esta dada por:
+	\[ d_i = (\vec{x}-\vec{\mu_i})\Sigma(\vec{x}-\vec{\mu_i}) \]
+	Note que cuando la matriz de covarianza es igual a la matriz identidad, la distancia Mahalanobis se convierte en la distancia Euclidiana al cuadrado.\newline \newline
+	Una mezcla entre el método completo de distribución normal multivariable y el modelo con matriz de covarianza compartida puede dar buenos resultados cuando hay riezgo que el determinante de la matriz de covarianza sea muy cercano a cero. A este método se le denominará una distribución normal multivariable con matriz de covarianza semi-compartida. Que se definiría por la ecuación:
+	\begin{equation}\label{eq:semishared}
+		p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma|^\frac{1}{2}} e^{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}
+	\end{equation}
+	Donde todas las variables tienen el mismo significado que el la ecuación Eq.\ref{eq:multivariate}. Note que la única diferencia entre Eq.\ref{eq:multivariate} y Eq.\ref{eq:semishared} es que la matriz de covarianza en el coeficiente es compartida para todas las clases $\Sigma$; pero la matriz de covarianza en el exponente $\Sigma_i$ sigue siendo diferente para todas las clases (No es compartida).
+	
 
 \chapter{Extracción de características de los caracteres}
 
