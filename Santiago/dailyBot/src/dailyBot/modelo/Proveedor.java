@@ -344,7 +344,7 @@ public class Proveedor
 					boolean tocoStop = pm.isTocoStop();
 					mensaje += tocoStop ? pm + " TOCO STOP\n" : pm + " CERRADO_PREMATURAMENTE\n";
 					if(!pm.isTocoStop())
-						mensajeError += pm + " CERRADO_PREMATURAMENTE\n";
+						mensajeCorto += pm + " CERRADO_PREMATURAMENTE - ";
 				}
 			for(ParMagico pm : parMagicosRealesEste) 
 			{ 

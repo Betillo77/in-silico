@@ -181,10 +181,7 @@ public class SistemaDailyFX extends SistemaEstrategias
 							{
 								double mejorStop = afectada.isCompra() ? Math.max(afectada.darStop(), afectada.getPrecioEntrada()) : Math.min(afectada.darStop(), afectada.getPrecioEntrada());
 								if(mejorStop != afectada.darStop())
-								{
 									afectada.ponerStop(mejorStop);
-									Error.agregarInfo("Actualizando trailing a break-even a los 100 pips, actual: " + afectada.getPar().darPrecioActual(afectada.isCompra()) + ", stop daily: " + senal.darStop() + ", trailing stop: " + afectada.darStop());	
-								}
 							}
 						}
 						boolean igual = Math.abs(afectada.darStop() - afectada.getPrecioEntrada()) < 10e-4d;
