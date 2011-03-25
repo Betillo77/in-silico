@@ -569,6 +569,8 @@ De la ecuación \ref{eq:multBayes} se puede ver inmediatamente que $\sum_i{P(C_i
 Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Es por eso que se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.\newline \newline
 Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: Un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada. En las secciones posteriores se presentan las ventajas y desventajas de ambos enfoques.
 
+\subsection{Componentes conectados}
+
 \subsection{Corrección de la rotación}
 
 \section{Momentos invariantes}
@@ -577,6 +579,41 @@ Para lograr un cierto grado de independencia de las características a la rotaci
 \chapter{Diseño, implementación y pruebas del aplicativo}
 
 \chapter{Metodología de la investigación}
+\label{chap:metodology}
+
+\section{Escenario de pruebas}
+En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Cabe anotar que para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no usado para el entrenamiento.
+
+\subsection{Levantamiento de datos}
+Se entiende por un conjunto de datos de entrada etiquetado, un conjunto de datos de entrada en el que de cada dato de entrada se conoce la clase a la que pertenece. Asi que tanto el conjunto de entrenamiento $T$ como el conjunto de validación $V$ deben ser conjuntos etiquetados.\newline \newline
+La forma mas fácil de construir estos dos conjuntos, es construir un único conjunto etiquetado $S$ y luego dividirlo aleatoriamente en los dos conjuntos $T$ y $V$. Tal que los conjuntos $T$ y $V$ sean disjuntos, es decir, que $T \cap V = \emptyset$ y $T \cup V = S$ donde $\emptyset$ representa el conjunto vacío.\newline\newline
+Para construir el conjunto de datos etiquetados $S$ se siguió el siguiente procedimiento:
+\begin{itemize}
+	\item Se imprimió una hoja por cada símbolo a reconocer. Cada hoja contenía entre 350 y 450 instancias del mismo símbolo, con tamaño de fuente variando entre 12 puntos y 20 puntos, pero todos los símbolos fueron impresos con el mismo tipo de letra o fuente.
+	\item Por cada página se tomaron 5 fotos con una cámara digital de 4 megapixeles. En cada foto se variaba ligeramente la distancia de la que se tomaba la foto para incluir mas variabilidad en la escala de las imágenes. También se variaba el ángulo de inclinación del texto en ángulos entre $-30^\circ$ y $30^\circ$.
+	\item A cada imagen se le dió un nombre que le permitiera saber al sistema que símbolos se encuentran en esa foto. Todas las imagenes de números, tienen un nombre de la forma \verb/t<num>_<consec>.jpg/, donde \verb/<num>/ representa el dígito que contiene la foto y \verb/<consec>/ es un consecutivo para diferenciar cada una de las fotos. Las imágenes de caracteres no numéricos en cambio, tienen un nombre de la forma \verb/n<ascii>_<consec>.jpg/, donde \verb/<ascii>/ significa el código ascii del caracter contenido en la imagen.
+	\item Se extraen los componentes conectados de cada imagen como se explicó en el capitulo \ref{chap:features}, haciendo las etapas de preprocesamiento correspondientes. Los componentes conectados se guardan en una base de datos con el nombre de la imagen del que se sacó el componente, esta base de datos corresponde al conjunto etiquetado $S$ explicado anteriormente.
+\end{itemize}
+
+\subsection{Construcción del conjunto de entrenamiento y validación}
+Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se seleccionaba esta instancia a que conjunto iba a pertenecer con una cierta probabilidad. Supongamos que $P_t$ es la probabilidad de que la instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que la instancia sea asignada al conjunto de validación $V$. El procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}. \newline \newline
+Note que se requiere que $P_v + P_t \le 1$. Cuando la suma $P_v + P_t < 1$ es posible que algun conjunto de datos no quede asignado ni al conjunto de validación ni al de entrenamiento. Esto es deseable en ocaciones y a este tercer conjunto $C$ se le llama conjunto de pruebas. Pero para este caso, por el método de clasificación usado, este conjunto no tiene mayor relevancia; entonces se busca que $P_v + P_t = 1$.
+
+\begin{figure}[htb]
+\begin{center}
+\leavevmode
+\includegraphics[width=7cm]{diagrams/setPartition.jpg}
+\end{center}
+\caption{Procedimiento para producir un conjunto de entrenamiento y validación}
+\label{fig:setPartition}
+\end{figure}
+
+\subsection{Mediciones}
+Una vez entrenado el modelo de distribución normal multivariable como se explicó en el capitulo \ref{chap:ml}, se procede a hacer las mediciones de precisión sobre datos no vistos en el proceso de entrenamiento. Para esto se usa el modelo entrenado y se observan las predicciones realizadas por este modelo sobre el conjunto de validación. Cabe recordar que el conjunto de validación esta etiquetado, y por esta razón, se conoce cual es la salida esperada para el dato con el que se esta probando el modelo. En terminos formales, el conjunto de entrenamiento $V$ se podría definir de la siguiente forma:
+\[ V = \{\vec{x_i},r_i\}_{i=0}^N \]
+Donde $N$ es la cantidad de elementos del conjunto de validación y $r_i$ es la salida esperada para el valor de entrada $\vec{x}_i$. Supongamos que la salida observada del modelo entrenado para el valor $\vec{x_i}$ es $y_i$. Entonces se considera que el clasificador comete un error si $r_i \ne y_i$ y acierta si $r_i = y_i$. Considerando que una igualdad tenga por valor 1 si es verdadera y 0 si es falsa, entonces el valor medido se calcula de la siguiente forma:
+\[ A = \frac{ \sum_{j=0}^{N}(r_i=y_i) }{N} \]
+Se puede observar que el valor medido $A$ significa la cantidad de aciertos sobre el número total de intentos de predicción. Y por tanto mide el porcentaje de efectividad del clasificador para el problema de reconocimiento de caracteres.
 
 \chapter{Conclusiones y resultados}
 
