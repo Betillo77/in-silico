@@ -54,7 +54,7 @@
 	what we need. In order to recognize geometrical figures, we must find the 
 	contour of the shape. But before doing so we turn the image into gray scale.
 	As any signal acquisition, the input has noise and we must filter it; To do
-	so we used a Gaussian filter. We could define now the filtered grayscale image
+	so we used a Gaussian filter. We could define now the filtered gray-scale image
 	as a function $I_1(x,y)$, that represents the value of the pixel located at
 	$(x,y)$ as an integer between 0 and 255; Where 0 is black, 255 is white and
 	all other values are some kind of gray.\newline
@@ -82,7 +82,7 @@
 	The second stage receives as input $I_2(x,y)$, the output image of the first
 	stage; and should return to us the features for the recognition stage. We used the 
 	OpenCV library for all the project, this library has a function named
-	\textit{cvFindCountours} to find the contour of a shape once the image is
+	\textit{cvFindContours} to find the contour of a shape once the image is
 	binarized. The contour is a sequence of $(x,y)$ points at the border of an image,
 	that we are going to approximate with polygon using the function 
 	\textit{cvApproxPoly} of the library\footnote {If you want to know how the 
@@ -128,21 +128,6 @@
 	To be able to recognize between triangles the other quadrilaterals, the number of
 	sides should be enough in the general case.
 	
-	\subsubsection{Image moments}
-	When the shapes that you want to recognize are complex and it is no easy to device which
-	features are enough to recognize those shapes, you should try the image moments. An image
-	moment is a feature obtained by integrating or summing the pixels intensities of an image
-	giving different weight to each pixel. Let $I(x,y)$ be the value of the pixel $(x,y)$ in
-	the image, and let $f(x,y)$ be the weight for the same pixel. Then we could define an
-	image moment as:
-	\[ M = \iint f(x,y)I(x,y) dx dy \]
-	Very often, we desire a moment that doesn't change very much when the image is rotated or
-	scaled, for example if our goal were to recognize characters. Those moments are called 
-	moment invariants. They were firstly introduced by Hu \cite{Hu}, who derived his seven
-	famous invariants to the rotation of 2D objects. Later, Fluzzer \cite{fluzzer} shown that
-	Hu moments were incomplete and dependent and proposed a method to derive an independent
-	and complete set of invariant moments of arbitrary order.
-	
 	\section{Learning and classification}
 	Before being able to recognize any shape, we must learn; Learning is achieved
 	through a training process.  Lets say there is function $g(\vec{x})$ that 
@@ -158,24 +143,67 @@
 	or 0 if false, we would have:
 	\[ min_{\vec{p}} \left[ E = \sum_{i=1}^{\| X \|}  
 		( y_i \not= f(\vec{x_i},\vec{p}) ) \right] \]
-	To model $f$, we used a binary decision tree. That is a tree which one
-	condition per node; In each node the condition is evaluated and depending
+	To model $f$, we used a binary decision tree\cite{cart}. That is a tree with one
+	condition per node. In each node the condition is evaluated and depending
 	on the truth value one of the two children nodes is chosen. This process
 	repeats itself until a leaf is reached, and each leaf has only one class.
 	That class would be the output of $f$. We perform this operation by using the
 	C++ class \textit{CvDTree} of OpenCV. 
 	
+	\subsection{Building the training set}
+	To build the training set, several shapes of the same kind were drawn with a
+	dark pen in a white	piece of paper. One picture were taken to each piece of
+	paper, and the file name of the picture was set such that the first letter
+	represented the kind of shape drawn in that picture. \newline
+	In figure \ref{fig:training} some of the pictures taken for the training set 
+	are shown. If the file name starts with R, the picture contains only rectangles
+	(Figure \ref{fig:r1}). If the file name starts with T, the picture contains only triangles
+	(Figure \ref{fig:t1}). If the file name starts with S, the picture contains only squares
+	(Figure \ref{fig:s1}). And if the file name starts with H, the picture contains only rhombus
+	(Figure \ref{fig:r1}).\newline
+	All the pictures with training instances are stored in a folder named ``Training''.
+	Then the training process consist on reading all the pictures stored on the Training
+	folder, and for each picture, all contours are extracted. Then the features are
+	computed for each contour and the feature vector is added to the training set with
+	the corresponding label $y_i$. Remember that the label $y_i$ is the known class of the
+	input $\vec{x_i}$, and $y_i$ is known because of the file name.
+		
+	\begin{figure}
+	\centering
+		\subfloat[R1.jpg]{\label{fig:r1}\includegraphics[height=2cm]{R1.jpg}}
+		\subfloat[T1.jpg]{\label{fig:t1}\includegraphics[height=2cm]{T1.jpg}}\\
+		\subfloat[S1.jpg]{\label{fig:s1}\includegraphics[height=2cm]{S1.jpg}}
+		\subfloat[H1.jpg]{\label{fig:h1}\includegraphics[height=2cm]{H1.jpg}}
+	\caption{Examples of shapes in the training set}
+	\label{fig:training}
+	\end{figure}
+	
+	\subsection{Validation set}
+	To test the generalization capability of the learning algorithm, it must be
+	tested over a set of instances not seen during training. This set of instances is
+	called validation set. The instances on the validation set should be labeled, so when
+	the trained algorithm is tested with an instance on the validation set it can be known if
+	the output is right or wrong.\newline
+	One way of building a validation set is by removing some instances of the training set
+	and adding them to the validation set. An instance was left in the training set with a
+	probability of 70\% or moved to the validation set with a probability of 30\%.
+	
 	\section{Results and Conclusions}
-	The results of the image processing stage can be seen in \textit{figure 1}. The
-	figure 1-A shows an image of a rectangle as it is taken from the camera. The 
-	figure 1-B shows the image after being transformed to gray-scale, filtered and 
-	binarized using	the thresholding method explained above. The figure 1-C shows the
-	polygon that approximates the shape in figure 1-B with an allowed error of 10
+	The results of the image processing stage can be seen in figure \ref{fig:transform}. The
+	figure \ref{fig:org} shows an image of a rectangle as it is taken from the camera. The 
+	figure \ref{fig:bin} shows the image after being transformed to gray-scale, filtered and 
+	binarized using	the threshold method explained above. The figure \ref{fig:shp} shows the
+	polygon that approximates the shape in figure \ref{fig:bin} with an allowed error of 10
 	pixels.\newline
-	After the binary decision tree was trained, it was proved against 22 different
-	shapes that were not shown to the training algorithm. Only one of those shapes
-	was not correctly recognized, which means an accuracy of 95.45\%. The accuracy can
-	be improved even more adding more features.
+	After the binary decision tree was trained, it was proved against the validation set,
+	the results can be seen in Table \ref{tb:result}. The table shows how many instances
+	of each class are well classified (TP: True positives, TN: True negative) or
+	misclassified (FP: False positive, FN: False negative).
+	Only one of the shapes of the validation set
+	was not correctly recognized, which means an accuracy of 97.3\%. The accuracy can
+	be improved even more adding more features. \newline
+	The training set consisted on 9 rhombus, 26 squares, 18 rectangles and 33 triangles. Note
+	that the training set didn't have to be very big to achieve a good classification performance.
 	The binary decision tree model is almost ideal to solve this problem. For
 	more complex problems such as optical character recognition or face recognition,
 	complex models such as neural networks or support vector should be used instead.
@@ -186,7 +214,25 @@
 		\subfloat[Binarized]{\label{fig:bin}\includegraphics[height=2cm]{img2}}
 		\subfloat[Polygon Approximation]{\label{fig:shp}\includegraphics[height=2cm]{img3}}
 	\caption{Original image and its transformations}
+	\label{fig:transform}
 	\end{figure}
+	
+	\begin{table}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Shape & TP & TN & FP & FN \\			
+		\hline
+		Rhombus & 2 & 35 & 0 & 0 \\
+		Rectangle & 10 & 26 & 1 & 0 \\
+		Square & 11 & 26 & 0 & 0 \\
+		Triangle & 13 & 23 & 0 & 1 \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\caption{Accuracy of the classifier algorithm in the first experiment}	
+	\label{tb:result}
+	\end{table}
 	
 	
 	
@@ -221,18 +267,11 @@
 			DOCUMENT RECOGNITION AND RETRIEVAL. 
 			February of 2008.
 			
-		\bibitem{Hu}
-			M.K. Hu.
-			\emph{Visual pattern recognition by moment invariants.}
-			IRE Trans. Inform. Theory,
-			1962.
-			
-		\bibitem{fluzzer}
-			FLUZZER Jan.
-			\emph{On the independence of rotation moment invariants}
-			Pattern recognition,
-			1999.
-			
+		\bibitem{cart}
+			Breiman, L. and Friedman, J. and Olshen, R. and Stone, C. and Steinberg, D. and Colla, P.
+			\emph{CART: Classification and regression trees},
+			Wadsworth: Belmont, CA,
+			1983.
 	\end{thebibliography}
 	
 \end{document}
