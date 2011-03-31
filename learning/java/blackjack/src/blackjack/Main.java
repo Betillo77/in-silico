@@ -26,10 +26,10 @@ public class Main {
                 //new frmBJ().setVisible(true);
             }
         });*/
-        JFrame f = new JFrame();
-        f.add(new frmBJ());
-        f.pack();
-        f.setVisible(true);
+//        JFrame f = new JFrame();
+//        f.add(new frmBJ());
+//        f.pack();
+//        f.setVisible(true);
     }
 
 }

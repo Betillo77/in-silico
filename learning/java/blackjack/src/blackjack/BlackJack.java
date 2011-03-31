@@ -12,33 +12,35 @@ import java.util.*;
  * @author seb
  */
 public class BlackJack implements Ambiente {
-    LinkedList<Integer> cards[];
-    int players;
 
-    public BlackJack(int players) {
-        this.players = players;
-        cards = new LinkedList[players];
+    LinkedList<Accion> acciones;
+    
+    public BlackJack() {
+        acciones = new LinkedList<Accion> ();
+        acciones.add(new BJAction(BJAction.DEAL));
+        acciones.add(new BJAction(BJAction.STOP));
     }
 
     public double getReward(Estado s, Accion a) {
-        BJState s1 = (BJState)s;
-
+        //TODO
+        return 0;
     }
 
-    public Estado nextState(Estado s, Accion a) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Estado nextState(Estado s, Accion ac) {
+        BJState e = (BJState) s;
+        BJAction a = (BJAction) ac;
+        return e.jugar(a);
     }
 
     public Estado getInitialState() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new BJState(2, true);
     }
 
     public LinkedList<Accion> getAcciones() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return acciones;
     }
 
     public boolean isTerminalState(Estado s) {
         return ((BJState)s).isTerminal();
-    }
-       
+    }     
 }

@@ -10,6 +10,7 @@ package blackjack;
  * @author seb
  */
 public class BJAction implements Accion {
+    
     public static int DEAL=1;
     public static int STOP=2;
     int actionType;
@@ -17,10 +18,6 @@ public class BJAction implements Accion {
     public int compareTo(Accion o) {
         BJAction a2 = (BJAction)o;
         return actionType - a2.actionType;
-    }
-
-    int getActionType() {
-        return actionType;
     }
 
     public BJAction(int actionType) {
