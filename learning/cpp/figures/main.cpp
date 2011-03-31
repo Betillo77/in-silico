@@ -19,6 +19,7 @@
 #define SH_P 1 //Show process on prediction
 #define SH_T 2 //Show process on training
 #define F_CHK 4 //Check the model with the validation set
+#define P_TREE 8 //Print binary desicion tree
 
 CvDTree* ptree=0;
 CvMat *trainMask=0;
@@ -199,6 +200,10 @@ void readParams(int argc, char** argv) {
                         //Check with validation set
                         flags |= F_CHK;
                         break;
+                    case 'p':
+                        //Print tree
+                        flags |= P_TREE;
+                        break;
                     default:
                         printf("Opción no reconocida %c\n",*c);
                 }
@@ -246,6 +251,23 @@ void runTest() {
     }
 }
 
+//Call first with tree root
+void printTree(const CvDTreeNode *x) {
+    //First check if node is leave or not
+    if (!x->left || x->Tn <= ptree->get_pruned_tree_idx() || !x->split) {
+        printf("%c ", (char)x->value);
+        return;
+    }
+
+    CvDTreeSplit *cond = x->split;
+    int varid = cond->var_idx;
+    float thresh = cond->ord.c;
+    printf("( V%i<%f ",varid,thresh);
+    printTree(x->left);
+    printTree(x->right);
+    printf(")");
+}
+
 /*
  *
  */
@@ -258,11 +280,13 @@ int main(int argc, char** argv) {
     }
     init_params(cam);
     train();
+    if ((flags & P_TREE) != 0) {
+        printTree(ptree->get_root());
+        printf("\n\n");
+    }
     if ((flags & F_CHK) != 0)
         runTest();
-    else {        
-        predict();
-        destroy_params();
-    }    
+    predict();
+    destroy_params();
     return (EXIT_SUCCESS);
 }
