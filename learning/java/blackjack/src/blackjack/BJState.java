@@ -75,7 +75,7 @@ public class BJState implements Estado {
             while(!nuevo.isTerminal()) {
                 for(int i = 1; i < players; i++) {
                     if(nuevo.playing[i]) {
-                        if(random.nextBoolean())
+                        if(nuevo.sum[i] + nuevo.hidden[i] > 16)
                             nuevo.playing[i] = false;
                         else {
                             nuevo.sum[i] += randomCard();
@@ -94,7 +94,7 @@ public class BJState implements Estado {
                 while(!nuevo.isTerminal()) {
                     for(int i = 1; i < players; i++) {
                         if(nuevo.playing[i]) {
-                            if(random.nextBoolean())
+                            if(nuevo.sum[i] + nuevo.hidden[i] > 16)
                                 nuevo.playing[i] = false;
                             else {
                                 nuevo.sum[i] += randomCard();
@@ -108,7 +108,7 @@ public class BJState implements Estado {
             else {
                 for(int i = 1; i < players; i++) {
                     if(nuevo.playing[i]) {
-                        if(random.nextBoolean())
+                        if(nuevo.sum[i] + nuevo.hidden[i] > 16)
                             nuevo.playing[i] = false;
                         else {
                             nuevo.sum[i] += randomCard();
@@ -120,5 +120,24 @@ public class BJState implements Estado {
             }
         }
         return nuevo;
+    }
+
+    double getReward() {
+        int mejorRival = 0;
+        int cuentaMia = hidden[0] + sum[0];
+        if(cuentaMia > 21)
+            cuentaMia = 0;
+        for(int i = 1; i < players; i++) {
+            int cuentaActual = hidden[i] + sum[i];
+            if(cuentaActual > 21)
+                cuentaActual = 0;
+            mejorRival = Math.max(mejorRival, cuentaActual);
+        }
+        if(cuentaMia > mejorRival)
+            return 100;
+        else if(cuentaMia == mejorRival)
+            return 0;
+        else
+            return -100;
     }
 }

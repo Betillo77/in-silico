@@ -24,4 +24,9 @@ public class BJAction implements Accion {
         this.actionType = actionType;
     }
 
+    @Override
+    public String toString() {
+        return actionType == DEAL ? "DEAL" : "STOP";
+    }
+
 }

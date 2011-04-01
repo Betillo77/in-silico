@@ -104,35 +104,39 @@
 
 \tableofcontents
 
+
 \chapter{Introducción}
 
 \section{Descripción del problema}
+
 Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
 
-	A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y le lea a la persona invidente lo que dicen. Sin embargo, para que sea una solución efectiva al problema, se requiere de un sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa, no obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
-	
-	\begin{itemize}
-	
-	\item La memoria y la capacidad de procesamiento son muy reducidas en los teléfonos inteligentes con respecto a los computadores de escritorio.
+A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y le lea a la persona invidente lo que dicen. Sin embargo, para que sea una solución efectiva al problema, se requiere de un sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa, no obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
 
-	\item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios megabytes.
+\begin{itemize}
 
-	\item Un computador de escritorio normalmente tiene instaladas múltiples librerías de propósito general que son utilizadas por distintos programas, un teléfono inteligente, en cambio, solo provee las librerías más básicas.
+\item La memoria y la capacidad de procesamiento son muy reducidas en los teléfonos inteligentes con respecto a los computadores de escritorio.
 
-	\end{itemize}
+\item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios megabytes.
 
-	La diferencia más importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podría tomar la fotografía inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
+\item Un computador de escritorio normalmente tiene instaladas múltiples librerías de propósito general que son utilizadas por distintos programas, un teléfono inteligente, en cambio, solo provee las librerías más básicas.
 
-	Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay más disponibilidad de redes inalámbricas, a las cuales los teléfonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de cómputo mucho mayor. Este sistema tendrá las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también ha incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+\end{itemize}
 
-	Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imágenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
+La diferencia más importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podría tomar la fotografía inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
+
+Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay más disponibilidad de redes inalámbricas, a las cuales los teléfonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de cómputo mucho mayor. Este sistema tendrá las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también ha incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+
+Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imágenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
 
 Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y luminosidad antes presentados. 
 
-	\subsection{Definición del problema}
-	No existe \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para ser utilizado por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, y con un porcentaje de reconocimiento satisfactorio.
+\subsection{Definición del problema}
+
+No existe \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para ser utilizado por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, y con un porcentaje de reconocimiento satisfactorio.
 
 \section{Justificación del proyecto}
+
 Un sistema móvil para reconocer texto de documentos impresos presentaría los siguientes beneficios respecto de los sistemas tradicionales como las impresoras braille y los lectores basados en escáner:
 
 	\begin{itemize} 
@@ -144,187 +148,58 @@ Un sistema móvil para reconocer texto de documentos impresos presentaría los s
 	\item Una solución económica que pueda ejecutarse en un dispositivo móvil, sin necesidad de hardware adicional, haría posible que cada invidente pudiera tener su propio sistema de OCR personal, mientras que los otros sistemas usualmente (por su costo) son adquiridos por instituciones en cantidad limitada.
 
 	\item Aportar al conocimiento: Al desarrollar este aplicativo se tendrán que hacer pruebas experimentales cuyos resultados aporten a otras investigaciones.
+
 	\end{itemize}
 	
 \section {Antecedentes}
-	La tecnología actual ha permitido a las personas invidentes tener acceso a información
-	y a conocimiento al que antes no tenían acceso. Entre estas tecnologías se encuentran los
-	lectores de pantalla, y las impresoras y sistemas refrescables de Braille.
+
+La tecnología actual ha permitido a las personas invidentes tener acceso a información y a conocimiento al que antes no tenían acceso. Entre estas tecnologías se encuentran los lectores de pantalla, y las impresoras y sistemas refrescables de Braille.
 	
-	Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira (llamado 
-    Proyecto IRIS), permite a los invidentes reconocer imágenes con colores a través de 
-    vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes 
-	permanentes y una matriz de electroimanes conectada al computador por el puerto USB.
+Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira (llamado Proyecto IRIS), permite a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes permanentes y una matriz de electroimanes conectada al computador por el puerto USB.
 
-	En el área de acceso al texto, existen sistemas que convierten el texto en ASCII a voz,
-	conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas para el computador
-	que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR, los cuales funcionan
-	usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por la TUK
-    \footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. 
-    (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150},
-    los OCRs libres con mejores resultados son \textit{Tesseract} y el  \textit{Ocropus}. 
+En el área de acceso al texto, existen sistemas que convierten el texto en ASCII a voz, conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas para el computador que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR, los cuales funcionan usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por la TUK \footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}, los OCRs libres con mejores resultados son \textit{Tesseract} y el  \textit{Ocropus}. 
 
-    Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara, 
-    se deben seguir diferentes enfoques, en \footnote{SMITH, Ray. Progress in Camera-Based Document
-    Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto,
-    2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} se halló que los retos más importantes 
-    son la proyección de la imagen en perspectiva en el plano y la  resolución requerida para poder
-    reconocer bien los caracteres.
+Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara, se deben seguir diferentes enfoques, en \footnote{SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} se halló que los retos más importantes son la proyección de la imagen en perspectiva en el plano y la  resolución requerida para poder reconocer bien los caracteres.
 
-	En cuanto a hacer que el OCR sea realizado por un celular, se encontraron investigaciones
-	como \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using
-    Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados 
-    Unidos). Memorias, 2008, vol. 6821, p. 41-46}, en la que se trabajaban con imágenes de muy baja 
-    resolución (640x480) y como resultado solo pueden reconocer textos muy cortos, tales como avisos 
-    y carteles, pero no documentos completos. En \footnote{SENDA, Shuji, et al. Camera-Typing Interface
-    for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS
-    (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372}, para tratar 
-    de equilibrar el hecho de tener una cámara de baja resolución, se toman varias imágenes de baja 
-    resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto sin 
-    embargo conlleva a un incremento la carga de procesamiento, haciendo que no sea posible el procesamiento 
-    dentro del celular, por lo cual la solución se restringe para que se envíen las imágenes a un servidor 
-    usando internet, el cual las procesa y envía los resultados.
+En cuanto a hacer que el OCR sea realizado por un celular, se encontraron investigaciones como \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46}, en la que se trabajaban con imágenes de muy baja resolución (640x480) y como resultado solo pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos. En \footnote{SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372}, para tratar de equilibrar el hecho de tener una cámara de baja resolución, se toman varias imágenes de baja resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular, por lo cual la solución se restringe para que se envíen las imágenes a un servidor usando internet, el cual las procesa y envía los resultados.
 
-	Cabe anotar que ninguna de las tecnologías anteriormente mencionadas para hacer
-	el OCR en el celular fue diseñada para ser usada por personas invidentes. Ya que el 
-	primero no fue diseñado para reconocer documentos, y el segundo requeriría que la persona
-	invidente supiera con anterioridad como está la estructura del documento para poder mover
-	la cámara del celular en la dirección en la que está el texto en el documento.
+Cabe anotar que ninguna de las tecnologías anteriormente mencionadas para hacer el OCR en el celular fue diseñada para ser usada por personas invidentes. Ya que el primero no fue diseñado para reconocer documentos, y el segundo requeriría que la persona invidente supiera con anterioridad como está la estructura del documento para poder mover la cámara del celular en la dirección en la que está el texto en el documento.
 	
-	\subsection{Proyectos de grado relacionados en la Universidad Tecnológica de Pereira}
-	Si bien en Ingeniería de Sistemas en la Universidad Tecnológica de Pereira no se ha planteado un 
-    proyecto de grado directamente sobre reconocimiento óptico de caracteres, un estudiante de la 
-    maestría en Ingeniería Eléctrica construyo un sistema para el reconocimiento de algunos 
-    caracteres y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes:
-	el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de
-	soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes
-    neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran 
-    utilidad en la construcción de un sistema de reconocimiento óptico de caracteres. \footnote{MUÑOZ, 
-    Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de 
-    Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnológica de Pereira, 2005}
+\subsection{Proyectos de grado relacionados en la Universidad Tecnológica de Pereira}
 
+Si bien en Ingeniería de Sistemas en la Universidad Tecnológica de Pereira no se ha planteado un proyecto de grado directamente sobre reconocimiento óptico de caracteres, un estudiante de la maestría en Ingeniería Eléctrica construyo un sistema para el reconocimiento de algunos caracteres y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes: el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran utilidad en la construcción de un sistema de reconocimiento óptico de caracteres. \footnote{MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnológica de Pereira, 2005}
+
+En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por estudiantes de Ingeniería Eléctrica:
     
-	En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por 
-    estudiantes de Ingeniería Eléctrica:
-    
-    En la tesis \footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante
-    redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica 
-    de Pereira, 2008} se utilizaron redes neuronales para reconocimiento de voz en hardware sobre una FPGA. 
-    Si bien la implementación fue en hardware y no en software, sus resultados permiten inferir que es 
-    posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso
-    de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las 
-    misma en un dispositivo móvil. También es de anotar que las redes neuronales demostraron porcentajes 
-    de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
+En la tesis \footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2008} se utilizaron redes neuronales para reconocimiento de voz en hardware sobre una FPGA. Si bien la implementación fue en hardware y no en software, sus resultados permiten inferir que es posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las misma en un dispositivo móvil. También es de anotar que las redes neuronales demostraron porcentajes de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
 
-	En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en
-    una imagen utilizando un sistema de visión artificial \footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio.
-    Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente 
-    controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007}.
-    Considerando el bajo nivel de resolución (imágenes de 324 x 240 píxeles a 30 frames por segundo) y el 
-    hecho de que la cámara no fue calibrada, se identificaron correctamente muchos transeúntes, de lo que se
-    puede inferir que los sistemas de visión artificial funcionan correctamente con cámaras económicas. Los 
-    resultados muestran que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes
-    conectados de píxeles. Así mismo, también permiten entender distintos problemas que se pueden presentar a 
-    la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios transeúntes 
-    como uno solo. Si bien en el reconocimiento óptico de caracteres se distinguen letras y no personas, problemas
-    similares a los evidenciados en este proyecto se presentan al separar los caracteres en un sistema de OCR.
+En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en una imagen utilizando un sistema de visión artificial \footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007}. Considerando el bajo nivel de resolución (imágenes de 324 x 240 píxeles a 30 frames por segundo) y el hecho de que la cámara no fue calibrada, se identificaron correctamente muchos transeúntes, de lo que se puede inferir que los sistemas de visión artificial funcionan correctamente con cámaras económicas. Los resultados muestran que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de píxeles. Así mismo, también permiten entender distintos problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios transeúntes como uno solo. Si bien en el reconocimiento óptico de caracteres se distinguen letras y no personas, problemas similares a los evidenciados en este proyecto se presentan al separar los caracteres en un sistema de OCR.
 	
-	Finalmente, en el tema de procesamiento de señales, en \footnote{ALVAREZ, Lorena. Acondicionamiento de Señales
-    Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007} 
-    se adquieren señales bioeléctricas utilizando filtros análogos y digitales. En este proyecto se lograron filtrar
-    señales muy pequeñas y finas, como las producidas en el cuerpo humano, mediante filtros digitales, y se obtuvieron
-    errores pequeños. Aunque las señales bioeléctricas son muy diferentes a las imágenes, es posible convertir estas
-    ultimas en señales y, por tanto, los filtros digitales expuestos en este proyecto podrían ser de utilidad a la hora
-    de eliminar errores en imágenes tomadas por una cámara, ya que logran filtrar correctamente señales con gran cantidad
-    de ruido.\newline
+Finalmente, en el tema de procesamiento de señales, en \footnote{ALVAREZ, Lorena. Acondicionamiento de Señales Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007} se adquieren señales bioeléctricas utilizando filtros análogos y digitales. En este proyecto se lograron filtrar señales muy pequeñas y finas, como las producidas en el cuerpo humano, mediante filtros digitales, y se obtuvieron errores pequeños. Aunque las señales bioeléctricas son muy diferentes a las imágenes, es posible convertir estas ultimas en señales y, por tanto, los filtros digitales expuestos en este proyecto podrían ser de utilidad a la hora de eliminar errores en imágenes tomadas por una cámara, ya que logran filtrar correctamente señales con gran cantidad de ruido.\newline
     
 \section {Modelo general de sistema OCR}
-	\subsection{Reconocimiento de caracteres y análisis de documentos}
-	En esta sección se hablará de algunas investigaciones realizadas en el área
-	de reconocimiento de caracteres y de análisis de documentos.
-	Las etapas necesarias para llevar a cabo el proceso de análisis de documentos
-	y reconocimiento de caracteres son: binarización de la imagen, análisis y
-	segmentación del documento y reconocimiento óptico de caracteres (OCR).
-	
-	\subsection{Binarización de imagen}
-	Esto se refiere a tomar una imagen en escala de grises y convertirla a una 
-	imagen en blanco y negro. También se puede ver como separar la parte que nos interesa
-	(foreground o primer plano) de la parte que no nos interesa (background o fondo).
-	Una técnica que da buen resultado es la binarización de Sauvola,
-	que realiza una binarización basada en un análisis local de la imagen. El hecho de
-	que sea local le brinda una mejor binarización en condiciones de luz variable. Los 
-    resultados obtenidos en el artículo "Efficient Implementation of Local Adaptative 
-    Thersholding Techniques Using Integral Images" indican que esta técnica puede ser
-    optimizada para lograr un tiempo de ejecución comparable con las técnicas globales de 
-    binarización (al correr en O(N) \footnote{La función $O(f)$ se usa para indicar que la complejidad
-    algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de 
-    ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que 
-    $\forall N ( K*f(N) < T(N) ) $}, siendo N el numero de píxeles de la imagen),
-    conservando	las ventajas de ser local, por lo que seria un buen candidato para implementarlo en un 
-    proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
 
-	
-	\subsection{Análisis del documento}
-	Según \footnote{MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms:
-    A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San José, Estados Unidos). 
-    Memorias, 2003, p. 197-207}, esta etapa puede ser vista como un análisis sintáctico,
-	en el que el documento se divide en sus partes estructurales como un árbol de análisis
-	sintáctico. Como todo análisis gramatical, se puede seguir los enfoques
-	\textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde
-	los píxeles y luego los relacionaría en grupos mas grandes (Caracteres, Palabras, Lineas
-	o Párrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imagen de un
-	documento y comenzaría a dividirla hasta llegar a sus componentes.
-	Cada algoritmo tiene limitaciones, ventajas y distintos requerimientos de máquina.
-	Una investigación realizada sobre diferentes algoritmos \footnote{SHAFAITA Faisal; KEYSERSA, 
-    Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms.
-    \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. 
-    Junio, 2008. vol. 30, no. 6, p. 941-954}, indica que los mejores resultados sobre diferentes
-    documentos, con distintas estructuras físicas, fueron para Docstrum y para Voronoi, con porcentajes
-    de error del 4.3\% y 4.7\% respectivamente. Otro método	llamativo es el \textit{RLSA}, que llama 
-    la atención por su sencillez y puede brindar buenos resultados en documentos \textit{Manhattan-Layout}.
-	
-	Probablemente la mejor solución para un sistema OCR pueda resultar de la mezcla de
-	varios de los algoritmos existentes, en \footnote{KISE, Koichi; SATO Akinori y MATSUMOTO, 
-    Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY:
-    CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan, 
-    Puerto Rico). Memorias, 1997, p. 32-39} se observa como se pueden mejorar los resultados 
-    mezclando los beneficios de diferentes algoritmos para soluciones particulares, y cada uno de
-    los artículos mencionados aporta elementos importantes para escoger cual de estos algoritmos 
-    es ventajoso para una solución particular.
-	
-	\subsection{Reconocimiento óptico de caracteres OCR}
-	Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones.
-	Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones.
-     
-	Entre ellos algunos modelos son inspirados en la biología, como los que usan redes neuronales.
-    Otros modelos son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos
-	como la distribución normal multivariable aplicando el teorema de Bayes.
+\subsection{Reconocimiento de caracteres y análisis de documentos}
 
-	
-	Estos métodos para el reconocimiento de patrones tienen en común que necesitan como
-	entrada un vector de características. Para el problema de reconocimiento de dígitos
-	o caracteres para las personas invidentes, es deseable que estas características cambien
-	muy poco frente a ciertos cambios en la imagen como el escalamiento o la rotación.
-	Ejemplos de este tipo de características son los momentos de Hu y de Fluzzer, estos
-	momentos se calculan realizando una integral, que en una imagen se convierte en sumatoria
-	por el hecho de ser discreta. En esta sumatoria se le dan diferentes pesos a cada píxel
-	dependiendo de la posición, y luego se realizan operaciones sobre estos que permite
-	obtener un conjunto limitado de características independientes de la rotación, translación
-	y al escalamiento. Al ser características que no varían significativamente con estos 
-	cambios se les ha dado el nombre de momentos invariantes.
-	
-	Para el entrenamiento, lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un 
-	número o una forma. Medir sus características aplicando descriptores invariantes, y manualmente 
-    etiquetar esta imagen, (una a, un 1, un rombo etc.) guardando esta información en una base de
-    datos. Luego cuando el sistema se pone en marcha se obtienen las características de la imagen,
-    y se aplica un algoritmo de aprendizaje sobre dichas características. Uno de los métodos mas
-	sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma
-	clase y en clases diferentes. Con esto se pueden crear regiones en el híper-espacio (un
-	espacio de varias dimensiones) para las diferentes clases, y así cuando llegue una imagen
-	nueva a clasificar solo se deben tomar las características y ubicar en que región del
-	híper-espacio se encuentra este objeto. En los artículos se puede observar como  
-	cada aproximación tiene sus ventajas, dependiendo de las características de las imágenes a
-	procesar.
+En esta sección se hablará de algunas investigaciones realizadas en el área de reconocimiento de caracteres y de análisis de documentos. Las etapas necesarias para llevar a cabo el proceso de análisis de documentos y reconocimiento de caracteres son: binarización de la imagen, análisis y segmentación del documento y reconocimiento óptico de caracteres (OCR).  
+
+\subsection{Binarización de imagen}
+
+Esto se refiere a tomar una imagen en escala de grises y convertirla a una  imagen en blanco y negro. También se puede ver como separar la parte que nos interesa (foreground o primer plano) de la parte que no nos interesa (background o fondo). Una técnica que da buen resultado es la binarización de Sauvola, que realiza una binarización basada en un análisis local de la imagen. El hecho de que sea local le brinda una mejor binarización en condiciones de luz variable. Los  resultados obtenidos en el artículo "Efficient Implementation of Local Adaptative  Thersholding Techniques Using Integral Images" indican que esta técnica puede ser optimizada para lograr un tiempo de ejecución comparable con las técnicas globales de  binarización (al correr en O(N) \footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}, siendo N el numero de píxeles de la imagen), conservando	las ventajas de ser local, por lo que seria un buen candidato para implementarlo en un  proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
+
+\subsection{Análisis del documento}
+
+Según \footnote{MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San José, Estados Unidos).  Memorias, 2003, p. 197-207}, esta etapa puede ser vista como un análisis sintáctico, en el que el documento se divide en sus partes estructurales como un árbol de análisis sintáctico. Como todo análisis gramatical, se puede seguir los enfoques \textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde los píxeles y luego los relacionaría en grupos mas grandes (Caracteres, Palabras, Lineas o Párrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imagen de un documento y comenzaría a dividirla hasta llegar a sus componentes. Cada algoritmo tiene limitaciones, ventajas y distintos requerimientos de máquina. Una investigación realizada sobre diferentes algoritmos \footnote{SHAFAITA Faisal; KEYSERSA,  Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence.  Junio, 2008. vol. 30, no. 6, p. 941-954}, indica que los mejores resultados sobre diferentes documentos, con distintas estructuras físicas, fueron para Docstrum y para Voronoi, con porcentajes de error del 4.3\% y 4.7\% respectivamente. Otro método	llamativo es el \textit{RLSA}, que llama  la atención por su sencillez y puede brindar buenos resultados en documentos \textit{Manhattan-Layout}. 
+
+Probablemente la mejor solución para un sistema OCR pueda resultar de la mezcla de varios de los algoritmos existentes, en \footnote{KISE, Koichi; SATO Akinori y MATSUMOTO,  Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY: CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan,  Puerto Rico). Memorias, 1997, p. 32-39} se observa como se pueden mejorar los resultados  mezclando los beneficios de diferentes algoritmos para soluciones particulares, y cada uno de los artículos mencionados aporta elementos importantes para escoger cual de estos algoritmos  es ventajoso para una solución particular.  
+
+\subsection{Reconocimiento óptico de caracteres OCR}
+
+Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones. Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones. Entre ellos algunos modelos son inspirados en la biología, como los que usan redes neuronales. Otros modelos son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos como la distribución normal multivariable aplicando el teorema de Bayes.
+
+La  mayoria de los métodos para el reconocimiento de patrones tienen en común que necesitan como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres para las personas invidentes, es deseable que estas características cambien muy poco frente a ciertos cambios en la imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y de Fluzzer, estos momentos se calculan realizando una integral, que en una imagen se convierte en sumatoria por el hecho de ser discreta. En esta sumatoria se le dan diferentes pesos a cada píxel dependiendo de la posición, y luego se realizan operaciones sobre estos que permite obtener un conjunto limitado de características independientes de la rotación, translación y al escalamiento. Al ser características que no varían significativamente con estos  cambios se les ha dado el nombre de momentos invariantes.
+
+Para el entrenamiento, lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un  número o una forma. Medir sus características aplicando descriptores invariantes, y manualmente  etiquetar esta imagen, (una a, un 1, un rombo etc.) guardando esta información en una base de datos. Luego cuando el sistema se pone en marcha se obtienen las características de la imagen, y se aplica un algoritmo de aprendizaje sobre dichas características. Uno de los métodos mas sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y en clases diferentes. Con esto se pueden crear regiones en el híper-espacio (un espacio de varias dimensiones) para las diferentes clases, y así cuando llegue una imagen nueva a clasificar solo se deben tomar las características y ubicar en que región del híper-espacio se encuentra este objeto. En los artículos se puede observar como   cada aproximación tiene sus ventajas, dependiendo de las características de las imágenes a procesar.
     
     
 \chapter{Métodos estadísticos para la clasificación}
@@ -539,31 +414,31 @@ Como se muestra en la ecuación \eqref{eq:multivariate}, lo que permite calcular
 	
 De la ecuación \ref{eq:multBayes} se puede ver inmediatamente que $\sum_i{P(C_i|\vec{x})}=1$, y que $0 \le P(C_i|\vec{x}) \le 1$ para todas las clases.
 	
-	\subsection{Entrenamiento}
+\subsection{Entrenamiento}
 
-	Ya se ha visto como se puede llevar a cabo la clasificación una vez que los parámetros $\vec{\mu_i}$ y $\Sigma_i$ han sido calculados para cada clase $C_i$. Entonces el entrenamiento consiste en calcular los parámetros $\vec{\mu_i}$ y $\Sigma_i$ a partir de un conjunto de entrenamiento $T$. Primero, el conjunto de entrenamiento debe ser partido en diferentes conjuntos de entrenamiento $T_i$, donde cada conjunto $T_i$ contiene solamente instancias cuya clase es $C_i$. Entonces, los parámetros se calculan con las ecuaciones \ref{eq:multiParams}.
-	\begin{equation}\label{eq:multiParams}
-	\begin{aligned}
-		\vec{\mu_i} &= E[ \vec{x_i} ] \\
-		\Sigma_i(a,b) &= E[ (\vec{x_i}-\vec{\mu_a})(\vec{x_i}-\vec{\mu_b}) ]
-	\end{aligned}
-	\end{equation}
-	Donde $\vec{x_i}$ son las instancias del conjunto $T_i$, $E[x]$ es el valor esperado o media de $x$ y $\Sigma_i(a,b)$ es el valor en la fila $a$ y la columna $b$ de la matriz $\Sigma_i$.
-	
-	\subsection{Simplificaciones de la distribución normal multivariable}
+Ya se ha visto como se puede llevar a cabo la clasificación una vez que los parámetros $\vec{\mu_i}$ y $\Sigma_i$ han sido calculados para cada clase $C_i$. Entonces el entrenamiento consiste en calcular los parámetros $\vec{\mu_i}$ y $\Sigma_i$ a partir de un conjunto de entrenamiento $T$. Primero, el conjunto de entrenamiento debe ser partido en diferentes conjuntos de entrenamiento $T_i$, donde cada conjunto $T_i$ contiene solamente instancias cuya clase es $C_i$. Entonces, los parámetros se calculan con las ecuaciones \ref{eq:multiParams}.
+\begin{equation}\label{eq:multiParams}
+\begin{aligned}
+	\vec{\mu_i} &= E[ \vec{x_i} ] \\
+	\Sigma_i(a,b) &= E[ (\vec{x_i}-\vec{\mu_a})(\vec{x_i}-\vec{\mu_b}) ]
+\end{aligned}
+\end{equation}
+Donde $\vec{x_i}$ son las instancias del conjunto $T_i$, $E[x]$ es el valor esperado o media de $x$ y $\Sigma_i(a,b)$ es el valor en la fila $a$ y la columna $b$ de la matriz $\Sigma_i$.
 
-	El número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones d, dado que la matriz de covarianza es de tamaño $d \times d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada \footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de trés instancias se desea calcular la media y la varianza de la población; Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuanto mas parámetros se deban calcular se necesitan mas datos para una mejor generalización.\newline \newline
-	Entonces, algunas veces es deseable reducir la cantidad de parámetros para obtener una mejor generalización. En el caso de una distribución normal multivariable, un enfoque para simplificar el modelo es usar una matriz de covarianza compartida por todas las clases. Las probabilidades posteriores pueden ser calculadas de la misma manera, y se sigue escojiendo la clase con mayor probabilidad posterior. Esto es equivalente a calcular la distancia Mahalanobis entre la entrada y la media de cada clase y escojer la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, esta dada por:
-	\begin{equation}
-	\label{eq:mahalanobis}
-	 d_i = (\vec{x}-\vec{\mu_i})\Sigma(\vec{x}-\vec{\mu_i}) 
-	\end{equation}
-	Note que cuando la matriz de covarianza es igual a la matriz identidad, la distancia Mahalanobis se convierte en la distancia Euclidiana al cuadrado.\newline \newline
-	Una mezcla entre el método completo de distribución normal multivariable y el modelo con matriz de covarianza compartida puede dar buenos resultados cuando hay riezgo que el determinante de la matriz de covarianza sea muy cercano a cero. A este método se le denominará una distribución normal multivariable con matriz de covarianza semi-compartida. Que se definiría por la ecuación:
-	\begin{equation}\label{eq:semishared}
-		p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma|^\frac{1}{2}} e^{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}
-	\end{equation}
-	Donde todas las variables tienen el mismo significado que el la ecuación Eq.\ref{eq:multivariate}. Note que la única diferencia entre Eq.\ref{eq:multivariate} y Eq.\ref{eq:semishared} es que la matriz de covarianza en el coeficiente es compartida para todas las clases $\Sigma$; pero la matriz de covarianza en el exponente $\Sigma_i$ sigue siendo diferente para todas las clases (No es compartida).
+\subsection{Simplificaciones de la distribución normal multivariable}
+
+El número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones d, dado que la matriz de covarianza es de tamaño $d \times d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada \footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de trés instancias se desea calcular la media y la varianza de la población; Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuanto mas parámetros se deban calcular se necesitan mas datos para una mejor generalización.\newline \newline
+Entonces, algunas veces es deseable reducir la cantidad de parámetros para obtener una mejor generalización. En el caso de una distribución normal multivariable, un enfoque para simplificar el modelo es usar una matriz de covarianza compartida por todas las clases. Las probabilidades posteriores pueden ser calculadas de la misma manera, y se sigue escojiendo la clase con mayor probabilidad posterior. Esto es equivalente a calcular la distancia Mahalanobis entre la entrada y la media de cada clase y escojer la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, esta dada por:
+\begin{equation}
+\label{eq:mahalanobis}
+ d_i = (\vec{x}-\vec{\mu_i})\Sigma(\vec{x}-\vec{\mu_i}) 
+\end{equation}
+Note que cuando la matriz de covarianza es igual a la matriz identidad, la distancia Mahalanobis se convierte en la distancia Euclidiana al cuadrado.\newline \newline
+Una mezcla entre el método completo de distribución normal multivariable y el modelo con matriz de covarianza compartida puede dar buenos resultados cuando hay riezgo que el determinante de la matriz de covarianza sea muy cercano a cero. A este método se le denominará una distribución normal multivariable con matriz de covarianza semi-compartida. Que se definiría por la ecuación:
+\begin{equation}\label{eq:semishared}
+	p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma|^\frac{1}{2}} e^{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}
+\end{equation}
+Donde todas las variables tienen el mismo significado que el la ecuación Eq.\ref{eq:multivariate}. Note que la única diferencia entre Eq.\ref{eq:multivariate} y Eq.\ref{eq:semishared} es que la matriz de covarianza en el coeficiente es compartida para todas las clases $\Sigma$; pero la matriz de covarianza en el exponente $\Sigma_i$ sigue siendo diferente para todas las clases (No es compartida).	
 	
 
 \chapter{Extracción de características de los caracteres}
@@ -571,9 +446,12 @@ De la ecuación \ref{eq:multBayes} se puede ver inmediatamente que $\sum_i{P(C_i
 
 \section{Introducción}
 
-Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Es por eso que se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.\newline \newline
+Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imagenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imagenes  Es por eso que se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.\newline \newline
 Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: Un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada. En las secciones posteriores se presentan las ventajas y desventajas de ambos enfoques.
 
+\section{Rotación y escalamiento}
+
+Dado que las imagenes tomadas con una camara
 
 \section{Momentos invariantes}	
 
