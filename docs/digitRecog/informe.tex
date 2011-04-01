@@ -106,6 +106,7 @@
 
 
 \chapter{Introducción}
+\label{chap:intro}
 
 \section{Descripción del problema}
 
@@ -149,6 +150,20 @@ Un sistema móvil para reconocer texto de documentos impresos presentaría los s
 
 	\item Aportar al conocimiento: Al desarrollar este aplicativo se tendrán que hacer pruebas experimentales cuyos resultados aporten a otras investigaciones.
 
+	\end{itemize}
+	
+\section{Objetivo}
+\label{sect:objective}
+	
+	\subsection{Objetivo general}
+	Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes y un vector de características invariantes (momentos de Hu y Fluzzer).
+	\subsection{Objetivos específicos}
+	\begin{itemize}
+	\item Realizar un estudio del funcionamiento de la distribución normal multivariable en el problema de reconocimiento usando el teorema de Bayes.
+	\item Realizar la extracción de características de un conjunto de imágenes de dígitos. Las características a extraer serán invariantes a la rotación, translación y escalamiento (Momentos de Hu y Fluzzer).
+	\item Diseñar e implementar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de dígitos.
+	\item Realizar pruebas de la aplicación implementada.
+	\item Realizar un análisis comparativo de los resultados obtenidos.
 	\end{itemize}
 	
 \section {Antecedentes}
@@ -395,6 +410,7 @@ Donde $exp[x]$ es la función exponencial $e^x$, $\mu$ son la media y $\sigma$ s
 
 
 \section{La distribución normal multivariable}
+\label{sect:multivar}
 
 En muchas ocaciones, en lugar de calcular un único valor $x$ de cada elemento muestreado, se calculan varios valores diferentes generando un vector $\vec{x}$. Supongamos que tenemos un vector d-dimensional $\vec{x}$ que sigue una distribución normal multivariable, entonces:
 	\begin{equation}\label{eq:multDens}
@@ -454,6 +470,7 @@ Para lograr un cierto grado de independencia de las características a la rotaci
 Dado que las imagenes tomadas con una camara
 
 \section{Momentos invariantes}	
+\label{sect:invariants}
 
 Los momentos invariantes fueron propuestos por primera vez por Hu\cite{Hu62}. Estos momentos pueden ser considerados como un promedio ponderado de los pixeles de una imagen. Hu computo sus invariantes utilizando los momentos geometricos, los cuales son variantes a la rotación y al escalamiento. Los momentos geometricos se definen como:
 
@@ -544,9 +561,48 @@ Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en 
 \section{Momentos invariantes}
 
 \chapter{Diseño, implementación y pruebas del aplicativo}
+\label{chap:ingSw}
+
+ %aquí comienza la burocracia
+\subsection{Requerimientos}
+La primera etapa en el desarrollo de software es la de levantamiento de requerimientos. Los requerimientos se toman de los objetivos de desarrollo del proyecto(Ver sección \ref{sect:objective}). Los objetivos muestran que se requiere desarrollar una aplicación para reconocimiento de dígitos usando para clasificar el modelo estadístico multivariable explicado en la sección \ref{sect:multivar} y para la extracción de características los momentos invariantes explicados en la sección \ref{sect:invariants}.\newline \newline
+Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. Un caso de uso, desempeñado por un usuario administrador, es el del entrenamiento del modelo. El otro caso de uso, desempeñado por el usuario final, es el de reconocimiento de caracteres en el documento fotografiado.
 
 \chapter{Metodología de la investigación}
 \label{chap:metodology}
+
+\section{Diseño metodológico}
+	\subsection{Hipótesis}
+	Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (Ver población), tomando la imagen con	una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
+		
+	\subsection{Tipo de investigación}
+	En esta investigación se utilizará un enfoque cuantitativo.
+	
+	\subsection{Población}
+	Los documentos impresos que solo contengan dígitos numéricos, que cumplan con las siguientes restricciones:
+	\begin{itemize}
+	\item Forma rectangular.
+	\item Fondo blanco.
+	\item Letra de color negro y con un único tipo de letra o fuente.
+	\item El tamaño de los dígitos varía entre 12 y 20 puntos
+	\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
+	\end{itemize}
+	
+	\subsection{Unidad de análisis}
+	Fotos de textos con las condiciones mencionadas en la población, con una única fuente.
+
+	\subsection{Muestra}
+	Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100 y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel. De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación otro 15\% para el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del método de aprendizaje, sobre datos que no se le mostraron en el entrenamiento.
+	
+	\subsection{Variables}
+	Las variables a tener en cuenta para ejecución de la aplicación son:
+	\begin{itemize}
+	\item Porcentaje de caracteres reconocidos exitosamente en total.
+	\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
+	\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
+	\item Porcentaje de seguridad con el que se reconoció cada dígito.
+	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
+	\end{itemize}
 
 \section{Escenario de pruebas}
 En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Cabe anotar que para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no usado para el entrenamiento.
