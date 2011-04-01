@@ -460,68 +460,6 @@ Donde todas las variables tienen el mismo significado que el la ecuación Eq.\re
 \chapter{Extracción de características de los caracteres}
 \label{chap:features}
 
-\section{Introducción}
-
-Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imagenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imagenes  Es por eso que se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.\newline \newline
-Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: Un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada. En las secciones posteriores se presentan las ventajas y desventajas de ambos enfoques.
-
-\section{Rotación y escalamiento}
-
-Dado que las imagenes tomadas con una camara
-
-\section{Momentos invariantes}	
-\label{sect:invariants}
-
-Los momentos invariantes fueron propuestos por primera vez por Hu\cite{Hu62}. Estos momentos pueden ser considerados como un promedio ponderado de los pixeles de una imagen. Hu computo sus invariantes utilizando los momentos geometricos, los cuales son variantes a la rotación y al escalamiento. Los momentos geometricos se definen como:
-
-	\begin{equation}\label{eq1}
-		\mu_{pq} = \iint{ {(x-\bar{x})^p} {(y-\bar{y})^q} f(x,y) dy dx }
-	\end{equation}
-
-Donde $\mu_{pq}$ es el momento geometrico de orden $(p+q)$, $f(x,y)$ es el valor del pixel en la posición $(x,y)$ de la imagen y $(\bar{x},\bar{y})$ es el centroide de la misma. Partiendo de estos momentos podemos obtener $n_{pq}$, un momento de orden $(p+q)$ que es invariante al escalamiento:
-
-	\begin{equation}\label{eq2}
-		n_{pq} = \frac{\mu_{pq}}{ \mu_{00}^{1+\frac{p+q}{2}} }
-	\end{equation}
-
-Utilizando $n_{pq}$, Hu logro un conjunto de momentos invariantes, todos con un grado menor o igual a 3. Sus siete momentos invariantes son:
-
-	\begin{align*}
-		\phi_1 =& n_{20} + n_{02},\\
-		\phi_2 =& (n_{20} - n_{02})^{2} + 4n_{11}^{2},\\
-		\phi_3 =& (n_{30} - 3n_{12})^{2} + (3n_{21} - n_{03})^{2},\\
-		\phi_4 =& (n_{30} + n_{12})^{2} + (n_{21} + n_{03})^{2},\\
-		\phi_5 =& (n_{30} - 3n_{12})(n_{30} + n_{12})((n_{30} + n_{12})^{2}\\
-				& - 3(n_{21} + n_{03})^{2}) + (3n_{21} - n_{03})(n_{21} + n_{03})\\
-				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2}),\\
-		\phi_6 =& (n_{20} - n_{02})((n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2})\\
-				& + 4n_{11}(n_{30} + n_{12})(n_{21} + n_{03}),\\
-		\phi_7 =& (3n_{21} - n_{03})(n_{30} + n_{12})((n_{30} + n_{12})^{2}\\
-				& - 3(n_{21} + n_{03})^{2}) - (n_{30} - 3n_{12})(n_{21} + n_{03})\\
-				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2})\\
-	\end{align*}
-
-\subsection{Momentos complejos}
-
-En 1984 Mostafa y Psaltis \cite{mostaf84} propusieron los momentos complejos como una forma de lograr momentos invariantes. Un momento complejo $C_{pq}$ de orden $(p+q)$ para una imagen $f(x,y)$ se define como:
-
-	\[ C_{pq} = \iint{ (x+iy)^p (x-iy)^q f(x,y) dx dy } \]
-	
-Donde i denota la unidad imaginaria. En coordenadas polares esto es equivalente a:
-
-	\begin{equation}\label{polarCplx}
-		C_{pq} = \iint{ r^{p+q+1}e^{i(p-q)\theta}f(r,\theta) dr d\theta }
-	\end{equation}
-
-Una propiedad interesante de los momentos complejos que se deriva de la ecuación \eqref{polarCplx} es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un angulo de $\alpha$ sobre el origen de la imagen $f(r,\theta)$\footnote{es decir $f'(r,\theta) = f(r,\theta+\alpha)$} entonces:
-
-\begin{equation}\label{rotProp}
-	C'_{pq} = e^{-i(p-q)\alpha}C_{pq}
-\end{equation}
-
-Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la equación \eqref{rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser tambien demostro que los momentos de Hu no eran ni completos ni independientes, y propuso un metodo para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este metodo se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.\newline
-Sin embargo, en un articulo diferente\cite{flusser06} Flusser demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetria y, para solucionar este problema, propuso un nuevo metodo para generar momentos adecuados para reconocer objetos con simetria de grado N. Como se mostrara mas adelante estos momentos son tambien efectivos para reconocer objetos que no son simetricos.
-
 \section{Escala de grises}
 
 Antes de computar los momentos invariantes es necesario hacer un preprocesamiento. Primero la imagen debe convertirse a un formato más apropiado para extraerle las caracteristicas. Dado que las letras no varian con el color, y que el objetivo del sistema no es reconocer colores, es conveniente convertir la imagen a una escala de grises. En este proyecto se trabajo con el modelo RGB. En este modelo se asigna una intensidad a cada uno de los tres colores primarios de la luz: rojo, verde y azul\footnote{que en ingles son red, green, y blue, de alli las iniciales RGB}, de esta manera cada pixel en una fotografia se representa mediante un valor que identifique la intensidad de cada uno de estos tres colores que, mezclados por adición, se acerque más al color verdadero del pixel. Las camaras digitales modernas utilizan valores entre\footnote{en donde 0 representa que el color no se utiliza y 255 representa la mayor intensidad} 0 y 255 ($2^8$) permitiendo de esta manera más de 16 millones de colores distintos. En una escala de grises, en cambio, cada pixel es representado con un unico valor entre 0 y 255, el cual representa que tan oscuro es el mismo. Para convertir un pixel de una imagen en color a uno en escala de grises se suele hacer un promedio ponderado de la intensidad de cada uno de los tres colores, en donde a cada color se le asigna un peso. Al ser un promedio ponderado la suma de los tres pesos debe ser 1. Los pesos utilizados más comunmente son:
@@ -554,11 +492,100 @@ Cuando las imagenes son adquiridas mediante un escaner, es común escoger un $T(
 
 Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el area a considerar para $m$ y $s$ es de tamaño $O \times O$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ seria $O(N \times M \times O^{2})$. Con esta complejidad el algoritmo seria demasiado lento para procesar imagenes de varios megapixeles, incluso con valores relativamente pequeños de $O$.
 
-\subsection{Componentes conectados}
+\subsection{Optimización al algoritmo al algoritmo de binarización}
+
+\section{Componentes conectados}
+
+\section{Extracción de caracteristicas}
+
+Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imagenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imagenes son adquiridas mediante una camara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones  se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como que debe existir una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
+
+Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar, despues de esto se extraerian de la misma caracteristicas que sean dependientes a la rotación y el escalamiento. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento. En las secciones posteriores se presentan ambos enfoques junto con sus ventajas y desventajas.
+
+\subsection{Rotación y escalamiento mediante transformación geometrica}
+
+Si se utilizan caracteristicas dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos angulos de rotación. Si se hace dificil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales \cite{niyogi2002}. El problema con este enfoque es que cada caracter se convertiria en muchos clases distintas, cada una de las cuales tendria un angulo de rotación. Asi pues, el numero de clases aumentaria significativamente, y aun asi, todas las rotaciones de una misma letra serian en realidad parte de una sola clase. Como resultado de lo anterior, no solo aumentaria la complejidad computacional del algoritmo de clasificación, sino que ademas disminuiria la probabilidad de que este clasificara correctamente, por cuanto el numero de clases seria de varios miles.
+
+Un enfoque mucho más practico es detectar la rotación y el escalamiento del texto, y posteriormente aplicar transformaciones geometricas para ajustar la rotación y el escalamiento a valores preestablecidos. Posteriormente se podrian obtener caracteristicas dependientes a la rotación y el escalamiento para clasificar cada letra. Para detectar la rotación se pueden utilizar metodos ya existentes, como los utilizados en el algoritmo de analisis de documentos Docstrum, los cuales permiten establecer cual es la inclinación de cada linea de texto. Al tener la inclinación de las lineas, se puede determinar cual es la inclinación da cada caracter en particular. Para corregir la inclinación se utilizaria una matriz de rotación: si el algoritmo de detección de rotación determina que el caracter esta rotado un angulo $\theta$ alrededor de su centroide, se puede detectar cual es la nueva ubicación $(x', y')$ del pixel $(x, y)$ utilizando la siguiente operación:
+
+	\[
+		\begin{pmatrix} 
+			x' \\ y'
+		\end{pmatrix}
+		=
+		\begin{pmatrix} 
+			\cos\theta & -\sin\theta \\
+			\sin\theta & \cos\theta
+		\end{pmatrix}
+		\begin{pmatrix} 
+			x \\ y
+		\end{pmatrix}
+	\]
+
+
+El escalamiento se podria ajustar haciendo una interpolación de los pixeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el angulo $\theta$ no es un multiplo de 90 grados, las coordenadas de los nuevos pixeles $(x', y')$ no serian enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una perdida de información importante cuando la calidad de las imagenes no es muy buena. En cuanto al escalamiento, la interpolación tambien produce una perdida de información. Ambos problemas podrian ocasionar que la imagen obtenida finalmente fuese muy distinta a la imagen original, lo que haria el proceso de clasificación mucho más dificil.
+
+Dado que los algoritmos de clasificación funcionan de la mejor manera cuando tienen la mayor cantidad de información util, es convinente encontrar metodos de extracción de caracteristicas que minimizen la perdida de información. Una posibilidad es utilizar caracteristicas que sean invariantes a la rotación y al escalamiento, pues de esta forma no es necesario rotar o escalar la imagen. Los momento invariantes son caracteristicas que cumplen dicha propiedad.
+
+\subsection{Momentos invariantes de Hu}	
+\label{sect:invariants}
+
+Los momentos invariantes fueron propuestos por primera vez por Hu\cite{Hu62}. Estos momentos pueden ser considerados como un promedio ponderado de los pixeles de una imagen. Hu computo sus invariantes utilizando los momentos geometricos, los cuales son variantes a la rotación y al escalamiento. Los momentos geometricos se definen como:
+
+	\begin{equation}\label{eq1}
+		\mu_{pq} = \iint{ {(x-\bar{x})^p} {(y-\bar{y})^q} f(x,y) dy dx }
+	\end{equation}
+
+Donde $\mu_{pq}$ es el momento geometrico de orden $(p+q)$, $f(x,y)$ es el valor del pixel en la posición $(x,y)$ de la imagen y $(\bar{x},\bar{y})$ es el centroide de la misma. Partiendo de estos momentos podemos obtener $n_{pq}$, un momento de orden $(p+q)$ que es invariante al escalamiento:
+
+	\begin{equation}\label{eq2}
+		n_{pq} = \frac{\mu_{pq}}{ \mu_{00}^{1+\frac{p+q}{2}} }
+	\end{equation}
+
+Utilizando $n_{pq}$, Hu logro un conjunto de momentos invariantes, todos con un grado menor o igual a 3. Sus siete momentos invariantes son:
+
+	\begin{align*}
+		\phi_1 =& n_{20} + n_{02},\\
+		\phi_2 =& (n_{20} - n_{02})^{2} + 4n_{11}^{2},\\
+		\phi_3 =& (n_{30} - 3n_{12})^{2} + (3n_{21} - n_{03})^{2},\\
+		\phi_4 =& (n_{30} + n_{12})^{2} + (n_{21} + n_{03})^{2},\\
+		\phi_5 =& (n_{30} - 3n_{12})(n_{30} + n_{12})((n_{30} + n_{12})^{2}\\
+				& - 3(n_{21} + n_{03})^{2}) + (3n_{21} - n_{03})(n_{21} + n_{03})\\
+				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2}),\\
+		\phi_6 =& (n_{20} - n_{02})((n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2})\\
+				& + 4n_{11}(n_{30} + n_{12})(n_{21} + n_{03}),\\
+		\phi_7 =& (3n_{21} - n_{03})(n_{30} + n_{12})((n_{30} + n_{12})^{2}\\
+				& - 3(n_{21} + n_{03})^{2}) - (n_{30} - 3n_{12})(n_{21} + n_{03})\\
+				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2})\\
+	\end{align*}
+
+\subsection{Momentos complejos y momento de Fluzzer}
+
+En 1984 Mostafa y Psaltis \cite{mostaf84} propusieron los momentos complejos como una forma alternativa de lograr momentos invariantes. Un momento complejo $C_{pq}$ de orden $(p+q)$ para una imagen $f(x,y)$ se define como:
+
+	\[ C_{pq} = \iint{ (x+iy)^p (x-iy)^q f(x,y) dx dy } \]
+	
+Donde i denota la unidad imaginaria. En coordenadas polares esto es equivalente a:
+
+	\begin{equation}\label{polarCplx}
+		C_{pq} = \iint{ r^{p+q+1}e^{i(p-q)\theta}f(r,\theta) dr d\theta }
+	\end{equation}
+
+Una propiedad interesante de los momentos complejos, que se deriva de la ecuación \eqref{polarCplx}, es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un angulo de $\alpha$ sobre el origen de la imagen $f(r,\theta)$\footnote{es decir $f'(r,\theta) = f(r,\theta+\alpha)$} entonces:
+
+\begin{equation}\label{rotProp}
+	C'_{pq} = e^{-i(p-q)\alpha}C_{pq}
+\end{equation}
+
+Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la equación \eqref{rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser tambien demostro que los momentos de Hu no eran ni completos ni independientes, y propuso un metodo para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este metodo se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
 \subsection{Corrección de la rotación}
 
-\section{Momentos invariantes}
+\subsection{Problemas de simetria}
+
+Sin embargo, en un articulo diferente\cite{flusser06} Flusser demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetria y, para solucionar este problema, propuso un nuevo metodo para generar momentos adecuados para reconocer objetos con simetria de grado N. Como se mostrara mas adelante estos momentos son tambien efectivos para reconocer objetos que no son simetricos.
+
+\subsubsection{Correción de los problemas de simetria}
 
 \chapter{Diseño, implementación y pruebas del aplicativo}
 \label{chap:ingSw}
