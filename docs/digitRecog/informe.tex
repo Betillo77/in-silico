@@ -564,9 +564,73 @@ Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en 
 \label{chap:ingSw}
 
  %aquí comienza la burocracia
-\subsection{Requerimientos}
+\section{Análisis}
 La primera etapa en el desarrollo de software es la de levantamiento de requerimientos. Los requerimientos se toman de los objetivos de desarrollo del proyecto(Ver sección \ref{sect:objective}). Los objetivos muestran que se requiere desarrollar una aplicación para reconocimiento de dígitos usando para clasificar el modelo estadístico multivariable explicado en la sección \ref{sect:multivar} y para la extracción de características los momentos invariantes explicados en la sección \ref{sect:invariants}.\newline \newline
-Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. Un caso de uso, desempeñado por un usuario administrador, es el del entrenamiento del modelo. El otro caso de uso, desempeñado por el usuario final, es el de reconocimiento de caracteres en el documento fotografiado.
+Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. El diagrama se muestra en la Figura \ref{fig:useCase}. Un caso de uso, desempeñado por un usuario administrador, es el del entrenamiento del modelo. El otro caso de uso, desempeñado por el usuario final, es el de reconocimiento de caracteres en el documento fotografiado.
+
+\begin{figure}[htb]
+\begin{center}
+\leavevmode
+\includegraphics[width=7cm]{diagrams/casoUso.jpg}
+\end{center}
+\caption{Diagrama de casos de uso}
+\label{fig:useCase}
+\end{figure}
+
+\subsection{Documentación de casos de uso}
+La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb:uc1} y la tabla \ref{tb:uc2}.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|p{5cm}|p{5cm}|}
+	\hline
+	Caso de uso & Entrenamiento del sistema de clasificación\\
+	\hline
+	Actor: Usuario administrador & Referencia: 1 \\
+	\hline
+	Precondición: Sistema no entrenado. Imagenes de entrenamiento en un mismo directorio nombradas como se explica en la sección \ref{sect:testEnvironment} & 
+	Postcondición: Sistema entrenado. \\
+	\hline
+	Sistema & Usuario \\
+	\hline
+	1. El usuario administrador indica en que directorio se encuentran las imagenes de entrenamiento. &
+	2. El sistema construye un conjunto de entrenamiento como se explica en la sección \ref{sect:trainingSet} con todas las imágenes del directorio pasado por el usuario. \\
+	\hline
+	4. El usuario recibe un mensaje que indica que el procedimiento se realizó con éxito. &
+	3. El sistema se entrena como se explica en el capítulo \ref{chap:ml} y guarda el modelo en disco. \\
+	\hline
+\end{tabular}
+\end{center}
+\caption{Caso de uso 1}	
+\label{tb:uc1}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|p{5cm}|p{5cm}|}
+	\hline
+	Caso de uso & Entrenamiento del sistema de clasificación\\
+	\hline
+	Actor: Usuario final & Referencia: 2 \\
+	\hline
+	Precondición: Sistema entrenado & Postcondición: El usuario tiene el texto solicitado. \\
+	\hline
+	Sistema & Usuario \\
+	\hline
+	1. El usuario le envía al sistema una imagen del documento que desea leer. Las condiciones de captura de la imagen deben estar entre las especificadas en la sección \ref{sect:population}. &
+	2. El sistema binariza la imagen, la segmenta y reconoce los caracteres segmentados en la imagen. \\
+	\hline
+	4. El usuario recibe el texto reconocido por el sistema &
+	3. El sistema envía al usuario el texto reconocido de la imagen enviada. \\
+	\hline
+\end{tabular}
+\end{center}
+\caption{Caso de uso 2}	
+\label{tb:uc2}
+\end{table}
+
+\section{Diseño}
+El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML.
 
 \chapter{Metodología de la investigación}
 \label{chap:metodology}
@@ -579,6 +643,7 @@ Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que 
 	En esta investigación se utilizará un enfoque cuantitativo.
 	
 	\subsection{Población}
+	\label{sect:population}
 	Los documentos impresos que solo contengan dígitos numéricos, que cumplan con las siguientes restricciones:
 	\begin{itemize}
 	\item Forma rectangular.
@@ -605,6 +670,7 @@ Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que 
 	\end{itemize}
 
 \section{Escenario de pruebas}
+\label{sect:testEnvironment}
 En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Cabe anotar que para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no usado para el entrenamiento.
 
 \subsection{Levantamiento de datos}
