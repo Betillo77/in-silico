@@ -458,8 +458,25 @@ Una mezcla entre el método completo de distribución normal multivariable y el 
 \begin{equation}\label{eq:semishared}
 	p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma|^\frac{1}{2}} e^{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}
 \end{equation}
-Donde todas las variables tienen el mismo significado que el la ecuación Eq.\ref{eq:multivariate}. Note que la única diferencia entre Eq.\ref{eq:multivariate} y Eq.\ref{eq:semishared} es que la matriz de covarianza en el coeficiente es compartida para todas las clases $\Sigma$; pero la matriz de covarianza en el exponente $\Sigma_i$ sigue siendo diferente para todas las clases (No es compartida).	
-	
+Donde todas las variables tienen el mismo significado que el la ecuación Eq.\ref{eq:multivariate}. Note que la única diferencia entre Eq.\ref{eq:multivariate} y Eq.\ref{eq:semishared} es que la matriz de covarianza en el coeficiente es compartida para todas las clases $\Sigma$; pero la matriz de covarianza en el exponente $\Sigma_i$ sigue siendo diferente para todas las clases (No es compartida).
+
+\section{Resultados del método estadístico en el problema OCR}	
+Aunque los métodos estadísticos explicados pueden ser muy potentes, requieren que las instancias de una misma clase formen un único grupo en el hiper-espacio de características. Para lograr esto se debe realizar una buena selección de características de entrada al método de clasificación. En el capítulo \ref{chap:features} se explican distintos conjuntos de características y cuales se escojieron para realizar la clasificación. Sin embargo se observó que en general la distribución normal multivariable con matriz de covarianza semi-compartida generó un mejor resultado. En la tabla \ref{tb:classifResult} se compara el resultado de el método completo explicado en la sección \ref{sect:multivar} con el método simplificado de covarianza semi-compartida para cada experimento. Dado que se utilizaron diferentes características en los experimentos, se muestra la precisión de las características que dieron mejor resultado en cada experimento. El resultado completo de los experimentos se muestra en capitulos posteriores.
+
+	\begin{table}
+	\begin{center}
+	\begin{tabular}{|c|c|c|}		
+		\hline
+		Experimento & Semi-shared covariance matrix & Independent covariance matrix \\
+		\hline
+		1 & 96.38\% & 87.84\% \\
+		2 &	98.77\% & 92.47\% \\
+		\hline		
+	\end{tabular}
+	\end{center}
+	\caption{Comparación de los métodos estadísticos en el problema de OCR}	
+	\label{tb:classifResult}
+	\end{table}
 
 \chapter{Extracción de características de los caracteres}
 \label{chap:features}
@@ -478,11 +495,11 @@ Antes de computar las caracteristicas es necesario hacer un preprocesamiento. Pr
 
 Estos pesos son usados por la libreria de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
 
-Utilizando la ecuación \eqref{bwtocv} se escribio un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
+Utilizando la ecuación \eqref{bwtocv} se escribió un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
 
 \section{Binarización}
 
-Una vez obtenida la imagen escala de grises se procedio a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es util para el reconocimiento de caracteres debido a que las letras y los digitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imagenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor del pixel como:
+Una vez obtenida la imagen escala de grises se procedió a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es útil para el reconocimiento de caracteres debido a que las letras y los dígitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imágenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor del pixel como:
 
 \begin{equation}\label{binEq}
 	I_2(x,y) = \left\{ \begin{array}{ll}
@@ -493,17 +510,19 @@ Una vez obtenida la imagen escala de grises se procedio a hacer una binarizació
 
 Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usualmente, la diferencia entre los distintos metodos de binarización se encuentra en como elige cada uno el umbral $T(x,y)$.
 
-Cuando las imagenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que los escaners logran una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es tomada por una camara digital, en condiciones de iluminación no tan constantes, se eligio un metodo de binarización basado en el método local del valor umbral. En este metodo $T(x,y)$ puede ser distinto para distintos pixeles, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. Uno de los metodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
+Cuando las imágenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que los escaners logran una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es tomada por una cámara digital, en condiciones de iluminación no tan constantes, se eligió un método de binarización local adaptativo. En este metodo $T(x,y)$ puede ser distinto para distintos pixeles, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. Uno de los metodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
 
 \begin{equation}
 	T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
 \end{equation}
 
-Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el area a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ seria $O(N \times M \times A^{2})$. Con esta complejidad el algoritmo seria demasiado lento para procesar imagenes de varios megapixeles, incluso con valores relativamente pequeños de $O$.
+Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapixeles, incluso con valores relativamente pequeños de $O$.
 
-\subsection{Optimización al algoritmo al algoritmo de binarización}
+%poner resultado obtenido por nuestro programa (Original, Binarizado)
 
-Dada la complejidad del algoritmo estandar de binarización, se hizo una investigación para buscar algoritmos ya existentes que realizaran la tarea en un tiempo más razonable. En un articulo escrito por los creadores del proyecto Ocropus\footnote{Un proyecto de codigo abierto cuyo objetivo es crear un sistema de reconocimiento optico de caracteres} se propone \footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} un algoritmo que binariza una imagen en un tiempo $O(N \times M)$ utilizando imagenes integrales y el metodo de Sauvola. Una imagen integral se define para un pixel $(x, y)$ como la suma de todos los pixeles por encima y a la izquierda de este pixel. Matematicamente la imagen integral del pixel $(x, y)$ se puede definir como:
+\subsection{Optimización al algoritmo de binarización}
+
+Dada la complejidad del algoritmo estandar de binarización, se hizo una investigación para buscar algoritmos ya existentes que realizaran la tarea en un tiempo más razonable. En un artículo escrito por los creadores del proyecto Ocropus\footnote{Un proyecto de codigo abierto cuyo objetivo es crear un sistema de reconocimiento optico de caracteres} se propone \footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} un algoritmo que binariza una imagen en un tiempo $O(N \times M)$ utilizando imágenes integrales y el metodo de Sauvola. Una imagen integral se define para un pixel $(x, y)$ como la suma de todos los pixeles por encima y a la izquierda de este pixel. Matemáticamente la imagen integral del pixel $(x, y)$ se puede definir como:
 
 \begin{equation}
 	I(x, y) = \sum_{i=0}^{x}\sum_{j=0}^{y}Im(i, j)
@@ -516,24 +535,31 @@ Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado qu
 	   &- I(x + \frac{A}{2}, y - \frac{A}{2}) - I(x - \frac{A}{2}, y + \frac{A}{2})) / A^{2}
 \end{align*}
 
-En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la izquierda. Graficamente se podria ver de la siguiente manera:
+En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la izquierda. La representación gráfica de las imágenes integrales se muestra en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}.
 
-
+\begin{figure}[htb]
+\begin{center}
+\leavevmode
+\includegraphics[width=6cm]{img/integral.png}
+\end{center}
+\caption{Imagen integral (Tomado de ACM Student Reseach Competition)}
+\label{fig:integral}
+\end{figure}
 
 
 \section{Componentes conectados}
 
 \section{Extracción de caracteristicas}
 
-Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imagenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imagenes son adquiridas mediante una camara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones  se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como que debe existir una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
+Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imágenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imágenes son adquiridas mediante una cámara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como que debe existir una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
 
-Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar, despues de esto se extraerian de la misma caracteristicas que sean dependientes a la rotación y el escalamiento. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento. En las secciones posteriores se presentan ambos enfoques junto con sus ventajas y desventajas.
+Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar, despues de esto se pueden extraer características numéricas de la imagen que sean lo mas similares posibles para objetos de la misma clase y lo mas diferentes posibles para objetos de distintas clases. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento. En las secciones posteriores se presentan ambos enfoques junto con sus ventajas y desventajas.
 
 \subsection{Rotación y escalamiento mediante transformación geometrica}
 
-Si se utilizan caracteristicas dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos angulos de rotación. Si se hace dificil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales \cite{niyogi2002}. El problema con este enfoque es que cada caracter se convertiria en muchos clases distintas, cada una de las cuales tendria un angulo de rotación. Asi pues, el numero de clases aumentaria significativamente, y aun asi, todas las rotaciones de una misma letra serian en realidad parte de una sola clase. Como resultado de lo anterior, no solo aumentaria la complejidad computacional del algoritmo de clasificación, sino que ademas disminuiria la probabilidad de que este clasificara correctamente, por cuanto el numero de clases seria de varios miles.
+Si se utilizan caracteristicas dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos angulos de rotación. Si se hace dificil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales \cite{niyogi2002}. El problema con este enfoque es que es complejo computacionalmente y que instancias de una misma clase pueden quedar ampliamente repartidas por el hiper-espacio de clasificación, y por tanto, sería mas dificil para un algoritmo de clasificación separar las distintas clases.
 
-Un enfoque mucho más practico es detectar la rotación y el escalamiento del texto, y posteriormente aplicar transformaciones geometricas para ajustar la rotación y el escalamiento a valores preestablecidos. Posteriormente se podrian obtener caracteristicas dependientes a la rotación y el escalamiento para clasificar cada letra. Para detectar la rotación se pueden utilizar metodos ya existentes, como los utilizados en el algoritmo de analisis de documentos Docstrum, los cuales permiten establecer cual es la inclinación de cada linea de texto. Al tener la inclinación de las lineas, se puede determinar cual es la inclinación da cada caracter en particular. Para corregir la inclinación se utilizaria una matriz de rotación: si el algoritmo de detección de rotación determina que el caracter esta rotado un angulo $\theta$ alrededor de su centroide, se puede detectar cual es la nueva ubicación $(x', y')$ del pixel $(x, y)$ utilizando la siguiente operación:
+Un enfoque mucho más practico es detectar la rotación y el escalamiento del texto, y posteriormente aplicar transformaciones geométricas para ajustar la rotación y el escalamiento a valores preestablecidos. Posteriormente se podrían obtener características dependientes a la rotación y al escalamiento para clasificar cada letra. Para detectar la rotación se pueden utilizar metodos ya existentes, como los utilizados en el algoritmo de análisis de documentos Docstrum, los cuales permiten establecer cual es la inclinación de cada linea de texto. Al tener la inclinación de las líneas, se puede aproximar cual es la inclinación da cada caracter en particular. Para corregir la inclinación se utilizaria una matriz de rotación: si el algoritmo de detección de rotación determina que el caracter esta rotado un angulo $\theta$ alrededor de su centroide, se puede detectar cual es la nueva ubicación $(x', y')$ del pixel $(x, y)$ utilizando la siguiente operación:
 
 	\[
 		\begin{pmatrix} 
@@ -549,20 +575,20 @@ Un enfoque mucho más practico es detectar la rotación y el escalamiento del te
 		\end{pmatrix}
 	\]
 
-El escalamiento se podria ajustar haciendo una interpolación de los pixeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el angulo $\theta$ no es un multiplo de 90 grados, las coordenadas de los nuevos pixeles $(x', y')$ no serian enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una perdida de información importante cuando la calidad de las imagenes no es muy buena. En cuanto al escalamiento, la interpolación tambien produce una perdida de información. Ambos problemas podrian ocasionar que la imagen obtenida finalmente fuese muy distinta a la imagen original, lo que haria el proceso de clasificación mucho más dificil.
+El escalamiento se podría ajustar haciendo una interpolación de los pixeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el angulo $\theta$ no es un múltiplo de 90 grados, las coordenadas de los nuevos pixeles $(x', y')$ no serían enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una pérdida de información importante cuando la calidad de las imágenes no es muy buena. En cuanto al escalamiento, la interpolación también produce una pérdida de información. Tal vez el problema mas grave de esta pérdida de información en el reconocimiento de caracteres, es que en algunos casos pueden partir los caracteres en varias partes dificultando el proceso de reconocimiento.
 
-Dado que los algoritmos de clasificación funcionan de la mejor manera cuando tienen la mayor cantidad de información util, es convinente encontrar metodos de extracción de caracteristicas que minimizen la perdida de información. Una posibilidad es utilizar caracteristicas que sean invariantes a la rotación y al escalamiento, pues de esta forma no es necesario rotar o escalar la imagen. Los momento invariantes son caracteristicas que cumplen dicha propiedad.
+Para el problema de reconocimiento de caracteres es entonces conveniente encontrar métodos de extracción de características que minimizen la pérdida de información, pero que al mismo tiempo sean invariantes a la rotación y al escalamiento. Los momento invariantes son caracteristicas que cumplen dicha propiedad.
 
 \subsection{Momentos invariantes de Hu}	
 \label{sect:invariants}
 
-Los momentos invariantes fueron propuestos por primera vez por Hu\cite{Hu62}. Estos momentos pueden ser considerados como un promedio ponderado de los pixeles de una imagen. Hu computo sus invariantes utilizando los momentos geometricos, los cuales son variantes a la rotación y al escalamiento. Los momentos geometricos se definen como:
+Los momentos invariantes fueron propuestos por primera vez por Hu\cite{Hu62}. Estos momentos pueden ser considerados como un promedio ponderado de los pixeles de una imagen. Hu computo sus invariantes utilizando los momentos geométricos, los cuales son variantes a la rotación y al escalamiento. Los momentos geométricos se definen como:
 
 	\begin{equation}\label{eq1}
 		\mu_{pq} = \iint{ {(x-\bar{x})^p} {(y-\bar{y})^q} f(x,y) dy dx }
 	\end{equation}
 
-Donde $\mu_{pq}$ es el momento geometrico de orden $(p+q)$, $f(x,y)$ es el valor del pixel en la posición $(x,y)$ de la imagen y $(\bar{x},\bar{y})$ es el centroide de la misma. Partiendo de estos momentos podemos obtener $n_{pq}$, un momento de orden $(p+q)$ que es invariante al escalamiento:
+Donde $\mu_{pq}$ es el momento geométrico de orden $(p+q)$, $f(x,y)$ es el valor del pixel en la posición $(x,y)$ de la imagen y $(\bar{x},\bar{y})$ es el centroide de la misma. Partiendo de estos momentos podemos obtener $n_{pq}$, un momento de orden $(p+q)$ que es invariante al escalamiento:
 
 	\begin{equation}\label{eq2}
 		n_{pq} = \frac{\mu_{pq}}{ \mu_{00}^{1+\frac{p+q}{2}} }
@@ -597,21 +623,49 @@ Donde i denota la unidad imaginaria. En coordenadas polares esto es equivalente 
 		C_{pq} = \iint{ r^{p+q+1}e^{i(p-q)\theta}f(r,\theta) dr d\theta }
 	\end{equation}
 
-Una propiedad interesante de los momentos complejos, que se deriva de la ecuación \eqref{polarCplx}, es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un angulo de $\alpha$ sobre el origen de la imagen $f(r,\theta)$\footnote{es decir $f'(r,\theta) = f(r,\theta+\alpha)$} entonces:
+Una propiedad interesante de los momentos complejos, que se deriva de la ecuación \eqref{polarCplx}, es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un ángulo $\alpha$ sobre el origen de la imagen $f(r,\theta)$\footnote{es decir $f'(r,\theta) = f(r,\theta+\alpha)$} entonces:
 
 \begin{equation}\label{rotProp}
 	C'_{pq} = e^{-i(p-q)\alpha}C_{pq}
 \end{equation}
 
-Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la equación \eqref{rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser tambien demostro que los momentos de Hu no eran ni completos ni independientes, y propuso un metodo para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este metodo se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
+Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la ecuación \eqref{rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
-\subsection{Corrección de la rotación}
+\subsection{Primeros resultados}
+Para el primer experimento se implementó un método de clasificación estadístico multivariable y se implementaron las características de Hu y de Flusser como se indica en el capítulo de diseño, implementación y pruebas del aplicativo. Después de haber corregido los errores encontrados en la etapa de pruebas se obtuvieron los resultados que se muestran en la tabla \ref{tb:exp1}.
+	\begin{table}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		* & \multicolumn{2}{|c|}{Semi-shared covariance matrix} &
+			\multicolumn{2}{|c|}{Independent covariance matrix} \\
+		\hline
+		Character & Hu & Flusser & Hu & Flusser \\
+		\hline
+		0 & 99.34\% & 99.21\% & 99.86\% & 100.00\% \\
+		1 &	100.00\% & 100.00\% & 100.00\% & 100.00\% \\
+		2 &	100.00\% & 100.00\% & 91.21\% & 93.91\% \\
+		3 &	100.00\% & 100.00\% & 100.00\% & 100.00\% \\
+		4 &	100.00\% & 100.00\%	& 100.00\% & 96.41\% \\		
+		5 & 97.97\% & 99.32\% & 26.95\% & 38.95\% \\ 
+		6 & 91.65\% & 86.96\% & 93.61\% & 86.83\% \\
+		7 & 100.00\% & 100.00\% & 100.00\% & 99.87\% \\
+		8 & 85.53\% & 92.97\% & 96.76\% & 99.44\% \\
+		9 &	89.52\% & 81.06\% & 65.40\% & 65.03\% \\
+		\hline
+		Total & 96.38\% & 95.83\% & 87.21\% & 87.84\% \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\caption{Presición del algoritmo clasificador en el primer experimento}	
+	\label{tb:exp1}
+	\end{table}
 
 \subsection{Problemas de simetria}
 
-Sin embargo, en un articulo diferente\cite{flusser06} Flusser demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetria y, para solucionar este problema, propuso un nuevo metodo para generar momentos adecuados para reconocer objetos con simetria de grado N. Como se mostrara mas adelante estos momentos son tambien efectivos para reconocer objetos que no son simetricos.
+En un artículo diferente\cite{flusser06} Flusser demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. Como se mostrará mas adelante estos momentos son también efectivos para reconocer objetos que no son simetricos.
 
-\subsubsection{Correción de los problemas de simetria}
+
 
 \chapter{Diseño, implementación y pruebas del aplicativo}
 \label{chap:ingSw}
