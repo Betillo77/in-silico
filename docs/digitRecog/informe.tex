@@ -200,7 +200,7 @@ En esta sección se hablará de algunas investigaciones realizadas en el área d
 
 \subsection{Binarización de imagen}
 
-Esto se refiere a tomar una imagen en escala de grises y convertirla a una  imagen en blanco y negro. También se puede ver como separar la parte que nos interesa (foreground o primer plano) de la parte que no nos interesa (background o fondo). Una técnica que da buen resultado es la binarización de Sauvola, que realiza una binarización basada en un análisis local de la imagen. El hecho de que sea local le brinda una mejor binarización en condiciones de luz variable. Los  resultados obtenidos en el artículo "Efficient Implementation of Local Adaptative  Thersholding Techniques Using Integral Images" indican que esta técnica puede ser optimizada para lograr un tiempo de ejecución comparable con las técnicas globales de  binarización (al correr en O(N) \footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}, siendo N el numero de píxeles de la imagen), conservando	las ventajas de ser local, por lo que seria un buen candidato para implementarlo en un  proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
+Esto se refiere a tomar una imagen en escala de grises y convertirla a una  imagen en blanco y negro. También se puede ver como separar la parte que nos interesa (foreground o primer plano) de la parte que no nos interesa (background o fondo). Una técnica que da buen resultado es la binarización de Sauvola, que realiza una binarización basada en un análisis local de la imagen. El hecho de que sea local le brinda una mejor binarización en condiciones de luz variable. Los  resultados obtenidos en el artículo "Efficient Implementation of Local Adaptative  Thersholding Techniques Using Integral Images" indican que esta técnica puede ser optimizada para lograr un tiempo de ejecución comparable con las técnicas globales de  binarización (al correr en O(N) \footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}, siendo N el numero de píxeles de la imagen), conservando las ventajas de ser local, por lo que seria un buen candidato para implementarlo en un proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
 
 \subsection{Análisis del documento}
 
@@ -236,11 +236,12 @@ Los métodos de aprendizaje de máquinas, sean de clasificación o de regresión
 En la figura \ref{fig:classif1} se ve el esquema general de un algoritmo clasificador. Donde lo que se encuentra en la caja ``clasificador'' es el modelo que se va a usar para clasificar. Entonces uno de los problemas que hay que resolver antes de proceder a la clasificación es encontrar un modelo que pueda aproximar lo mejor posible la realidad del problema que se quiere atacar. Varios autores han especificado que hasta el momento no se a encontrado un modelo que se ajuste de la mejor manera a todos los problemas, a esto le han llamado {\it ``no free lunch theorem''}; es español esto traduciría ``teorema no hay almuezo gratis''. En algo si concuerdan la mayoría de investigadores, y es en que si varios modelos funcionan bien se debe escojer el mas sencillo de ellos. Esta observación se desprende del principio filosofico conocido como la navaja de Ockham, propuesto por Guillermo de Ockham (1280-1349), y segun el cual ``cuando dos teorías en igualdad de condiciones tienen las mismas consecuencias, la teoría más simple tiene más probabilidades de ser correcta que la compleja'' \footnote{Robert Audi, ed. Ockham's razor. The Cambridge Dictionary of Philosophy (2nd Edition). Cambridge University Press}. Este principio se aplica en muchos campos, y para el caso del aprendizaje de máquinas tiene especial sentido, ya que usualmente los modelos más sencillos son más fáciles de entrenar, de comprender y sobre todo de depurar.
 
 \subsection{El aprendizaje de máquinas}
+\label{sect:machineLearning}
 
 Con los avances en las tecnologías de computo, la sociedad tiene la posibilidad de almacenar grandes cantidades de información. Por ejemplo las cadenas de supermercado poseen grandes volumenes de información de sus ventas y las entidades financieras poseen la información crediticia de sus clientes. Para los supermercados es muy útil saber que personas compran ciertos tipos de productos y con que periodicidad, y para las entidades financieras es útil saber que personas son de mayor y menor riesgo para darle un crédito.\newline
 
 Si, por ejemplo, supieramos con exactitud como establecer si una persona es de riesgo o no para una central de crédito dados sus datos financieros, no necesitaríamos utilizar
-aprendizaje de máquinas; podríamos simplemente escribir las reglas que determinan si una persona es de riesgo o no en el código. Pero dado que muchas veces no se conocen estas reglas, lo que se busca en el aprendizaje de máquinas es extraer esta información de los datos.\newline
+aprendizaje de máquinas; podríamos simplemente escribir las reglas que determinan si una persona es de riesgo o no en el código. Pero dado que muchas veces no se conocen estas reglas, lo que se busca en el aprendizaje de máquinas es extraer esta información de los datos.
 
 Alpaydin indica que las personas usualmente sabemos que existen procesos que explican los datos que observamos. Por ejemplo, en el caso del supermercado, el comportamiento de los clientes no es completamente aleatorio; por tanto, se espera encontrar algunos patrones en los datos. Aunque este autor indica que muchas veces no es posible identificar el modelo completamente, usualmente se puede construir una buena aproximación. Este es el nicho de trabajo del aprendizaje de máquinas, pues esta aproximación puede ser útil para encontrar patrones en el problema estudiado o para hacer estimaciones de datos futuros asumiendo que en el futuro los datos van a comportarse de una manera similar a como se comportaron en el pasado.
 
@@ -443,12 +444,15 @@ Donde $\vec{x_i}$ son las instancias del conjunto $T_i$, $E[x]$ es el valor espe
 
 \subsection{Simplificaciones de la distribución normal multivariable}
 
-El número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones d, dado que la matriz de covarianza es de tamaño $d \times d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada \footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de trés instancias se desea calcular la media y la varianza de la población; Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuanto mas parámetros se deban calcular se necesitan mas datos para una mejor generalización.\newline \newline
+El número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones d, dado que la matriz de covarianza es de tamaño $d \times d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada \footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de trés instancias se desea calcular la media y la varianza de la población; Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuanto mas parámetros se deban calcular se necesitan mas datos para una mejor generalización.
+
 Entonces, algunas veces es deseable reducir la cantidad de parámetros para obtener una mejor generalización. En el caso de una distribución normal multivariable, un enfoque para simplificar el modelo es usar una matriz de covarianza compartida por todas las clases. Las probabilidades posteriores pueden ser calculadas de la misma manera, y se sigue escojiendo la clase con mayor probabilidad posterior. Esto es equivalente a calcular la distancia Mahalanobis entre la entrada y la media de cada clase y escojer la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, esta dada por:
+
 \begin{equation}
-\label{eq:mahalanobis}
- d_i = (\vec{x}-\vec{\mu_i})\Sigma(\vec{x}-\vec{\mu_i}) 
+	\label{eq:mahalanobis}
+	d_i = (\vec{x}-\vec{\mu_i})\Sigma(\vec{x}-\vec{\mu_i}) 
 \end{equation}
+
 Note que cuando la matriz de covarianza es igual a la matriz identidad, la distancia Mahalanobis se convierte en la distancia Euclidiana al cuadrado.\newline \newline
 Una mezcla entre el método completo de distribución normal multivariable y el modelo con matriz de covarianza compartida puede dar buenos resultados cuando hay riezgo que el determinante de la matriz de covarianza sea muy cercano a cero. A este método se le denominará una distribución normal multivariable con matriz de covarianza semi-compartida. Que se definiría por la ecuación:
 \begin{equation}\label{eq:semishared}
@@ -460,9 +464,13 @@ Donde todas las variables tienen el mismo significado que el la ecuación Eq.\re
 \chapter{Extracción de características de los caracteres}
 \label{chap:features}
 
+\section{Introducción}
+
+Como se explico en la sección \ref{sect:machineLearning}, para hacer aprendizaje de maquina se necesita primero obtener unas caracteristicas que permitan diferenciar las distintas clases. En el caso del reconocimiento optico de caracteres se requieren caracteristicas que permitan diferenciar por ejemplo el numero '5' del numero '8'. Para obtener esas caracteristicas se requieren realizar algunas etapas de procesamiento que detecten donde estan los caracteres y que forma tienen. En las siguientes secciones se describiran las etapas de procesamiento que se realizaron en este proyecto.
+
 \section{Escala de grises}
 
-Antes de computar los momentos invariantes es necesario hacer un preprocesamiento. Primero la imagen debe convertirse a un formato más apropiado para extraerle las caracteristicas. Dado que las letras no varian con el color, y que el objetivo del sistema no es reconocer colores, es conveniente convertir la imagen a una escala de grises. En este proyecto se trabajo con el modelo RGB. En este modelo se asigna una intensidad a cada uno de los tres colores primarios de la luz: rojo, verde y azul\footnote{que en ingles son red, green, y blue, de alli las iniciales RGB}, de esta manera cada pixel en una fotografia se representa mediante un valor que identifique la intensidad de cada uno de estos tres colores que, mezclados por adición, se acerque más al color verdadero del pixel. Las camaras digitales modernas utilizan valores entre\footnote{en donde 0 representa que el color no se utiliza y 255 representa la mayor intensidad} 0 y 255 ($2^8$) permitiendo de esta manera más de 16 millones de colores distintos. En una escala de grises, en cambio, cada pixel es representado con un unico valor entre 0 y 255, el cual representa que tan oscuro es el mismo. Para convertir un pixel de una imagen en color a uno en escala de grises se suele hacer un promedio ponderado de la intensidad de cada uno de los tres colores, en donde a cada color se le asigna un peso. Al ser un promedio ponderado la suma de los tres pesos debe ser 1. Los pesos utilizados más comunmente son:
+Antes de computar las caracteristicas es necesario hacer un preprocesamiento. Primero la imagen debe convertirse a un formato más apropiado para extraerle las caracteristicas. Dado que las letras no varian con el color, y que el objetivo del sistema no es reconocer colores, es conveniente convertir la imagen a una escala de grises. En este proyecto se trabajo con el modelo RGB. En este modelo se asigna una intensidad a cada uno de los tres colores primarios de la luz: rojo, verde y azul\footnote{que en ingles son red, green, y blue, de alli las iniciales RGB}, de esta manera cada pixel en una fotografia se representa mediante un valor que identifique la intensidad de cada uno de estos tres colores que, mezclados por adición, se acerque más al color verdadero del pixel. Las camaras digitales modernas utilizan valores entre\footnote{en donde 0 representa que el color no se utiliza y 255 representa la mayor intensidad} 0 y 255 ($2^8$) permitiendo de esta manera más de 16 millones de colores distintos. En una escala de grises, en cambio, cada pixel es representado con un unico valor entre 0 y 255, el cual representa que tan oscuro es el mismo. Para convertir un pixel de una imagen en color a uno en escala de grises se suele hacer un promedio ponderado de la intensidad de cada uno de los tres colores, en donde a cada color se le asigna un peso. Al ser un promedio ponderado la suma de los tres pesos debe ser 1. Los pesos utilizados más comunmente son:
 
 \begin{equation}\label{bwtocv}
 	gris = 0.2989 * rojo + 0.5870 * verde + 0.1140 * azul 
@@ -474,25 +482,44 @@ Utilizando la ecuación \eqref{bwtocv} se escribio un algoritmo para obtener una
 
 \section{Binarización}
 
-Una vez obtenida la imagen escala de grises se procedio a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es util para el reconocimiento de caracteres debido a que las letras y los digitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta forma, al convertir las imagenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor del pixel como:
+Una vez obtenida la imagen escala de grises se procedio a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es util para el reconocimiento de caracteres debido a que las letras y los digitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imagenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor del pixel como:
 
 \begin{equation}\label{binEq}
- I_2(x,y) = \left\{ \begin{array}{ll}
-	0   & \mbox{si $I_1(x,y) < T(x,y)$} \\
-	255 & \mbox{en cualquier otro caso}
-\end{array} \right. 
+	I_2(x,y) = \left\{ \begin{array}{ll}
+		0   & \mbox{si $I_1(x,y) < T(x,y)$} \\
+		255 & \mbox{en cualquier otro caso}
+	\end{array} \right. 
 \end{equation}
 
-Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usualmente, la diferencia entre los distintos metodos de binarización se encuentra en como elige cada uno el umbral $T(x,y)$.\newline
-Cuando las imagenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que los escaners logran una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es tomada por una camara digital, en condiciones de ilumnación no tan constantes, se eligio un metodo de binarización basado en el método local del valor umbral. En este metodo $T(x,y)$ puede ser distinto para distintos pixeles, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. El metodo que ha dado\footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} los mejores resultados para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
+Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usualmente, la diferencia entre los distintos metodos de binarización se encuentra en como elige cada uno el umbral $T(x,y)$.
+
+Cuando las imagenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que los escaners logran una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es tomada por una camara digital, en condiciones de iluminación no tan constantes, se eligio un metodo de binarización basado en el método local del valor umbral. En este metodo $T(x,y)$ puede ser distinto para distintos pixeles, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. Uno de los metodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
 
 \begin{equation}
-      T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
+	T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
 \end{equation}
 
-Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el area a considerar para $m$ y $s$ es de tamaño $O \times O$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ seria $O(N \times M \times O^{2})$. Con esta complejidad el algoritmo seria demasiado lento para procesar imagenes de varios megapixeles, incluso con valores relativamente pequeños de $O$.
+Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el area a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ seria $O(N \times M \times A^{2})$. Con esta complejidad el algoritmo seria demasiado lento para procesar imagenes de varios megapixeles, incluso con valores relativamente pequeños de $O$.
 
 \subsection{Optimización al algoritmo al algoritmo de binarización}
+
+Dada la complejidad del algoritmo estandar de binarización, se hizo una investigación para buscar algoritmos ya existentes que realizaran la tarea en un tiempo más razonable. En un articulo escrito por los creadores del proyecto Ocropus\footnote{Un proyecto de codigo abierto cuyo objetivo es crear un sistema de reconocimiento optico de caracteres} se propone \footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} un algoritmo que binariza una imagen en un tiempo $O(N \times M)$ utilizando imagenes integrales y el metodo de Sauvola. Una imagen integral se define para un pixel $(x, y)$ como la suma de todos los pixeles por encima y a la izquierda de este pixel. Matematicamente la imagen integral del pixel $(x, y)$ se puede definir como:
+
+\begin{equation}
+	I(x, y) = \sum_{i=0}^{x}\sum_{j=0}^{y}Im(i, j)
+\end{equation}
+
+Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado que es posible obtener la imagen integral de una imagen en tiempo $O(N \times M)$, los autores indicaron que es posible calcular el valor de la media $m$ del area $A^{2}$ alrededor del pixel $(x, y)$ en un tiempo constante de la siguiente manera:
+
+\begin{align*}
+  m(x, y) =& (I(x + \frac{A}{2}, y + \frac{A}{2}) + I(x - \frac{A}{2}, y - \frac{A}{2}) \\
+	   &- I(x + \frac{A}{2}, y - \frac{A}{2}) - I(x - \frac{A}{2}, y + \frac{A}{2})) / A^{2}
+\end{align*}
+
+En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la izquierda. Graficamente se podria ver de la siguiente manera:
+
+
+
 
 \section{Componentes conectados}
 
@@ -521,7 +548,6 @@ Un enfoque mucho más practico es detectar la rotación y el escalamiento del te
 			x \\ y
 		\end{pmatrix}
 	\]
-
 
 El escalamiento se podria ajustar haciendo una interpolación de los pixeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el angulo $\theta$ no es un multiplo de 90 grados, las coordenadas de los nuevos pixeles $(x', y')$ no serian enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una perdida de información importante cuando la calidad de las imagenes no es muy buena. En cuanto al escalamiento, la interpolación tambien produce una perdida de información. Ambos problemas podrian ocasionar que la imagen obtenida finalmente fuese muy distinta a la imagen original, lo que haria el proceso de clasificación mucho más dificil.
 
@@ -590,8 +616,9 @@ Sin embargo, en un articulo diferente\cite{flusser06} Flusser demostro que mucho
 \chapter{Diseño, implementación y pruebas del aplicativo}
 \label{chap:ingSw}
 
- %aquí comienza la burocracia
+ %\begin{Burocracy}
 \section{Análisis}
+
 La primera etapa en el desarrollo de software es la de levantamiento de requerimientos. Los requerimientos se toman de los objetivos de desarrollo del proyecto(Ver sección \ref{sect:objective}). Los objetivos muestran que se requiere desarrollar una aplicación para reconocimiento de dígitos usando para clasificar el modelo estadístico multivariable explicado en la sección \ref{sect:multivar} y para la extracción de características los momentos invariantes explicados en la sección \ref{sect:invariants}.\newline \newline
 Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. El diagrama se muestra en la Figura \ref{fig:useCase}. Un caso de uso, desempeñado por un usuario administrador, es el del entrenamiento del modelo. El otro caso de uso, desempeñado por el usuario final, es el de reconocimiento de caracteres en el documento fotografiado.
 
@@ -605,6 +632,7 @@ Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que 
 \end{figure}
 
 \subsection{Documentación de casos de uso}
+
 La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb:uc1} y la tabla \ref{tb:uc2}.
 
 \begin{table}
@@ -663,44 +691,53 @@ El diseño del aplicativo se realizó con los diagramas de secuencia y clases de
 \label{chap:metodology}
 
 \section{Diseño metodológico}
-	\subsection{Hipótesis}
-	Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (Ver población), tomando la imagen con	una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
-		
-	\subsection{Tipo de investigación}
-	En esta investigación se utilizará un enfoque cuantitativo.
-	
-	\subsection{Población}
-	\label{sect:population}
-	Los documentos impresos que solo contengan dígitos numéricos, que cumplan con las siguientes restricciones:
-	\begin{itemize}
-	\item Forma rectangular.
-	\item Fondo blanco.
-	\item Letra de color negro y con un único tipo de letra o fuente.
-	\item El tamaño de los dígitos varía entre 12 y 20 puntos
-	\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
-	\end{itemize}
-	
-	\subsection{Unidad de análisis}
-	Fotos de textos con las condiciones mencionadas en la población, con una única fuente.
 
-	\subsection{Muestra}
-	Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100 y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel. De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación otro 15\% para el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del método de aprendizaje, sobre datos que no se le mostraron en el entrenamiento.
+\subsection{Hipótesis}
+
+Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (Ver población), tomando la imagen con	una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
 	
-	\subsection{Variables}
-	Las variables a tener en cuenta para ejecución de la aplicación son:
-	\begin{itemize}
-	\item Porcentaje de caracteres reconocidos exitosamente en total.
-	\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
-	\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
-	\item Porcentaje de seguridad con el que se reconoció cada dígito.
-	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
-	\end{itemize}
+\subsection{Tipo de investigación}
+
+En esta investigación se utilizará un enfoque cuantitativo.
+
+\subsection{Población}
+\label{sect:population}
+
+Los documentos impresos que solo contengan dígitos numéricos, que cumplan con las siguientes restricciones:
+\begin{itemize}
+\item Forma rectangular.
+\item Fondo blanco.
+\item Letra de color negro y con un único tipo de letra o fuente.
+\item El tamaño de los dígitos varía entre 12 y 20 puntos
+\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
+\end{itemize}
+
+\subsection{Unidad de análisis}
+
+Fotos de textos con las condiciones mencionadas en la población, con una única fuente.
+
+\subsection{Muestra}
+
+Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100 y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel. De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación otro 15\% para el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del método de aprendizaje, sobre datos que no se le mostraron en el entrenamiento.
+
+\subsection{Variables}
+
+Las variables a tener en cuenta para ejecución de la aplicación son:
+\begin{itemize}
+\item Porcentaje de caracteres reconocidos exitosamente en total.
+\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
+\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
+\item Porcentaje de seguridad con el que se reconoció cada dígito.
+\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
+\end{itemize}
 
 \section{Escenario de pruebas}
 \label{sect:testEnvironment}
+
 En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Cabe anotar que para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no usado para el entrenamiento.
 
 \subsection{Levantamiento de datos}
+
 Se entiende por un conjunto de datos de entrada etiquetado, un conjunto de datos de entrada en el que de cada dato de entrada se conoce la clase a la que pertenece. Asi que tanto el conjunto de entrenamiento $T$ como el conjunto de validación $V$ deben ser conjuntos etiquetados.\newline \newline
 La forma mas fácil de construir estos dos conjuntos, es construir un único conjunto etiquetado $S$ y luego dividirlo aleatoriamente en los dos conjuntos $T$ y $V$. Tal que los conjuntos $T$ y $V$ sean disjuntos, es decir, que $T \cap V = \emptyset$ y $T \cup V = S$ donde $\emptyset$ representa el conjunto vacío.\newline\newline
 Para construir el conjunto de datos etiquetados $S$ se siguió el siguiente procedimiento:
@@ -712,6 +749,7 @@ Para construir el conjunto de datos etiquetados $S$ se siguió el siguiente proc
 \end{itemize}
 
 \subsection{Construcción del conjunto de entrenamiento y validación}
+
 Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se seleccionaba esta instancia a que conjunto iba a pertenecer con una cierta probabilidad. Supongamos que $P_t$ es la probabilidad de que la instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que la instancia sea asignada al conjunto de validación $V$. El procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}. \newline \newline
 Note que se requiere que $P_v + P_t \le 1$. Cuando la suma $P_v + P_t < 1$ es posible que algun conjunto de datos no quede asignado ni al conjunto de validación ni al de entrenamiento. Esto es deseable en ocaciones y a este tercer conjunto $C$ se le llama conjunto de pruebas. Pero para este caso, por el método de clasificación usado, este conjunto no tiene mayor relevancia; entonces se busca que $P_v + P_t = 1$.
 
@@ -725,6 +763,7 @@ Note que se requiere que $P_v + P_t \le 1$. Cuando la suma $P_v + P_t < 1$ es po
 \end{figure}
 
 \subsection{Mediciones}
+
 Una vez entrenado el modelo de distribución normal multivariable como se explicó en el capitulo \ref{chap:ml}, se procede a hacer las mediciones de precisión sobre datos no vistos en el proceso de entrenamiento. Para esto se usa el modelo entrenado y se observan las predicciones realizadas por este modelo sobre el conjunto de validación. Cabe recordar que el conjunto de validación esta etiquetado, y por esta razón, se conoce cual es la salida esperada para el dato con el que se esta probando el modelo. En terminos formales, el conjunto de entrenamiento $V$ se podría definir de la siguiente forma:
 \[ V = \{\vec{x_i},r_i\}_{i=0}^N \]
 Donde $N$ es la cantidad de elementos del conjunto de validación y $r_i$ es la salida esperada para el valor de entrada $\vec{x}_i$. Supongamos que la salida observada del modelo entrenado para el valor $\vec{x_i}$ es $y_i$. Entonces se considera que el clasificador comete un error si $r_i \ne y_i$ y acierta si $r_i = y_i$. Considerando que una igualdad tenga por valor 1 si es verdadera y 0 si es falsa, entonces el valor medido se calcula de la siguiente forma:
