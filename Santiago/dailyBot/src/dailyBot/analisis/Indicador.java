@@ -10,6 +10,15 @@ import dailyBot.analisis.Rangos.Rango;
 
 public enum Indicador 
 {
+	COMPRA(new Calculable()
+	{
+		@Override
+		public double calcular(RegistroHistorial registro)
+		{
+			return registro.compra ? 1 : 0;
+		}
+	}, new Rango(0, 1), 1, true, new Object[][] {{0, "1s"}, {1, "2s"}}),
+	
 	TIEMPO(new Calculable()
 	{
 		@Override

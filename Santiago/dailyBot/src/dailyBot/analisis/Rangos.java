@@ -79,39 +79,73 @@ public class Rangos implements Serializable
 		}
 	}
 	
-	EnumMap <Indicador, Rango> rangos = new EnumMap <Indicador, Rango> (Indicador.class);
+	EnumMap <Indicador, Rango> rangosCompra = new EnumMap <Indicador, Rango> (Indicador.class);
+	EnumMap <Indicador, Rango> rangosVenta = new EnumMap <Indicador, Rango> (Indicador.class);
 
 	public Rangos()
 	{
 		for(Indicador i : Indicador.values())
-			rangos.put(i, i.rango.duplicar());
+		{
+			rangosCompra.put(i, i.rango.duplicar());
+			rangosVenta.put(i, i.rango.duplicar());
+		}
 	}
 	
-	public EnumMap <Indicador, Rango> getRangos()
+	public EnumMap <Indicador, Rango> getRangosCompra()
 	{
-		return rangos;
+		return rangosCompra;
+	}
+	
+	public EnumMap <Indicador, Rango> getRangosVenta()
+	{
+		return rangosVenta;
 	}
 
-	public void setRangos(EnumMap <Indicador, Rango> rangos) 
+	public void setRangosCompra(EnumMap <Indicador, Rango> rangos) 
 	{
-		this.rangos = rangos;
+		rangosCompra = rangos;
 		for(Indicador i : Indicador.values())
-			if(!rangos.containsKey(i))
-				rangos.put(i, i.rango.duplicar());
+			if(!rangosCompra.containsKey(i))
+				rangosCompra.put(i, i.rango.duplicar());
 	}
 	
-	public Rango darRango(Indicador i)
+	public void setRangosVenta(EnumMap <Indicador, Rango> rangos) 
 	{
-		if(!rangos.containsKey(i))
-			rangos.put(i, i.rango.duplicar());
-		return rangos.get(i);
+		rangosVenta = rangos;
+		for(Indicador i : Indicador.values())
+			if(!rangosVenta.containsKey(i))
+				rangosVenta.put(i, i.rango.duplicar());
 	}
 	
-	public void cambiarRango(Indicador i, Rango rango)
+	public Rango darRangoCompra(Indicador i)
 	{
-		if(!rangos.containsKey(i))
-			rangos.put(i, i.rango.duplicar());
-		Rango aCambiar = rangos.get(i);
+		if(!rangosCompra.containsKey(i))
+			rangosCompra.put(i, i.rango.duplicar());
+		return rangosCompra.get(i);
+	}
+	
+	public Rango darRangoVenta(Indicador i)
+	{
+		if(!rangosVenta.containsKey(i))
+			rangosVenta.put(i, i.rango.duplicar());
+		return rangosVenta.get(i);
+	}
+	
+	public void cambiarRangoCompra(Indicador i, Rango rango)
+	{
+		if(!rangosCompra.containsKey(i))
+			rangosCompra.put(i, i.rango.duplicar());
+		Rango aCambiar = rangosCompra.get(i);
+		aCambiar.setMinimo(rango.getMinimo());
+		aCambiar.setMaximo(rango.getMaximo());
+		aCambiar.setInvertido(rango.isInvertido());
+	}
+	
+	public void cambiarRangoVenta(Indicador i, Rango rango)
+	{
+		if(!rangosVenta.containsKey(i))
+			rangosVenta.put(i, i.rango.duplicar());
+		Rango aCambiar = rangosVenta.get(i);
 		aCambiar.setMinimo(rango.getMinimo());
 		aCambiar.setMaximo(rango.getMaximo());
 		aCambiar.setInvertido(rango.isInvertido());
@@ -123,8 +157,11 @@ public class Rangos implements Serializable
 		for(Indicador i : Indicador.values())
 		{
 			mensaje += i.toString();
-			if(!rangos.containsKey(i))
-				rangos.put(i, i.rango.duplicar());
+			if(!rangosCompra.containsKey(i))
+				rangosCompra.put(i, i.rango.duplicar());
+			if(!rangosVenta.containsKey(i))
+				rangosVenta.put(i, i.rango.duplicar());
+			EnumMap <Indicador, Rango> rangos = registro.compra ? rangosCompra : rangosVenta;
 			if(ignorarInfo && i.esInfo)
 			{
 				mensaje += ", ignorando: " + rangos.get(i).toString(i.calcular(registro)) + "\n";
@@ -152,10 +189,14 @@ public class Rangos implements Serializable
 		Rangos nuevos = new Rangos();
 		for(Indicador i : Indicador.values())
 		{
-			if(!rangos.containsKey(i))
-				rangos.put(i, i.rango.duplicar());
-			Rango este = rangos.get(i);
-			nuevos.cambiarRango(i, este);
+			if(!rangosCompra.containsKey(i))
+				rangosCompra.put(i, i.rango.duplicar());
+			if(!rangosVenta.containsKey(i))
+				rangosVenta.put(i, i.rango.duplicar());
+			Rango este = rangosCompra.get(i);
+			nuevos.cambiarRangoCompra(i, este);
+			este = rangosVenta.get(i);
+			nuevos.cambiarRangoVenta(i, este);
 		}
 		return nuevos;
 	}

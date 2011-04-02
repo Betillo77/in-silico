@@ -104,7 +104,10 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 	{
 		Rangos aPoner = IdEstrategia.values()[idEstrategia].darEstrategia().getRangos()[idPar];
 		for(Indicador i : Indicador.values())
-			aPoner.cambiarRango(i, rangos.darRango(i));
+		{
+			aPoner.cambiarRangoCompra(i, rangos.darRangoCompra(i));
+			aPoner.cambiarRangoVenta(i, rangos.darRangoVenta(i));
+		}
 	}
 	
 	@Override

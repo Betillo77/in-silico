@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
@@ -26,6 +27,8 @@ public class RangosGrafico extends JFrame
 {
 	private static final long serialVersionUID = -3243368885519444393L;
 
+	private ArrayList <RangoGrafico> rangosGrafico = new ArrayList <RangoGrafico> ();
+	
 	public RangosGrafico(final Rangos rangos, List <RegistroHistorial> registros, final IdEstrategia idEstrategia, final Par par, String titulo)
 	{
 		super(titulo);
@@ -39,7 +42,11 @@ public class RangosGrafico extends JFrame
 		panelRangos.setLayout(gridLayout);
 		panelRangos.setSize(700, 600);
 		for(Indicador i : Indicador.values())
-			panelRangos.add(new RangoGrafico(i.darRango().duplicar(), rangos.darRango(i), graficaProgreso, graficaIndicador, graficaHistorial, i));
+		{
+			RangoGrafico r = new RangoGrafico(this, i.darRango().duplicar(), rangos, graficaProgreso, graficaIndicador, graficaHistorial, i);
+			rangosGrafico.add(r);
+			panelRangos.add(r);
+		}
 		final JCheckBox box = new JCheckBox("Filtrar");
 		box.addActionListener(new ActionListener() 
 		{	
@@ -85,5 +92,11 @@ public class RangosGrafico extends JFrame
 		setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 		pack();
 		setVisible(true);
+	}
+	
+	public void actualizarTodos()
+	{
+		for(RangoGrafico r : rangosGrafico)
+			r.actualizar();
 	}
 }
