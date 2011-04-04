@@ -45,7 +45,8 @@ public class RangosGrafico extends JFrame
 		{
 			RangoGrafico r = new RangoGrafico(this, i.darRango().duplicar(), rangos, graficaProgreso, graficaIndicador, graficaHistorial, i);
 			rangosGrafico.add(r);
-			panelRangos.add(r);
+			if(i != Indicador.TIEMPO)
+				panelRangos.add(r);
 		}
 		final JCheckBox box = new JCheckBox("Filtrar");
 		box.addActionListener(new ActionListener() 

@@ -15,28 +15,38 @@ public class Rangos implements Serializable
 		private static final long serialVersionUID = 3013772711096500473L;
 		
 		private boolean invertido;
-		private double minimo;
-		private double maximo;
+		private double minimoCompra;
+		private double maximoCompra;
+		private double minimoVenta;
+		private double maximoVenta;
 		
-		public Rango(double min, double max, boolean in)
+		public Rango()
 		{
-			minimo = min;
-			maximo = max;
+		}
+		
+		public Rango(double minC, double maxC, double minV, double maxV, boolean in)
+		{
+			minimoCompra = minC;
+			maximoCompra = maxC;
+			minimoVenta = minV;
+			maximoVenta = maxV;
 			invertido = in;
 		}
 		
-		public Rango(double min, double max)
+		public Rango(double minC, double maxC, double minV, double maxV)
 		{
-			this(min, max, false);
+			this(minC, maxC, minV, maxV, false);
 		}
 		
 		public synchronized Rango duplicar()
 		{
-			return new Rango(minimo, maximo, invertido);
+			return new Rango(minimoCompra, maximoCompra, minimoVenta, maximoVenta, invertido);
 		}
 		
-		public synchronized boolean estaDentro(double resultado)
+		public synchronized boolean estaDentro(double resultado, boolean compra)
 		{
+			double minimo = compra ? minimoCompra : minimoVenta;
+			double maximo = compra ? maximoCompra : maximoVenta;
 			return !invertido ? minimo <= resultado && resultado <= maximo : minimo >= resultado || resultado >= maximo;
 		}
 
@@ -50,104 +60,127 @@ public class Rangos implements Serializable
 			return invertido;
 		}
 
-		public synchronized void setMinimo(double minimo) 
+		public synchronized void setMinimoCompra(double minimo) 
 		{
-			this.minimo = minimo;
+			this.minimoCompra = minimo;
 		}
 		
-		public synchronized double getMinimo() 
+		public synchronized double getMinimoCompra() 
 		{
-			return minimo;
+			return minimoCompra;
 		}
 
-		public synchronized void setMaximo(double maximo) 
+		public synchronized void setMinimoVenta(double minimo) 
 		{
-			this.maximo = maximo;
+			this.minimoVenta = minimo;
 		}
 		
-		public synchronized double getMaximo() 
+		public synchronized double getMinimoVenta() 
 		{
-			return maximo;
+			return minimoVenta;
+		}
+
+		public synchronized void setMaximoCompra(double maximo) 
+		{
+			this.maximoCompra = maximo;
 		}
 		
-		public synchronized String toString(double valor) 
+		public synchronized double getMaximoCompra() 
 		{
+			return maximoCompra;
+		}
+
+		public synchronized void setMaximoVenta(double maximo) 
+		{
+			this.maximoVenta = maximo;
+		}
+		
+		public synchronized double getMaximoVenta() 
+		{
+			return maximoVenta;
+		}
+		
+		public synchronized String toString(double valor, boolean compra) 
+		{
+			double minimo = compra ? minimoCompra : minimoVenta;
+			double maximo = compra ? maximoCompra : maximoVenta;
 			if(invertido)
 				return valor + " <= " + minimo + " or " + valor + " >= " + maximo;
 			else
 				return minimo + " <= " + valor + " <= " + maximo;
 		}
+
+		public double getMinimo(Rangos rangos) 
+		{
+			boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
+			return compra ? minimoCompra : minimoVenta;
+		}
+
+		public double getMaximo(Rangos rangos) 
+		{
+			boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
+			return compra ? maximoCompra : maximoVenta;
+		}
+
+		public void setMinimo(double valor, Rangos rangos)
+		{
+			boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
+			if(compra)
+				minimoCompra = valor;
+			else
+				minimoVenta = valor;
+				
+		}
+
+		public void setMaximo(double valor, Rangos rangos) 
+		{
+			boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
+			if(compra)
+				maximoCompra = valor;
+			else
+				maximoVenta = valor;
+		}
 	}
 	
-	EnumMap <Indicador, Rango> rangosCompra = new EnumMap <Indicador, Rango> (Indicador.class);
-	EnumMap <Indicador, Rango> rangosVenta = new EnumMap <Indicador, Rango> (Indicador.class);
+	EnumMap <Indicador, Rango> rangos = new EnumMap <Indicador, Rango> (Indicador.class);
 
 	public Rangos()
 	{
 		for(Indicador i : Indicador.values())
 		{
-			rangosCompra.put(i, i.rango.duplicar());
-			rangosVenta.put(i, i.rango.duplicar());
+			rangos.put(i, i.rango.duplicar());
 		}
 	}
 	
-	public EnumMap <Indicador, Rango> getRangosCompra()
+	public EnumMap <Indicador, Rango> getRangos()
 	{
-		return rangosCompra;
-	}
-	
-	public EnumMap <Indicador, Rango> getRangosVenta()
-	{
-		return rangosVenta;
+		return rangos;
 	}
 
-	public void setRangosCompra(EnumMap <Indicador, Rango> rangos) 
+	public void setRangos(EnumMap <Indicador, Rango> rangosE) 
 	{
-		rangosCompra = rangos;
+		rangos = rangosE;
 		for(Indicador i : Indicador.values())
-			if(!rangosCompra.containsKey(i))
-				rangosCompra.put(i, i.rango.duplicar());
+			if(!rangos.containsKey(i))
+				rangos.put(i, i.rango.duplicar());
 	}
 	
-	public void setRangosVenta(EnumMap <Indicador, Rango> rangos) 
+	public Rango darRango(Indicador i)
 	{
-		rangosVenta = rangos;
-		for(Indicador i : Indicador.values())
-			if(!rangosVenta.containsKey(i))
-				rangosVenta.put(i, i.rango.duplicar());
+		if(!rangos.containsKey(i))
+			rangos.put(i, i.rango.duplicar());
+		return rangos.get(i);
 	}
 	
-	public Rango darRangoCompra(Indicador i)
+	public void cambiarRango(Indicador i, Rango rango)
 	{
-		if(!rangosCompra.containsKey(i))
-			rangosCompra.put(i, i.rango.duplicar());
-		return rangosCompra.get(i);
-	}
-	
-	public Rango darRangoVenta(Indicador i)
-	{
-		if(!rangosVenta.containsKey(i))
-			rangosVenta.put(i, i.rango.duplicar());
-		return rangosVenta.get(i);
-	}
-	
-	public void cambiarRangoCompra(Indicador i, Rango rango)
-	{
-		if(!rangosCompra.containsKey(i))
-			rangosCompra.put(i, i.rango.duplicar());
-		Rango aCambiar = rangosCompra.get(i);
-		aCambiar.setMinimo(rango.getMinimo());
-		aCambiar.setMaximo(rango.getMaximo());
-		aCambiar.setInvertido(rango.isInvertido());
-	}
-	
-	public void cambiarRangoVenta(Indicador i, Rango rango)
-	{
-		if(!rangosVenta.containsKey(i))
-			rangosVenta.put(i, i.rango.duplicar());
-		Rango aCambiar = rangosVenta.get(i);
-		aCambiar.setMinimo(rango.getMinimo());
-		aCambiar.setMaximo(rango.getMaximo());
+		if(!rangos.containsKey(i))
+			rangos.put(i, i.rango.duplicar());
+		Rango aCambiar = rangos.get(i);
+		aCambiar.setMinimoCompra(rango.getMinimoCompra());
+		aCambiar.setMaximoCompra(rango.getMaximoCompra());
+		aCambiar.setMinimoVenta(rango.getMinimoVenta());
+		aCambiar.setMaximoVenta(rango.getMaximoVenta());
 		aCambiar.setInvertido(rango.isInvertido());
 	}
 	
@@ -157,26 +190,31 @@ public class Rangos implements Serializable
 		for(Indicador i : Indicador.values())
 		{
 			mensaje += i.toString();
-			if(!rangosCompra.containsKey(i))
-				rangosCompra.put(i, i.rango.duplicar());
-			if(!rangosVenta.containsKey(i))
-				rangosVenta.put(i, i.rango.duplicar());
-			EnumMap <Indicador, Rango> rangos = registro.compra ? rangosCompra : rangosVenta;
+			if(!rangos.containsKey(i))
+				rangos.put(i, i.rango.duplicar());
 			if(ignorarInfo && i.esInfo)
 			{
-				mensaje += ", ignorando: " + rangos.get(i).toString(i.calcular(registro)) + "\n";
+				mensaje += ", ignorando: " + rangos.get(i).toString(i.calcular(registro), registro.compra) + "\n";
 				continue;
 			}
-			if(!rangos.get(i).estaDentro(i.calcular(registro)))
+			if(i == Indicador.COMPRA)
 			{
-				mensaje += ", no cumple: " + rangos.get(i).toString(i.calcular(registro)) + ", terminando con false\n";
+				int valor = (int) rangos.get(Indicador.COMPRA).getMinimoCompra();
+				if(valor == 0 && registro.compra)
+					return false;
+				if(valor == 1 && !registro.compra)
+					return false;
+			}
+			if(!rangos.get(i).estaDentro(i.calcular(registro), registro.compra))
+			{
+				mensaje += ", no cumple: " + rangos.get(i).toString(i.calcular(registro), registro.compra) + ", terminando con false\n";
 				if(!enviarMensaje.equals(""))
 					Error.agregarConTitulo("rangos", mensaje);
 				return false;
 			}
 			else
 			{
-				mensaje += ", cumple: " + rangos.get(i).toString(i.calcular(registro)) + "\n";
+				mensaje += ", cumple: " + rangos.get(i).toString(i.calcular(registro), registro.compra) + "\n";
 			}
 		}
 		if(!enviarMensaje.equals(""))
@@ -189,14 +227,10 @@ public class Rangos implements Serializable
 		Rangos nuevos = new Rangos();
 		for(Indicador i : Indicador.values())
 		{
-			if(!rangosCompra.containsKey(i))
-				rangosCompra.put(i, i.rango.duplicar());
-			if(!rangosVenta.containsKey(i))
-				rangosVenta.put(i, i.rango.duplicar());
-			Rango este = rangosCompra.get(i);
-			nuevos.cambiarRangoCompra(i, este);
-			este = rangosVenta.get(i);
-			nuevos.cambiarRangoVenta(i, este);
+			if(!rangos.containsKey(i))
+				rangos.put(i, i.rango.duplicar());
+			Rango este = rangos.get(i);
+			nuevos.cambiarRango(i, este.duplicar());
 		}
 		return nuevos;
 	}

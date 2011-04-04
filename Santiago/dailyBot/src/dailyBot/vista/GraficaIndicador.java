@@ -52,6 +52,7 @@ public class GraficaIndicador extends JPanel
 
 	public void actualizarGrafica(Rango rango, Indicador indicador) 
 	{
+		boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
 		XYSeriesCollection dataset = new XYSeriesCollection(); 
 	    XYSeries seriesDentro = new XYSeries("Dentro " + indicador);
 	    XYSeries seriesFuera = new XYSeries("Fuera " + indicador);
@@ -60,7 +61,7 @@ public class GraficaIndicador extends JPanel
 	    for(RegistroHistorial r : registros)
 	    	if(unico)
 	    	{
-		    	if(rango.estaDentro(indicador.calcular(r)))
+		    	if(rango.estaDentro(indicador.calcular(r), r.compra))
 		    	{
 		    		nTransacciones++;
 		    		acum += r.ganancia;
@@ -85,7 +86,7 @@ public class GraficaIndicador extends JPanel
 	    for(RegistroHistorial r : registros)
 	    	if(unico)
 	    	{
-		    	if(rango.estaDentro(indicador.calcular(r)))
+		    	if(rango.estaDentro(indicador.calcular(r), r.compra))
 		    		desviacionD += (r.ganancia - media) * (r.ganancia - media);
 	    	}
 	    	else
@@ -110,11 +111,13 @@ public class GraficaIndicador extends JPanel
 	    JFreeChart chart = ChartFactory.createScatterPlot(indicador + " vs Ganancia ", indicador.toString(), "Ganancia", dataset, PlotOrientation.VERTICAL, false, false, false);
         XYPlot xyplot = chart.getXYPlot();
         Paint gradientpaint = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        double delta = (indicador.darRango().getMaximo() - indicador.darRango().getMinimo()) / 1000;
-        XYBoxAnnotation x = new XYBoxAnnotation(rango.getMinimo(), -100000, rango.getMinimo() + delta, 100000, null, null, gradientpaint);
+        double delta = (indicador.darRango().getMaximoCompra() - indicador.darRango().getMinimoCompra()) / 1000;
+        double minimo = compra ? rango.getMinimoCompra() : rango.getMinimoVenta();
+        double maximo = compra ? rango.getMaximoCompra() : rango.getMaximoVenta();
+        XYBoxAnnotation x = new XYBoxAnnotation(minimo, -100000, minimo + delta, 100000, null, null, gradientpaint);
         xyplot.getRenderer().addAnnotation(x, Layer.BACKGROUND);
         xyplot.getRenderer().setSeriesPaint(0, Color.BLUE);
-        x = new XYBoxAnnotation(rango.getMaximo() - delta, -100000, rango.getMaximo(), 100000, null, null, gradientpaint);
+        x = new XYBoxAnnotation(maximo - delta, -100000, maximo, 100000, null, null, gradientpaint);
         xyplot.getRenderer().addAnnotation(x, Layer.BACKGROUND);
 	    label.setIcon(new ImageIcon(chart.createBufferedImage(600, 410)));
 		this.setVisible(true);

@@ -17,7 +17,7 @@ public enum Indicador
 		{
 			return registro.compra ? 1 : 0;
 		}
-	}, new Rango(0, 1), 1, true, new Object[][] {{0, "1s"}, {1, "2s"}}),
+	}, new Rango(0, 1, 0, 1), 1, true, new Object[][] {{0, "1s"}, {1, "2s"}}),
 	
 	TIEMPO(new Calculable()
 	{
@@ -45,7 +45,7 @@ public enum Indicador
 				return 7;
 			return 8;
 		}
-	}, new Rango(0, 8), 1, true, new Object[][] {{0, "1s"}, {1, "2s"},
+	}, new Rango(0, 8, 0, 8), 1, true, new Object[][] {{0, "1s"}, {1, "2s"},
 												 {2, "3s"}, {3, "1m"}, 
 												 {4, "2m"}, {5, "3m"}, 
 												 {6, "6m"}, {7, "1a"}, 
@@ -59,7 +59,7 @@ public enum Indicador
 			return registro.VIX;
 		}
 		
-	}, new Rango(0, 50), 2, false),
+	}, new Rango(0, 50, 0, 50), 2, false),
 	
 	SSI(new Calculable()
 	{
@@ -88,7 +88,7 @@ public enum Indicador
 			return 100 * ssi;
 		}
 		
-	}, new Rango(-500, 500), 50, false),
+	}, new Rango(-500, 500, -500, 500), 50, false),
 	
 	ATR(new Calculable()
 	{
@@ -98,7 +98,7 @@ public enum Indicador
 			return registro.ATR;
 		}
 		
-	}, new Rango(0, 400), 25, false),
+	}, new Rango(0, 400, 0, 400), 25, false),
 	
 	RSI(new Calculable()
 	{
@@ -108,7 +108,7 @@ public enum Indicador
 			return registro.RSI;
 		}
 		
-	}, new Rango(0, 100), 5, false);
+	}, new Rango(0, 100, 0, 100), 5, false);
 	
 	private interface Calculable
 	{
@@ -163,10 +163,12 @@ public enum Indicador
 	public double calcular(RegistroHistorial registro)
 	{
 		double resultado = calculo.calcular(registro);
-		if(resultado < rango.getMinimo())
-			resultado = rango.getMinimo();
-		if(resultado > rango.getMaximo())
-			resultado = rango.getMaximo();
+		double minimo = registro.compra ? rango.getMinimoCompra() : rango.getMinimoVenta();
+		double maximo = registro.compra ? rango.getMaximoCompra() : rango.getMaximoVenta();
+		if(resultado < minimo)
+			resultado = minimo;
+		if(resultado > maximo)
+			resultado = maximo;
 		return resultado;
 	}
 }
