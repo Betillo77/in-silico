@@ -160,6 +160,7 @@ public class Rangos implements Serializable
 	public void setRangos(EnumMap <Indicador, Rango> rangosE) 
 	{
 		rangos = rangosE;
+		rangos.put(Indicador.COMPRA, Indicador.COMPRA.darRango().duplicar());
 		for(Indicador i : Indicador.values())
 			if(!rangos.containsKey(i))
 				rangos.put(i, i.rango.duplicar());
@@ -200,12 +201,12 @@ public class Rangos implements Serializable
 			if(i == Indicador.COMPRA)
 			{
 				int valor = (int) rangos.get(Indicador.COMPRA).getMinimoCompra();
-				if(valor == 0 && registro.compra)
+				if(valor != 2 && valor == 0 && registro.compra)
 					return false;
-				if(valor == 1 && !registro.compra)
+				if(valor != 2 && valor == 1 && !registro.compra)
 					return false;
 			}
-			if(!rangos.get(i).estaDentro(i.calcular(registro), registro.compra))
+			else if(!rangos.get(i).estaDentro(i.calcular(registro), registro.compra))
 			{
 				mensaje += ", no cumple: " + rangos.get(i).toString(i.calcular(registro), registro.compra) + ", terminando con false\n";
 				if(!enviarMensaje.equals(""))

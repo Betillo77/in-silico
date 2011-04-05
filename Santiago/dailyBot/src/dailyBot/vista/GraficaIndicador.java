@@ -52,16 +52,20 @@ public class GraficaIndicador extends JPanel
 
 	public void actualizarGrafica(Rango rango, Indicador indicador) 
 	{
-		boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
+		int numero = (int) rangos.darRango(Indicador.COMPRA).getMinimoCompra();
+		boolean compra = numero == 1;
 		XYSeriesCollection dataset = new XYSeriesCollection(); 
 	    XYSeries seriesDentro = new XYSeries("Dentro " + indicador);
 	    XYSeries seriesFuera = new XYSeries("Fuera " + indicador);
 	    double acum = 0;
 	    int nTransacciones = 0;
 	    for(RegistroHistorial r : registros)
+	    {
+	    	if(indicador != Indicador.COMPRA && numero != 2 && r.compra != compra)
+	    		continue;
 	    	if(unico)
 	    	{
-		    	if(rango.estaDentro(indicador.calcular(r), r.compra))
+		    	if(rango.estaDentro(indicador.calcular(r), r.compra) || (numero == 2 && rango.estaDentro(indicador.calcular(r), !r.compra)))
 		    	{
 		    		nTransacciones++;
 		    		acum += r.ganancia;
@@ -81,6 +85,7 @@ public class GraficaIndicador extends JPanel
 		    	else
 		    		seriesFuera.add(indicador.calcular(r), r.ganancia);
 	    	}
+	    }
 	    double media = acum / nTransacciones;
 	    double desviacionD = 0;
 	    for(RegistroHistorial r : registros)

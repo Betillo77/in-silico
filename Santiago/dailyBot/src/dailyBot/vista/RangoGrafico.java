@@ -48,10 +48,12 @@ public class RangoGrafico extends JPanel
         nombre.setFont(new java.awt.Font("DejaVu Sans", 0, 18));
         invertido = new javax.swing.JCheckBox();
         invertido.setText("invertido");
-        minimo = new JSlider((int) original.getMinimo(rangos), (int) original.getMaximo(rangos)); 
-        boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
+        minimo = new JSlider((int) original.getMinimo(rangos), (int) original.getMaximo(rangos));
         Rango rango = rangos.darRango(indicador);
-        minimo.setValue((int) (compra ? rango.getMinimoCompra() : rango.getMaximoCompra()));
+        if(indicador == Indicador.COMPRA)
+        	minimo.setValue(2);
+        else
+        	minimo.setValue((int) rango.getMinimo(rangos));
         minimo.setPreferredSize(new Dimension(600, 39));
         minimo.setMinorTickSpacing(Math.min(1, i.darEspaciado()));
         minimo.setMajorTickSpacing(i.darEspaciado());
@@ -67,8 +69,11 @@ public class RangoGrafico extends JPanel
 			@Override
 			public void stateChanged(ChangeEvent e) 
 			{
+		        int compra = (int) rangos.darRango(Indicador.COMPRA).getMinimoCompra();
 		        final Rango rango = rangos.darRango(indicador);
-				if(minimo.getValue() > rango.getMaximo(rangos))
+		        if(indicador != Indicador.COMPRA && compra == 2)
+		        	minimo.setValue((int) rango.getMinimo(rangos));
+				if(indicador != Indicador.COMPRA && minimo.getValue() > rango.getMaximo(rangos))
 				{
 					SwingUtilities.invokeLater(new Runnable() 
 					{
@@ -83,9 +88,9 @@ public class RangoGrafico extends JPanel
 				{
 					if(indicador == Indicador.COMPRA)
 					{
-						if(minimo.getValue() != rangos.darRango(indicador).getMinimoCompra())
+						if(minimo.getValue() != rangos.darRango(Indicador.COMPRA).getMinimoCompra())
 						{
-							rangos.darRango(indicador).setMinimoCompra(minimo.getValue());
+							rangos.darRango(Indicador.COMPRA).setMinimoCompra(minimo.getValue());
 							rangosGrafico.actualizarTodos();
 						}
 					}
@@ -138,8 +143,11 @@ public class RangoGrafico extends JPanel
 			@Override
 			public void stateChanged(ChangeEvent e) 
 			{
+		        int compra = (int) rangos.darRango(Indicador.COMPRA).getMinimoCompra();
 		        final Rango rango = rangos.darRango(indicador);
-				if(maximo.getValue() < rango.getMinimo(rangos))
+		        if(indicador != Indicador.COMPRA && compra == 2)
+		        	maximo.setValue((int) rango.getMaximo(rangos));
+				if(indicador != Indicador.COMPRA && maximo.getValue() < rango.getMinimo(rangos))
 				{
 					SwingUtilities.invokeLater(new Runnable() 
 					{
@@ -210,8 +218,11 @@ public class RangoGrafico extends JPanel
 
 	public void actualizar() 
 	{
-	     Rango rango = rangos.darRango(indicador);
-	     minimo.setValue((int) rango.getMinimo(rangos));
-	     maximo.setValue((int) rango.getMaximo(rangos));
+	     if(indicador != Indicador.COMPRA)
+		 {
+		     Rango rango = rangos.darRango(indicador);
+		     minimo.setValue((int) rango.getMinimo(rangos));
+		     maximo.setValue((int) rango.getMaximo(rangos));
+		 }
 	}
 }

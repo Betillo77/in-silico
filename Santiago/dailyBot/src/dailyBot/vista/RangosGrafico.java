@@ -3,25 +3,21 @@ package dailyBot.vista;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import dailyBot.analisis.Indicador;
 import dailyBot.analisis.Rangos;
 import dailyBot.analisis.RegistroHistorial;
 import dailyBot.control.Error;
-import dailyBot.modelo.Par;
 import dailyBot.modelo.Estrategia.IdEstrategia;
+import dailyBot.modelo.Par;
 
 public class RangosGrafico extends JFrame
 {
@@ -45,26 +41,9 @@ public class RangosGrafico extends JFrame
 		{
 			RangoGrafico r = new RangoGrafico(this, i.darRango().duplicar(), rangos, graficaProgreso, graficaIndicador, graficaHistorial, i);
 			rangosGrafico.add(r);
-			if(i != Indicador.TIEMPO)
-				panelRangos.add(r);
+			panelRangos.add(r);
 		}
-		final JCheckBox box = new JCheckBox("Filtrar");
-		box.addActionListener(new ActionListener() 
-		{	
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				graficaIndicador.unico = !box.isSelected();
-				SwingUtilities.invokeLater(new Runnable() 
-				{
-                    public void run() 
-                    {
-        				graficaIndicador.actualizarGrafica(Indicador.VIX.darRango(), Indicador.VIX);
-                    }
-                });
-			}
-		});
-		panelRangos.add(box);
+		graficaIndicador.unico = false;
 		JPanel panelGraficas = new JPanel();
 		panelGraficas.setLayout(new BorderLayout());
 		panelGraficas.add(graficaProgreso, BorderLayout.SOUTH);

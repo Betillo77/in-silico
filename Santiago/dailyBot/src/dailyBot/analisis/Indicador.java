@@ -17,7 +17,7 @@ public enum Indicador
 		{
 			return registro.compra ? 1 : 0;
 		}
-	}, new Rango(0, 1, 0, 1), 1, true, new Object[][] {{0, "1s"}, {1, "2s"}}),
+	}, new Rango(0, 2, 0, 2), 1, true, new Object[][] {{0, "venta"}, {1, "compra"}, {2, "ambos"}}),
 	
 	TIEMPO(new Calculable()
 	{
