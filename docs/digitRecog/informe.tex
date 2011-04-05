@@ -691,7 +691,7 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|p{5cm}|p{5cm}|}
+\begin{tabular}{|p{6cm}|p{6cm}|}
 	\hline
 	Caso de uso & Entrenamiento del sistema de clasificación\\
 	\hline
@@ -716,7 +716,7 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|p{5cm}|p{5cm}|}
+\begin{tabular}{|p{6cm}|p{6cm}|}
 	\hline
 	Caso de uso & Entrenamiento del sistema de clasificación\\
 	\hline
@@ -803,6 +803,7 @@ Para construir el conjunto de datos etiquetados $S$ se siguió el siguiente proc
 \end{itemize}
 
 \subsection{Construcción del conjunto de entrenamiento y validación}
+\label{sect:trainingSet}
 
 Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se seleccionaba esta instancia a que conjunto iba a pertenecer con una cierta probabilidad. Supongamos que $P_t$ es la probabilidad de que la instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que la instancia sea asignada al conjunto de validación $V$. El procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}. \newline \newline
 Note que se requiere que $P_v + P_t \le 1$. Cuando la suma $P_v + P_t < 1$ es posible que algun conjunto de datos no quede asignado ni al conjunto de validación ni al de entrenamiento. Esto es deseable en ocaciones y a este tercer conjunto $C$ se le llama conjunto de pruebas. Pero para este caso, por el método de clasificación usado, este conjunto no tiene mayor relevancia; entonces se busca que $P_v + P_t = 1$.
