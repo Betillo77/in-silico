@@ -422,7 +422,7 @@ Esto se denota como $\vec{x} \sim N(\vec{\mu},\Sigma)$ y significa que $\vec{x}$
 		p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}\right]
 	\end{equation}
 	
-La distribución normal multivariable puede ser utilizada como un algoritmo de clasificación, y este modelo ha demostrado ser robusto para varias aplicaciones diferentes\footnote{Jerome H. Friedman. Regularized discriminant analysis. Journal of the american statistical association, 84:165–175, 1989.}.	El objetivo de este modelo es encontrar $P(C_i|x)$,	que es la probabilidad posterior de que el vector $\vec{x}$ pertenezca a la clase $C_i$. Si se calcula $P(C_i|x)$ para cada clase $i$, se escoje como la clase correcta la que poseea la probabilidad posterior mas alta. \newline \newline
+La distribución normal multivariable puede ser utilizada como un algoritmo de clasificación, y este modelo ha demostrado ser robusto para varias aplicaciones diferentes\footnote{Jerome H. Friedman. Regularized discriminant analysis. Journal of the american statistical association, 84:165–175, 1989.}.	El objetivo de este modelo es encontrar $P(C_i|x)$, que es la probabilidad posterior de que el vector $\vec{x}$ pertenezca a la clase $C_i$. Si se calcula $P(C_i|x)$ para cada clase $i$, se escoje como la clase correcta la que poseea la probabilidad posterior mas alta. \newline \newline
 Es importante notar que en lugar de simplemente determinar a que clase pertenece la instancia dada, se estan calculando también las probabilidades que representan la seguridad con la que el algoritmo está concluyendo su respuesta. Esto es una ventaja para el problema de reconocimiento óptico de caracteres, ya que algunas correcciones pueden realizarse en etapas posteriores, por ejemplo, usando un diccionario. \newline \newline
 Como se muestra en la ecuación \eqref{eq:multivariate}, lo que permite calcular la distribución normal multivariable es $p(x|C_i)$, que es la desidad de probabilidad de la variable aleatoria $\vec{x}$ dada la clase $C_i$; lo que se desea calcular en cambio es la probabilidad de que un $\vec{x}$ dado pertenezca a la clase $C_i$, es decir, la probabilidad posterior $P(C_i|\vec{x})$. Para eso se usa el teorema de Bayes (Ecuación \ref{eq:bayes2}). Entonces la probabilidad posterior se calcula como:
 	\begin{equation}\label{eq:multBayes}
@@ -461,6 +461,7 @@ Una mezcla entre el método completo de distribución normal multivariable y el 
 Donde todas las variables tienen el mismo significado que el la ecuación Eq.\ref{eq:multivariate}. Note que la única diferencia entre Eq.\ref{eq:multivariate} y Eq.\ref{eq:semishared} es que la matriz de covarianza en el coeficiente es compartida para todas las clases $\Sigma$; pero la matriz de covarianza en el exponente $\Sigma_i$ sigue siendo diferente para todas las clases (No es compartida).
 
 \section{Resultados del método estadístico en el problema OCR}	
+
 Aunque los métodos estadísticos explicados pueden ser muy potentes, requieren que las instancias de una misma clase formen un único grupo en el hiper-espacio de características. Para lograr esto se debe realizar una buena selección de características de entrada al método de clasificación. En el capítulo \ref{chap:features} se explican distintos conjuntos de características y cuales se escojieron para realizar la clasificación. Sin embargo se observó que en general la distribución normal multivariable con matriz de covarianza semi-compartida generó un mejor resultado. En la tabla \ref{tb:classifResult} se compara el resultado de el método completo explicado en la sección \ref{sect:multivar} con el método simplificado de covarianza semi-compartida para cada experimento. Dado que se utilizaron diferentes características en los experimentos, se muestra la precisión de las características que dieron mejor resultado en cada experimento. El resultado completo de los experimentos se muestra en capitulos posteriores.
 
 	\begin{table}
@@ -487,15 +488,15 @@ Como se explico en la sección \ref{sect:machineLearning}, para hacer aprendizaj
 
 \section{Escala de grises}
 
-Antes de computar las caracteristicas es necesario hacer un preprocesamiento. Primero la imagen debe convertirse a un formato más apropiado para extraerle las caracteristicas. Dado que las letras no varian con el color, y que el objetivo del sistema no es reconocer colores, es conveniente convertir la imagen a una escala de grises. En este proyecto se trabajo con el modelo RGB. En este modelo se asigna una intensidad a cada uno de los tres colores primarios de la luz: rojo, verde y azul\footnote{que en ingles son red, green, y blue, de alli las iniciales RGB}, de esta manera cada pixel en una fotografia se representa mediante un valor que identifique la intensidad de cada uno de estos tres colores que, mezclados por adición, se acerque más al color verdadero del pixel. Las camaras digitales modernas utilizan valores entre\footnote{en donde 0 representa que el color no se utiliza y 255 representa la mayor intensidad} 0 y 255 ($2^8$) permitiendo de esta manera más de 16 millones de colores distintos. En una escala de grises, en cambio, cada pixel es representado con un unico valor entre 0 y 255, el cual representa que tan oscuro es el mismo. Para convertir un pixel de una imagen en color a uno en escala de grises se suele hacer un promedio ponderado de la intensidad de cada uno de los tres colores, en donde a cada color se le asigna un peso. Al ser un promedio ponderado la suma de los tres pesos debe ser 1. Los pesos utilizados más comunmente son:
+Antes de computar las caracteristicas es necesario hacer un preprocesamiento. Primero la imagen debe convertirse a un formato más apropiado para extraerle las caracteristicas. Dado que las letras no varian con el color, y que el objetivo del sistema no es reconocer colores, es conveniente convertir la imagen a una escala de grises. En este proyecto se trabajo con el modelo RGB. En este modelo se asigna una intensidad a cada uno de los tres colores primarios de la luz: rojo, verde y azul\footnote{que en ingles son red, green, y blue, de alli las iniciales RGB}, de esta manera cada pixel en una fotografia se representa mediante un valor que identifique la intensidad de cada uno de estos tres colores que, mezclados por adición, se acerque más al color verdadero del pixel. Las camaras digitales modernas utilizan valores entre\footnote{en donde 0 representa que el color no se utiliza y 255 representa la mayor intensidad} 0 y 255 ($2^8$) permitiendo de esta manera más de 16 millones de colores distintos. En una escala de grises, en cambio, cada pixel es representado con un unico valor entre 0 y 255, el cual representa que tan oscuro es el mismo. Para convertir un pixel de una imagen en color a uno en escala de grises se suele hacer un promedio ponderado de la intensidad de cada uno de los tres colores, en donde a cada color se le asigna un peso. Al ser un promedio ponderado la suma de los tres pesos debe ser igual a 1. Los pesos utilizados más comunmente son:
 
 \begin{equation}\label{bwtocv}
 	gris = 0.2989 * rojo + 0.5870 * verde + 0.1140 * azul 
 \end{equation}
 
-Estos pesos son usados por la libreria de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
+Estos pesos se utilizan en la libreria de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
 
-Utilizando la ecuación \eqref{bwtocv} se escribió un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
+Haciendo uso de la ecuación \eqref{bwtocv} se escribió un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
 
 \section{Binarización}
 
@@ -512,7 +513,7 @@ Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usu
 
 Cuando las imágenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que los escaners logran una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es tomada por una cámara digital, en condiciones de iluminación no tan constantes, se eligió un método de binarización local adaptativo. En este metodo $T(x,y)$ puede ser distinto para distintos pixeles, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. Uno de los metodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
 
-\begin{equation}
+\begin{equation}\label{rSauvola}
 	T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
 \end{equation}
 
@@ -522,7 +523,7 @@ Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en 
 
 \subsection{Optimización al algoritmo de binarización}
 
-Dada la complejidad del algoritmo estandar de binarización, se hizo una investigación para buscar algoritmos ya existentes que realizaran la tarea en un tiempo más razonable. En un artículo escrito por los creadores del proyecto Ocropus\footnote{Un proyecto de codigo abierto cuyo objetivo es crear un sistema de reconocimiento optico de caracteres} se propone \footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} un algoritmo que binariza una imagen en un tiempo $O(N \times M)$ utilizando imágenes integrales y el metodo de Sauvola. Una imagen integral se define para un pixel $(x, y)$ como la suma de todos los pixeles por encima y a la izquierda de este pixel. Matemáticamente la imagen integral del pixel $(x, y)$ se puede definir como:
+Dada la complejidad del algoritmo estandar de binarización, se hizo una investigación para buscar algoritmos ya existentes que realizaran la tarea en un tiempo más razonable. En un artículo escrito por los creadores del proyecto Ocropus\footnote{Un proyecto de codigo abierto cuyo objetivo es crear un sistema de reconocimiento optico de caracteres} se propone\footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} un algoritmo que binariza una imagen en un tiempo $O(N \times M)$ utilizando imágenes integrales y el metodo de Sauvola. Una imagen integral se define para un pixel $(x, y)$ como la suma de todos los pixeles por encima y a la izquierda de este pixel. Matemáticamente la imagen integral del pixel $(x, y)$ se puede definir como:
 
 \begin{equation}
 	I(x, y) = \sum_{i=0}^{x}\sum_{j=0}^{y}Im(i, j)
@@ -535,8 +536,6 @@ Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado qu
 	   &- I(x + \frac{A}{2}, y - \frac{A}{2}) - I(x - \frac{A}{2}, y + \frac{A}{2})) / A^{2}
 \end{align*}
 
-En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la izquierda. La representación gráfica de las imágenes integrales se muestra en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}.
-
 \begin{figure}[htb]
 \begin{center}
 \leavevmode
@@ -546,8 +545,31 @@ En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equiva
 \label{fig:integral}
 \end{figure}
 
+En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La formula para hallar la desviación estandar no es presentada en el articulo de los creadores de Ocropus, por cuanto solo se menciona que se puede calcular utilizando la imagen integral de los pixeles al cuadrado. Por esta razón, para hacer la implementación se dedujo matematicamente la formula de la siguiente manera:
+
+%% Poner la deduccion aqui
+
+El resultado obtenido es consistente con la formula que se utilizo en la implementación de dicho algoritmo en el proyecto Ocropus\footnote{http://code.google.com/p/ocropus}.
+
+Posteriormente se implemento el algoritmo. Ya que es una de las partes de mayor complejidad algoritmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV\footnote{poner referencia}. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un unico arreglo el cual se accedio a traves de un puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración unicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rapido que la función utilizada en el proyecto Ocropus, como puede apreciarse en la siguiente tabla %% \ref{ponerTabla}.
+
+%% Poner tabla aca
 
 \section{Componentes conectados}
+
+Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los pixeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el metodo de sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un pixel $(x,y)$ pertence al fondo de la imagen si $I_2(x,y)=0$, y pertenece a algun caracter si $I_2(x,y)=255$. Si se establece que un pixel $(x',y')$ es vecino de un pixel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un cojunto de pixeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviendose unicamente a traves de pixeles vecinos de $C$. La idea de los componentes conectados fue utilizada por O'Gorman \cite{docstrum93} para realizar el analisis del documento, una de las etapas del reconocimiento optico de caracteres.
+
+\newtheorem{pixHasOneC}{Lemma}
+\begin{pixHasOneC}
+	Cada pixel $(x,y)$ tal que $I_2(x,y)=255$ pertenece a un unico componente conectado.
+\end{pixHasOneC}
+\begin{proof}
+	Suponga que un pixel $(x,y)$ pertenece a más de un componente conectado. En particular, suponga que $(x,y)$ pertenece tanto al componente $C_i$ como al componente $C_j$. Entonces hay un camino desde cualquier $P_i \in C_i$ a $(x,y)$ y desde cualquier $P_j \in C_j$ a $(x,y)$. Por tanto hay al menos un camino desde todo $P_i$ a todo $P_j$, este camino es $P_i \rightarrow (x,y) \rightarrow P_j$. Esto significa que $C_i$ y $C_j$ pueden ser unidos en un unico componente conectado.
+\end{proof}
+
+Despues de esto se puede utilizar un algoritmo de relleno por difusión (flood-fill) para encontrar cada componente conectado dado un pixel $(x,y)$ con $I_2(x,y)=255$. Cada vez que se encuentre un componente conectado este se borra de la imagen y de esta manera por cada pixel encontrado en un recorrido por toda la imagen se extraera un componente conectado.
+
+El algoritmo de relleno por difusión se implemento utilizando una pila para evitar la recursividad, dando como resultado un arreglo con todos los componentes conectados encontrados.
 
 \section{Extracción de caracteristicas}
 
