@@ -578,6 +578,7 @@ Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación n
 Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar, despues de esto se pueden extraer características numéricas de la imagen que sean lo mas similares posibles para objetos de la misma clase y lo mas diferentes posibles para objetos de distintas clases. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento. En las secciones posteriores se presentan ambos enfoques junto con sus ventajas y desventajas.
 
 \subsection{Rotación y escalamiento mediante transformación geometrica}
+\label{sect:rotation}
 
 Si se utilizan caracteristicas dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos angulos de rotación. Si se hace dificil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales \cite{niyogi2002}. El problema con este enfoque es que es complejo computacionalmente y que instancias de una misma clase pueden quedar ampliamente repartidas por el hiper-espacio de clasificación, y por tanto, sería mas dificil para un algoritmo de clasificación separar las distintas clases.
 
@@ -641,17 +642,17 @@ En 1984 Mostafa y Psaltis \cite{mostaf84} propusieron los momentos complejos com
 	
 Donde i denota la unidad imaginaria. En coordenadas polares esto es equivalente a:
 
-	\begin{equation}\label{polarCplx}
+	\begin{equation}\label{eq:polarCplx}
 		C_{pq} = \iint{ r^{p+q+1}e^{i(p-q)\theta}f(r,\theta) dr d\theta }
 	\end{equation}
 
-Una propiedad interesante de los momentos complejos, que se deriva de la ecuación \eqref{polarCplx}, es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un ángulo $\alpha$ sobre el origen de la imagen $f(r,\theta)$\footnote{es decir $f'(r,\theta) = f(r,\theta+\alpha)$} entonces:
+Una propiedad interesante de los momentos complejos, que se deriva de la ecuación \ref{eq:polarCplx}, es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un ángulo $\alpha$ sobre el origen de la imagen $f(r,\theta)$\footnote{es decir $f'(r,\theta) = f(r,\theta+\alpha)$} entonces:
 
-\begin{equation}\label{rotProp}
+\begin{equation}\label{eq:rotProp}
 	C'_{pq} = e^{-i(p-q)\alpha}C_{pq}
 \end{equation}
 
-Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la ecuación \eqref{rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
+Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
 \subsection{Primeros resultados}
 Para el primer experimento se implementó un método de clasificación estadístico multivariable y se implementaron las características de Hu y de Flusser como se indica en el capítulo de diseño, implementación y pruebas del aplicativo. Después de haber corregido los errores encontrados en la etapa de pruebas se obtuvieron los resultados que se muestran en la tabla \ref{tb:exp1}.
@@ -683,9 +684,68 @@ Para el primer experimento se implementó un método de clasificación estadíst
 	\label{tb:exp1}
 	\end{table}
 
-\subsection{Problemas de simetria}
+\subsection{Problemas de simetría mutua}
+\label{sect:mutualSym}
+Si se observan los resultados de la tabla \ref{tb:exp1} para el método de clasificación de matriz de covarianza semi-compartida. Se puede observar que el peor resultado esta dado por los dígitos 6 y 9. Y de hecho se noto que estos dígitos se estaban confundiendo entre ellos. 
+Cabe recordar que las características son invariantes a la rotación. Una situación donde los seres humanos hacen reconocimiento de dígitos con características invariantes a la rotación ocurre cuando juegan billar, y los dígitos marcados en las bolas de billar deben ser reconocidos independiente de la rotación. En este caso hasta los seres humanos tenemos problemas para reconocer entre la bola 6 y la 9, and necesitamos un guión bajo el número para hacer el reconocimento de manera apropiada.\newline \newline
+Para el caso de este proyecto, este problema no estaba previsto y solo se detectó cuando se realizaron las primeras pruebas. Este problema ocurre porque los dígitos 6 y 9 tienen simetría mutua, y en documentos impresos no se cuenta con referencias como el guión bajo el número. Sin embargo cabe recordar que en los objetivos del proyecto se restringió que el documento iba a tener una rotación entre $-30^\circ$ y $30^\circ$. Y si el documento tubiese un ángulo de rotación que no se encuentre en este rango, se puede llevar a un rango de rotación similar rotando la imagen en múltiplos de $90^\circ$ sin ninguna pérdida de información (Ver sección \ref{sect:rotation}), si se cuenta con alguna referencia que indique la rotación adecuada. \newline \newline
+Con estas restricciones, se propone el siguiente método para resolver el problema de la simetría mutua basado en las ecuaciones de los momentos complejos. Supongamos que existe un problema de simetría mutua entre las clases $C_i$ y $C_j$, y que se desea clasificar una imagen $f(x,y)$ en una de estas dos clases. Entonces una rotación cercana a 180$^\circ$ de la instancia $f(x,y)$ respecto a la clase $C_i$ indica que $f(x,y)$ es mas similar a la clase $C_j$. Definamos también $f_i(x,y)$ como una instancia de la clase $C_i$ que representa bien las instancias de la clase $C_i$. Entonces se escojería que $f(x,y)$ pertenece a $C_i$ si el ángulo de rotación con respecto a $f_i(x,y)$ es menor que 90$^\circ$, y si el ángulo es mayor que 90$^\circ$ se escojería la clase $C_j$, y si el ángulo es exactamente igual a 90$^\circ$ no se puede determinar nada. \newline \newline
+Para hallar el ángulo se utilizaron los momentos complejos de la siguiente manera. Sea $C'_{pq}$ el promedio de los momentos complejos de orden $p+q$ de las instancias de la clase $C_i$, sea $C_{pq}$ el momento complejo de orden $p+q$ de la imagen $f(x,y)$.
+Entonces usando la ecuación Eq.\ref{eq:rotProp} se tiene:
+	\begin{equation}\label{eq:angleDetection1}
+		\frac{C'_{pq}}{C_{pq}} = e^{-i(p-q)\alpha}
+	\end{equation}
+Eq.\ref{eq:angleDetection1} muestra que siempre es posible calcular el ángulo $\alpha$ entre $f(x,y)$ y $f_i(x,y)$ dividiendo sus momentos complejos de orden $p+q$ si	$p \neq q$ y la magnitud de los momentos es diferente de cero. Definamos $n=\frac{C'_{pq}}{C_{pq}}$. El número complejo $n$ debe tener magnitud unitaria para poder hallar una solución a la ecuación \ref{eq:rotProp}, en la teoría esto se garantiza, pero con imagenes reales esta suposición no siempre es cierta. Para continuar se normalizó el numero complejo $n'=\frac{n}{|n|}$. Utilizando la entidad de Euler en Eq.\ref{eq:angleDetection1}, se obtiene:
+	\begin{equation}\label{angleDetection2}
+		n' = \cos((p-q)\alpha) - i\sin((p-q)\alpha)
+	\end{equation}
+Si se considera al número complejo $n'$ como un vector, este se movería en un circulo unitario respecto al origen dependiendo del valor del ángulo $\alpha$. Si se considera un vector $\vec{R}$ con $\alpha=0$ como el vector de referencia, se tendría $\vec{R}=(1,0)$. Note que $\vec{R}$ es un vector normal a un plano clasificador $A$. El algoritmo explicado de puede ver graficamente en la figura \ref{fig:mutualSym}.
+	\begin{center}
+	\setlength{\unitlength}{1cm}
+	\begin{figure}
+	\centering
+	\begin{picture}(2,2)	
+	\put(1,1){\circle{2}}
+	\put(1,1){\vector(1,0){0.9}}
+	\put(2,1){$\vec{R}$}
+	\put(1,0.1){\line(0,1){1.8}}
+	\put(1,0){A}
+	\put(1,1){\vector(1,2){0.4}}
+	\put(1.5,1.8){$n'$}
+	\end{picture}	
+	\caption{Clasificación de figuras con simetría mutua dado el plano $A$}
+	\label{fig:mutualSym}
+	\end{figure}
+	\end{center}
+Definamos que el lado positivo del plano $A$ es al que apunta $\vec{R}$. Entonces se escojería que $f(x,y)$ pertenece a $C_i$ si $n'$ esta al lado positivo del plano $A$, se escojería $C_j$ si $n'$ esta en el lado negativo de $A$ y no hay ninguna pista si $n'$ esta en el plano $A$. Se calcula en que lado del plano $A$ esta en vector $n'$ calculando el producto punto entre $n'$ y el vector normal al plano $\vec{R}$. Note que:
+	\[ \vec{R}.n' = real(n') \]
+Donde $real(x)$ en una función que retorna la parte real del número complejo $x$. La clasificación se realiza de la siguiente forma:
+	\begin{equation}\label{angleClassif}
+		Class = \left\{ \begin{array}{ll}
+		C_i   & \mbox{if $real(n') > 0$} \\
+		C_j & \mbox{otherwise}
+	\end{array} \right. 
+	\end{equation}
+Los resultados obtenidos para los dígitos 6 y 9 después de implementar el algoritmo son mostrados en la tabla \ref{exp2}.	
+	\begin{table}
+	\begin{center}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		* & \multicolumn{2}{|c|}{Semi-shared covariance matrix} \\
+		\hline
+		Character & Hu Accuracy & Flusser Accuracy \\
+		\hline
+		6 & 99.47\% & 99.48\%	\\
+		9 &	99.49\% & 96.72\% \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\caption{Improved accuracy for digits 6 and 9}	
+	\label{tb:exp2}
+	\end{table}
 
-En un artículo diferente\cite{flusser06} Flusser demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. Como se mostrará mas adelante estos momentos son también efectivos para reconocer objetos que no son simetricos.
+\subsection{Problemas de simetría a la rotación}
+El otro problema que se puede observar en la tabla \ref{tb:exp1} es que el resultado de el método de clasificación con matriz de covarianza semi-compartida es significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó en el capítulo \ref{chap:ml}, es porque el determinante de la matriz de covarianza es muy cercano a cero. Flusser \cite{flusser06} demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. Como se mostrará mas adelante estos momentos son también efectivos para reconocer objetos que no son simétricos.
 
 
 
