@@ -87,7 +87,7 @@ public class Escritor
 							lock.unlock();
 						}
 						if(debug)
-							Error.agregarConTitulo("escritor", mensajeDebug);
+							Error.agregarConTitulo("rangos", mensajeDebug);
 						ponerUltimaActulizacion(System.currentTimeMillis());
 					}
 					catch(Exception e)

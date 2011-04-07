@@ -153,7 +153,7 @@ public class Proveedor
 					{
 						if(!s.isTocoStop() && afectada.getMagico() != 1000)
 						{
-							Error.agregarConTitulo("escritor", id + " cerrando " + s.getEstrategia() + ", " + s.getPar());
+							Error.agregarConTitulo("rangos", id + " cerrando " + s.getEstrategia() + ", " + s.getPar());
 							escritor.cerrar(afectada);
 						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
@@ -172,7 +172,7 @@ public class Proveedor
 							afectada.setMagico(1000);
 						else
 						{
-							Error.agregarConTitulo("escritor", id + " abriendo " + s.getEstrategia() + ", " + s.getPar());
+							Error.agregarConTitulo("rangos", id + " abriendo " + s.getEstrategia() + ", " + s.getPar());
 							escritor.abrir(afectada);
 						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;

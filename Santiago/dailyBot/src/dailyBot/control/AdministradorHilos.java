@@ -7,7 +7,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import dailyBot.modelo.Par;
 
-
 public class AdministradorHilos 
 {
 	private static LinkedBlockingQueue <HiloDaily> hilos = new LinkedBlockingQueue <HiloDaily> ();
