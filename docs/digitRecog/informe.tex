@@ -687,6 +687,7 @@ Para el primer experimento se implementó un método de clasificación estadíst
 
 \subsection{Problemas de simetría mutua}
 \label{sect:mutualSym}
+
 Si se observan los resultados de la tabla \ref{tb:exp1} para el método de clasificación de matriz de covarianza semi-compartida. Se puede observar que el peor resultado esta dado por los dígitos 6 y 9. Y de hecho se noto que estos dígitos se estaban confundiendo entre ellos. 
 Cabe recordar que las características son invariantes a la rotación. Una situación donde los seres humanos hacen reconocimiento de dígitos con características invariantes a la rotación ocurre cuando juegan billar, y los dígitos marcados en las bolas de billar deben ser reconocidos independiente de la rotación. En este caso hasta los seres humanos tenemos problemas para reconocer entre la bola 6 y la 9, and necesitamos un guión bajo el número para hacer el reconocimento de manera apropiada.\newline \newline
 Para el caso de este proyecto, este problema no estaba previsto y solo se detectó cuando se realizaron las primeras pruebas. Este problema ocurre porque los dígitos 6 y 9 tienen simetría mutua, y en documentos impresos no se cuenta con referencias como el guión bajo el número. Sin embargo cabe recordar que en los objetivos del proyecto se restringió que el documento iba a tener una rotación entre $-30^\circ$ y $30^\circ$. Y si el documento tubiese un ángulo de rotación que no se encuentre en este rango, se puede llevar a un rango de rotación similar rotando la imagen en múltiplos de $90^\circ$ sin ninguna pérdida de información (Ver sección \ref{sect:rotation}), si se cuenta con alguna referencia que indique la rotación adecuada. \newline \newline
@@ -746,6 +747,7 @@ Los resultados obtenidos para los dígitos 6 y 9 después de implementar el algo
 	\end{table}
 
 \subsection{Problemas de simetría a la rotación}
+
 El otro problema que se puede observar en la tabla \ref{tb:exp1} es que el resultado de el método de clasificación con matriz de covarianza semi-compartida es significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó en el capítulo \ref{chap:ml}, es porque el determinante de la matriz de covarianza es muy cercano a cero. Flusser \cite{flusser06} demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. Como se mostrará mas adelante estos momentos son también efectivos para reconocer objetos que no son simétricos.
 
 
@@ -756,8 +758,8 @@ El otro problema que se puede observar en la tabla \ref{tb:exp1} es que el resul
  %\begin{Burocracy}
 \section{Análisis}
 
-La primera etapa en el desarrollo de software es la de levantamiento de requerimientos. Los requerimientos se toman de los objetivos de desarrollo del proyecto(Ver sección \ref{sect:objective}). Los objetivos muestran que se requiere desarrollar una aplicación para reconocimiento de dígitos usando para clasificar el modelo estadístico multivariable explicado en la sección \ref{sect:multivar} y para la extracción de características los momentos invariantes explicados en la sección \ref{sect:invariants}.\newline \newline
-Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. El diagrama se muestra en la Figura \ref{fig:useCase}. Un caso de uso, desempeñado por un usuario administrador, es el del entrenamiento del modelo. El otro caso de uso, desempeñado por el usuario final, es el de reconocimiento de caracteres en el documento fotografiado.
+La primera etapa en el desarrollo de software es la de levantamiento de requerimientos. Los requerimientos fueron tomados de los objetivos de desarrollo del proyecto (ver sección \ref{sect:objective}). Los objetivos muestran que se requiere desarrollar una aplicación para reconocimiento de dígitos que utilice para clasificar el modelo estadístico multivariable detallado en la sección \ref{sect:multivar} y para la extracción de características los momentos invariantes expuestos en la sección \ref{sect:invariants}.\newline \newline
+Se detectó que la aplicación se puede modelar mediante dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. El diagrama se muestra en la figura \ref{fig:useCase}. Un caso de uso, cuyo actor principal es un usuario administrador, se denomina ``entrenamiento del sistema de clasificación''. El otro caso de uso, que tiene como actor al usuario final, es el de ``reconocimiento de caracteres en el documento fotografiado''.
 
 \begin{figure}[htb]
 \begin{center}
@@ -770,7 +772,7 @@ Se detectó que la aplicación se puede modelar usando dos casos de uso, ya que 
 
 \subsection{Documentación de casos de uso}
 
-La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb:uc1} y la tabla \ref{tb:uc2}.
+La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb:uc1} y en la tabla \ref{tb:uc2}.
 
 \begin{table}
 \begin{center}
@@ -801,7 +803,7 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 \begin{center}
 \begin{tabular}{|p{6cm}|p{6cm}|}
 	\hline
-	Caso de uso & Entrenamiento del sistema de clasificación\\
+	Caso de uso & Reconocimiento de caracteres en el documento fotografiado\\
 	\hline
 	Actor: Usuario final & Referencia: 2 \\
 	\hline
@@ -822,7 +824,8 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 \end{table}
 
 \section{Diseño}
-El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML.
+
+El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML. Diagrama de secuencia, diagrama de clases
 
 \section{Pruebas}
 En esta sección de pruebas se explica que pruebas se le hicieron al software para saber si los algoritmos estan implementados correctamente. El objetivo de esta sección no es mostrar si el resultado de los algoritmos es satisfactorio o no, esto últimos se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}. Cabe anotar que los algoritmos de clasificación y de extracción de características implementados, descritos en los capítulos \ref{chap:ml} y \ref{chap:features}, por su naturaleza no es fácil aplicar las pruebas tradicionales que se le aplica al software.\newline \newline
