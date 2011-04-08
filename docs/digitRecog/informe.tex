@@ -499,6 +499,7 @@ Estos pesos se utilizan en la libreria de visión computador OpenCV\footnote{$ht
 Haciendo uso de la ecuación \eqref{bwtocv} se escribió un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
 
 \section{Binarización}
+\label{sect:binarization}
 
 Una vez obtenida la imagen escala de grises se procedió a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es útil para el reconocimiento de caracteres debido a que las letras y los dígitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imágenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor del pixel como:
 
@@ -619,20 +620,20 @@ Donde $\mu_{pq}$ es el momento geométrico de orden $(p+q)$, $f(x,y)$ es el valo
 
 Utilizando $n_{pq}$, Hu logro un conjunto de momentos invariantes, todos con un grado menor o igual a 3. Sus siete momentos invariantes son:
 
-	\begin{align*}
-		\phi_1 =& n_{20} + n_{02},\\
-		\phi_2 =& (n_{20} - n_{02})^{2} + 4n_{11}^{2},\\
-		\phi_3 =& (n_{30} - 3n_{12})^{2} + (3n_{21} - n_{03})^{2},\\
-		\phi_4 =& (n_{30} + n_{12})^{2} + (n_{21} + n_{03})^{2},\\
-		\phi_5 =& (n_{30} - 3n_{12})(n_{30} + n_{12})((n_{30} + n_{12})^{2}\\
-				& - 3(n_{21} + n_{03})^{2}) + (3n_{21} - n_{03})(n_{21} + n_{03})\\
-				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2}),\\
-		\phi_6 =& (n_{20} - n_{02})((n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2})\\
-				& + 4n_{11}(n_{30} + n_{12})(n_{21} + n_{03}),\\
-		\phi_7 =& (3n_{21} - n_{03})(n_{30} + n_{12})((n_{30} + n_{12})^{2}\\
-				& - 3(n_{21} + n_{03})^{2}) - (n_{30} - 3n_{12})(n_{21} + n_{03})\\
-				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2})\\
-	\end{align*}
+	\begin{align}
+		\phi_1 =& n_{20} + n_{02}, \notag\\ 
+		\phi_2 =& (n_{20} - n_{02})^{2} + 4n_{11}^{2}, \notag \\ 
+		\phi_3 =& (n_{30} - 3n_{12})^{2} + (3n_{21} - n_{03})^{2}, \notag \\ 
+		\phi_4 =& (n_{30} + n_{12})^{2} + (n_{21} + n_{03})^{2},\notag \\ 
+		\phi_5 =& (n_{30} - 3n_{12})(n_{30} + n_{12})((n_{30} + n_{12})^{2} \notag \\
+				& - 3(n_{21} + n_{03})^{2}) + (3n_{21} - n_{03})(n_{21} + n_{03})\notag\\ 
+				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2}),\notag\\ 
+		\phi_6 =& (n_{20} - n_{02})((n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2})\notag\\
+				& + 4n_{11}(n_{30} + n_{12})(n_{21} + n_{03}),\notag\\
+		\phi_7 =& (3n_{21} - n_{03})(n_{30} + n_{12})((n_{30} + n_{12})^{2}\notag\\
+				& - 3(n_{21} + n_{03})^{2}) - (n_{30} - 3n_{12})(n_{21} + n_{03}) \notag\\
+				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2}) \label{eq:huMom} \\ \notag
+	\end{align}
 
 \subsection{Momentos complejos y momento de Fluzzer}
 
@@ -787,7 +788,7 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 	1. El usuario administrador indica en que directorio se encuentran las imagenes de entrenamiento. &
 	2. El sistema construye un conjunto de entrenamiento como se explica en la sección \ref{sect:trainingSet} con todas las imágenes del directorio pasado por el usuario. \\
 	\hline
-	4. El usuario recibe un mensaje que indica que el procedimiento se realizó con éxito. &
+	4. El usuario recibe un mensaje que indica que el procedimiento se realizó c\label{eq:hu}on éxito. &
 	3. El sistema se entrena como se explica en el capítulo \ref{chap:ml} y guarda el modelo en disco. \\
 	\hline
 \end{tabular}
@@ -824,7 +825,26 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML.
 
 \section{Pruebas}
-En esta sección de pruebas se explica que pruebas se le hicieron al software para saber si los algoritmos estan implementados correctamente. El objetivo de esta sección no es mostrar si el resultado de los algoritmos es satisfactorio o no, esto últimos se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}.
+En esta sección de pruebas se explica que pruebas se le hicieron al software para saber si los algoritmos estan implementados correctamente. El objetivo de esta sección no es mostrar si el resultado de los algoritmos es satisfactorio o no, esto últimos se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}. Cabe anotar que los algoritmos de clasificación y de extracción de características implementados, descritos en los capítulos \ref{chap:ml} y \ref{chap:features}, por su naturaleza no es fácil aplicar las pruebas tradicionales que se le aplica al software.\newline \newline
+Tradicionalmente, las pruebas se hacen creando un conjunto de casos de prueba, para los que se conoce la salida esperada. Entonces el proceso de pruebas consiste en alimentar al software con estos casos de prueba y observar si la salida del software coincide con la salida esperada. Si la salida obtenida no coincide con la salida esperada, entonces se considera que el software tiene un error y se procede a corregirlo. Note que este proceso no puede garantizar un software libre de errores, pero si puede permitir hallar muchos de los errores y por tanto producir software de mejor calidad.
+
+\subsection{Etapas de preprocesamiento}
+Para el cambio de color a escala de grises se ultilizó una función de la librería OpenCV. La binarización se implementó en la clase {\it Transform}, como se explicó en la sección \ref{sect:binarization}. Dado que mismo método esta implementado en {\it Ocropus} \footnote{Ocropus es un software de OCR libre desarrollado por Google, esta licenciado bajo Apache Licence 2.0}, la forma en la que se probó la aplicación es la siguiente:
+\begin{enumerate}
+\item Se tomaron 5 imágenes de documentos
+\item Para cada foto, se binarizó utilizando {\it Ocropus} y la clase {\it Transform}.
+\item Se compararon las imágenes resultado de la binarización con ambos métodos para ver que fueran iguales.
+\end{enumerate}
+
+\subsection{Extracción de características}
+Esta etapa fue un reto en cuanto a las pruebas de software, dado que es muy fácil cometer errores y es muy dificil darse cuenta. Recuerde que en el capítulo \ref{chap:features} se explicó que en la extracción de características la entrada es una imagen y la salida es un vector numérico calculado sobre la imagen. En el caso especial de los momentos invariantes, que fueron las características escojidas e implementadas, el vector se calcula con una integral sobre la imagen.\newline \newline
+Es claro que para un ser humano es muy dificil saber cual es el vector numérico de salida dada la imagen de entrada. Y la razón por la que se pueden cometer fácil errores es porque las fórmulas son muy largas (Ver Eq.\ref{eq:huMom}) y es fácil cambiar algún signo o exponente de la formula sin darse cuenta. Las pruebas se hicieron entonces de la siguiente forma:
+\begin{enumerate}
+\item Los momentos de Hu fueron implementados por 2 personas diferentes, es decir, se realizó doble implementación de estos momentos. Este método de implementación minimiza la posibilidad de errores, ya que aunque es fácil cometer un error, la probabilidad que dos personas cometan exactamente el mismo error es muy baja.
+\item Los momentos de Flusser fueron probados de la siguiente manera. Para cada componente del conjunto de entrenamiento se calcularon los momentos de Flusser y de Hu, dado que se confiaba en que los momentos de Hu estaban bien gracias al paso 1, se comprobaba si los de Flusser estaban bien revisando las equivalencias matemáticas que deben existir entre ambos vectores de características.
+\item Dado que los momentos de Flusser son mas completos que los de Hu, no todas los momentos de Flusser se podían probar con los momentos de Hu. Como se conoce que los momentos son invariantes a la rotación, la última prueba consitió en rotar todas las imágenes 90$^\circ$, 180$^\circ$ y 270$^\circ$, y verificar que los valores siguieran dando iguales.
+\end{enumerate}
+Gracias al punto 1, se detectó un error en un signo de los momentos de Hu en una de las implementaciones, y se corrigió el problema. El resto de los momentos coincidieron en ambas implementaciones. Al hacer las comprobaciones del punto 2, no se detectó ningun error, aunque como se explicó anteriormente, esto prueba solo parte de los momentos, no todos. Con el punto 3 de las comprobaciones, se detectó un cambio de signo al rotar la imagen en una de las variables del vector de características, al revisar el código se detectó que el problema era causado por un error de digitación en el exponente de la formula, este error también fue corregido.
 
 \chapter{Metodología de la investigación}
 \label{chap:metodology}
