@@ -654,7 +654,7 @@ Una propiedad interesante de los momentos complejos, que se deriva de la ecuaci�
 
 Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
-\subsection{Primeros resultados}
+\section{Primeros resultados}
 Para el primer experimento se implementó un método de clasificación estadístico multivariable y se implementaron las características de Hu y de Flusser como se indica en el capítulo de diseño, implementación y pruebas del aplicativo. Después de haber corregido los errores encontrados en la etapa de pruebas se obtuvieron los resultados que se muestran en la tabla \ref{tb:exp1}.
 	\begin{table}
 	\begin{center}
@@ -823,6 +823,9 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 \section{Diseño}
 El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML.
 
+\section{Pruebas}
+En esta sección de pruebas se explica que pruebas se le hicieron al software para saber si los algoritmos estan implementados correctamente. El objetivo de esta sección no es mostrar si el resultado de los algoritmos es satisfactorio o no, esto últimos se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}.
+
 \chapter{Metodología de la investigación}
 \label{chap:metodology}
 
@@ -908,6 +911,7 @@ Donde $N$ es la cantidad de elementos del conjunto de validación y $r_i$ es la 
 Se puede observar que el valor medido $A$ significa la cantidad de aciertos sobre el número total de intentos de predicción. Y por tanto mide el porcentaje de efectividad del clasificador para el problema de reconocimiento de caracteres.
 
 \chapter{Conclusiones y resultados}
+\label{chap:results}
 
 \section{Primeros resultados}
 
