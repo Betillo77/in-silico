@@ -104,6 +104,9 @@
 
 \tableofcontents
 
+\listoffigures
+
+\listoftables
 
 \chapter{Introducción}
 \label{chap:intro}
@@ -825,9 +828,30 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 
 \section{Diseño}
 
-El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML. Diagrama de secuencia, diagrama de clases
+El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML.
+
+\section{Diagramas de sequencia}
+
+\begin{sidewaysfigure}
+\begin{center}
+\includegraphics[width=20cm]{diagrams/sequence1.jpeg}
+\end{center}
+\caption{Diagrama de sequencia del primer caso de uso}
+\label{fig:sequence1}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}
+\begin{center}
+\includegraphics[width=20cm]{diagrams/sequence2.jpeg}
+\end{center}
+\caption{Diagrama de sequencia del segundo caso de uso}
+\label{fig:sequence2}
+\end{sidewaysfigure}
+
+Los diagramas de sequencia se pueden apreciar en las figuras \ref{fig:sequence1} y \ref{fig:sequence2}.
 
 \section{Pruebas}
+
 En esta sección de pruebas se explica que pruebas se le hicieron al software para saber si los algoritmos estan implementados correctamente. El objetivo de esta sección no es mostrar si el resultado de los algoritmos es satisfactorio o no, esto últimos se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}. Cabe anotar que los algoritmos de clasificación y de extracción de características implementados, descritos en los capítulos \ref{chap:ml} y \ref{chap:features}, por su naturaleza no es fácil aplicar las pruebas tradicionales que se le aplica al software.\newline \newline
 Tradicionalmente, las pruebas se hacen creando un conjunto de casos de prueba, para los que se conoce la salida esperada. Entonces el proceso de pruebas consiste en alimentar al software con estos casos de prueba y observar si la salida del software coincide con la salida esperada. Si la salida obtenida no coincide con la salida esperada, entonces se considera que el software tiene un error y se procede a corregirlo. Note que este proceso no puede garantizar un software libre de errores, pero si puede permitir hallar muchos de los errores y por tanto producir software de mejor calidad.
 
