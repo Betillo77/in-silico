@@ -8,7 +8,12 @@
 
 \begin{document}
 \title {Shape recognition using machine learning}
-%\author {Sebastian Gomez}
+\author {\IEEEauthorblockN{Sebastian Gomez} \\
+	\IEEEauthorblockA{Systems and computer engineering\\
+	Universidad Tecnologica de Pereira\\
+	Pereira, Colombia\\
+	Email: segomez@utp.edu.co}
+}
 \date {July of 2010}
 
 	\markboth{VI Congreso Colombiano de Computacion,~Vol.~6, No.~1, December 2010}
@@ -148,7 +153,16 @@
 	on the truth value one of the two children nodes is chosen. This process
 	repeats itself until a leaf is reached, and each leaf has only one class.
 	That class would be the output of $f$. We perform this operation by using the
-	C++ class \textit{CvDTree} of OpenCV. 
+	C++ class \textit{CvDTree} of OpenCV. The final tree produced by the program to
+	recognize the different shapes is shown in Figure \ref{fig:tree}.
+	\begin{figure}[htb]
+	\begin{center}
+	\leavevmode
+	\includegraphics[width=5cm]{tree.jpg}
+	\end{center}
+	\caption{Classifier tree for basic shape recognition}
+	\label{fig:tree}
+	\end{figure}
 	
 	\subsection{Building the training set}
 	To build the training set, several shapes of the same kind were drawn with a
@@ -201,7 +215,9 @@
 	misclassified (FP: False positive, FN: False negative).
 	Only one of the shapes of the validation set
 	was not correctly recognized, which means an accuracy of 97.3\%. The accuracy can
-	be improved even more adding more features. \newline
+	be improved even more adding more features and more training instances. 
+	Note that in this case, the trained tree (Fig \ref{fig:tree}) doesn't care about the 
+	deviation of the angles for the classification of the 4 kind of shapes.\newline
 	The training set consisted on 9 rhombus, 26 squares, 18 rectangles and 33 triangles. Note
 	that the training set didn't have to be very big to achieve a good classification performance.
 	The binary decision tree model is almost ideal to solve this problem. For
@@ -263,7 +279,7 @@
 			
 		\bibitem{ocropus2}
 			SHAFAITA Faisal; KEYSERSA, Daniel y BREUEL, Thomas. 
-			\emph{Efficient Implementation of Local Adaptive Thersholding Techniques Using Integral Images.}
+			\emph{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images.}
 			DOCUMENT RECOGNITION AND RETRIEVAL. 
 			February of 2008.
 			

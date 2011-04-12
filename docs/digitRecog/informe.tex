@@ -828,9 +828,7 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 
 \section{Diseño}
 
-El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML.
-
-\section{Diagramas de sequencia}
+El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML. Los diagramas de sequencia se pueden apreciar en las figuras \ref{fig:sequence1} y \ref{fig:sequence2}.
 
 \begin{sidewaysfigure}
 \begin{center}
@@ -848,7 +846,17 @@ El diseño del aplicativo se realizó con los diagramas de secuencia y clases de
 \label{fig:sequence2}
 \end{sidewaysfigure}
 
-Los diagramas de sequencia se pueden apreciar en las figuras \ref{fig:sequence1} y \ref{fig:sequence2}.
+\begin{sidewaysfigure}
+\begin{center}
+\includegraphics[width=20cm]{diagrams/clases.jpg}
+\end{center}
+\caption{Diagrama de clases}
+\label{fig:classes}
+\end{sidewaysfigure}
+
+En el diagrama de clases (Fig. \ref{fig:classes}) se ven las clases con las que se pueden llevar a cabo los casos de uso con los respectivos métodos públicos. La clase {\it ImgMatrix} es responsable de la representación de la imagen en el computador como una matriz. La clase {\it ConComponent} representa los componentes conectados de la imagen binarizada, es decir, hay un componente conectado por cada caracter de la imagen. La clase {\it OcrServer}, es la encargada de recibir las peticiones IP y coordinar las otras clases para dar respuesta a la petición. La clase {\it Transform} es la responsable de hacer la binarización de las imágenes con el algoritmo de Sauvola, implementado eficientemente. La clase {\it DocLayout} es la responsable de dividir la imagen en los componentes conectados. La clase {\it ChrMoments} es responsable de calcular los momentos invariantes de Hu, Flusser para los componentes conectados, entregando un vector de características. Los momentos de Flusser implementados son tanto los momentos estándares como  los de momentos para objetos simetricos a N-rotaciones (Ver capítulo \ref{chap:features}).
+
+La clase {\it OcrLearning} es una clase genérica que encapsula los métodos que debe tener un método de aprendizaje para la clasificación de caracteres, se tomo la decisión de crear una clase padre porque en un futuro se pueden intentar métodos de aprendizaje distintos como redes neuronales, y el tener esta clase facilita la migración, ya que solo es necesario crear otra clase que herede de {\it OcrLearning} con el método de aprendizaje nuevo y el resto es transparente. La clase {\it OcrMultivariate} es la que contiene la implementación de {\it OcrLearning} para el método específico de clasificación estadística, en la que se usa la distribución normal multivariable y el teorema de Bayes. Además de los métodos de entrenamiento y clasificación de los que se habló en el capítulo \ref{chap:ml}, observe que se plantearon métodos de guardado y carga. La idea de tener estos dos métodos es que gracias a ellos no hay que entrenar el método cada vez que se carga el programa, en cambio se puede guardar el modelo entrenado en un archivo en el disco y luego cargarlo la próxima vez que se cargue el aplicativo.
 
 \section{Pruebas}
 
