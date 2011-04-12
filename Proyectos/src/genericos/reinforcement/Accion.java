@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package blackjack;
+package genericos.reinforcement;
 
 /**
  *
  * @author santiago
  */
-public interface Accion extends Comparable<Accion> {
-
+public interface Accion extends Comparable <Accion> 
+{
 }

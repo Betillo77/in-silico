@@ -26,7 +26,7 @@
                         { 2.0cm}  % right margcm
                         { 2.0cm}  % bottom margcm
                         {   0pt}  % head height
-                        {0.0 cm}  % head sep
+                        { 0.0cm}  % head sep
                         {   9pt}  % foot height
                         { 1.0cm}  % foot sep
 
@@ -504,7 +504,7 @@ Capital de trabajo neto = activo corriente - pasivo corriente \newline
 Activo corriente = activo liquido + activo realizable \newline
 Activo liquido = caja + bancos + efectivo \newline
 Activo realizable = inventario + titulos valores \newline
-Pasivo corriente = salarios + servicios + proveedores + impuestos + arriendos + deudas laborales ya causadas \newline
+Pasivo corriente = salarios + servicios + proveedores + impuestos + arriendos + deudas laborales ya causadas
 
 \subsection{Tasa de costo de capital}
 
@@ -516,5 +516,72 @@ Representa una medida de la rentabilidad minima que se exigira en el proyecto se
 	\item Los intereses que deberan pagarse por aquella parte de la inversión financiada con prestamos.
 	\item La rentabilidad que el inversionista le exige a su propio capital invertido en el proyecto. 
 \end{itemize}
+
+Los ingresos del proyecto deben estar por encima de la tasa de costo de capital, de lo contrario el proyecto generaria perdidas.  
+
+\subsection{Costo de utilizar recursos de deuda}
+
+Kd: Costo de la deuda de un proyecto antes de los impuestos.
+Kd(1 - t): Deuda de un proyecto despues de pagar los impuestos.
+t: Tasa marginal de impuestos
+
+\subsubsection{Ejemplo}
+
+Suponga que un proyecto tiene las siguientes cifras:
+
+Utilidad antes de intereses e impuestos -> 10.000 dolares anuales
+Inversión -> 40.000 dolares
+Tasa de interes del prestamo -> 11\% anuales
+Tasa de impuestos -> 40\%
+
+Se requiere calcular su financiamiento con recursos de la deuda y con capital propio.
+
+\begin{table}
+\begin{tabular}{ |c|c|c| }
+\hline
+                                &   Con deuda          &           Sin deuda \\
+\hline
+Utilidad antes de int e imp     &  \$10.000            &           \$10.000\\
+Intereses		 	&   \$4.400            &                \$0\\
+Utilidad antes de impuestos     &   \$5.600            &           \$10.000\\
+Impuestos			&   \$2.240            &            \$4.000\\
+Utilidad neta			&   \$3.360            &            \$6.000\\
+\hline
+\end{tabular}
+\end{table}
+
+CRD = \$6.000 - \$3.360 = \$2.640
+CPD = (CRD / I) * 100\% = 6.6\%
+
+Kd = 11\%
+Kd(1 - t) = 0.11 * (1 - 0.4) = 6.6\%
+Kd(1 - t) = CPD
+
+\subsection{Coso de utilizar capital propio o patrimonial}
+
+El capital patrimonial de un proyecto es aquella parte de la inversión que se debe financiar con recursos propios. Se toma como costo de capital propio
+la tasa Kp, asociada con la oportunidad de inversión de riesgo similar que se abandonara por destinar esos recursos al proyecto objeto de analisis.
+
+\subsubsection{Costo ponderado de capital}
+\[ K_0 = K_d\frac{D}{V}+K_p\frac{p}{v} \]
+\[ K'_0 = K_d(1-t)\frac{D}{V}+K_p\frac{p}{v} \]
+Donde $K_0$ es la tasa ponderada de capital, $K_p$ es la tasa con recursos propios, $K_d$ es la tasa del préstamo, $D$ es el monto de la deuda, $P$ es el monto del préstamo, $V$ es el valor de la firma en el mercado, $K'_0$ es la tasa ponderada de capital corregida por efectos tributarios y $t$ es la tasa marginal de impuestos.
+
+\subsection{Valor agregado}
+Si el valor agregado neto (VAN) es positivo representa el excedente obtenido por el inversionista luego de la inversión, los gastos financieros y la rentabilidad exigida por el inversionista.
+Si al flujo del proyecto se le descuentan los intereses y amortizaciones el saldo equivaldría a la recuperación del aporte del inversionista mas la fanancia por él exigida.y un excedente igual al VAN del proyecto.
+\begin{table}
+ \begin{tabular}{|c|c|c|c|c|}
+  \hline
+   & 0 & 1 & 2 & 3 \\
+  \hline
+  Flujo & (100000) & 39590 & 39590 & 39590 \\
+  \hline
+ \end{tabular}
+  \caption{Tasa de descuento del inversionista}
+\end{table}
+
+Si la inversión se financia en un 60\% con deuda al 8\% y el resto con recursos propios al 12\%. Y si la tasa de impustos para la empresa es del 10\% sobre las utilidades se requiere calcular la tasa ponderada de capital corregida por efectos tributarios, y calcular la tasa con que se obtendría un VAN igual a cero.
+
 
 \end{document}
