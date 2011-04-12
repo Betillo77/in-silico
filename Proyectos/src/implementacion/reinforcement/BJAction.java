@@ -16,6 +16,8 @@ public class BJAction implements Accion
     public static Accion BET1 = new BJAction(5);
     public static Accion BET2 = new BJAction(6);
     public static Accion BET3 = new BJAction(7);
+    public static Accion BET4 = new BJAction(8);
+    public static Accion BET5 = new BJAction(9);
     
     int number;
 

@@ -16,6 +16,6 @@ public interface Ambiente
 { 
     public Par <Double, Estado> getRewardAndState(Estado s, Accion a);
     public Estado getInitialState();
-    public LinkedList<Accion> getAcciones();
+    public LinkedList<Accion> getAcciones(Estado s1);
     public boolean isTerminalState(Estado s);
 }

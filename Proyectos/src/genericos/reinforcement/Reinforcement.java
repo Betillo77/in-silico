@@ -44,14 +44,14 @@ public class Reinforcement
     public Estado jugar() 
     {
         Estado s = amb.getInitialState();
-        LinkedList <Accion> actions = amb.getAcciones();
+        LinkedList <Accion> actions = amb.getAcciones(s);
         Accion a = chooseAction(s, actions);
         do 
         {
             Par <Double, Estado> par = amb.getRewardAndState(s, a);
             double r = par.val1;
             Estado s1 = par.val2;
-            actions = amb.getAcciones();
+            actions = amb.getAcciones(s1);
             Accion a1 = chooseAction(s1, actions);
             Par <Estado,Accion> key = new Par <Estado, Accion> (s, a);
             Par <Estado,Accion> key1 = new Par <Estado, Accion> (s1, a1);
