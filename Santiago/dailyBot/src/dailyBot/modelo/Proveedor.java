@@ -48,7 +48,7 @@ public class Proveedor
 				Error.agregar("Proveedor " + this + " fue llamado antes de ser registrado.");
 			return este;
 		}
-		
+		 
 		public void iniciarProveedor()
 		{
 			este = Proveedor.leer(this);
