@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-
-import dailyBot.analisis.Rangos;
 import dailyBot.control.Error;
 import dailyBot.control.HiloDaily;
 import dailyBot.control.conexion.ConexionMySql;
@@ -42,7 +40,6 @@ public class Estrategia
 	}
 	
 	protected IdEstrategia id;
-	protected Rangos[] rangos = new Rangos[Par.values().length];
 	protected List <SenalEstrategia> senales = new LinkedList <SenalEstrategia> ();
 	protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
 	protected final Lock read = rwl.readLock();
@@ -50,15 +47,11 @@ public class Estrategia
 
 	public Estrategia()
 	{
-		for(int i = 0; i < Par.values().length; i++)
-			rangos[i] = new Rangos();
 	}
 	
 	public Estrategia(IdEstrategia id)
 	{
 		this.id = id;
-		for(int i = 0; i < Par.values().length; i++)
-			rangos[i] = new Rangos();
 	}
 	
 	public void agregar(Par par, boolean hit, boolean compra, int numeroLotes, double precioEntrada, SenalEstrategia afectada) 
@@ -251,33 +244,6 @@ public class Estrategia
 			write.unlock();
 		}
 	}
-	
-	public Rangos[] getRangos() 
-	{
-		read.lock();
-		try
-		{
-			return rangos;
-		}
-		finally
-		{
-			read.unlock();
-		}
-	}
-
-	public void setRangos(Rangos[] rangos) 
-	{
-		write.lock();
-		try
-		{
-			this.rangos = rangos;
-		}
-		finally
-		{
-			write.unlock();
-		}
-	}
-	
 
 	private static LinkedList <SenalEstrategia> senalesCopia = new LinkedList <SenalEstrategia> ();
 

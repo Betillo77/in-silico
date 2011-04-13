@@ -12,6 +12,7 @@ import dailyBot.analisis.RangosProveedor;
 import dailyBot.control.Error;
 import dailyBot.modelo.Par;
 import dailyBot.modelo.Estrategia.IdEstrategia;
+import dailyBot.modelo.Proveedor.IdProveedor;
 
 public class EstrategiaGrafica extends JFrame
 {
@@ -54,7 +55,14 @@ public class EstrategiaGrafica extends JFrame
 			{
 				try
 				{
-					new RangosGrafico(!enLinea ? new Rangos() : VentanaPrincipal.conexion.darRangosEstrategiaCopia(idEstrategia.ordinal(), par.ordinal()), AnalisisLogica.darRegistrosEstrategia(idEstrategia, par), idEstrategia, par, idEstrategia + " " + par);
+					Rangos[] rangos = new Rangos[IdProveedor.values().length];
+					if(enLinea)
+						for(int i = 0; i < rangos.length; i++)
+							rangos[i] = VentanaPrincipal.conexion.darRangosProveedor(i, idEstrategia.ordinal(), par.ordinal()).duplicar();
+					else
+						for(int i = 0; i < rangos.length; i++)
+							rangos[i] = new Rangos();
+					new RangosGrafico(rangos, AnalisisLogica.darRegistrosEstrategia(idEstrategia, par), idEstrategia, par, idEstrategia + " " + par);
 				}
 				catch(Exception e1)
 				{
@@ -76,7 +84,10 @@ public class EstrategiaGrafica extends JFrame
 			{
 				try
 				{
-					new RangosGrafico(new Rangos(), AnalisisLogica.darRegistrosEstrategia(idEstrategia, Par.TODOS), null, null, idEstrategia + " " + Par.TODOS);
+					Rangos[] rangos = new Rangos[IdProveedor.values().length];
+					for(int i = 0; i < rangos.length; i++)
+						rangos[i] = new Rangos();
+					new RangosGrafico(rangos, AnalisisLogica.darRegistrosEstrategia(idEstrategia, Par.TODOS), null, null, idEstrategia + " " + Par.TODOS);
 				}
 				catch(Exception e1)
 				{

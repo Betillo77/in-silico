@@ -21,7 +21,7 @@ public class RangosProveedor extends Rangos
 		try 
 		{
 			if(id == null || VentanaPrincipal.conexion.darActivoProveedor(id.ordinal(), registro.id.ordinal(), registro.par.ordinal()))
-				return VentanaPrincipal.conexion.darRangosEstrategia(registro.id.ordinal(), registro.par.ordinal()).cumple(registro, true, "");
+				return VentanaPrincipal.conexion.darRangosProveedor(id.ordinal(), registro.id.ordinal(), registro.par.ordinal()).cumple(registro, true, "");
 			else
 				return false;
 		} 

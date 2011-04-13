@@ -14,7 +14,8 @@ public class Rangos implements Serializable
 	{
 		private static final long serialVersionUID = 3013772711096500473L;
 		
-		private boolean invertido;
+		private boolean invertidoCompra;
+		private boolean invertidoVenta;
 		private double minimoCompra;
 		private double maximoCompra;
 		private double minimoVenta;
@@ -24,40 +25,52 @@ public class Rangos implements Serializable
 		{
 		}
 		
-		public Rango(double minC, double maxC, double minV, double maxV, boolean in)
+		public Rango(double minC, double maxC, double minV, double maxV, boolean iC, boolean iV)
 		{
 			minimoCompra = minC;
 			maximoCompra = maxC;
 			minimoVenta = minV;
 			maximoVenta = maxV;
-			invertido = in;
+			invertidoCompra = iC;
+			invertidoVenta = iV;
 		}
 		
 		public Rango(double minC, double maxC, double minV, double maxV)
 		{
-			this(minC, maxC, minV, maxV, false);
+			this(minC, maxC, minV, maxV, false, false);
 		}
 		
 		public synchronized Rango duplicar()
 		{
-			return new Rango(minimoCompra, maximoCompra, minimoVenta, maximoVenta, invertido);
+			return new Rango(minimoCompra, maximoCompra, minimoVenta, maximoVenta, invertidoCompra, invertidoVenta);
 		}
 		
 		public synchronized boolean estaDentro(double resultado, boolean compra)
 		{
 			double minimo = compra ? minimoCompra : minimoVenta;
 			double maximo = compra ? maximoCompra : maximoVenta;
+			boolean invertido = compra ? invertidoCompra : invertidoVenta;
 			return !invertido ? minimo <= resultado && resultado <= maximo : minimo >= resultado || resultado >= maximo;
 		}
 
-		public synchronized void setInvertido(boolean invertido) 
+		public synchronized void setInvertidoCompra(boolean invertido) 
 		{
-			this.invertido = invertido;
+			this.invertidoCompra = invertido;
 		}
 		
-		public synchronized boolean isInvertido() 
+		public synchronized boolean isInvertidoCompra() 
 		{
-			return invertido;
+			return invertidoCompra;
+		}
+		
+		public synchronized void setInvertidoVenta(boolean invertido) 
+		{
+			this.invertidoVenta = invertido;
+		}
+		
+		public synchronized boolean isInvertidoVenta() 
+		{
+			return invertidoVenta;
 		}
 
 		public synchronized void setMinimoCompra(double minimo) 
@@ -104,12 +117,19 @@ public class Rangos implements Serializable
 		{
 			double minimo = compra ? minimoCompra : minimoVenta;
 			double maximo = compra ? maximoCompra : maximoVenta;
+			boolean invertido = compra ? invertidoCompra : invertidoVenta;
 			if(invertido)
 				return valor + " <= " + minimo + " or " + valor + " >= " + maximo;
 			else
 				return minimo + " <= " + valor + " <= " + maximo;
 		}
 
+		public boolean isInvertido(Rangos rangos) 
+		{
+			boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
+			return compra ? invertidoCompra : invertidoVenta;
+		}
+		
 		public double getMinimo(Rangos rangos) 
 		{
 			boolean compra = ((int) rangos.darRango(Indicador.COMPRA).getMinimoCompra()) == 1;
@@ -182,7 +202,8 @@ public class Rangos implements Serializable
 		aCambiar.setMaximoCompra(rango.getMaximoCompra());
 		aCambiar.setMinimoVenta(rango.getMinimoVenta());
 		aCambiar.setMaximoVenta(rango.getMaximoVenta());
-		aCambiar.setInvertido(rango.isInvertido());
+		aCambiar.setInvertidoCompra(rango.isInvertidoCompra());
+		aCambiar.setInvertidoVenta(rango.isInvertidoVenta());
 	}
 	
 	public boolean cumple(RegistroHistorial registro, boolean ignorarInfo, String enviarMensaje)

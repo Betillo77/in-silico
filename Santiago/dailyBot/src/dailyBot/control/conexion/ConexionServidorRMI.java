@@ -19,7 +19,7 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 		ConexionRMI servidor;
 		
 		static Boolean[][][] dpActivos = new Boolean[IdProveedor.values().length][IdEstrategia.values().length][Par.values().length];
-		static Rangos[][] dpRangos = new Rangos[IdEstrategia.values().length][Par.values().length];
+		static Rangos[][][] dpRangos = new Rangos[IdProveedor.values().length][IdEstrategia.values().length][Par.values().length];
 	
 		public Local(ConexionRMI s)
 		{
@@ -42,24 +42,24 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 		}
 
 		@Override
-		public synchronized void cambiarRangosEstrategia(int idEstrategia, int idPar, Rangos rangos) throws RemoteException 
+		public synchronized void cambiarRangosProveedor(int idProveedor, int idEstrategia, int idPar, Rangos rangos) throws RemoteException 
 		{
-			servidor.cambiarRangosEstrategia(idEstrategia, idPar, rangos);
-			dpRangos[idEstrategia][idPar] = rangos;
+			servidor.cambiarRangosProveedor(idProveedor, idEstrategia, idPar, rangos);
+			dpRangos[idProveedor][idEstrategia][idPar] = rangos;
 		}
 		
 		@Override
-		public synchronized Rangos darRangosEstrategia(int idEstrategia, int idPar) throws RemoteException
+		public synchronized Rangos darRangosProveedor(int idProveedor, int idEstrategia, int idPar) throws RemoteException
 		{
-			if(dpRangos[idEstrategia][idPar] != null)
-				return dpRangos[idEstrategia][idPar];
-			return dpRangos[idEstrategia][idPar] = servidor.darRangosEstrategia(idEstrategia, idPar);
+			if(dpRangos[idProveedor][idEstrategia][idPar] != null)
+				return dpRangos[idProveedor][idEstrategia][idPar];
+			return dpRangos[idProveedor][idEstrategia][idPar] = servidor.darRangosProveedor(idProveedor, idEstrategia, idPar);
 		}
 		
 		@Override
-		public Rangos darRangosEstrategiaCopia(int idEstrategia, int idPar) throws RemoteException
+		public Rangos darRangosProveedorCopia(int idProveedor, int idEstrategia, int idPar) throws RemoteException
 		{
-			return darRangosEstrategia(idEstrategia, idPar).duplicar();
+			return darRangosProveedor(idProveedor, idEstrategia, idPar).duplicar();
 		}
 		
 		@Override
@@ -100,23 +100,21 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 	}
 
 	@Override
-	public void cambiarRangosEstrategia(int idEstrategia, int idPar, Rangos rangos) throws RemoteException 
+	public void cambiarRangosProveedor(int idProveedor, int idEstrategia, int idPar, Rangos rangos) throws RemoteException 
 	{
-		Rangos aPoner = IdEstrategia.values()[idEstrategia].darEstrategia().getRangos()[idPar];
+		Rangos aPoner = IdProveedor.values()[idProveedor].darProveedor().getRangos()[idEstrategia][idPar];
 		for(Indicador i : Indicador.values())
-		{
 			aPoner.cambiarRango(i, rangos.darRango(i));
-		}
 	}
 	
 	@Override
-	public Rangos darRangosEstrategia(int idEstrategia, int idPar) throws RemoteException
+	public Rangos darRangosProveedor(int idProveedor, int idEstrategia, int idPar) throws RemoteException
 	{
-		return IdEstrategia.values()[idEstrategia].darEstrategia().getRangos()[idPar];
+		return IdProveedor.values()[idProveedor].darProveedor().getRangos()[idEstrategia][idPar];
 	}
 
 	@Override
-	public Rangos darRangosEstrategiaCopia(int idEstrategia, int idPar) throws RemoteException
+	public Rangos darRangosProveedorCopia(int idProveedor, int idEstrategia, int idPar) throws RemoteException
 	{
 		return null;
 	}

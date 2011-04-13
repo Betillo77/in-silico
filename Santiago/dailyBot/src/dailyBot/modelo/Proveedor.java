@@ -19,6 +19,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
+import dailyBot.analisis.Rangos;
 import dailyBot.analisis.RegistroHistorial;
 import dailyBot.control.AdministradorHilos;
 import dailyBot.control.Error;
@@ -59,6 +60,7 @@ public class Proveedor
 	}
 	
 	protected IdProveedor id;
+	protected Rangos[][] rangos = new Rangos[IdEstrategia.values().length][Par.values().length];
 	protected boolean[][] activos = new boolean[IdEstrategia.values().length][Par.values().length];
 	protected boolean[] cambios = new boolean[IdEstrategia.values().length];
 	protected SenalProveedor[][] senales = new SenalProveedor[IdEstrategia.values().length][Par.values().length];;
@@ -71,11 +73,17 @@ public class Proveedor
 	
 	public Proveedor()
 	{
+		for(int i = 0; i < IdEstrategia.values().length; i++)
+			for(int j = 0; j < Par.values().length; j++)
+				rangos[i][j] = new Rangos();
 	}
 	
-	public Proveedor(IdProveedor i)
+	public Proveedor(IdProveedor iid)
 	{
-		id = i;
+		id = iid;
+		for(int i = 0; i < IdEstrategia.values().length; i++)
+			for(int j = 0; j < Par.values().length; j++)
+				rangos[i][j] = new Rangos();
 	}
 	
 	private void iniciarHiloPersistencia()
@@ -168,7 +176,7 @@ public class Proveedor
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
 						String mensaje = "Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString();
-						if(!s.getEstrategia().darEstrategia().getRangos()[s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, mensaje))
+						if(!rangos[s.getEstrategia().ordinal()][s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, mensaje))
 							afectada.setMagico(1000);
 						else
 						{
@@ -587,6 +595,32 @@ public class Proveedor
 			return arreglo;
 	}
 
+	public Rangos[][] getRangos() 
+	{
+		read.lock();
+		try
+		{
+			return rangos;
+		}
+		finally
+		{
+			read.unlock();
+		}
+	}
+
+	public void setRangos(Rangos[][] rangos) 
+	{
+		write.lock();
+		try
+		{
+			this.rangos = rangos;
+		}
+		finally
+		{
+			write.unlock();
+		}
+	}
+	
 	public boolean[][] getActivos() 
 	{
 		read.lock();

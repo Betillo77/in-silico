@@ -17,6 +17,7 @@ import javax.swing.event.ChangeListener;
 import dailyBot.analisis.Indicador;
 import dailyBot.analisis.Rangos;
 import dailyBot.analisis.Rangos.Rango;
+import dailyBot.vista.RangosGrafico.RangosProveedor;
 
 
 public class RangoGrafico extends JPanel
@@ -27,14 +28,14 @@ public class RangoGrafico extends JPanel
 	private GraficaProgreso graficaProgreso;
     private GraficaIndicador graficaIndicador;
     private GraficaHistorial graficaHistorial;
-    private RangosGrafico rangosGrafico;
+    private RangosProveedor rangosGrafico;
     private JCheckBox invertido;
     private Indicador indicador;
     private JSlider maximo;
     private JSlider minimo;
     private JLabel nombre;
     
-    public RangoGrafico(RangosGrafico rG, Rango original, Rangos r, GraficaProgreso g, GraficaIndicador gI, GraficaHistorial gH, Indicador i)
+    public RangoGrafico(RangosProveedor rG, Rango original, Rangos r, GraficaProgreso g, GraficaIndicador gI, GraficaHistorial gH, Indicador i)
     {
     	rangosGrafico = rG;
     	rangos = r;
@@ -195,7 +196,11 @@ public class RangoGrafico extends JPanel
 			public void actionPerformed(ActionEvent e) 
 			{
 		        final Rango rango = rangos.darRango(indicador);
-				rango.setInvertido(invertido.isSelected());
+		        int compra = (int) rangos.darRango(Indicador.COMPRA).getMinimoCompra();
+		        if(compra == 0)
+		        	rango.setInvertidoVenta(invertido.isSelected());		        	
+		        if(compra == 1)
+		        	rango.setInvertidoCompra(invertido.isSelected());
 				SwingUtilities.invokeLater(new Runnable() 
 				{
                     public void run() 
@@ -207,7 +212,8 @@ public class RangoGrafico extends JPanel
 			}
 		});
         invertido.setText("invertido");
-        invertido.setSelected(rango.isInvertido());
+        int compra = (int) rangos.darRango(Indicador.COMPRA).getMinimoCompra();
+        invertido.setSelected(compra != 1 ? rango.isInvertidoVenta() : rango.isInvertidoCompra());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -223,6 +229,7 @@ public class RangoGrafico extends JPanel
 		     Rango rango = rangos.darRango(indicador);
 		     minimo.setValue((int) rango.getMinimo(rangos));
 		     maximo.setValue((int) rango.getMaximo(rangos));
+		     invertido.setSelected(rango.isInvertido(rangos));
 		 }
 	}
 }
