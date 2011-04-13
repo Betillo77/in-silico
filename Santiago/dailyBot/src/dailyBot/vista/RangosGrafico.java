@@ -33,7 +33,7 @@ public class RangosGrafico extends JFrame
 		JTabbedPane panel = new JTabbedPane();
 		for(int i = 0; i < rangos.length; i++)
 		{
-			JComponent actual = new RangosProveedor(rangos[i], registros, idEstrategia, par, titulo);
+			JComponent actual = new RangosProveedor(rangos[i], registros, idEstrategia, par, titulo, IdProveedor.values()[i]);
 			panel.addTab(IdProveedor.values()[i].toString(), actual);
 		}
 		add(panel);
@@ -68,11 +68,11 @@ public class RangosGrafico extends JFrame
 		
 		private ArrayList <RangoGrafico> rangosGrafico = new ArrayList <RangoGrafico> ();
 		
-		public RangosProveedor(final Rangos rangos, List <RegistroHistorial> registros, final IdEstrategia idEstrategia, final Par par, String titulo)
+		public RangosProveedor(final Rangos rangos, List <RegistroHistorial> registros, final IdEstrategia idEstrategia, final Par par, String titulo, IdProveedor idProveedor)
 		{
 			GraficaProgreso graficaProgreso = new GraficaProgreso(rangos, registros);
 			final GraficaIndicador graficaIndicador = new GraficaIndicador(Indicador.VIX.darRango().duplicar(), registros, Indicador.VIX, rangos);
-			GraficaHistorial graficaHistorial = new GraficaHistorial(rangos, registros, titulo);
+			GraficaHistorial graficaHistorial = new GraficaHistorial(rangos, registros, idProveedor.toString());
 			JPanel panelRangos = new JPanel();
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.setRows(6);
