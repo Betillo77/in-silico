@@ -1,19 +1,35 @@
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
-/**
- *
- * @author diego
- */
-public class B {
 
+public class B_PQ {
+
+	static class Entrada implements Comparable <Entrada> {
+		Node nodo;
+		int w;
+		
+		public Entrada(Node n, int ww) {
+			nodo = n;
+			w = ww;
+		}
+
+		@Override
+		public int compareTo(Entrada o) {
+			return w - o.w;
+		}
+
+	}
     static class Node implements Comparable<Node>{
         int i;
         int j;
         int w;
+        boolean visitado;
 
         Node(int i,int j,int w){
             this.i=i;
@@ -42,10 +58,14 @@ public class B {
 
 
     public static void main(String[] args) throws IOException {
+    	System.setIn(new FileInputStream("B.in"));
+    	System.setOut(new PrintStream(new BufferedOutputStream(System.out)));
+        PriorityQueue<Entrada> PQ=new PriorityQueue<Entrada>(1000000);
         BufferedReader rd=new BufferedReader(new InputStreamReader(System.in));
         int C,R,Cf,Rf,Ct,Rt,W;
         int C1,C2,R1,R2;
         String cad=rd.readLine();
+    	long tiempo = System.currentTimeMillis();
         StringTokenizer tk;
             for(int i=1;i<=1001;i++)
             {
@@ -89,7 +109,7 @@ public class B {
 
             
             matrix[Rf][Cf]=0;
-            TreeSet<Node> PQ=new TreeSet<Node>();
+            PQ.clear();
             for(int i=1;i<=R;i++)
             {
                 for(int j=1;j<=C;j++)
@@ -97,15 +117,20 @@ public class B {
                     if (matrix[i][j]!=-1)
                     {
                         nodos[i][j].w = Integer.MAX_VALUE;
+                        nodos[i][j].visitado = false;
                     }
                 }
             }
             nodos[Rf][Cf].w = 0;
-            PQ.add(nodos[Rf][Cf]);
+            PQ.add(new Entrada(nodos[Rf][Cf], 0));
             boolean flag=false;
             while(!PQ.isEmpty())
             {
-                Node u=PQ.pollFirst();
+                Entrada uu=PQ.poll();
+                Node u=uu.nodo;
+                if(u.visitado)
+                	continue;
+                u.visitado = true;
                 if ((u.i==Rt)&&(u.j==Ct))
                 {
                     System.out.println(u.w);
@@ -130,10 +155,9 @@ public class B {
                             int siguienteCosto = u.w + costo;
                             if(nodos[x][y].w > siguienteCosto)
                             {
-                                PQ.remove(nodos[x][y]);
                                 nodos[x][y].w = siguienteCosto;
                                 matrix[x][y] = siguienteCosto;
-                                PQ.add(nodos[x][y]);
+                                PQ.add(new Entrada(nodos[x][y],siguienteCosto));
                             }
                         }
                     }
@@ -148,8 +172,8 @@ public class B {
             //
             cad=rd.readLine();
         }
-
-
+        System.out.println("Se demoro " + (System.currentTimeMillis() - tiempo) + " ms");
+        System.out.flush();
     }
 
 

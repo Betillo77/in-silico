@@ -28,14 +28,11 @@
 %color tablas
 \usepackage{colortbl}
 
-
-
 %espaciado
 \usepackage{setspace}
 \onehalfspacing
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
-
 
 %margenes según n. icontec
 \usepackage{vmargin}
@@ -99,7 +96,9 @@
 \graphicspath{./diagrams/}
 
 \begin{document}
+
 \portada
+
 \contraportada
 
 \tableofcontents
@@ -113,31 +112,31 @@
 
 \section{Descripción del problema}
 
-Los problemas visuales afectan a una gran parte de la población, tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}, estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que sufren las personas con discapacidades visuales, uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales se queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
+Los problemas visuales afectan a una gran parte de la población tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}. Estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que afectan a las personas con discapacidades visuales uno de los más críticos es el del acceso a la información; esto debido a que la mayoría de la información los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente, esto causa un efecto de exclusión y de segregación en estas personas debido a que muchas veces son vistas como una carga, tanto por si mismas como por las personas que los rodean. 
 
-A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan tener acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y le lea a la persona invidente lo que dicen. Sin embargo, para que sea una solución efectiva al problema, se requiere de un sistema que le permita a los discapacitados visuales acceder a la información escrita de una manera rápida y fácil, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en múltiples lugares, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa, no obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
+A partir de la incidencia del problema, una forma de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que tengan acceso a la información que se encuentra en documentos escritos, tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y, mediante sintesis de voz, le lea a la persona invidente lo que esta escrito en el documento. Sin embargo, para que sea una solución efectiva al problema, se requiere un sistema que le permita a los discapacitados visuales acceder a la información escrita en cualquier momento en que lo necesiten, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio, estos no poseen dicha movilidad, porque además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en cualquier momento, se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa para este problema. No obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, entre ellas se pueden resaltar las siguientes:
 
-\begin{itemize}
+	\begin{itemize}
 
-\item La memoria y la capacidad de procesamiento son muy reducidas en los teléfonos inteligentes con respecto a los computadores de escritorio.
+	\item La memoria y la capacidad de procesamiento son muy reducidas en los teléfonos inteligentes con respecto a los computadores de escritorio.
 
-\item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios megabytes.
+	\item El tamaño de la memoria cache es mucho más pequeño en los teléfonos inteligentes. Como resultado de esto, los algoritmos diseñados para computadores de escritorio pueden ser muy lentos en los teléfonos inteligentes, pues se hicieron pensando en caches de varios megabytes.
 
-\item Un computador de escritorio normalmente tiene instaladas múltiples librerías de propósito general que son utilizadas por distintos programas, un teléfono inteligente, en cambio, solo provee las librerías más básicas.
+	\item Un computador de escritorio normalmente tiene instaladas múltiples librerías de propósito general que son utilizadas por distintos programas, un teléfono inteligente, en cambio, solo provee las librerías más básicas.
 
-\end{itemize}
+	\end{itemize}
 
-La diferencia más importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas por medio de un escáner, logrando condiciones de iluminación muy buenas y uniformes, mientras en los teléfonos inteligentes las imágenes se obtienen por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso diversas variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del texto debido a la forma del papel en reposo, cobran más relevancia, pues la persona invidente podría tomar la fotografía inclinada, en el sentido contrario, o en un lugar con poca luminosidad.
+La diferencia más importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas utilizando un escáner, logrando condiciones de iluminación altas y uniformes a traves del documento. En los teléfonos inteligentes, en cambio, las imágenes deben ser obtenidas por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso variables como la inclinación del texto, la iluminación no uniforme, y las deformaciones elásticas del papel dejan de ser despreciables. La persona invidente podría tomar la fotografía inclinada, en el sentido contrario, o en un lugar con poca luminosidad y debido a su discapacidad dificilmente se percataria de su error.
 
-Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay más disponibilidad de redes inalámbricas, a las cuales los teléfonos inteligentes tienen acceso, en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet y esta sea procesada por un servidor con una capacidad de cómputo mucho mayor. Este sistema tendrá las mismas ventajas de movilidad y rapidez deseadas. La capacidad de procesamiento de los celulares inteligentes también ha incrementado en los últimos años, lo que permitiría hacer parte del procesamiento en el celular, con el objetivo de reducir el ancho de banda requerido para enviar la imagen al servidor y por tanto el costo.
+Para dar solución al problema de limitación en la capacidad de procesamiento de los teléfonos inteligentes se puede utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay una mayor disponibilidad de redes inalámbricas en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet, para que esta fuera procesada por un servidor con una capacidad de cómputo mucho mayor. La capacidad de procesamiento de los celulares inteligentes ha venido incrementado en los últimos años, asi que seria posible hacer parte del procesamiento en el celular, reduciendo el ancho de banda requerido para enviar la imagen al servidor. Este sistema tendria la movilidad y rapidez necesarias para dar solución al problema de una manera efectiva.
 
-Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imágenes tomadas por la persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
+Para solucionar los problemas asociados con la inclinación del texto que se puede producir en las imágenes tomadas por una persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
 
-Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y luminosidad antes presentados. 
+La literatura cientifica relacionada con el reconocimiento optico de caracteres en telefonos moviles es limitada\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46}. Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y luminosidad antes presentados.
 
 \subsection{Definición del problema}
 
-No existe \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para ser utilizado por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, y con un porcentaje de reconocimiento satisfactorio.
+No existe un sistema de reconocimiento óptico de caracteres que halla sido desarrollado para ser utilizado por personas invidentes utilizando la cámara de celulares inteligentes, que sea de código abierto, y con un porcentaje de reconocimiento satisfactorio.
 
 \section{Justificación del proyecto}
 
@@ -145,11 +144,11 @@ Un sistema móvil para reconocer texto de documentos impresos presentaría los s
 
 	\begin{itemize} 
 
-	\item Un menor costo, al no ser necesario adquirir un computador de escritorio, escáner o impresora braille.
+	\item Un menor costo, al no ser necesario adquirir un computador de escritorio, escáner o una impresora braille.
 
-	\item Portabilidad: ninguno de los sistemas tradicionales esta diseñado para ser llevado en todo momento por el usuario, dificultando el acceso al conocimiento e información que no se encuentre en el lugar físico en el que se encuentra alguno de estos sistemas.
+	\item Portabilidad: ninguno de los sistemas tradicionales esta diseñado para ser llevado en todo momento por el usuario, dificultando el acceso por parte de las personas invidentes a la información impresa que no se encuentre en el lugar físico en el que se encuentra alguno de estos sistemas.
 	
-	\item Una solución económica que pueda ejecutarse en un dispositivo móvil, sin necesidad de hardware adicional, haría posible que cada invidente pudiera tener su propio sistema de OCR personal, mientras que los otros sistemas usualmente (por su costo) son adquiridos por instituciones en cantidad limitada.
+	\item Una solución económica que pueda ejecutarse en un dispositivo móvil, sin necesidad de hardware adicional, haría posible que cada invidente pudiera tener su propio sistema de OCR personal, mientras que los otros sistemas usualmente son adquiridos por instituciones en cantidad limitada, ya que son costosos.
 
 	\item Aportar al conocimiento: Al desarrollar este aplicativo se tendrán que hacer pruebas experimentales cuyos resultados aporten a otras investigaciones.
 
@@ -158,16 +157,27 @@ Un sistema móvil para reconocer texto de documentos impresos presentaría los s
 \section{Objetivo}
 \label{sect:objective}
 	
-	\subsection{Objetivo general}
-	Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes y un vector de características invariantes (momentos de Hu y Fluzzer).
-	\subsection{Objetivos específicos}
+\subsection{Objetivo general}
+
+Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes y un vector de características invariantes (momentos de Hu y Fluzzer).
+
+\subsection{Objetivos específicos}
+	
 	\begin{itemize}
-	\item Realizar un estudio del funcionamiento de la distribución normal multivariable en el problema de reconocimiento usando el teorema de Bayes.
+	
+	\item Realizar un estudio del funcionamiento de la distribución normal multivariable para dar solución a problemas de reconocimiento en general utilizando el teorema de Bayes.
+
 	\item Realizar la extracción de características de un conjunto de imágenes de dígitos. Las características a extraer serán invariantes a la rotación, translación y escalamiento (Momentos de Hu y Fluzzer).
+	
 	\item Diseñar e implementar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de dígitos.
+	
 	\item Realizar pruebas de la aplicación implementada.
+	
 	\item Realizar un análisis comparativo de los resultados obtenidos.
+
 	\end{itemize}
+
+%% AQUI VA REVISION DE SANTIAGO
 	
 \section {Antecedentes}
 
@@ -227,14 +237,14 @@ Para el entrenamiento, lo primero que se hace es tomar muchas imágenes de un so
 
 Los métodos de aprendizaje de máquinas, sean de clasificación o de regresión, tienen en común que buscan extraer un modelo que explique un cierto comportamiento de una muestra tomada, para luego generalizar y estimar este comportamiento a cualquier otro elemento de una población. En el caso específico de la clasificación, lo que se busca es que este modelo permita asignar una instancia de la población a alguna de las clases\footnote{ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004}. En otras palabras, lo que se busca en la clasificación es aprender a clasificar en base a ejemplos.
 
-\begin{figure}[htb]
-\begin{center}
-\leavevmode
-\includegraphics[width=5cm]{diagrams/classifier1.jpg}
-\end{center}
-\caption{Modelo general de clasificador}
-\label{fig:classif1}
-\end{figure}
+	\begin{figure}[htb]
+	\begin{center}
+	\leavevmode
+	\includegraphics[width=5cm]{diagrams/classifier1.jpg}
+	\end{center}
+	\caption{Modelo general de clasificador}
+	\label{fig:classif1}
+	\end{figure}
 
 En la figura \ref{fig:classif1} se ve el esquema general de un algoritmo clasificador. Donde lo que se encuentra en la caja ``clasificador'' es el modelo que se va a usar para clasificar. Entonces uno de los problemas que hay que resolver antes de proceder a la clasificación es encontrar un modelo que pueda aproximar lo mejor posible la realidad del problema que se quiere atacar. Varios autores han especificado que hasta el momento no se a encontrado un modelo que se ajuste de la mejor manera a todos los problemas, a esto le han llamado {\it ``no free lunch theorem''}; es español esto traduciría ``teorema no hay almuezo gratis''. En algo si concuerdan la mayoría de investigadores, y es en que si varios modelos funcionan bien se debe escojer el mas sencillo de ellos. Esta observación se desprende del principio filosofico conocido como la navaja de Ockham, propuesto por Guillermo de Ockham (1280-1349), y segun el cual ``cuando dos teorías en igualdad de condiciones tienen las mismas consecuencias, la teoría más simple tiene más probabilidades de ser correcta que la compleja'' \footnote{Robert Audi, ed. Ockham's razor. The Cambridge Dictionary of Philosophy (2nd Edition). Cambridge University Press}. Este principio se aplica en muchos campos, y para el caso del aprendizaje de máquinas tiene especial sentido, ya que usualmente los modelos más sencillos son más fáciles de entrenar, de comprender y sobre todo de depurar.
 
@@ -254,53 +264,65 @@ Como se indicó en la sección anterior, no hay ningun algoritmo que sea la mejo
 
 \subsection{Árboles de decisión}
 
-Un árbol de decisión es un modelo utilizado principalmente para clasificación. Como su nombre lo dice, el modelo sigue una estructura de árbol, donde los nodos no terminales son condiciones sobre las variables de entrada y los nodos terminales o nodos hoja, son las clases.
+Un árbol de decisión es un modelo utilizado principalmente para clasificación. Como su nombre lo dice, el modelo sigue una estructura de árbol, donde los nodos no terminales son condiciones sobre las variables de entrada y los nodos terminales, o nodos hoja, son las clases.
 
-\begin{figure}[htb]
-\begin{center}
-\leavevmode
-\includegraphics[width=7cm]{img/decisiontree.jpg}
-\end{center}
-\caption{Ejemplo de árbol de decisión, tomado de MIT OpenCourseware.}
-\label{fig:decisionTree}
-\end{figure}
+	\begin{figure}[htb]
+	\begin{center}
+	\leavevmode
+	\includegraphics[width=7cm]{img/decisiontree.jpg}
+	\end{center}
+	\caption{Ejemplo de árbol de decisión, tomado de MIT OpenCourseware.}
+	\label{fig:decisionTree}
+	\end{figure}
 
-En la figura \ref{fig:decisionTree}, se puede ver un ejemplo de un árbol de decisión \footnote{Tomado de ``http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-spring-2005/'', 12 de Marzo de 2011}. Se puede observar como dependiendo del valor de las variables en cada nodo no terminal, se 
-escoje un camino diferente, realizando así un proceso de clasificación. En ese ejemplo, las clases son ``caminar'' y ``conducir''. Es posible examinar el proceso de desición
-que se utilizo para llegar a estas variables. Naturalmente, existen procesos automáticos para generar árboles como el del ejemplo a partir de un conjunto de datos de entrenamiento.
+En la figura \ref{fig:decisionTree}, se puede ver un ejemplo de un árbol de decisión \footnote{Tomado de ``http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-spring-2005/'', 12 de Marzo de 2011}. Se puede observar como dependiendo del valor de las variables en cada nodo no terminal se escoje un camino diferente, realizando así un proceso de clasificación. En ese ejemplo las clases son ``caminar'' y ``conducir''. Es posible examinar el proceso de desición que se utilizo para llegar a estas variables. Naturalmente, existen procesos automáticos para generar árboles como el del ejemplo a partir de un conjunto de datos de entrenamiento.
 
 De los árboles de decisión se puede concluir:
 
-\begin{itemize}
+	\begin{itemize}
+	
 	\item Son fácilmente interpretables por un ser humano.
-	\item Si el árbol esta balanceado correctamente, la velocidad de clasificación es alta.
-	\item Se debe configurar la profundidad máxima del árbol.
-	\item La mayoría de algoritmos existentes para generar árboles de decisión solo permiten condiciones sobre una única variable por nodo. Por lo tanto el poder clasificatorio de los árboles es limitado.
-\end{itemize}
+
+	\item En general son más efectivos en los problemas que tienen entradas discretas.
+	
+	\item Si el árbol esta balanceado correctamente la velocidad de clasificación es alta.
+	
+	\item Se debe optimizar la profundidad máxima del árbol, pues un valor adecuado es importante para obtener un buen resultado.
+	
+	\item El poder clasificatorio de los árboles es limitado, especialmente si se comparan con otros algoritmos de clasificación.
+	
+	\item La mayoría de algoritmos existentes para generar árboles de decisión solo permiten condiciones sobre una única variable por nodo. En estos casos se limita aun más su poder clasificatorio. 
+
+	\end{itemize}
 
 \subsection{Métodos estadísticos}
 
 La estadística es uno de los métodos mas antiguos para inferir el comportamiento de una población a través de una muestra, y sin embargo todavía esta vigente. Se profundizará en este tema en las secciones posteriores, así que por ahora solo se mencionan sus ventajas y desventajas.
 
-\begin{itemize}
+	\begin{itemize}
+
 	\item No necesita configuración, lo único que se debe saber en el método estadístico a-priori es la distribución de probabilidad con la que se va a  aproximar el modelo real.
+
 	\item El modelo estadístico es fácil de interpretar por un humano, aunque no es tan fácil de intepretar como los árboles de decisión.
+
 	\item El poder clasificatorio es mas alto que el de los árboles de desición.
+
 	\item Brinda mucha información, en vez de solo decir a que clase pertenece una instancia, brida la probabilidad de que la instancia pertenezca a todas las clases, con cierta probabilidad.
-\end{itemize}
+	
+	\end{itemize}
 	
 \subsection{Redes neuronales artificiales}
 
 Las redes neuronales artificiales son un paradigma de aprendizaje ampliamente tratado en la literatura de la inteligencia artificial. \footnote{ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004. 415 p.}. Las redes neuronales artificiales (RNA) intentan imitar la naturaleza de la neuronas del cerebro humano. Uno de los modelos más conocidos de redes neuronales son los perceptrones multicapa. En la figura \ref{fig:rna} se puede apreciar la estructura de un perceptrón multicapa.\footnote{Imagen tomada de Wikimedia Commons ``http://upload.wikimedia.org/wikipedia/commons/6/64/RedNeuronalArtificial.png'', 13 de Marzo de 2011)}.
 
-\begin{figure}[htb]
-\begin{center}
-\leavevmode
-\includegraphics[width=7cm]{img/rna.png}
-\end{center}
-\caption{Ejemplo de un perceptrón con una capa oculta, tomado de Wikimedia}
-\label{fig:rna}
-\end{figure}
+	\begin{figure}[htb]
+	\begin{center}
+	\leavevmode
+	\includegraphics[width=7cm]{img/rna.png}
+	\end{center}
+	\caption{Ejemplo de un perceptrón con una capa oculta, tomado de Wikimedia}
+	\label{fig:rna}
+	\end{figure}
 
 Cada neurona de un perceptrón multicapa tiene una estructura simple. Cada neurona tiene un vector de datos de entrada $\vec{x}$, un vector de pesos sinápticos $\vec{w}$ y una función de activación $f(x)$. Dado sus entradas, la salida $y$ de una neurona es:
 
