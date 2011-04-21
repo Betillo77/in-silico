@@ -202,7 +202,7 @@ public class Proveedor
 			if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] != null)
 				if(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()].getMagico() != 1000)
 				{
-					Error.agregarConTitulo("escritor", id + " cerrando por stop " + s.getEstrategia() + ", " + s.getPar());
+					Error.agregarConTitulo("rangos", id + " cerrando por stop " + s.getEstrategia() + ", " + s.getPar());
 					escritor.cerrar(senales[s.getEstrategia().ordinal()][s.getPar().ordinal()]);
 				}
 			else if(activos[s.getEstrategia().ordinal()][s.getPar().ordinal()] && senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] == null)
@@ -374,7 +374,7 @@ public class Proveedor
 				} 
 				else 
 				{
-					Error.agregarConTitulo("escritor", id + " cerrando inexistente " + pm.par + ", " + pm.magico);
+					Error.agregarConTitulo("rangos", id + " cerrando inexistente " + pm.par + ", " + pm.magico);
 					escritor.agregarLinea(pm.par + ";SELL;CLOSE;" + pm.magico); 
 					mensajeError += pm + " no existe en la bd, eliminado\n";       
 				} 

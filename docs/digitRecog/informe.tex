@@ -17,7 +17,7 @@
 
 % idioma
 \usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
+\usepackage[spaniEn otra investigaciónsh]{babel}
 
 %tablas
 \usepackage{booktabs}
@@ -176,59 +176,46 @@ Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numérico
 	\item Realizar un análisis comparativo de los resultados obtenidos.
 
 	\end{itemize}
-
-%% AQUI VA REVISION DE SANTIAGO
 	
 \section {Antecedentes}
 
-La tecnología actual ha permitido a las personas invidentes tener acceso a información y a conocimiento al que antes no tenían acceso. Entre estas tecnologías se encuentran los lectores de pantalla, y las impresoras y sistemas refrescables de Braille.
+La tecnología actual permite que las personas invidentes tengan un acceso cada vez mayor a la información y al conocimiento escrito. En el área de acceso al texto, existen sistemas que convierten texto ASCII a voz, conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas que permiten reconocer el texto de una imagen y convertirlo a texto en ASCII, conocidos como sistemas OCR, los cuales funcionan usualmente con imagenes adquiridas utilizando un escáner. Según pruebas de eficacia realizadas por la TUK\footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}, los OCRs de codigo libre con mejores resultados son \textit{Tesseract} y \textit{Ocropus}. Cuando la imagen se adquiere mediante una camara digital, se deben seguir diferentes enfoques. Investigaciones pasadas han concluido\footnote{SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} que los retos más importantes son la proyección de la imagen en perspectiva en el plano y la resolución requerida para lograr un buen porcentaje de reconocimiento.
+
+En cuanto a realizar el trabajo de reconocimiento optico de caracteres en celulares, se encontro una investigación\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} en la que se utilizan imágenes de muy baja resolución (640 x 480), y como resultado solo pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos. En una investigación distinta\footnote{SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372} se propone tomar varias imágenes de baja resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto, sin embargo, incrementa significativamente la carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular, por lo cual la solución se restringe a una arquitectura cliente-servidor. Ademas de ello la solución es poco practica para personas invidentes, ya que requeriría que el usuario supiera con anterioridad como está la estructura del documento para poder mover el celular en la dirección en la que está el texto.
 	
-Un proyecto interesante desarrollado en la Universidad Tecnológica de Pereira (llamado Proyecto IRIS), permite a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes permanentes y una matriz de electroimanes conectada al computador por el puerto USB.
+\subsection{Investigaciones de temas relacionados en la Universidad Tecnológica de Pereira}
 
-En el área de acceso al texto, existen sistemas que convierten el texto en ASCII a voz, conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas para el computador que permiten pasar texto en imagen a texto en ASCII, conocidos como OCR, los cuales funcionan usualmente tomando una imagen de un escáner. Según pruebas de eficacia realizadas por la TUK \footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}, los OCRs libres con mejores resultados son \textit{Tesseract} y el  \textit{Ocropus}. 
+Un proyecto interesante desarrollado en Ingenieria de Sistemas y Computación, llamado Proyecto IRIS, permite a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes permanentes y una matriz de electroimanes.
 
-Cuando el problema cambia de tomar la imagen con un escáner a tomarla con una cámara, se deben seguir diferentes enfoques, en \footnote{SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} se halló que los retos más importantes son la proyección de la imagen en perspectiva en el plano y la  resolución requerida para poder reconocer bien los caracteres.
-
-En cuanto a hacer que el OCR sea realizado por un celular, se encontraron investigaciones como \footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46}, en la que se trabajaban con imágenes de muy baja resolución (640x480) y como resultado solo pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos. En \footnote{SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372}, para tratar de equilibrar el hecho de tener una cámara de baja resolución, se toman varias imágenes de baja resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto sin embargo conlleva a un incremento la carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular, por lo cual la solución se restringe para que se envíen las imágenes a un servidor usando internet, el cual las procesa y envía los resultados.
-
-Cabe anotar que ninguna de las tecnologías anteriormente mencionadas para hacer el OCR en el celular fue diseñada para ser usada por personas invidentes. Ya que el primero no fue diseñado para reconocer documentos, y el segundo requeriría que la persona invidente supiera con anterioridad como está la estructura del documento para poder mover la cámara del celular en la dirección en la que está el texto en el documento.
-	
-\subsection{Proyectos de grado relacionados en la Universidad Tecnológica de Pereira}
-
-Si bien en Ingeniería de Sistemas en la Universidad Tecnológica de Pereira no se ha planteado un proyecto de grado directamente sobre reconocimiento óptico de caracteres, un estudiante de la maestría en Ingeniería Eléctrica construyo un sistema para el reconocimiento de algunos caracteres y dígitos manuscritos. Se intentaron dos maquinas de aprendizaje diferentes: el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes neuronales en todas las pruebas, así que estas maquinas de aprendizaje podrían ser de gran utilidad en la construcción de un sistema de reconocimiento óptico de caracteres. \footnote{MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnológica de Pereira, 2005}
-
-En temáticas relacionadas, se encontraron los siguientes proyectos de grado desarrollados por estudiantes de Ingeniería Eléctrica:
+En la maestría en Ingeniería Eléctrica se encontro una investigación\footnote{MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnológica de Pereira, 2005} para la cual se construyo un sistema que reconoce algunos caracteres y dígitos manuscritos, un problema similar al de reconocimiento optico de caracteres. Se intentaron dos maquinas de aprendizaje diferentes: el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes neuronales en todas las pruebas.
     
-En la tesis \footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2008} se utilizaron redes neuronales para reconocimiento de voz en hardware sobre una FPGA. Si bien la implementación fue en hardware y no en software, sus resultados permiten inferir que es posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso de memoria y con relativa eficiencia, lo cual da esperanzas para una posible implementación de las misma en un dispositivo móvil. También es de anotar que las redes neuronales demostraron porcentajes de aciertos significativamente mayores que los obtenidos por los clasificadores bayesianos lineales.
+En la tesis\footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2008} se utilizaron redes neuronales para lograr reconocimiento de voz en hardware sobre una FPGA. Los resultados de esta investigación permiten inferir que es posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso de memoria y con relativa eficiencia.
 
-En el tema de procesamiento de imágenes, se encontró un proyecto de grado para contar transeúntes en una imagen utilizando un sistema de visión artificial \footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007}. Considerando el bajo nivel de resolución (imágenes de 324 x 240 píxeles a 30 frames por segundo) y el hecho de que la cámara no fue calibrada, se identificaron correctamente muchos transeúntes, de lo que se puede inferir que los sistemas de visión artificial funcionan correctamente con cámaras económicas. Los resultados muestran que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de píxeles. Así mismo, también permiten entender distintos problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios transeúntes como uno solo. Si bien en el reconocimiento óptico de caracteres se distinguen letras y no personas, problemas similares a los evidenciados en este proyecto se presentan al separar los caracteres en un sistema de OCR.
-	
-Finalmente, en el tema de procesamiento de señales, en \footnote{ALVAREZ, Lorena. Acondicionamiento de Señales Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007} se adquieren señales bioeléctricas utilizando filtros análogos y digitales. En este proyecto se lograron filtrar señales muy pequeñas y finas, como las producidas en el cuerpo humano, mediante filtros digitales, y se obtuvieron errores pequeños. Aunque las señales bioeléctricas son muy diferentes a las imágenes, es posible convertir estas ultimas en señales y, por tanto, los filtros digitales expuestos en este proyecto podrían ser de utilidad a la hora de eliminar errores en imágenes tomadas por una cámara, ya que logran filtrar correctamente señales con gran cantidad de ruido.\newline
+Estudiantes de ingenieria electrica desarrollaron un proyecto de grado para contar transeúntes en una imagen utilizando un sistema de visión artificial\footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007}. Los resultados de la investigación indican que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de píxeles. Así mismo, permiten entender distintos problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios componentes conectados uno solo. Problemas similares a los evidenciados en este proyecto se pueden presentan al separar los caracteres en un sistema de OCR.
     
 \section {Modelo general de sistema OCR}
 
 \subsection{Reconocimiento de caracteres y análisis de documentos}
 
-En esta sección se hablará de algunas investigaciones realizadas en el área de reconocimiento de caracteres y de análisis de documentos. Las etapas necesarias para llevar a cabo el proceso de análisis de documentos y reconocimiento de caracteres son: binarización de la imagen, análisis y segmentación del documento y reconocimiento óptico de caracteres (OCR).  
+En esta sección se hara una introducción al reconocimiento optico de caracteres (OCR) y las etapas que son necesarias para realizarlo. Estas etapas son: binarización de la imagen, análisis y segmentación del documento, y reconocimiento óptico de caracteres.  
 
 \subsection{Binarización de imagen}
 
-Esto se refiere a tomar una imagen en escala de grises y convertirla a una  imagen en blanco y negro. También se puede ver como separar la parte que nos interesa (foreground o primer plano) de la parte que no nos interesa (background o fondo). Una técnica que da buen resultado es la binarización de Sauvola, que realiza una binarización basada en un análisis local de la imagen. El hecho de que sea local le brinda una mejor binarización en condiciones de luz variable. Los  resultados obtenidos en el artículo "Efficient Implementation of Local Adaptative  Thersholding Techniques Using Integral Images" indican que esta técnica puede ser optimizada para lograr un tiempo de ejecución comparable con las técnicas globales de  binarización (al correr en O(N) \footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}, siendo N el numero de píxeles de la imagen), conservando las ventajas de ser local, por lo que seria un buen candidato para implementarlo en un proyecto para desarrollar un sistema de reconocimiento óptico de caracteres.
+Se refiere a convertir una imagen de escala de grises a una imagen en blanco y negro. También se puede ver como el proceso mediante el cual se separa la parte que es de interes para el reconocimiento optico de caracteres (foreground o primer plano) de la parte que no lo es (background o fondo). Una técnica que da buen resultado es la binarización de Sauvola, en la cual se hace un análisis del vecinadario de cada uno de los pixeles de la imagen para determinar si el pixel es negro o blanco. El hecho de que el analisis sea local, y no global, le brinda una mejor binarización en condiciones de luz variable como las que se pueden encontrar en fotos capturadas por la camara de un celular.
 
 \subsection{Análisis del documento}
 
-Según \footnote{MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San José, Estados Unidos).  Memorias, 2003, p. 197-207}, esta etapa puede ser vista como un análisis sintáctico, en el que el documento se divide en sus partes estructurales como un árbol de análisis sintáctico. Como todo análisis gramatical, se puede seguir los enfoques \textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde los píxeles y luego los relacionaría en grupos mas grandes (Caracteres, Palabras, Lineas o Párrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imagen de un documento y comenzaría a dividirla hasta llegar a sus componentes. Cada algoritmo tiene limitaciones, ventajas y distintos requerimientos de máquina. Una investigación realizada sobre diferentes algoritmos \footnote{SHAFAITA Faisal; KEYSERSA,  Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence.  Junio, 2008. vol. 30, no. 6, p. 941-954}, indica que los mejores resultados sobre diferentes documentos, con distintas estructuras físicas, fueron para Docstrum y para Voronoi, con porcentajes de error del 4.3\% y 4.7\% respectivamente. Otro método	llamativo es el \textit{RLSA}, que llama  la atención por su sencillez y puede brindar buenos resultados en documentos \textit{Manhattan-Layout}. 
+Esta etapa puede\footnote{MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San José, Estados Unidos).  Memorias, 2003, p. 197-207} ser vista como un análisis sintáctico en el que el documento se divide en sus partes estructurales, de una manera similar a como se hace en un árbol de análisis sintáctico. Como todo análisis gramatical es posible seguir los enfoques \textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde los píxeles y luego los relacionaría en grupos mas grandes (caracteres, palabras, lineas y párrafos). Un enfoque \textit{top-down} por el contrario, comienza con la imagen de un documento y la divide hasta llegar a sus componentes. Cada algoritmo tiene sus limitaciones, ventajas y distintos tiempos de ejecución. Una investigación realizada sobre diferentes algoritmos\footnote{SHAFAITA Faisal; KEYSERSA,  Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence.  Junio, 2008. vol. 30, no. 6, p. 941-954}, indica que los mejores resultados sobre documentos escogidos aleatoriamente con distintas estructuras visuales fueron para Docstrum y Voronoi con porcentajes de error del 4.3\% y 4.7\% respectivamente. Otro método interesante es el \textit{RLSA}, que es bastante sencillo y puede brindar buenos resultados en documentos \textit{Manhattan-Layout}. 
 
-Probablemente la mejor solución para un sistema OCR pueda resultar de la mezcla de varios de los algoritmos existentes, en \footnote{KISE, Koichi; SATO Akinori y MATSUMOTO,  Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY: CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan,  Puerto Rico). Memorias, 1997, p. 32-39} se observa como se pueden mejorar los resultados  mezclando los beneficios de diferentes algoritmos para soluciones particulares, y cada uno de los artículos mencionados aporta elementos importantes para escoger cual de estos algoritmos  es ventajoso para una solución particular.  
+Probablemente la mejor solución para un sistema OCR resulte de la mezcla de varios de los algoritmos existentes. En una investigación en el tema\footnote{KISE, Koichi; SATO Akinori y MATSUMOTO,  Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY: CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan,  Puerto Rico). Memorias, 1997, p. 32-39} se observa como se pueden mejorar los resultados mezclando los beneficios de diferentes algoritmos para soluciones particulares. Esta investigación aporta elementos importantes para escoger cual de estos algoritmos es ventajoso para cada solución en particular.  
 
 \subsection{Reconocimiento óptico de caracteres OCR}
 
-Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones. Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones. Entre ellos algunos modelos son inspirados en la biología, como los que usan redes neuronales. Otros modelos son puramente matemáticos como las máquinas de vectores de soporte, o estadísticos como la distribución normal multivariable aplicando el teorema de Bayes.
+Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones. Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones, entre ellos se pueden encontrar algunos modelos inspirados en la biología como los que usan redes neuronales. Otros modelos son puramente matemáticos, como las máquinas de vectores de soporte, o estadísticos, como la distribución normal multivariable aplicando el teorema de Bayes.
 
-La  mayoria de los métodos para el reconocimiento de patrones tienen en común que necesitan como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres para las personas invidentes, es deseable que estas características cambien muy poco frente a ciertos cambios en la imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y de Fluzzer, estos momentos se calculan realizando una integral, que en una imagen se convierte en sumatoria por el hecho de ser discreta. En esta sumatoria se le dan diferentes pesos a cada píxel dependiendo de la posición, y luego se realizan operaciones sobre estos que permite obtener un conjunto limitado de características independientes de la rotación, translación y al escalamiento. Al ser características que no varían significativamente con estos  cambios se les ha dado el nombre de momentos invariantes.
+La  mayoria de los métodos para el reconocimiento de patrones tienen como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres es deseable que estas características cambien muy poco frente a ciertas variables de cada imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y Fluzzer, los cuales se calculan realizando una integral que en una imagen digital, por el hecho de ser discreta, se convierte en una sumatoria. En esta sumatoria se le asignan diferentes pesos a cada píxel, dependiendo de la posición, para posteriormente realizar operaciones sobre estos que permitan obtener un conjunto limitado de características. El objetivo es que estas caracteristicas sean independientes a la rotación, la translación y el escalamiento. Al ser características que no varían significativamente con respecto a estas variables, se les ha dado el nombre de momentos invariantes.
 
-Para el entrenamiento, lo primero que se hace es tomar muchas imágenes de un solo tipo: sea una letra, un  número o una forma. Medir sus características aplicando descriptores invariantes, y manualmente  etiquetar esta imagen, (una a, un 1, un rombo etc.) guardando esta información en una base de datos. Luego cuando el sistema se pone en marcha se obtienen las características de la imagen, y se aplica un algoritmo de aprendizaje sobre dichas características. Uno de los métodos mas sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y en clases diferentes. Con esto se pueden crear regiones en el híper-espacio (un espacio de varias dimensiones) para las diferentes clases, y así cuando llegue una imagen nueva a clasificar solo se deben tomar las características y ubicar en que región del híper-espacio se encuentra este objeto. En los artículos se puede observar como   cada aproximación tiene sus ventajas, dependiendo de las características de las imágenes a procesar.
-    
+Para realizar el entrenamiento se deben tomar muchas imágenes de un solo tipo, ya sea una letra, un número o una forma. Despues se calculan, para cada una de ellas, sus características, aplicando descriptores invariantes. Posteriormente se etiqueta la imagen, guardando esta información en una base de datos. Cuando el sistema se pone en marcha se obtienen las características de la imagen y se aplica un algoritmo de aprendizaje sobre las mismas. Uno de los métodos mas sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y entre clases diferentes. Con esto se pueden crear regiones en el híper-espacio\footnote{Un espacio de varias dimensiones} para las diferentes clases. Finalmente, para clasificar una imagen de entrada se toman sus características y se ubica en que región del híper-espacio se encuentra.
     
 \chapter{Métodos estadísticos para la clasificación}
 \label{chap:ml}
@@ -543,7 +530,7 @@ Cuando las imágenes son adquiridas mediante un escaner, es común escoger un $T
 	T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
 \end{equation}
 
-Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapixeles, incluso con valores relativamente pequeños de $O$.
+Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$\footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapixeles, incluso con valores relativamente pequeños de $A$.
 
 %poner resultado obtenido por nuestro programa (Original, Binarizado)
 
@@ -579,7 +566,33 @@ El resultado obtenido es consistente con la formula que se utilizo en la impleme
 
 Posteriormente se implemento el algoritmo. Ya que es una de las partes de mayor complejidad algoritmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV\footnote{poner referencia}. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un unico arreglo el cual se accedio a traves de un puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración unicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rapido que la función utilizada en el proyecto Ocropus, como puede apreciarse en la siguiente tabla %% \ref{ponerTabla}.
 
-%% Poner tabla aca
+	\begin{table}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		* & \multicolumn{2}{|c|}{Semi-shared covariance matrix} &
+			\multicolumn{2}{|c|}{Independent covariance matrix} \\
+		\hline
+		Character & Hu & Flusser & Hu & Flusser \\
+		\hline
+		0 & 99.34\% & 99.21\% & 99.86\% & 100.00\% \\
+		1 &	100.00\% & 100.00\% & 100.00\% & 100.00\% \\
+		2 &	100.00\% & 100.00\% & 91.21\% & 93.91\% \\
+		3 &	100.00\% & 100.00\% & 100.00\% & 100.00\% \\
+		4 &	100.00\% & 100.00\%	& 100.00\% & 96.41\% \\		
+		5 & 97.97\% & 99.32\% & 26.95\% & 38.95\% \\ 
+		6 & 91.65\% & 86.96\% & 93.61\% & 86.83\% \\
+		7 & 100.00\% & 100.00\% & 100.00\% & 99.87\% \\
+		8 & 85.53\% & 92.97\% & 96.76\% & 99.44\% \\
+		9 &	89.52\% & 81.06\% & 65.40\% & 65.03\% \\
+		\hline
+		Total & 96.38\% & 95.83\% & 87.21\% & 87.84\% \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\caption{Precisión del algoritmo clasificador en el primer experimento}	
+	\label{tb:sauvolaFast}
+	\end{table}
 
 \section{Componentes conectados}
 \label{sect:conComponents}
@@ -682,7 +695,9 @@ Una propiedad interesante de los momentos complejos, que se deriva de la ecuaci�
 Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
 \section{Primeros resultados}
+
 Para el primer experimento se implementó un método de clasificación estadístico multivariable y se implementaron las características de Hu y de Flusser como se indica en el capítulo de diseño, implementación y pruebas del aplicativo. Después de haber corregido los errores encontrados en la etapa de pruebas se obtuvieron los resultados que se muestran en la tabla \ref{tb:exp1}.
+
 	\begin{table}
 	\begin{center}
 	\begin{tabular}{|c|c|c|c|c|}
@@ -707,7 +722,7 @@ Para el primer experimento se implementó un método de clasificación estadíst
 		\hline
 	\end{tabular}
 	\end{center}
-	\caption{Presición del algoritmo clasificador en el primer experimento}	
+	\caption{Precisión del algoritmo clasificador en el primer experimento}	
 	\label{tb:exp1}
 	\end{table}
 
@@ -720,14 +735,19 @@ Para el caso de este proyecto, este problema no estaba previsto y solo se detect
 Con estas restricciones, se propone el siguiente método para resolver el problema de la simetría mutua basado en las ecuaciones de los momentos complejos. Supongamos que existe un problema de simetría mutua entre las clases $C_i$ y $C_j$, y que se desea clasificar una imagen $f(x,y)$ en una de estas dos clases. Entonces una rotación cercana a 180$^\circ$ de la instancia $f(x,y)$ respecto a la clase $C_i$ indica que $f(x,y)$ es mas similar a la clase $C_j$. Definamos también $f_i(x,y)$ como una instancia de la clase $C_i$ que representa bien las instancias de la clase $C_i$. Entonces se escojería que $f(x,y)$ pertenece a $C_i$ si el ángulo de rotación con respecto a $f_i(x,y)$ es menor que 90$^\circ$, y si el ángulo es mayor que 90$^\circ$ se escojería la clase $C_j$, y si el ángulo es exactamente igual a 90$^\circ$ no se puede determinar nada. \newline \newline
 Para hallar el ángulo se utilizaron los momentos complejos de la siguiente manera. Sea $C'_{pq}$ el promedio de los momentos complejos de orden $p+q$ de las instancias de la clase $C_i$, sea $C_{pq}$ el momento complejo de orden $p+q$ de la imagen $f(x,y)$.
 Entonces usando la ecuación Eq.\ref{eq:rotProp} se tiene:
+
 	\begin{equation}\label{eq:angleDetection1}
 		\frac{C'_{pq}}{C_{pq}} = e^{-i(p-q)\alpha}
 	\end{equation}
+
 Eq.\ref{eq:angleDetection1} muestra que siempre es posible calcular el ángulo $\alpha$ entre $f(x,y)$ y $f_i(x,y)$ dividiendo sus momentos complejos de orden $p+q$ si	$p \neq q$ y la magnitud de los momentos es diferente de cero. Definamos $n=\frac{C'_{pq}}{C_{pq}}$. El número complejo $n$ debe tener magnitud unitaria para poder hallar una solución a la ecuación \ref{eq:rotProp}, en la teoría esto se garantiza, pero con imagenes reales esta suposición no siempre es cierta. Para continuar se normalizó el numero complejo $n'=\frac{n}{|n|}$. Utilizando la entidad de Euler en Eq.\ref{eq:angleDetection1}, se obtiene:
+
 	\begin{equation}\label{angleDetection2}
 		n' = \cos((p-q)\alpha) - i\sin((p-q)\alpha)
 	\end{equation}
+
 Si se considera al número complejo $n'$ como un vector, este se movería en un circulo unitario respecto al origen dependiendo del valor del ángulo $\alpha$. Si se considera un vector $\vec{R}$ con $\alpha=0$ como el vector de referencia, se tendría $\vec{R}=(1,0)$. Note que $\vec{R}$ es un vector normal a un plano clasificador $A$. El algoritmo explicado de puede ver graficamente en la figura \ref{fig:mutualSym}.
+
 	\begin{center}
 	\setlength{\unitlength}{1cm}
 	\begin{figure}
@@ -745,16 +765,22 @@ Si se considera al número complejo $n'$ como un vector, este se movería en un 
 	\label{fig:mutualSym}
 	\end{figure}
 	\end{center}
+
 Definamos que el lado positivo del plano $A$ es al que apunta $\vec{R}$. Entonces se escojería que $f(x,y)$ pertenece a $C_i$ si $n'$ esta al lado positivo del plano $A$, se escojería $C_j$ si $n'$ esta en el lado negativo de $A$ y no hay ninguna pista si $n'$ esta en el plano $A$. Se calcula en que lado del plano $A$ esta en vector $n'$ calculando el producto punto entre $n'$ y el vector normal al plano $\vec{R}$. Note que:
+
 	\[ \vec{R}.n' = real(n') \]
+
 Donde $real(x)$ en una función que retorna la parte real del número complejo $x$. La clasificación se realiza de la siguiente forma:
+
 	\begin{equation}\label{angleClassif}
 		Class = \left\{ \begin{array}{ll}
 		C_i   & \mbox{if $real(n') > 0$} \\
 		C_j & \mbox{otherwise}
 	\end{array} \right. 
 	\end{equation}
+
 Los resultados obtenidos para los dígitos 6 y 9 después de implementar el algoritmo son mostrados en la tabla \ref{exp2}.	
+
 	\begin{table}
 	\begin{center}
 	\begin{tabular}{|c|c|c|}
