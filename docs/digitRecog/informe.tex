@@ -582,6 +582,7 @@ Posteriormente se implemento el algoritmo. Ya que es una de las partes de mayor 
 %% Poner tabla aca
 
 \section{Componentes conectados}
+\label{sect:conComponents}
 
 Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los pixeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el metodo de sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un pixel $(x,y)$ pertence al fondo de la imagen si $I_2(x,y)=0$, y pertenece a algun caracter si $I_2(x,y)=255$. Si se establece que un pixel $(x',y')$ es vecino de un pixel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un cojunto de pixeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviendose unicamente a traves de pixeles vecinos de $C$. La idea de los componentes conectados fue utilizada por O'Gorman \cite{docstrum93} para realizar el analisis del documento, una de las etapas del reconocimiento optico de caracteres.
 
@@ -775,7 +776,32 @@ Los resultados obtenidos para los dígitos 6 y 9 después de implementar el algo
 
 El otro problema que se puede observar en la tabla \ref{tb:exp1} es que el resultado de el método de clasificación con matriz de covarianza semi-compartida es significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó en el capítulo \ref{chap:ml}, es porque el determinante de la matriz de covarianza es muy cercano a cero. Flusser \cite{flusser06} demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. Como se mostrará mas adelante estos momentos son también efectivos para reconocer objetos que no son simétricos.
 
-
+	\begin{table}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		* & \multicolumn{3}{|c|}{Semi-shared covariance matrix} \\
+		\hline
+		Character & Hu & Flusser & 2-Fold flusser\\
+		\hline
+		0 & 99.34\% & 99.21\% & 100.00\% \\
+		1 &	100.00\% & 100.00\% & 100.00\% \\
+		2 &	100.00\% & 100.00\% & 100.00\% \\
+		3 &	100.00\% & 100.00\% & 100.00\% \\
+		4 &	100.00\% & 100.00\%	& 100.00\% \\		
+		5 & 97.97\% & 99.32\% & 100.00\% \\ 
+		6 & 99.47\% & 99.48\% & 100.00\% \\
+		7 & 100.00\% & 100.00\% & 100.00\% \\
+		8 & 85.53\% & 92.97\% & 100.00\% \\
+		9 &	99.49\% & 96.72\% & 100.00\% \\
+		\hline
+		Total & 98.18\% & 98.77\% & 100.00\% \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\caption{Accuracy of the classifier algorithm in the first experiment}	
+	\label{tb:exp3}
+	\end{table}
 
 \chapter{Diseño, implementación y pruebas del aplicativo}
 \label{chap:ingSw}
@@ -989,14 +1015,330 @@ Se puede observar que el valor medido $A$ significa la cantidad de aciertos sobr
 
 \chapter{Conclusiones y resultados}
 \label{chap:results}
+A lo largo de este documento, se han mostrado el diseño general de un sistema de reconocimiento óptico de caracteres y se han mostrado técnicas y algoritmos existentes para cada una de las etapas. Además de cada etapa se seleccionó algún algoritmo o grupo de algoritmos que por sus características teóricas resultaban mejores para el problema OCR, y se explicaron las razones por las cuales se habían escogido los algoritmos que se implementaron y se mostraron los resultados de estos algoritmos sobre el proyecto.
 
-\section{Primeros resultados}
+\section{Resultados de la investigación}
+Como ya se ha expuesto a lo largo del documento, el sistema de reconocimiento óptico de caracteres al igual que otros sistemas de visión por computador, se divide en tres etapas principales: El prepocesamiento (Binarización, filtrado y segmentación de la imagen), la extracción de características (Entrega un vector de números que representa las características deseadas de la imagen) y reconocimiento (Clasificación del vector de características usando aprendizaje de máquinas).
 
-\section{Mejoras realizadas}
+\subsection{Etapas de preprocesamiento}
+Para la etapa de preprocesamiento se utilizaron 3 algoritmos para cada una de sus sub-etapas. En la sub-etapa de binarización se utilizó el algoritmo de Sauvola con la mejora en tiempo de Breuel, los resultados de la binarización se muestran en la sección \ref{sect:binarization}. En la implementación del algoritmo de binarización se cambió la forma en la que se referenciaba la memoria para lograr aún mejores tiempos de respuesta, con esta mejora se disminuyó el tiempo a $\frac{1}{5}$ del tiempo de la implementación original de Breuel para imágenes de 4 MPixeles, los resultados detallados se muestran en la tabla \ref{tb:sauvolaFast}. La sub-etapa de segmentación, que divide la imagen en los componentes de interes, se implementó con un algoritmo de Flood-fill como se explica en la sección \ref{sect:conComponents}. Para la sub-etapa de filtrado se aplicaron condiciones sobre el tamaño de los componentes obtenidos en la sub-etapa de segmentación, ya que otros métodos comunes como filtros Gaussianos causaban daños a la imagen que no permitían luego una correcta segmentación.
 
-\section{Resultados finales}
+\subsection{Etapa de extracción de características}
+En la etapa de extracción de características, el reto era conseguir buenas características que fueran invariantes a la rotación. Era necesario tener características invariantes a la rotación ya que es dificil que una persona invidente pueda tomar una imagen siempre con el mismo ángulo de rotación. En el capítulo \ref{chap:features} se exploraron diferentes conjuntos de características que podían resolver el problema con diferentes enfoques y se seleccionaron 3 explicando por que las otras características no eran buenas para el reconocimiento de caracteres bajo las condiciones deseadas. 
+
+Las características seleccionadas fueron los momentos invariantes de Hu, Flusser y los de Flusser para simetría a la rotación. El funcionamiento de cada uno de estos conjuntos de características y las razones matemáticas por las que podían dar un buen resultado para el problema del reconocimiento óptico de caracteres se exponen en el capítulo \ref{chap:features}.
+
+Los resultados de estos 3 conjuntos de características fueron en general buenos. Para el mejor método de clasificación el conjunto de características con el resultado mas bajo fue el de Hu con una precisión del 98.18\% para el reconocimiento de dígitos (Vea la tabla \ref{tb:exp3}). Teniendo en cuenta que la cantidad de símbolos en este experimento son 10 (Los dígitos del 0 al 9), un método de elección aleatoria tendría una respuesta correcta en un 10\% de los casos, el rendimiento de los momentos invariantes es en general muy bueno.
+
+De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el cunjunto de Hu con un porcentaje de presición del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo el resultado de los momentos de Flusser para objetos simétricos a la rotación obtuvo un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se valla a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (Que contiene 7461 instancias) el software no cometió ningún error. 
+
+\section{Resultados al ingresar el alfabeto}
+Aunque los objetivos iniciales consistían en trabajar solamente con dígitos numéricos, se tomo la decisión de ingresar los caracteres del alfabeto (Únicamente de letras mayúsculas), debido al buen resultado obtenido con los caracteres numéricos. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz semi-compartida se presenta en las tablas \ref{tb:alphaHuShared}, \ref{tb:alphaFlShared} y \ref{tb:alphaRotShared} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz independiente se presenta en las tablas \ref{tb:alphaHuIndep}, \ref{tb:alphaFlIndep} y \ref{tb:alphaRotIndep} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente.
+
+Las tablas que muestran los resultados del reconocimiento con los caracteres del alfabeto muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en terminos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en que consisten estos conceptos veamos el ejemplo del símbolo '0' en la tabla \ref{tb:alphaHuShared}. La tabla indica que el cero tiene 853 verdaderos positivos, 26099 verdaderos negativos, 7 falsos positivos y 106 falsos negativos. Esto quiere decir que 853 instancias que se debían reconocer como ceros efectivamente se reconocieron como ceros; 26099 instancias que no se debían reconocer como ceros, efectivamente no se reconocieron como ceros; 7 instancias que no se debían reconocer como ceros, se reconocieron como ceros; y 106 instancias que se debían reconocer como ceros no se reconocieron como ceros.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 853 & 26099 & 7 & 106 & 88.946823\% \\ 
+	1 & 956 & 26109 & 0 & 0 & 100.000000\% \\ 
+	2 & 981 & 26037 & 45 & 2 & 99.796539\% \\ 
+	3 & 967 & 26098 & 0 & 0 & 100.000000\% \\ 
+	4 & 1015 & 26050 & 0 & 0 & 100.000000\% \\ 
+	5 & 882 & 25931 & 129 & 123 & 87.761192\% \\ 
+	6 & 968 & 26068 & 0 & 29 & 97.091270\% \\ 
+	7 & 931 & 26134 & 0 & 0 & 100.000000\% \\ 
+	8 & 852 & 26064 & 0 & 149 & 85.114883\% \\ 
+	9 & 971 & 26049 & 0 & 45 & 95.570869\% \\ 
+	A & 496 & 26569 & 0 & 0 & 100.000000\% \\ 
+	B & 618 & 26318 & 0 & 129 & 82.730927\% \\ 
+	C & 510 & 26555 & 0 & 0 & 100.000000\% \\ 
+	D & 632 & 26378 & 0 & 55 & 91.994179\% \\ 
+	E & 786 & 26279 & 0 & 0 & 100.000000\% \\ 
+	F & 937 & 26128 & 0 & 0 & 100.000000\% \\ 
+	G & 636 & 26291 & 5 & 133 & 82.704811\% \\ 
+	H & 741 & 26108 & 126 & 90 & 89.169678\% \\ 
+	I & 1298 & 25756 & 0 & 11 & 99.159660\% \\ 
+	J & 886 & 26176 & 0 & 3 & 99.662544\% \\ 
+	K & 688 & 26370 & 5 & 2 & 99.710144\% \\ 
+	L & 903 & 26156 & 6 & 0 & 100.000000\% \\ 
+	M & 31 & 26725 & 0 & 309 & 9.117647\% \\ 
+	N & 474 & 26440 & 1 & 150 & 75.961540\% \\ 
+	O & 232 & 26711 & 0 & 122 & 65.536720\% \\ 
+	P & 786 & 26278 & 0 & 1 & 99.872932\% \\ 
+	Q & 411 & 26593 & 52 & 9 & 97.857140\% \\ 
+	R & 578 & 26484 & 0 & 3 & 99.483650\% \\ 
+	S & 406 & 26313 & 8 & 338 & 54.569893\% \\ 
+	T & 636 & 26429 & 0 & 0 & 100.000000\% \\ 
+	U & 707 & 26358 & 0 & 0 & 100.000000\% \\ 
+	V & 518 & 26543 & 2 & 2 & 99.615387\% \\ 
+	W & 2 & 26989 & 5 & 69 & 2.816901\% \\ 
+	X & 566 & 24931 & 1560 & 8 & 98.606270\% \\ 
+	Y & 614 & 26450 & 0 & 1 & 99.837395\% \\ 
+	Z & 645 & 26356 & 1 & 63 & 91.101692\% \\ 
+	\hline
+	Total & 25113 & N/A & \multicolumn{2}{|c|}{1952} & 92.7877\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con el alfabeto utilizando momentos de Hu (Matriz semi-compartida)}
+\label{tb:alphaHuShared}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 944 & 26099 & 7 & 15 & 98.435867\% \\ 
+	1 & 956 & 26106 & 3 & 0 & 100.000000\% \\ 
+	2 & 982 & 25883 & 199 & 1 & 99.898270\% \\ 
+	3 & 967 & 26098 & 0 & 0 & 100.000000\% \\ 
+	4 & 1014 & 26050 & 0 & 1 & 99.901482\% \\ 
+	5 & 996 & 25572 & 488 & 9 & 99.104477\% \\ 
+	6 & 991 & 26068 & 0 & 6 & 99.398193\% \\ 
+	7 & 931 & 26134 & 0 & 0 & 100.000000\% \\ 
+	8 & 932 & 26016 & 48 & 69 & 93.106895\% \\ 
+	9 & 987 & 26049 & 0 & 29 & 97.145668\% \\ 
+	A & 496 & 26569 & 0 & 0 & 100.000000\% \\ 
+	B & 661 & 26315 & 3 & 86 & 88.487282\% \\ 
+	C & 510 & 26555 & 0 & 0 & 100.000000\% \\ 
+	D & 614 & 26378 & 0 & 73 & 89.374092\% \\ 
+	E & 786 & 26279 & 0 & 0 & 100.000000\% \\ 
+	F & 936 & 26128 & 0 & 1 & 99.893280\% \\ 
+	G & 769 & 26227 & 69 & 0 & 100.000000\% \\ 
+	H & 765 & 26210 & 24 & 66 & 92.057762\% \\ 
+	I & 1302 & 25717 & 39 & 7 & 99.465240\% \\ 
+	J & 889 & 26176 & 0 & 0 & 100.000000\% \\ 
+	K & 688 & 26374 & 1 & 2 & 99.710144\% \\ 
+	L & 903 & 26157 & 5 & 0 & 100.000000\% \\ 
+	M & 320 & 26725 & 0 & 20 & 94.117645\% \\ 
+	N & 234 & 26441 & 0 & 390 & 37.500000\% \\ 
+	O & 347 & 26711 & 0 & 7 & 98.022598\% \\ 
+	P & 786 & 26278 & 0 & 1 & 99.872932\% \\ 
+	Q & 419 & 26633 & 12 & 1 & 99.761902\% \\ 
+	R & 581 & 26484 & 0 & 0 & 100.000000\% \\ 
+	S & 705 & 26317 & 4 & 39 & 94.758064\% \\ 
+	T & 636 & 26424 & 5 & 0 & 100.000000\% \\ 
+	U & 707 & 26358 & 0 & 0 & 100.000000\% \\ 
+	V & 518 & 26541 & 4 & 2 & 99.615387\% \\ 
+	W & 16 & 26994 & 0 & 55 & 22.535212\% \\ 
+	X & 562 & 26490 & 1 & 12 & 97.909409\% \\ 
+	Y & 596 & 26449 & 1 & 19 & 96.910568\% \\ 
+	Z & 697 & 26348 & 9 & 11 & 98.446327\% \\ 
+	\hline
+	Total & 26143 & N/A & \multicolumn{2}{|c|}{922} & 96.5934\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con el alfabeto utilizando momentos de Flusser (Matriz semi-compartida)}
+\label{tb:alphaFlShared}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 959 & 26106 & 0 & 0 & 100.000000\% \\ 
+	1 & 956 & 26109 & 0 & 0 & 100.000000\% \\ 
+	2 & 982 & 26082 & 0 & 1 & 99.898270\% \\ 
+	3 & 967 & 26098 & 0 & 0 & 100.000000\% \\ 
+	4 & 1015 & 26050 & 0 & 0 & 100.000000\% \\ 
+	5 & 1005 & 26060 & 0 & 0 & 100.000000\% \\ 
+	6 & 997 & 26068 & 0 & 0 & 100.000000\% \\ 
+	7 & 931 & 26134 & 0 & 0 & 100.000000\% \\ 
+	8 & 1001 & 26064 & 0 & 0 & 100.000000\% \\ 
+	9 & 1016 & 26049 & 0 & 0 & 100.000000\% \\ 
+	A & 463 & 26569 & 0 & 33 & 93.346771\% \\ 
+	B & 747 & 26318 & 0 & 0 & 100.000000\% \\ 
+	C & 510 & 26555 & 0 & 0 & 100.000000\% \\ 
+	D & 655 & 26378 & 0 & 32 & 95.342064\% \\ 
+	E & 786 & 26262 & 17 & 0 & 100.000000\% \\ 
+	F & 937 & 26128 & 0 & 0 & 100.000000\% \\ 
+	G & 758 & 26296 & 0 & 11 & 98.569572\% \\ 
+	H & 831 & 26179 & 55 & 0 & 100.000000\% \\ 
+	I & 1309 & 25756 & 0 & 0 & 100.000000\% \\ 
+	J & 889 & 26176 & 0 & 0 & 100.000000\% \\ 
+	K & 688 & 26342 & 33 & 2 & 99.710144\% \\ 
+	L & 903 & 26161 & 1 & 0 & 100.000000\% \\ 
+	M & 319 & 26725 & 0 & 21 & 93.823532\% \\ 
+	N & 579 & 26441 & 0 & 45 & 92.788460\% \\ 
+	O & 354 & 26711 & 0 & 0 & 100.000000\% \\ 
+	P & 786 & 26278 & 0 & 1 & 99.872932\% \\ 
+	Q & 419 & 26602 & 43 & 1 & 99.761902\% \\ 
+	R & 558 & 26484 & 0 & 23 & 96.041306\% \\ 
+	S & 743 & 26321 & 0 & 1 & 99.865593\% \\ 
+	T & 636 & 26429 & 0 & 0 & 100.000000\% \\ 
+	U & 707 & 26358 & 0 & 0 & 100.000000\% \\ 
+	V & 518 & 26512 & 33 & 2 & 99.615387\% \\ 
+	W & 53 & 26989 & 5 & 18 & 74.647888\% \\ 
+	X & 574 & 26484 & 7 & 0 & 100.000000\% \\ 
+	Y & 612 & 26450 & 0 & 3 & 99.512192\% \\ 
+	Z & 708 & 26357 & 0 & 0 & 100.000000\% \\ 
+	\hline
+	Total & 26871 & N/A & \multicolumn{2}{|c|}{194} & 99.283203\% \\
+	\hline
+\end{tabular}
+\caption{}
+\label{tb:alphaRotShared}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 945 & 25963 & 143 & 14 & 98.540146\% \\ 
+	1 & 956 & 26109 & 0 & 0 & 100.000000\% \\ 
+	2 & 885 & 26081 & 1 & 98 & 90.030518\% \\ 
+	3 & 967 & 26093 & 5 & 0 & 100.000000\% \\ 
+	4 & 1013 & 26050 & 0 & 2 & 99.802956\% \\ 
+	5 & 297 & 25976 & 84 & 708 & 29.552238\% \\ 
+	6 & 934 & 26064 & 4 & 63 & 93.681046\% \\ 
+	7 & 931 & 26134 & 0 & 0 & 100.000000\% \\ 
+	8 & 948 & 25431 & 633 & 53 & 94.705292\% \\ 
+	9 & 998 & 25892 & 157 & 18 & 98.228348\% \\ 
+	A & 496 & 26569 & 0 & 0 & 100.000000\% \\ 
+	B & 735 & 26121 & 197 & 12 & 98.393578\% \\ 
+	C & 469 & 26555 & 0 & 41 & 91.960785\% \\ 
+	D & 679 & 26259 & 119 & 8 & 98.835518\% \\ 
+	E & 786 & 25631 & 648 & 0 & 100.000000\% \\ 
+	F & 937 & 26128 & 0 & 0 & 100.000000\% \\ 
+	G & 625 & 25832 & 464 & 144 & 81.274384\% \\ 
+	H & 14 & 26234 & 0 & 817 & 1.684717\% \\ 
+	I & 1308 & 25756 & 0 & 1 & 99.923607\% \\ 
+	J & 889 & 26176 & 0 & 0 & 100.000000\% \\ 
+	K & 76 & 26373 & 2 & 614 & 11.014493\% \\ 
+	L & 903 & 26159 & 3 & 0 & 100.000000\% \\ 
+	M & 337 & 26709 & 16 & 3 & 99.117645\% \\ 
+	N & 624 & 25943 & 498 & 0 & 100.000000\% \\ 
+	O & 127 & 26215 & 496 & 227 & 35.875706\% \\ 
+	P & 786 & 26278 & 0 & 1 & 99.872932\% \\ 
+	Q & 0 & 26645 & 0 & 420 & 0.000000\% \\ 
+	R & 581 & 26484 & 0 & 0 & 100.000000\% \\ 
+	S & 742 & 26027 & 294 & 2 & 99.731186\% \\ 
+	T & 636 & 26429 & 0 & 0 & 100.000000\% \\ 
+	U & 707 & 26358 & 0 & 0 & 100.000000\% \\ 
+	V & 518 & 26543 & 2 & 2 & 99.615387\% \\ 
+	W & 1 & 26991 & 3 & 70 & 1.408451\% \\ 
+	X & 0 & 26490 & 1 & 574 & 0.000000\% \\ 
+	Y & 614 & 26450 & 0 & 1 & 99.837395\% \\ 
+	Z & 699 & 26225 & 132 & 9 & 98.728813\% \\ 
+	\hline
+	Total & 23163 & N/A & \multicolumn{2}{|c|}{3902} & 85.582855\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con el alfabeto utilizando momentos de Hu (Matriz independiente)}
+\label{tb:alphaHuIndep}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 397 & 25042 & 1064 & 562 & 41.397289\% \\ 
+	1 & 956 & 26105 & 4 & 0 & 100.000000\% \\ 
+	2 & 881 & 25992 & 90 & 102 & 89.623604\% \\ 
+	3 & 967 & 26098 & 0 & 0 & 100.000000\% \\ 
+	4 & 975 & 26049 & 1 & 40 & 96.059113\% \\ 
+	5 & 440 & 25594 & 466 & 565 & 43.781094\% \\ 
+	6 & 912 & 26068 & 0 & 85 & 91.474426\% \\ 
+	7 & 930 & 26134 & 0 & 1 & 99.892586\% \\ 
+	8 & 712 & 25630 & 434 & 289 & 71.128868\% \\ 
+	9 & 989 & 25994 & 55 & 27 & 97.342522\% \\ 
+	A & 496 & 26567 & 2 & 0 & 100.000000\% \\ 
+	B & 744 & 25863 & 455 & 3 & 99.598396\% \\ 
+	C & 510 & 26555 & 0 & 0 & 100.000000\% \\ 
+	D & 220 & 26149 & 229 & 467 & 32.023289\% \\ 
+	E & 786 & 26279 & 0 & 0 & 100.000000\% \\ 
+	F & 937 & 25800 & 328 & 0 & 100.000000\% \\ 
+	G & 533 & 25936 & 360 & 236 & 69.310791\% \\ 
+	H & 269 & 26234 & 0 & 562 & 32.370636\% \\ 
+	I & 1225 & 25717 & 39 & 84 & 93.582886\% \\ 
+	J & 889 & 26176 & 0 & 0 & 100.000000\% \\ 
+	K & 360 & 26375 & 0 & 330 & 52.173912\% \\ 
+	L & 903 & 26160 & 2 & 0 & 100.000000\% \\ 
+	M & 338 & 26708 & 17 & 2 & 99.411766\% \\ 
+	N & 624 & 25866 & 575 & 0 & 100.000000\% \\ 
+	O & 354 & 26639 & 72 & 0 & 100.000000\% \\ 
+	P & 786 & 26278 & 0 & 1 & 99.872932\% \\ 
+	Q & 58 & 26645 & 0 & 362 & 13.809524\% \\ 
+	R & 581 & 26483 & 1 & 0 & 100.000000\% \\ 
+	S & 735 & 25735 & 586 & 9 & 98.790321\% \\ 
+	T & 636 & 26428 & 1 & 0 & 100.000000\% \\ 
+	U & 707 & 26358 & 0 & 0 & 100.000000\% \\ 
+	V & 516 & 26544 & 1 & 4 & 99.230766\% \\ 
+	W & 0 & 26994 & 0 & 71 & 0.000000\% \\ 
+	X & 0 & 26491 & 0 & 574 & 0.000000\% \\ 
+	Y & 152 & 26450 & 0 & 463 & 24.715446\% \\ 
+	Z & 544 & 26136 & 221 & 164 & 76.836159\% \\ 
+	\hline
+	Total & 22062 & N/A & \multicolumn{2}{|c|}{5003} & 81.514870\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con el alfabeto utilizando momentos de flusser (Matriz independiente)}
+\label{tb:alphaFlIndep}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 959 & 26106 & 0 & 0 & 100.000000\% \\ 
+	1 & 956 & 26109 & 0 & 0 & 100.000000\% \\ 
+	2 & 981 & 26082 & 0 & 2 & 99.796539\% \\ 
+	3 & 959 & 26098 & 0 & 8 & 99.172699\% \\ 
+	4 & 1015 & 26050 & 0 & 0 & 100.000000\% \\ 
+	5 & 1005 & 26060 & 0 & 0 & 100.000000\% \\ 
+	6 & 987 & 26062 & 6 & 10 & 98.996994\% \\ 
+	7 & 931 & 26110 & 24 & 0 & 100.000000\% \\ 
+	8 & 1001 & 26055 & 9 & 0 & 100.000000\% \\ 
+	9 & 1014 & 26049 & 0 & 2 & 99.803146\% \\ 
+	A & 496 & 25435 & 1134 & 0 & 100.000000\% \\ 
+	B & 747 & 26259 & 59 & 0 & 100.000000\% \\ 
+	C & 0 & 26555 & 0 & 510 & 0.000000\% \\ 
+	D & 684 & 25924 & 454 & 3 & 99.563316\% \\ 
+	E & 786 & 25556 & 723 & 0 & 100.000000\% \\ 
+	F & 937 & 26128 & 0 & 0 & 100.000000\% \\ 
+	G & 769 & 25874 & 422 & 0 & 100.000000\% \\ 
+	H & 36 & 26234 & 0 & 795 & 4.332130\% \\ 
+	I & 1309 & 25756 & 0 & 0 & 100.000000\% \\ 
+	J & 889 & 26176 & 0 & 0 & 100.000000\% \\ 
+	K & 0 & 26373 & 2 & 690 & 0.000000\% \\ 
+	L & 877 & 26161 & 1 & 26 & 97.120712\% \\ 
+	M & 338 & 26695 & 30 & 2 & 99.411766\% \\ 
+	N & 624 & 25685 & 756 & 0 & 100.000000\% \\ 
+	O & 354 & 26711 & 0 & 0 & 100.000000\% \\ 
+	P & 786 & 26278 & 0 & 1 & 99.872932\% \\ 
+	Q & 0 & 26645 & 0 & 420 & 0.000000\% \\ 
+	R & 581 & 26479 & 5 & 0 & 100.000000\% \\ 
+	S & 743 & 26319 & 2 & 1 & 99.865593\% \\ 
+	T & 636 & 25811 & 618 & 0 & 100.000000\% \\ 
+	U & 703 & 26358 & 0 & 4 & 99.434227\% \\ 
+	V & 0 & 26544 & 1 & 520 & 0.000000\% \\ 
+	W & 0 & 26990 & 4 & 71 & 0.000000\% \\ 
+	X & 0 & 26487 & 4 & 574 & 0.000000\% \\ 
+	Y & 0 & 26450 & 0 & 615 & 0.000000\% \\ 
+	Z & 708 & 26357 & 0 & 0 & 100.000000\% \\ 
+	\hline
+	Total & 22811 & N/A & \multicolumn{2}{|c|}{4254} & 84.282288\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con el alfabeto utilizando momentos de flusser (Matriz independiente)}
+\label{tb:alphaRotIndep}
+\end{table}
 
 \section{Proyectos que se pueden derivar de esta investigación}
+
 
 \chapter{GNU Free Documentation License}
 
