@@ -17,7 +17,7 @@
 
 % idioma
 \usepackage[utf8]{inputenc}
-\usepackage[spaniEn otra investigaciónsh]{babel}
+\usepackage[spanish]{babel}
 
 %tablas
 \usepackage{booktabs}
@@ -695,6 +695,7 @@ Una propiedad interesante de los momentos complejos, que se deriva de la ecuaci�
 Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
 \section{Primeros resultados}
+\label{sect:exp}
 
 Para el primer experimento se implementó un método de clasificación estadístico multivariable y se implementaron las características de Hu y de Flusser como se indica en el capítulo de diseño, implementación y pruebas del aplicativo. Después de haber corregido los errores encontrados en la etapa de pruebas se obtuvieron los resultados que se muestran en la tabla \ref{tb:exp1}.
 
@@ -1057,6 +1058,20 @@ Las características seleccionadas fueron los momentos invariantes de Hu, Flusse
 Los resultados de estos 3 conjuntos de características fueron en general buenos. Para el mejor método de clasificación el conjunto de características con el resultado mas bajo fue el de Hu con una precisión del 98.18\% para el reconocimiento de dígitos (Vea la tabla \ref{tb:exp3}). Teniendo en cuenta que la cantidad de símbolos en este experimento son 10 (Los dígitos del 0 al 9), un método de elección aleatoria tendría una respuesta correcta en un 10\% de los casos, el rendimiento de los momentos invariantes es en general muy bueno.
 
 De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el cunjunto de Hu con un porcentaje de presición del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo el resultado de los momentos de Flusser para objetos simétricos a la rotación obtuvo un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se valla a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (Que contiene 7461 instancias) el software no cometió ningún error. 
+
+Sin embargo se pueden obtener conclusiones estadísticas, supongamos que hay una población infinita de posibles instancias de los dígitos, y tomamos una muestra de $n$ instancias. De cada instancia se dice que se clasificó correctamente con una probabilidad $p$ y que se cometió un error con una probabilidad $(1-p)$, esto corresponde perfectamente con una distribución de probabilidad binomial. Deseamos calcular cual es la probabilidad $a$ de que $p>p_i$, esto es:
+\begin{align}
+	p_i^n &= (1-a) \notag \\
+	a &= 1-p_i^n \label{eq:binomProb}
+\end{align}
+Dado que en el experimento realizado $n=7461$, la probabilidad de que la precisión del sistema para el reconocimiento de números en las condiciones especificadas sea mayor a 99,9\% se calcula usando la ecuación \ref{eq:binomProb} y es del 99,94\%.
+
+\subsection{Etapa de clasificación}
+Para la etapa de clasificación se exploraron diferentes algoritmos que se explican brevemente en el capítulo \ref{chap:ml}. Los algoritmos de baja potencia de clasificación como los árboles binarios de decisión no son buenos para el problema OCR, para el problema OCR usualmente se usan los algoritmos mas potentes como las redes neuronales, que no exigen separabilidad lineal. Sin embrago se tomo la decisión de no usar redes neuronales porque son difíciles de depurar, entonces en caso que el resultado del sistema no sea bueno, no se puede detectar fácilmente que parte del sistema no funciona correctamente. Por otro lado, las características utilizadas en este diseño de sistema son buenas y teóricamente generaban vectores separables linealmente para cada clase.
+
+Por esta razón se consideró utilizar el método estadístico de distribución normal multivariable explicado en la sección \ref{sect:multivar}, y dado que se sabía que las características podían entregar vectores cercanos a cero, se consideró una variación de este método en la que la matriz de covarianza se compartía en el coeficiente pero no en el exponente, y por eso se le dió el nombre de distribución multivariable con covarianza semi-compartida. Los resultados con cada uno de los métodos se pueden ver en las tablas \ref{tb:exp1}, \ref{tb:exp2} y \ref{tb:exp3}.
+
+La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escojidas porque estas tienen una varianza pequeña, por tanto el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (Ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
 
 \section{Resultados al ingresar el alfabeto}
 Aunque los objetivos iniciales consistían en trabajar solamente con dígitos numéricos, se tomo la decisión de ingresar los caracteres del alfabeto (Únicamente de letras mayúsculas), debido al buen resultado obtenido con los caracteres numéricos. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz semi-compartida se presenta en las tablas \ref{tb:alphaHuShared}, \ref{tb:alphaFlShared} y \ref{tb:alphaRotShared} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz independiente se presenta en las tablas \ref{tb:alphaHuIndep}, \ref{tb:alphaFlIndep} y \ref{tb:alphaRotIndep} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente.
