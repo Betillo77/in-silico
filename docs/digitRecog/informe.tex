@@ -222,7 +222,7 @@ Para realizar el entrenamiento se deben tomar muchas imágenes de un solo tipo, 
 
 \section{Introducción}
 
-Los métodos de aprendizaje de máquinas, sean de clasificación o de regresión, tienen en común que buscan extraer un modelo que explique un cierto comportamiento de una muestra tomada, para luego generalizar y estimar este comportamiento a cualquier otro elemento de una población. En el caso específico de la clasificación, lo que se busca es que este modelo permita asignar una instancia de la población a alguna de las clases\footnote{ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004}. En otras palabras, lo que se busca en la clasificación es aprender a clasificar en base a ejemplos.
+Los métodos de aprendizaje de máquinas, sean de clasificación o de regresión, tienen en común que buscan construir un sistema que modele un cierto comportamiento de una muestra tomada y que luego permita generalizar, es decir, estimar como va a variar este comportamiento en cualquier otro elemento de la misma población. En el caso específico de la clasificación, lo que se busca es que este sistema permita asignar una instancia de la población a una de varias clases\footnote{ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004}. En otras palabras, lo que se busca en la clasificación es aprender a clasificar a partir de ejemplos.
 
 	\begin{figure}[htb]
 	\begin{center}
@@ -233,25 +233,25 @@ Los métodos de aprendizaje de máquinas, sean de clasificación o de regresión
 	\label{fig:classif1}
 	\end{figure}
 
-En la figura \ref{fig:classif1} se ve el esquema general de un algoritmo clasificador. Donde lo que se encuentra en la caja ``clasificador'' es el modelo que se va a usar para clasificar. Entonces uno de los problemas que hay que resolver antes de proceder a la clasificación es encontrar un modelo que pueda aproximar lo mejor posible la realidad del problema que se quiere atacar. Varios autores han especificado que hasta el momento no se a encontrado un modelo que se ajuste de la mejor manera a todos los problemas, a esto le han llamado {\it ``no free lunch theorem''}; es español esto traduciría ``teorema no hay almuezo gratis''. En algo si concuerdan la mayoría de investigadores, y es en que si varios modelos funcionan bien se debe escojer el mas sencillo de ellos. Esta observación se desprende del principio filosofico conocido como la navaja de Ockham, propuesto por Guillermo de Ockham (1280-1349), y segun el cual ``cuando dos teorías en igualdad de condiciones tienen las mismas consecuencias, la teoría más simple tiene más probabilidades de ser correcta que la compleja'' \footnote{Robert Audi, ed. Ockham's razor. The Cambridge Dictionary of Philosophy (2nd Edition). Cambridge University Press}. Este principio se aplica en muchos campos, y para el caso del aprendizaje de máquinas tiene especial sentido, ya que usualmente los modelos más sencillos son más fáciles de entrenar, de comprender y sobre todo de depurar.
+En la figura \ref{fig:classif1} se puede apreciar el esquema general de un algoritmo clasificador. Lo que se encuentra en la caja ``clasificador'' es el modelo que va a ser utilizado para clasificar. Uno de los problemas que hay que resolver antes de proceder a la clasificación es encontrar un modelo que pueda aproximar lo mejor posible la realidad del problema que se desea solucionar. Varios autores han especificado que hasta el momento no se ha encontrado un modelo que se ajuste de la mejor manera a todos los problemas, a esto le han llamado {\it ``no free lunch theorem''}, es español esto traduciría ``teorema no hay almuezo gratis''. En algo si concuerdan la mayoría de investigadores, y es en que si varios modelos funcionan bien se debe escojer el mas sencillo de ellos. Esta observación se desprende del principio filosofico conocido como la navaja de Ockham, propuesto por Guillermo de Ockham (1280-1349), y segun el cual ``cuando dos teorías en igualdad de condiciones tienen las mismas consecuencias, la teoría más simple tiene más probabilidades de ser correcta que la compleja'' \footnote{Robert Audi, ed. Ockham's razor. The Cambridge Dictionary of Philosophy (2nd Edition). Cambridge University Press}. Este principio se aplica en muchos campos, y para el caso del aprendizaje de máquinas tiene especial sentido, ya que usualmente los modelos más sencillos son más fáciles de entrenar, de comprender y sobre todo de depurar.
 
 \subsection{El aprendizaje de máquinas}
 \label{sect:machineLearning}
 
-Con los avances en las tecnologías de computo, la sociedad tiene la posibilidad de almacenar grandes cantidades de información. Por ejemplo las cadenas de supermercado poseen grandes volumenes de información de sus ventas y las entidades financieras poseen la información crediticia de sus clientes. Para los supermercados es muy útil saber que personas compran ciertos tipos de productos y con que periodicidad, y para las entidades financieras es útil saber que personas son de mayor y menor riesgo para darle un crédito.\newline
+Con los avances en las tecnologías de computo la sociedad tiene la posibilidad de almacenar y procesar grandes cantidades de información. Por ejemplo, las cadenas de supermercado poseen grandes volumenes de información de sus ventas, y las entidades financieras poseen la información crediticia de todos sus clientes. Para los supermercados es muy útil saber que personas compran ciertos tipos de productos y con que periodicidad, y para las entidades financieras es útil saber que personas son de mayor y menor riesgo crediticio.\newline
 
 Si, por ejemplo, supieramos con exactitud como establecer si una persona es de riesgo o no para una central de crédito dados sus datos financieros, no necesitaríamos utilizar
-aprendizaje de máquinas; podríamos simplemente escribir las reglas que determinan si una persona es de riesgo o no en el código. Pero dado que muchas veces no se conocen estas reglas, lo que se busca en el aprendizaje de máquinas es extraer esta información de los datos.
+aprendizaje de máquinas; podríamos simplemente escribir las reglas que determinan si una persona es de riesgo o no, y aplicarlas. Pero dado que muchas veces no es posible establecer estas reglas, lo que se busca al realizar aprendizaje de máquinas es extraer esta información de los datos.
 
-Alpaydin indica que las personas usualmente sabemos que existen procesos que explican los datos que observamos. Por ejemplo, en el caso del supermercado, el comportamiento de los clientes no es completamente aleatorio; por tanto, se espera encontrar algunos patrones en los datos. Aunque este autor indica que muchas veces no es posible identificar el modelo completamente, usualmente se puede construir una buena aproximación. Este es el nicho de trabajo del aprendizaje de máquinas, pues esta aproximación puede ser útil para encontrar patrones en el problema estudiado o para hacer estimaciones de datos futuros asumiendo que en el futuro los datos van a comportarse de una manera similar a como se comportaron en el pasado.
+Alpaydin indica que las personas usualmente sabemos que existen procesos que explican los datos que observamos. Por ejemplo, en el caso del supermercado, el comportamiento de los clientes no es completamente aleatorio; por tanto, se espera encontrar algunos patrones recurrentes en los datos. Aunque este autor indica que muchas veces no es posible identificar el modelo completamente, usualmente se puede construir una buena aproximación. Este es el nicho de trabajo del aprendizaje de máquinas, pues esta aproximación puede ser útil para encontrar patrones en el problema estudiado o para hacer estimaciones de datos futuros, asumiendo que en el futuro los datos van a comportarse de una manera similar a como se comportaron en el pasado.
 
 \section{Algunos algoritmos de clasificación}
 
-Como se indicó en la sección anterior, no hay ningun algoritmo que sea la mejor elección para todo tipo de problemas. En esta sección se pretende presentar algunos de los algoritmos o modelos de aprendizaje de máquinas sin ahondar en cada uno de ellos, solo se pretende exponer brevemente de que se tratan y cuales son sus ventajas y desventajas.
+Como se indicó en la sección anterior, no hay ningun algoritmo que sea la mejor elección para todo tipo de problemas. En esta sección se pretende presentar algunos de los algoritmos o modelos de aprendizaje de máquinas, sin ahondar en cada uno de ellos, simplemente expondra brevemente de que se tratan y cuales son sus ventajas y desventajas.
 
 \subsection{Árboles de decisión}
 
-Un árbol de decisión es un modelo utilizado principalmente para clasificación. Como su nombre lo dice, el modelo sigue una estructura de árbol, donde los nodos no terminales son condiciones sobre las variables de entrada y los nodos terminales, o nodos hoja, son las clases.
+Un árbol de decisión es un modelo utilizado principalmente para clasificación. Como su nombre lo indica el modelo sigue una estructura de árbol, donde los nodos no terminales son condiciones sobre las variables de entrada y los nodos terminales, o nodos hoja, son las clases.
 
 	\begin{figure}[htb]
 	\begin{center}
@@ -262,7 +262,7 @@ Un árbol de decisión es un modelo utilizado principalmente para clasificación
 	\label{fig:decisionTree}
 	\end{figure}
 
-En la figura \ref{fig:decisionTree}, se puede ver un ejemplo de un árbol de decisión \footnote{Tomado de ``http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-spring-2005/'', 12 de Marzo de 2011}. Se puede observar como dependiendo del valor de las variables en cada nodo no terminal se escoje un camino diferente, realizando así un proceso de clasificación. En ese ejemplo las clases son ``caminar'' y ``conducir''. Es posible examinar el proceso de desición que se utilizo para llegar a estas variables. Naturalmente, existen procesos automáticos para generar árboles como el del ejemplo a partir de un conjunto de datos de entrenamiento.
+En la figura \ref{fig:decisionTree}, se muestra un ejemplo de un árbol de decisión\footnote{Tomado de ``http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-spring-2005/'', 12 de Marzo de 2011}. Se puede observar que dependiendo del valor de las variables en cada nodo no terminal se escoje un camino diferente, realizando así un proceso de clasificación por etapas. En ese ejemplo las clases son ``caminar'' y ``conducir''. Es posible examinar el proceso de desición utilizado para llegar a estas variables. Naturalmente, existen procesos automáticos para generar árboles como el del ejemplo a partir de un conjunto de datos de entrenamiento.
 
 De los árboles de decisión se puede concluir:
 
@@ -284,7 +284,7 @@ De los árboles de decisión se puede concluir:
 
 \subsection{Métodos estadísticos}
 
-La estadística es uno de los métodos mas antiguos para inferir el comportamiento de una población a través de una muestra, y sin embargo todavía esta vigente. Se profundizará en este tema en las secciones posteriores, así que por ahora solo se mencionan sus ventajas y desventajas.
+La estadística es uno de los métodos mas antiguos para inferir el comportamiento de una población a través de una muestra y, sin embargo, todavía esta vigente. Se profundizará en este tema en las secciones posteriores, así que por ahora solo se mencionan sus ventajas y desventajas.
 
 	\begin{itemize}
 
