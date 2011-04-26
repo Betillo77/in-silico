@@ -488,7 +488,7 @@ Cuando la matriz de covarianza es igual a la matriz identidad la distancia Mahal
 
 \section{Introducción}
 
-Como se explico en la sección \ref{sect:machineLearning}, para hacer aprendizaje de maquina se necesita primero obtener unas caracteristicas que permitan diferenciar las distintas clases. En el caso del reconocimiento optico de caracteres se requieren caracteristicas que permitan diferenciar por ejemplo el numero '5' del numero '8'. Para obtener esas caracteristicas se requieren realizar algunas etapas de procesamiento que detecten donde estan los caracteres y que forma tienen. En las siguientes secciones se describiran las etapas de procesamiento que se realizaron en este proyecto.
+Como se explico en la sección \ref{sect:machineLearning}, para hacer aprendizaje de maquina es necesario primero obtener unas caracteristicas que permitan diferenciar las distintas clases. En el caso del reconocimiento optico de caracteres se requieren caracteristicas que permitan diferenciar, por ejemplo, el numero '5' del numero '8'. Para obtener estas caracteristicas se requieren realizar algunas etapas de procesamiento que detecten donde estan los caracteres y que forma tienen. En las siguientes secciones se describiran las etapas de procesamiento que se realizaron en este proyecto.
 
 \section{Escala de grises}
 
@@ -500,12 +500,12 @@ Antes de computar las caracteristicas es necesario hacer un preprocesamiento. Pr
 
 Estos pesos se utilizan en la libreria de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
 
-Haciendo uso de la ecuación \eqref{bwtocv} se escribió un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
+Haciendo uso de la ecuación \eqref{bwtocv} se implemento un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
 
 \section{Binarización}
 \label{sect:binarization}
 
-Una vez obtenida la imagen escala de grises se procedió a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es útil para el reconocimiento de caracteres debido a que las letras y los dígitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imágenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor del pixel como:
+Una vez obtenida la imagen en escala de grises se procedió a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es útil para el reconocimiento de caracteres debido a que las letras y los dígitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imágenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor de cada pixel como:
 
 \begin{equation}\label{binEq}
 	I_2(x,y) = \left\{ \begin{array}{ll}
@@ -514,17 +514,15 @@ Una vez obtenida la imagen escala de grises se procedió a hacer una binarizaci�
 	\end{array} \right. 
 \end{equation}
 
-Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usualmente, la diferencia entre los distintos metodos de binarización se encuentra en como elige cada uno el umbral $T(x,y)$.
+Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usualmente, la diferencia entre los distintos metodos de binarización se encuentra en como elige cada uno el valor umbral $T(x,y)$.
 
-Cuando las imágenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que los escaners logran una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es tomada por una cámara digital, en condiciones de iluminación no tan constantes, se eligió un método de binarización local adaptativo. En este metodo $T(x,y)$ puede ser distinto para distintos pixeles, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. Uno de los metodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
+Cuando las imágenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que en una imagen escaneada se logra una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es adquirida utilizando una cámara digital, en condiciones de iluminación no tan constantes, se decidio eligir un método de binarización local adaptativo. En un metodo de este tipo $T(x,y)$ puede ser distinto para cada pixel, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. Uno de los metodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
 
 \begin{equation}\label{rSauvola}
 	T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
 \end{equation}
 
 Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$\footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapixeles, incluso con valores relativamente pequeños de $A$.
-
-%poner resultado obtenido por nuestro programa (Original, Binarizado)
 
 \subsection{Optimización al algoritmo de binarización}
 
@@ -534,7 +532,7 @@ Dada la complejidad del algoritmo estandar de binarización, se hizo una investi
 	I(x, y) = \sum_{i=0}^{x}\sum_{j=0}^{y}Im(i, j)
 \end{equation}
 
-Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado que es posible obtener la imagen integral de una imagen en tiempo $O(N \times M)$, los autores indicaron que es posible calcular el valor de la media $m$ del area $A^{2}$ alrededor del pixel $(x, y)$ en un tiempo constante de la siguiente manera:
+Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado que es posible obtener la imagen integral de una imagen en tiempo $O(N \times M)$, los autores indicaron que es posible calcular el valor de la media $m$ del area $A^{2}$ alrededor del pixel $(x, y)$ en un tiempo constante de la siguiente forma:
 
 \begin{align*}
   m(x, y) =& (I(x + \frac{A}{2}, y + \frac{A}{2}) + I(x - \frac{A}{2}, y - \frac{A}{2}) \\
@@ -550,71 +548,44 @@ Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado qu
 \label{fig:integral}
 \end{figure}
 
-En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La formula para hallar la desviación estandar no es presentada en el articulo de los creadores de Ocropus, por cuanto solo se menciona que se puede calcular utilizando la imagen integral de los pixeles al cuadrado. Por esta razón, para hacer la implementación se dedujo matematicamente la formula de la siguiente manera:
+En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La formula para hallar la desviación estandar no es presentada en el articulo de los creadores de Ocropus, y solo se menciona que se puede calcular utilizando la imagen integral de los pixeles al cuadrado. Con esta pista es facil deducir matematicamente la formula para calcular la desviación estandar:
 
 %% Poner la deduccion aqui
 
 El resultado obtenido es consistente con la formula que se utilizo en la implementación de dicho algoritmo en el proyecto Ocropus\footnote{http://code.google.com/p/ocropus}.
 
-Posteriormente se implemento el algoritmo. Ya que es una de las partes de mayor complejidad algoritmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV\footnote{poner referencia}. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un unico arreglo el cual se accedio a traves de un puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración unicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rapido que la función utilizada en el proyecto Ocropus, como puede apreciarse en la siguiente tabla %% \ref{ponerTabla}.
+Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor complejidad algoritmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV\footnote{poner referencia}. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un unico arreglo, el cual se accedio a traves de un unico puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración unicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rapido que la función utilizada en el proyecto Ocropus, ya que se prefirio darle mayor importancia a la eficiencia, pues en un futuro esta función podria utilizarse para binarizar imagenes en un dispositivo movil con una capacidad de procesamiento limitada.
 
-	\begin{table}
-	\begin{center}
-	\begin{tabular}{|c|c|c|c|c|}
-		\hline
-		* & \multicolumn{2}{|c|}{Semi-shared covariance matrix} &
-			\multicolumn{2}{|c|}{Independent covariance matrix} \\
-		\hline
-		Character & Hu & Flusser & Hu & Flusser \\
-		\hline
-		0 & 99.34\% & 99.21\% & 99.86\% & 100.00\% \\
-		1 &	100.00\% & 100.00\% & 100.00\% & 100.00\% \\
-		2 &	100.00\% & 100.00\% & 91.21\% & 93.91\% \\
-		3 &	100.00\% & 100.00\% & 100.00\% & 100.00\% \\
-		4 &	100.00\% & 100.00\%	& 100.00\% & 96.41\% \\		
-		5 & 97.97\% & 99.32\% & 26.95\% & 38.95\% \\ 
-		6 & 91.65\% & 86.96\% & 93.61\% & 86.83\% \\
-		7 & 100.00\% & 100.00\% & 100.00\% & 99.87\% \\
-		8 & 85.53\% & 92.97\% & 96.76\% & 99.44\% \\
-		9 &	89.52\% & 81.06\% & 65.40\% & 65.03\% \\
-		\hline
-		Total & 96.38\% & 95.83\% & 87.21\% & 87.84\% \\
-		\hline
-	\end{tabular}
-	\end{center}
-	\caption{Precisión del algoritmo clasificador en el primer experimento}	
-	\label{tb:sauvolaFast}
-	\end{table}
+%poner imagenes mostrando resultado obtenido por nuestro programa (Original, Binarizado)
+
 
 \section{Componentes conectados}
 \label{sect:conComponents}
 
-Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los pixeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el metodo de sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un pixel $(x,y)$ pertence al fondo de la imagen si $I_2(x,y)=0$, y pertenece a algun caracter si $I_2(x,y)=255$. Si se establece que un pixel $(x',y')$ es vecino de un pixel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un cojunto de pixeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviendose unicamente a traves de pixeles vecinos de $C$. La idea de los componentes conectados fue utilizada por O'Gorman \cite{docstrum93} para realizar el analisis del documento, una de las etapas del reconocimiento optico de caracteres.
+Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los pixeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el metodo de sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un pixel $(x,y)$ pertence al fondo de la imagen si $I_2(x,y)=0$, y pertenece a algun caracter si $I_2(x,y)=255$. Si se establece que un pixel $(x',y')$ es vecino de un pixel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un cojunto de pixeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviendose unicamente a traves de pixeles vecinos de $C$. La idea de los componentes conectados fue utilizada, entre muchos otros, por O'Gorman\cite{docstrum93} para realizar el analisis del documento, una de las etapas del reconocimiento optico de caracteres.
 
 \newtheorem{pixHasOneC}{Lemma}
 \begin{pixHasOneC}
 	Cada pixel $(x,y)$ tal que $I_2(x,y)=255$ pertenece a un unico componente conectado.
 \end{pixHasOneC}
 \begin{proof}
-	Suponga que un pixel $(x,y)$ pertenece a más de un componente conectado. En particular, suponga que $(x,y)$ pertenece tanto al componente $C_i$ como al componente $C_j$. Entonces hay un camino desde cualquier $P_i \in C_i$ a $(x,y)$ y desde cualquier $P_j \in C_j$ a $(x,y)$. Por tanto hay al menos un camino desde todo $P_i$ a todo $P_j$, este camino es $P_i \rightarrow (x,y) \rightarrow P_j$. Esto significa que $C_i$ y $C_j$ pueden ser unidos en un unico componente conectado.
+	Suponga que un pixel $(x,y)$ pertenece a más de un componente conectado. En particular, suponga que $(x,y)$ pertenece tanto al componente $C_i$ como al componente $C_j$. Entonces hay un camino desde cualquier $P_i \in C_i$ a $(x,y)$ y desde cualquier $P_j \in C_j$ a $(x,y)$. Por tanto hay al menos un camino desde todo $P_i$ a todo $P_j$, este camino es $P_i \rightarrow (x,y) \rightarrow P_j$. Esto significa que $C_i$ y $C_j$ pueden ser unidos en un unico componente conectado, y al unirlos $(x,y)$ perteneceria a un unico componente conectado.
 \end{proof}
 
-Despues de esto se puede utilizar un algoritmo de relleno por difusión (flood-fill) para encontrar cada componente conectado dado un pixel $(x,y)$ con $I_2(x,y)=255$. Cada vez que se encuentre un componente conectado este se borra de la imagen y de esta manera por cada pixel encontrado en un recorrido por toda la imagen se extraera un componente conectado.
-
-El algoritmo de relleno por difusión se implemento utilizando una pila para evitar la recursividad, dando como resultado un arreglo con todos los componentes conectados encontrados.
+Despues de esto se puede utilizar un algoritmo de relleno por difusión ({\em flood-fill}) para encontrar cada componente conectado. Dado un pixel $(x,y)$ con $I_2(x,y)=255$, se encuentra el componente conectado al que este pertence, se guarda, y se borra de la imagen. De esta manera por cada pixel encontrado en un unico recorrido por toda la imagen se extraera un componente conectado, y al finalizar este recorrido se habran extraido todos los componentes conectados. Este algoritmo se implemento utilizando una pila para evitar la recursividad.
 
 \section{Extracción de caracteristicas}
 
-Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imágenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imágenes son adquiridas mediante una cámara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones se deben buscar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico en un vector, esta similitud se puede expresar en terminos vectoriales como que debe existir una distancia Mahalanobis (Eq. \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
+Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imágenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imágenes son adquiridas mediante una cámara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones es necesario encontrar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico es un vector, esta similitud se puede expresar en terminos vectoriales como una distancia Mahalanobis (ecuación \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
 
-Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se muestran dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar, despues de esto se pueden extraer características numéricas de la imagen que sean lo mas similares posibles para objetos de la misma clase y lo mas diferentes posibles para objetos de distintas clases. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características matemáticas en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento. En las secciones posteriores se presentan ambos enfoques junto con sus ventajas y desventajas.
+Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se pueden tomar dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar, despues de esto se pueden extraer características numéricas de la imagen que sean lo mas similares posibles para objetos de la misma clase y lo mas diferentes posibles para objetos de distintas clases. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento.
 
 \subsection{Rotación y escalamiento mediante transformación geometrica}
 \label{sect:rotation}
 
-Si se utilizan caracteristicas dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos angulos de rotación. Si se hace dificil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales \cite{niyogi2002}. El problema con este enfoque es que es complejo computacionalmente y que instancias de una misma clase pueden quedar ampliamente repartidas por el hiper-espacio de clasificación, y por tanto, sería mas dificil para un algoritmo de clasificación separar las distintas clases.
+Si se utilizan caracteristicas dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos angulos de rotación. Si se hace dificil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales\cite{niyogi2002}. El problema con este enfoque es que tiene una alta complejidad computacional y que instancias de una misma clase pueden quedar ampliamente repartidas por el hiper-espacio de clasificación. Como resultado sería mas dificil para un algoritmo de clasificación separar las distintas clases.
 
-Un enfoque mucho más practico es detectar la rotación y el escalamiento del texto, y posteriormente aplicar transformaciones geométricas para ajustar la rotación y el escalamiento a valores preestablecidos. Posteriormente se podrían obtener características dependientes a la rotación y al escalamiento para clasificar cada letra. Para detectar la rotación se pueden utilizar metodos ya existentes, como los utilizados en el algoritmo de análisis de documentos Docstrum, los cuales permiten establecer cual es la inclinación de cada linea de texto. Al tener la inclinación de las líneas, se puede aproximar cual es la inclinación da cada caracter en particular. Para corregir la inclinación se utilizaria una matriz de rotación: si el algoritmo de detección de rotación determina que el caracter esta rotado un angulo $\theta$ alrededor de su centroide, se puede detectar cual es la nueva ubicación $(x', y')$ del pixel $(x, y)$ utilizando la siguiente operación:
+Un enfoque mucho más practico es detectar la rotación y el escalamiento del texto, y posteriormente aplicar transformaciones geométricas para ajustar la rotación y el escalamiento a valores preestablecidos. Despues de esto se podrían obtener características dependientes a la rotación y al escalamiento para clasificar cada letra. Para detectar la rotación se pueden utilizar metodos ya existentes, como los utilizados en el algoritmo de análisis de documentos Docstrum\cite{Docstrum}, los cuales permiten establecer cual es la inclinación de cada linea de texto. Al tener la inclinación de las líneas, se puede aproximar cual es la inclinación da cada caracter en particular. Para corregir la inclinación se utilizaria una matriz de rotación: si el algoritmo de detección de rotación determina que el caracter esta rotado un angulo $\theta$ alrededor de su centroide, se puede detectar cual es la nueva ubicación $(x', y')$ del pixel $(x, y)$ utilizando la siguiente operación:
 
 	\[
 		\begin{pmatrix} 
@@ -630,7 +601,7 @@ Un enfoque mucho más practico es detectar la rotación y el escalamiento del te
 		\end{pmatrix}
 	\]
 
-El escalamiento se podría ajustar haciendo una interpolación de los pixeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el angulo $\theta$ no es un múltiplo de 90 grados, las coordenadas de los nuevos pixeles $(x', y')$ no serían enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una pérdida de información importante cuando la calidad de las imágenes no es muy buena. En cuanto al escalamiento, la interpolación también produce una pérdida de información. Tal vez el problema mas grave de esta pérdida de información en el reconocimiento de caracteres, es que en algunos casos pueden partir los caracteres en varias partes dificultando el proceso de reconocimiento.
+El escalamiento se podría ajustar haciendo una interpolación de los pixeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el angulo $\theta$ no es un múltiplo de 90 grados, las coordenadas de los nuevos pixeles $(x', y')$ no serían enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una pérdida de información importante cuando la calidad de las imágenes no es muy buena. En cuanto al escalamiento, la interpolación también produce una pérdida de información. Tal vez el problema mas grave de esta pérdida de información en el reconocimiento de caracteres, es que en algunos casos se puede partir un unico caracter en varias partes, dificultando el proceso de reconocimiento.
 
 Para el problema de reconocimiento de caracteres es entonces conveniente encontrar métodos de extracción de características que minimizen la pérdida de información, pero que al mismo tiempo sean invariantes a la rotación y al escalamiento. Los momento invariantes son caracteristicas que cumplen dicha propiedad.
 
@@ -666,7 +637,7 @@ Utilizando $n_{pq}$, Hu logro un conjunto de momentos invariantes, todos con un 
 				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2}) \label{eq:huMom} \\ \notag
 	\end{align}
 
-\subsection{Momentos complejos y momento de Fluzzer}
+\subsection{Momentos complejos y momentos de Fluzzer}
 
 En 1984 Mostafa y Psaltis \cite{mostaf84} propusieron los momentos complejos como una forma alternativa de lograr momentos invariantes. Un momento complejo $C_{pq}$ de orden $(p+q)$ para una imagen $f(x,y)$ se define como:
 
@@ -684,7 +655,7 @@ Una propiedad interesante de los momentos complejos, que se deriva de la ecuaci�
 	C'_{pq} = e^{-i(p-q)\alpha}C_{pq}
 \end{equation}
 
-Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto \cite{flusser99} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
+Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto\cite{flusser99} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
 \section{Primeros resultados}
 \label{sect:exp}
@@ -718,7 +689,7 @@ Para el primer experimento se implementó un método de clasificación estadíst
 	\label{tb:exp1}
 	\end{table}
 
-Los resultados para algunos de los digitos fueron inusualmente bajos con relación a lo que se esperaba. Si bien se esperaba que los digitos que presentan cierta simetria, como el 0 y el 8, tuvieran porcentajes de reconocimiento menor, lo que sucedio en realidad fue que tuvieron un porcentaje muy alto, mientras que otros como el 2 y el 5 tuvieron porcentajes muy bajos. Dado que el 6 y el 9 son completamente simetricos respecto a la rotación los resultados fueron cercanos a lo esperado, con la excepción de que el 6 tuvo un porcentaje bastante alto.
+Los porcentajes para algunos de los digitos fueron inusualmente bajos con relación a lo que se esperaba. Si bien se esperaba que los digitos que presentan cierta simetria, como el 0 y el 8, tuvieran porcentajes de reconocimiento menor, lo que sucedio en realidad fue que tuvieron un porcentaje muy alto, mientras que otros como el 2 y el 5 tuvieron porcentajes muy bajos. Dado que el 6 y el 9 son completamente simetricos respecto a la rotación los resultados fueron cercanos a lo esperado, con la excepción de que el 6 tuvo un porcentaje bastante alto.
 
 Dado los problemas antes mencionados, se decidio indagar las razones por las que algunos digitos tenian porcentajes muy bajos. En el proceso de depuración se descubrio que el determinante de la matriz de covarianza era muy cercano a cero (con cifras cercanas a $10^{-40}$), por lo cual era muy probable que ciertos calculos con numeros de punto flotante tuvieran perdidas importantes de precisión. Se estudio la posibilidad de utilizar aritmetica de precisión arbitraria, sin embargo, dada la complejidad algoritmica, se concluyo que el uso de aritmetica implementada en software haria demasiado lento el proceso de reconocimiento.
 
@@ -783,10 +754,11 @@ Dado que no se encontro descrito en la literatura cientifica, a este método se 
 \subsection{Problemas de simetría mutua}
 \label{sect:mutualSym}
 
-Si se observan los resultados de la tabla \ref{tb:exp2} para el método de clasificación de matriz de covarianza semi-compartida se puede observar que el peor porcentaje se obtuvo en los dígitos 6 y 9. De hecho, se noto que estos dígitos se estaban confundiendo entre ellos. 
-Cabe recordar que las características son invariantes a la rotación. Una situación donde los seres humanos hacen reconocimiento de dígitos con características invariantes a la rotación ocurre cuando juegan billar, y por tanto deben reconocer los dígitos marcados en las bolas de billar independientemente de la rotación de la bola. En este caso incluso los seres humanos tenemos problemas para reconocer entre la bola 6 y la 9, y necesitamos de una seña (que puede ser una raya) para reconocer estos dos digitos de manera apropiada
+Si se analizan los resultados de la tabla \ref{tb:exp2} para el método de clasificación de matriz de covarianza semi-compartida se puede observar que el peor porcentaje se obtuvo en los dígitos 6 y 9. De hecho, se noto que estos dígitos se estaban confundiendo entre ellos.
+ 
+Cabe recordar que las características son invariantes a la rotación. Una situación en donde los seres humanos hacen reconocimiento de dígitos con características invariantes a la rotación ocurre cuando juegan billar y deben reconocer los dígitos marcados en las bolas de billar independientemente de la rotación de la bola. En este caso incluso los seres humanos tenemos problemas para reconocer entre la bola 6 y la 9, y necesitamos de una seña (que puede ser una raya) para reconocer entre estos dos digitos de manera apropiada.
 
-En este caso, el problema no estaba previsto y solo se detectó cuando se realizaron las pruebas. Lo que sucede es que los dígitos 6 y 9 tienen simetría mutua, y son dificiles de reconocer entre ellos, ya que en los documentos impresos no se hacen señas en estos numeros número. Sin embargo, cabe recordar que en los objetivos se restringió a que los documentos analizados tendrian una rotación entre $-30^\circ$ y $30^\circ$. Si el documento tuviese un ángulo de rotación por fuera de este rango, se podria llevar a un rango cercano rotando la imagen en múltiplos de $90^\circ$ sin ninguna pérdida de información (ver sección \ref{sect:rotation}), esto, si se cuenta con alguna referencia que indique la rotación adecuada, porque de lo contrario no se podria determinar con exactitud entre el 6 y el 9.
+En este caso, el problema no estaba previsto y solo se detectó cuando se realizaron las pruebas. Lo que sucede es que los dígitos 6 y 9 tienen simetría mutua, y son dificiles de reconocer entre ellos por cuanto en los documentos impresos no se hacen señas como en el billar. Sin embargo, cabe recordar que en los objetivos se restringió a que los documentos analizados tendrian una rotación entre $-30^\circ$ y $30^\circ$. Si el documento tuviese un ángulo de rotación por fuera de este rango, se podria llevar a un rango cercano rotando la imagen en múltiplos de $90^\circ$ sin ninguna pérdida de información (ver sección \ref{sect:rotation}), esto, si se cuenta con alguna referencia que indique la rotación adecuada, porque de lo contrario no se podria determinar con exactitud entre el 6 y el 9.
 
 Con estas restricciones, se creo el siguiente método para resolver el problema de la simetría mutua utilizando las ecuaciones de los momentos complejos. Supongamos que existe un problema de simetría mutua entre las clases $C_i$ y $C_j$, y que se desea clasificar una imagen $f(x,y)$ en una de estas dos clases. Entonces una rotación cercana a 180$^\circ$ de la instancia $f(x,y)$ respecto a la clase $C_i$ indica que $f(x,y)$ tiene mayor similitud a la clase $C_j$ que a la clase $C_i$. Definamos también $f_i(x,y)$ como una instancia de la clase $C_i$ que representa una instancia promedio de la clase $C_i$. Entonces se estableceria que $f(x,y)$ pertenece a $C_i$ si el ángulo de rotación con respecto a $f_i(x,y)$ es menor que 90$^\circ$, y si el ángulo es mayor que 90$^\circ$ se escojería la clase $C_j$. En el caso de que el ángulo sea exactamente igual a 90$^\circ$ no se podria determinar a cual de las dos clases pertenece, por lo cual se asignaria  cualquiera de las dos.
 
@@ -930,8 +902,9 @@ Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validaci
  %\begin{Burocracy}
 \section{Análisis}
 
-La primera etapa en el desarrollo de software es la de levantamiento de requerimientos. Los requerimientos fueron tomados de los objetivos de desarrollo del proyecto (ver sección \ref{sect:objective}). Los objetivos muestran que se requiere desarrollar una aplicación para reconocimiento de dígitos que utilice para clasificar el modelo estadístico multivariable detallado en la sección \ref{sect:multivar} y para la extracción de características los momentos invariantes expuestos en la sección \ref{sect:invariants}.\newline \newline
-Se detectó que la aplicación se puede modelar mediante dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. El diagrama se muestra en la figura \ref{fig:useCase}. Un caso de uso, cuyo actor principal es un usuario administrador, se denomina ``entrenamiento del sistema de clasificación''. El otro caso de uso, que tiene como actor al usuario final, es el de ``reconocimiento de caracteres en el documento fotografiado''.
+La primera etapa en el desarrollo de software es la de levantamiento de requerimientos. Los requerimientos fueron tomados de los objetivos de desarrollo del proyecto (ver sección \ref{sect:objective}). Los objetivos exponen que se requiere desarrollar una aplicación para reconocimiento de dígitos que utilice para clasificar el modelo estadístico multivariable detallado en la sección \ref{sect:multivar} y para la extracción de características los momentos invariantes expuestos en la sección \ref{sect:invariants}.
+
+Se determino que es posible modelar la aplicación mediante dos casos de uso, ya que desde el punto de vista de los actores solo hay dos funciones que pueden desempeñar con la aplicación. El diagrama se muestra en la figura \ref{fig:useCase}. Un caso de uso, cuyo actor principal es un usuario administrador, se denomina ``entrenamiento del sistema de clasificación''. El otro caso de uso, que tiene como actor al usuario final, es el de ``reconocimiento de caracteres en el documento fotografiado''.
 
 \begin{figure}[htb]
 \begin{center}
@@ -944,7 +917,7 @@ Se detectó que la aplicación se puede modelar mediante dos casos de uso, ya qu
 
 \subsection{Documentación de casos de uso}
 
-La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb:uc1} y en la tabla \ref{tb:uc2}.
+La documentación de los casos de uso se encuentra en la tabla \ref{tb:uc1} y en la tabla \ref{tb:uc2}.
 
 \begin{table}
 \begin{center}
@@ -997,7 +970,7 @@ La documentación de los casos de uso se ven respectivamente en la tabla \ref{tb
 
 \section{Diseño}
 
-El diseño del aplicativo se realizó con los diagramas de secuencia y clases de el estandar UML. Los diagramas de sequencia se pueden apreciar en las figuras \ref{fig:sequence1} y \ref{fig:sequence2}.
+El diseño del aplicativo se realizó con los diagramas de secuencia y clases pertenecientes al estandar UML. Los diagramas de sequencia se pueden apreciar en las figuras \ref{fig:sequence1} y \ref{fig:sequence2}.
 
 \begin{sidewaysfigure}
 \begin{center}
@@ -1023,32 +996,47 @@ El diseño del aplicativo se realizó con los diagramas de secuencia y clases de
 \label{fig:classes}
 \end{sidewaysfigure}
 
-En el diagrama de clases (Fig. \ref{fig:classes}) se ven las clases con las que se pueden llevar a cabo los casos de uso con los respectivos métodos públicos. La clase {\it ImgMatrix} es responsable de la representación de la imagen en el computador como una matriz. La clase {\it ConComponent} representa los componentes conectados de la imagen binarizada, es decir, hay un componente conectado por cada caracter de la imagen. La clase {\it OcrServer}, es la encargada de recibir las peticiones IP y coordinar las otras clases para dar respuesta a la petición. La clase {\it Transform} es la responsable de hacer la binarización de las imágenes con el algoritmo de Sauvola, implementado eficientemente. La clase {\it DocLayout} es la responsable de dividir la imagen en los componentes conectados. La clase {\it ChrMoments} es responsable de calcular los momentos invariantes de Hu, Flusser para los componentes conectados, entregando un vector de características. Los momentos de Flusser implementados son tanto los momentos estándares como  los de momentos para objetos simetricos a N-rotaciones (Ver capítulo \ref{chap:features}).
+En el diagrama de clases (Fig. \ref{fig:classes}) se encuentran las clases con las que se pueden llevar a cabo los casos de uso con sus respectivos métodos públicos. La clase {\it ImgMatrix} es responsable de la representación de la imagen en el computador como una matriz. La clase {\it ConComponent} representa los componentes conectados de la imagen binarizada, hay un componente conectado por cada caracter de la imagen. La clase {\it OcrServer}, es la encargada de recibir las peticiones IP y coordinar las otras clases para dar respuesta a la petición. La clase {\it Transform} es la responsable de hacer la binarización de las imágenes con el algoritmo de Sauvola. La clase {\it DocLayout} es la responsable de dividir la imagen en los componentes conectados. La clase {\it ChrMoments} es responsable de calcular los momentos invariantes de Hu y Flusser para los componentes conectados, entregando un vector de características. Los momentos de Flusser implementados son tanto los momentos estándares, como los de momentos para objetos simetricos a N-rotaciones (Ver capítulo \ref{chap:features}), que se agregaron en el curso de la investigación.
 
-La clase {\it OcrLearning} es una clase genérica que encapsula los métodos que debe tener un método de aprendizaje para la clasificación de caracteres, se tomo la decisión de crear una clase padre porque en un futuro se pueden intentar métodos de aprendizaje distintos como redes neuronales, y el tener esta clase facilita la migración, ya que solo es necesario crear otra clase que herede de {\it OcrLearning} con el método de aprendizaje nuevo y el resto es transparente. La clase {\it OcrMultivariate} es la que contiene la implementación de {\it OcrLearning} para el método específico de clasificación estadística, en la que se usa la distribución normal multivariable y el teorema de Bayes. Además de los métodos de entrenamiento y clasificación de los que se habló en el capítulo \ref{chap:ml}, observe que se plantearon métodos de guardado y carga. La idea de tener estos dos métodos es que gracias a ellos no hay que entrenar el método cada vez que se carga el programa, en cambio se puede guardar el modelo entrenado en un archivo en el disco y luego cargarlo la próxima vez que se cargue el aplicativo.
+La clase {\it OcrLearning} es una clase genérica que encapsula los métodos que debe tener un método de aprendizaje para la clasificación de caracteres, se tomo la decisión de crear una clase padre porque en un futuro se pueden intentar métodos de aprendizaje distintos como redes neuronales, y el tener esta clase facilita la migración, ya que en este caso solo seria necesario crear otra clase que herede de {\it OcrLearning} con un método de aprendizaje nuevo. La clase {\it OcrMultivariate} es la que contiene la implementación de {\it OcrLearning} para el método específico de clasificación estadística, en la que se utiliza la distribución normal multivariable y el teorema de Bayes. Además de los métodos de entrenamiento y clasificación de los que se habló en el capítulo \ref{chap:ml}, se agregaron métodos de guardado y carga. La idea de estos dos métodos es que no sea necesario entrenar el método cada vez que se carga el programa, en cambio se puede guardar el modelo entrenado en un archivo en el disco y luego utilizarlo cada vez que se cargue el aplicativo.
 
 \section{Pruebas}
 
-En esta sección de pruebas se explica que pruebas se le hicieron al software para saber si los algoritmos estan implementados correctamente. El objetivo de esta sección no es mostrar si el resultado de los algoritmos es satisfactorio o no, esto últimos se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}. Cabe anotar que los algoritmos de clasificación y de extracción de características implementados, descritos en los capítulos \ref{chap:ml} y \ref{chap:features}, por su naturaleza no es fácil aplicar las pruebas tradicionales que se le aplica al software.\newline \newline
-Tradicionalmente, las pruebas se hacen creando un conjunto de casos de prueba, para los que se conoce la salida esperada. Entonces el proceso de pruebas consiste en alimentar al software con estos casos de prueba y observar si la salida del software coincide con la salida esperada. Si la salida obtenida no coincide con la salida esperada, entonces se considera que el software tiene un error y se procede a corregirlo. Note que este proceso no puede garantizar un software libre de errores, pero si puede permitir hallar muchos de los errores y por tanto producir software de mejor calidad.
+En esta sección se explican las pruebas que se hicieron al software para determinar si los algoritmos fueron implementados correctamente. El objetivo de esta sección no es precisar si el resultado de los algoritmos es satisfactorio o no, ya que esto se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}.
+
+Usualmente las pruebas se hacen creando un conjunto de casos de prueba para los que se conoce la salida esperada. En estos casos el proceso de pruebas consiste en alimentar al software con los casos de prueba y observar si la salida coincide con la salida esperada. Si la salida obtenida no coincide con la salida esperada, entonces se considera que el software tiene un error y se procede a depurarlo y corregirlo. Este proceso no garantiza un software libre de errores, pero si permite hallar muchos errores comunes y por tanto producir software de mejor calidad. Es de notar que los algoritmos de clasificación y de extracción de características implementados (descritos en los capítulos \ref{chap:ml} y \ref{chap:features}), son de una naturaleza matematica y, por tanto, no es fácil aplicarle este tipo de pruebas. Esto es debido a que muchas veces no es posible determinar cual deberia ser la salida esperada, pues para hacerlo se tendrian que realizar una gran cantidad de operaciones y solo un computador podria realizarlas en un tiempo razonable. 
 
 \subsection{Etapas de preprocesamiento}
-Para el cambio de color a escala de grises se ultilizó una función de la librería OpenCV. La binarización se implementó en la clase {\it Transform}, como se explicó en la sección \ref{sect:binarization}. Dado que mismo método esta implementado en {\it Ocropus} \footnote{Ocropus es un software de OCR libre desarrollado por Google, esta licenciado bajo Apache Licence 2.0}, la forma en la que se probó la aplicación es la siguiente:
-\begin{enumerate}
-\item Se tomaron 5 imágenes de documentos
-\item Para cada foto, se binarizó utilizando {\it Ocropus} y la clase {\it Transform}.
-\item Se compararon las imágenes resultado de la binarización con ambos métodos para ver que fueran iguales.
-\end{enumerate}
+
+Para el cambio de color a escala de grises se compararon los resultados de la función implementada, y de una función de la librería OpenCV que realizaba el mismo procedimiento. La binarización se implementó en la clase {\it Transform}, como se explicó en la sección \ref{sect:binarization}. Dado que el mismo método esta implementado en {\it Ocropus} \footnote{Ocropus es un software de OCR libre desarrollado por Google, esta licenciado bajo Apache Licence 2.0}, la forma en la que se probó la implementación fue la siguiente:
+
+	\begin{enumerate}
+	\item Se tomaron 5 imágenes de documentos.
+	\item Para cada foto, se binarizaron utilizando {\it Ocropus} y la clase {\it Transform}.
+	\item Se compararon las imágenes resultado de la binarización con ambos métodos para comprobar que fueran iguales.
+	\end{enumerate}
 
 \subsection{Extracción de características}
-Esta etapa fue un reto en cuanto a las pruebas de software, dado que es muy fácil cometer errores y es muy dificil darse cuenta. Recuerde que en el capítulo \ref{chap:features} se explicó que en la extracción de características la entrada es una imagen y la salida es un vector numérico calculado sobre la imagen. En el caso especial de los momentos invariantes, que fueron las características escojidas e implementadas, el vector se calcula con una integral sobre la imagen.\newline \newline
-Es claro que para un ser humano es muy dificil saber cual es el vector numérico de salida dada la imagen de entrada. Y la razón por la que se pueden cometer fácil errores es porque las fórmulas son muy largas (Ver Eq.\ref{eq:huMom}) y es fácil cambiar algún signo o exponente de la formula sin darse cuenta. Las pruebas se hicieron entonces de la siguiente forma:
-\begin{enumerate}
-\item Los momentos de Hu fueron implementados por 2 personas diferentes, es decir, se realizó doble implementación de estos momentos. Este método de implementación minimiza la posibilidad de errores, ya que aunque es fácil cometer un error, la probabilidad que dos personas cometan exactamente el mismo error es muy baja.
-\item Los momentos de Flusser fueron probados de la siguiente manera. Para cada componente del conjunto de entrenamiento se calcularon los momentos de Flusser y de Hu, dado que se confiaba en que los momentos de Hu estaban bien gracias al paso 1, se comprobaba si los de Flusser estaban bien revisando las equivalencias matemáticas que deben existir entre ambos vectores de características.
-\item Dado que los momentos de Flusser son mas completos que los de Hu, no todas los momentos de Flusser se podían probar con los momentos de Hu. Como se conoce que los momentos son invariantes a la rotación, la última prueba consitió en rotar todas las imágenes 90$^\circ$, 180$^\circ$ y 270$^\circ$, y verificar que los valores siguieran dando iguales.
-\end{enumerate}
-Gracias al punto 1, se detectó un error en un signo de los momentos de Hu en una de las implementaciones, y se corrigió el problema. El resto de los momentos coincidieron en ambas implementaciones. Al hacer las comprobaciones del punto 2, no se detectó ningun error, aunque como se explicó anteriormente, esto prueba solo parte de los momentos, no todos. Con el punto 3 de las comprobaciones, se detectó un cambio de signo al rotar la imagen en una de las variables del vector de características, al revisar el código se detectó que el problema era causado por un error de digitación en el exponente de la formula, este error también fue corregido.
+
+Esta etapa fue un reto en cuanto a las pruebas de software, dado que, por el gran numero de ecuaciones, era fácil cometer errores y dificil encontrarlos. En el capítulo \ref{chap:features} se explica que en la extracción de características la entrada es una imagen y la salida es un vector numérico calculado sobre la imagen. En el caso especial de los momentos invariantes, que fueron las características escojidas e implementadas, el vector se calcula con una integral sobre la imagen, que se convierte en una sumatoria de los pixeles de la imagen.
+
+Dada la gran cantidad de pixeles, para un ser humano es dificil saber cual es el vector numérico de salida a partir de una imagen de entrada. Ademas de esto, las fórmulas son bastante extensas (ver ecuaciones \ref{eq:huMom}) y por tanto es fácil cometer algun error en su implementación. Por estas razones, las pruebas se hicieron de la siguiente manera:
+
+	\begin{enumerate}
+
+	\item Los momentos de Hu fueron implementados por 2 personas diferentes, es decir, se realizó una doble implementación de las funciones que los calculaban. Se considero que este método de implementación minimiza la posibilidad de que los errores no sean detectados, por cuanto la probabilidad de que dos personas cometan exactamente el mismo error es muy baja.
+	
+	\item Los momentos de Flusser fueron probados de la siguiente manera: para cada componente del conjunto de entrenamiento se calcularon los momentos de Flusser y de Hu y poseteriaromente se comprobaba si los de Flusser estaban bien revisando las equivalencias matemáticas que deben existir entre ambos vectores de características\cite{FLuzzer}. De esta forma los momentos de Fluzzer fueron implementados en realidad tres veces.
+	
+	\item Dado que los momentos de Hu son un subconjunto de los de Fluzzer, no era posible probar todos los momentos de Flusser con los Hu. Para probar los momentos de Fluzzer restantes se utilizo el hecho de que estos momentos son invariantes a la rotación, asi que la última prueba consitió en rotar todas las imágenes 90$^\circ$, 180$^\circ$ y 270$^\circ$, y verificar que los valores fueran similares.
+	
+	\end{enumerate}
+
+Gracias al punto 1, se detectó un error en un signo de los momentos de Hu en una de las implementaciones, y se corrigió el problema. El resto de los momentos coincidieron en ambas implementaciones. Al hacer las comprobaciones del punto 2, no se detectó ningun error, aunque como se explicó anteriormente, esto prueba solo parte de los momentos, no todos. Con el punto 3 de las comprobaciones, se detectó un cambio de signo al rotar la imagen en una de las variables del vector de características. Al revisar el código se detectó que el problema era causado por un error de digitación en el exponente de la formula, asi que se corrigió.
+
+\subsection{Distribución normal multivariable y clasificación}
+
+Para calcular el determinante de las matrices de covarianza y la distancia Mahalanobis se utilizaron las funciones de la libreria OpenCV XXXX y XXXX respectivamente. Estas funciones han sido probadas extensamente por la comunidad de desarrolladores de OpenCV desde el lanzamiento de esta libreria en el año 2000. Las demas funciones necesarias para realizar la clasificación se probaron depurando el programa y comprobando que en cada paso los valores coincidieran con valores calculados de forma manual. Para cada función de esta etapa el procedimiento de depuración y comparación se realizo 10 veces por parte dos personas distintas. Finalmente, se obtuvieron los resultados de los determinantes y las distancias Mahalanobis de un conjunto de 20 instancias de prueba, se realizo el calculo manualmente de los valores que debian retornar y se comprobo que el sistema estuviera retornando los mismos valores.
 
 \chapter{Metodología de la investigación}
 \label{chap:metodology}
@@ -1057,7 +1045,7 @@ Gracias al punto 1, se detectó un error en un signo de los momentos de Hu en un
 
 \subsection{Hipótesis}
 
-Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (Ver población), tomando la imagen con	una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
+Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (ver población), tomando la imagen con una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
 	
 \subsection{Tipo de investigación}
 
@@ -1066,13 +1054,20 @@ En esta investigación se utilizará un enfoque cuantitativo.
 \subsection{Población}
 \label{sect:population}
 
-Los documentos impresos que solo contengan dígitos numéricos, que cumplan con las siguientes restricciones:
+Los documentos impresos que solo contengan dígitos numéricos y que cumplan con las siguientes restricciones:
+
 \begin{itemize}
-\item Forma rectangular.
-\item Fondo blanco.
-\item Letra de color negro y con un único tipo de letra o fuente.
-\item El tamaño de los dígitos varía entre 12 y 20 puntos
-\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
+
+	\item Forma rectangular.
+
+	\item Fondo blanco.
+
+	\item Letra de color negro y con un único tipo de letra o fuente.
+
+	\item El tamaño de los dígitos varía entre 12 y 20 puntos.
+
+	\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
+
 \end{itemize}
 
 \subsection{Unidad de análisis}
@@ -1081,41 +1076,57 @@ Fotos de textos con las condiciones mencionadas en la población, con una única
 
 \subsection{Muestra}
 
-Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100 y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel. De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación otro 15\% para el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del método de aprendizaje, sobre datos que no se le mostraron en el entrenamiento.
+Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100 y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel. De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación y otro 15\% para el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del método de aprendizaje sobre datos que no se le mostraron en el entrenamiento.
 
 \subsection{Variables}
 
 Las variables a tener en cuenta para ejecución de la aplicación son:
+
 \begin{itemize}
-\item Porcentaje de caracteres reconocidos exitosamente en total.
-\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
-\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
-\item Porcentaje de seguridad con el que se reconoció cada dígito.
-\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
+
+	\item Porcentaje de caracteres reconocidos exitosamente en total.
+
+	\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
+
+	\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
+
+	\item Porcentaje de seguridad con el que se reconoció cada dígito.
+
+	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
+
 \end{itemize}
 
 \section{Escenario de pruebas}
 \label{sect:testEnvironment}
 
-En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Cabe anotar que para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no usado para el entrenamiento.
+En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no utilizado para el entrenamiento.
 
 \subsection{Levantamiento de datos}
 
-Se entiende por un conjunto de datos de entrada etiquetado, un conjunto de datos de entrada en el que de cada dato de entrada se conoce la clase a la que pertenece. Asi que tanto el conjunto de entrenamiento $T$ como el conjunto de validación $V$ deben ser conjuntos etiquetados.\newline \newline
-La forma mas fácil de construir estos dos conjuntos, es construir un único conjunto etiquetado $S$ y luego dividirlo aleatoriamente en los dos conjuntos $T$ y $V$. Tal que los conjuntos $T$ y $V$ sean disjuntos, es decir, que $T \cap V = \emptyset$ y $T \cup V = S$ donde $\emptyset$ representa el conjunto vacío.\newline\newline
+Se entiende por un conjunto de datos de entrada etiquetado, un conjunto de datos de entrada en el que para cada dato de entrada se conoce la clase a la que pertenece. Tanto el conjunto de entrenamiento $T$ como el conjunto de validación $V$ deben ser conjuntos etiquetados.
+
+La forma mas fácil de construir estos dos conjuntos, es construir un único conjunto etiquetado $S$ y luego dividirlo aleatoriamente en los dos conjuntos $T$ y $V$, tal que los conjuntos $T$ y $V$ sean disjuntos, es decir, que $T \cap V = \emptyset$ y $T \cup V = S$ donde $\emptyset$ representa el conjunto vacío.
+
 Para construir el conjunto de datos etiquetados $S$ se siguió el siguiente procedimiento:
+
 \begin{itemize}
+
 	\item Se imprimió una hoja por cada símbolo a reconocer. Cada hoja contenía entre 350 y 450 instancias del mismo símbolo, con tamaño de fuente variando entre 12 puntos y 20 puntos, pero todos los símbolos fueron impresos con el mismo tipo de letra o fuente.
-	\item Por cada página se tomaron 5 fotos con una cámara digital de 4 megapixeles. En cada foto se variaba ligeramente la distancia de la que se tomaba la foto para incluir mas variabilidad en la escala de las imágenes. También se variaba el ángulo de inclinación del texto en ángulos entre $-30^\circ$ y $30^\circ$.
-	\item A cada imagen se le dió un nombre que le permitiera saber al sistema que símbolos se encuentran en esa foto. Todas las imagenes de números, tienen un nombre de la forma \verb/t<num>_<consec>.jpg/, donde \verb/<num>/ representa el dígito que contiene la foto y \verb/<consec>/ es un consecutivo para diferenciar cada una de las fotos. Las imágenes de caracteres no numéricos en cambio, tienen un nombre de la forma \verb/n<ascii>_<consec>.jpg/, donde \verb/<ascii>/ significa el código ascii del caracter contenido en la imagen.
-	\item Se extraen los componentes conectados de cada imagen como se explicó en el capitulo \ref{chap:features}, haciendo las etapas de preprocesamiento correspondientes. Los componentes conectados se guardan en una base de datos con el nombre de la imagen del que se sacó el componente, esta base de datos corresponde al conjunto etiquetado $S$ explicado anteriormente.
+
+	\item Por cada página se tomaron 5 fotos con una cámara digital de 4 megapixeles. En cada foto se variaba ligeramente la distancia de la que se tomaba la foto para incluir mas variabilidad en la escala de las imágenes. También se variaba el ángulo de inclinación del texto en ángulos entre $-30^\circ$ y $30^\circ$ aproximadamente.
+
+	\item A cada imagen se le dió un nombre que le permitiera saber al sistema que símbolos se encuentran en la foto. A todas las imagenes de números se les dio un nombre de la forma \verb/t<num>_<consec>.jpg/, donde \verb/<num>/ representa el dígito que contiene la foto y \verb/<consec>/ es un consecutivo para diferenciar cada una de las fotos. A las imágenes de caracteres no numéricos, en cambio, se les dio un nombre de la forma \verb/n<ascii>_<consec>.jpg/, donde \verb/<ascii>/ significa el código ascii del caracter contenido en la imagen.
+
+	\item Se extrajeron los componentes conectados de cada imagen como se explicó en el capitulo \ref{chap:features}, haciendo las etapas de preprocesamiento correspondientes. Los componentes conectados se guardaron en una base de datos con el nombre de la imagen del que se sacó el componente, estos componentes se convirtieron en el conjunto etiquetado $S$ explicado anteriormente.
+
 \end{itemize}
 
 \subsection{Construcción del conjunto de entrenamiento y validación}
 \label{sect:trainingSet}
 
-Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se seleccionaba esta instancia a que conjunto iba a pertenecer con una cierta probabilidad. Supongamos que $P_t$ es la probabilidad de que la instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que la instancia sea asignada al conjunto de validación $V$. El procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}. \newline \newline
-Note que se requiere que $P_v + P_t \le 1$. Cuando la suma $P_v + P_t < 1$ es posible que algun conjunto de datos no quede asignado ni al conjunto de validación ni al de entrenamiento. Esto es deseable en ocaciones y a este tercer conjunto $C$ se le llama conjunto de pruebas. Pero para este caso, por el método de clasificación usado, este conjunto no tiene mayor relevancia; entonces se busca que $P_v + P_t = 1$.
+Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se seleccionaba, para cada instancia, a que conjunto iba a pertenecer con una cierta probabilidad. Supongamos que $P_t$ es la probabilidad de que la instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que la instancia sea asignada al conjunto de validación $V$. El procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}.
+
+Note que se requiere que $P_v + P_t \le 1$. Cuando la suma $P_v + P_t < 1$ es posible que alguna instancia no quede asignado ni al conjunto de validación ni al de entrenamiento. Esto es deseable en ocasiones, y a este tercer conjunto $C$ se le llama conjunto de pruebas. Pero en este caso, por el método de clasificación utilizado, este conjunto no tiene mayor relevancia; entonces se establecio que $P_v + P_t = 1$.
 
 \begin{figure}[htb]
 \begin{center}
