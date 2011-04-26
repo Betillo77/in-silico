@@ -193,7 +193,7 @@ En la tesis\footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palab
 
 Estudiantes de ingenieria electrica desarrollaron un proyecto de grado para contar transeúntes en una imagen utilizando un sistema de visión artificial\footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007}. Los resultados de la investigación indican que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de píxeles. Así mismo, permiten entender distintos problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios componentes conectados como uno solo. Problemas similares a los evidenciados en este proyecto se pueden presentan al separar los caracteres en un sistema de OCR.
     
-\section {Modelo general de sistema OCR}
+\section{Modelo general de sistema OCR}
 
 \subsection{Reconocimiento de caracteres y análisis de documentos}
 
@@ -861,9 +861,9 @@ Los resultados fueron bastante buenos, y permitieron dar solución al problema d
 
 \subsection{Problemas de simetría a la rotación}
 
-Se puede observar en la tabla \ref{tb:exp2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. U Un problema similar ocurre cuando los digitos presentan simetria a la rotación. Flusser\cite{flusser06} demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el articulo en que se propusieron se utilizaron para reconocer unicamente entre objetos simetricos, se intento utilizar estos momentos para reconocer entre todos los digitos, para lo cual se construyo un conjunto de momentos simetricos utilizando el procedimiento explicado por Fluzzer:
+Se puede observar en la tabla \ref{tb:exp2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. U Un problema similar ocurre cuando los digitos presentan simetria a la rotación. Flusser\cite{flusser06} demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el articulo en que se propusieron se utilizaron para reconocer unicamente entre objetos simetricos, se intento utilizar estos momentos para reconocer entre todos los digitos, para lo cual se construyo un conjunto de momentos simetricos utilizando el procedimiento explicado por Flusser:
 
-%% PONER MOMENTOS FLUZZER_2 ACA
+%% PONER MOMENTOS FLUSSER_2 ACA
 
 Para explorar distintas posibilidades se creo un script que recibe como parametro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados fueron extraordinarios, como puede observarse en la tabla tb:exp3.
 
@@ -878,15 +878,15 @@ Para explorar distintas posibilidades se creo un script que recibe como parametr
 		Character & Hu & Flusser & 2-Fold flusser\\
 		\hline
 		0 & 99.34\% & 99.21\% & 100.00\% \\
-		1 &	100.00\% & 100.00\% & 100.00\% \\
-		2 &	100.00\% & 100.00\% & 100.00\% \\
-		3 &	100.00\% & 100.00\% & 100.00\% \\
-		4 &	100.00\% & 100.00\%	& 100.00\% \\		
+		1 & 100.00\% & 100.00\% & 100.00\% \\
+		2 & 100.00\% & 100.00\% & 100.00\% \\
+		3 & 100.00\% & 100.00\% & 100.00\% \\
+		4 & 100.00\% & 100.00\%	& 100.00\% \\		
 		5 & 97.97\% & 99.32\% & 100.00\% \\ 
 		6 & 99.47\% & 99.48\% & 100.00\% \\
 		7 & 100.00\% & 100.00\% & 100.00\% \\
 		8 & 85.53\% & 92.97\% & 100.00\% \\
-		9 &	99.49\% & 96.72\% & 100.00\% \\
+		9 & 99.49\% & 96.72\% & 100.00\% \\
 		\hline
 		Total & 98.18\% & 98.77\% & 100.00\% \\
 		\hline
@@ -1490,6 +1490,15 @@ Las tablas que muestran los resultados del reconocimiento con los caracteres del
 \end{table}
 
 \section{Proyectos que se pueden derivar de esta investigación}
+
+
+En esta investigación se desarrollo un sistema de reconocimiento optico de caracteres para reconocer los digitos del 0 al 9. Aun cuando se agregaron las letras mayusculas, y los resultados fueron buenos, el sistema no esta optimizado para utilizarlas. Asi que el primer paso en un proyecto futuro seria desarrollar un sistema capaz de reconocer las letras del alfabeto latino, tanto mayusculas como minusculas, asi como los signos de puntuación. Para hacerlo se tendrian que solucionar problemas como la separación de la letra minuscula i en dos componentes conectados, entre muchos otros que no fueron tratados en este proyecto.
+
+El sistema desarrollado permite reconocer caracteres con tamaños entre 12 y 20 puntos, e imagenes con inclinaciones entre -30$^{\circ}$ y 30$^{\circ}$. No obstante, el problema se restringió a documentos con un mismo tipo de letra. En ejemplos de la vida real normalmente se encontrarian documentos con diversos tipos de letra, lo que aumentaria la complejidad del problema. En un proyecto futuro se podrian intentar varios enfoques para solucionar este problema. Una posibilidad es hacer un preprocesamiento para reconocer el tipo de letra de cada documento y posteriormente aplicarle un modelo ya entrenado al documento dependiendo del tipo de letra. Otra posibilidad es aplicar un metodo de aprendizaje no supervisado para separar en clusters todas las letras de la misma clase, sin importar su tipo de letra, y posteriormente realizar la clasificación con este nuevo modelo. El reto en estos casos seria no aumentar significativamente la complejidad computacional de la solución.
+
+
+
+La etapa de reconocimiento de caracteres es muy importante, sin embargo, como fue explicado en el capitulo \ref{chap:intro}, es solo una de las etapas en el proceso de reconocimiento optico de caracteres. Una etapa muy importante que no fue desarrollada en este proyecto es la de analisis del documento. Una gran ventaja que provee la solución estadistica planteada en este proyecto es que, para cada componente conectado, se entrega un arreglo con las probabilidades de que el componente conectado pretenezca a cada clase. Esto podria ser especialmente util para una etapa de postprocesamiento en el analisis del documento, en donde se podria utilizar un diccionario y modelos de Markov para determinar la probabilidad de que una secuencia de caracteres forme una palabra. De esta manera se podrian corregir facilmente errores en los cuales se reconocieron erroneamente algunas letras de una palabra. Ademas de esto, para lograr un sistema de reconocimiento optico de caracteres que puede ser utilizado en la vida diaria por una persona invidente, es necesario realizar una etapa de analisis de documento que permita a distinguir palabras, lineas y frases.
 
 
 \chapter{GNU Free Documentation License}
