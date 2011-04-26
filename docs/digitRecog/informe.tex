@@ -50,6 +50,8 @@
 
 %gráficos
 \usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{array}
 
 % Paquetes de la AMS:
 \usepackage{amsmath, amsthm, amsfonts}
@@ -114,7 +116,7 @@
 
 Los problemas visuales afectan a una gran parte de la población tanto en Colombia\footnote{Según el DANE en su gran censo nacional realizado en el año 2005, se estima que el 6.3\% de la población colombiana sufre de alguna discapacidad. De estas personas con discapacidad se estima que el 43.4\% tienen dificultades para ver aun con lentes.} como a nivel mundial\footnote{La organización mundial de la salud estima que en el mundo hay 161 millones de personas con problemas visuales, de los cuales 37 millones son ciegos.}. Estos traen consigo consecuencias devastadoras para las personas que los sufren, afectando su calidad de vida significativamente. Entre todos los problemas que afectan a las personas con discapacidades visuales uno de los más críticos es el del acceso a la información; esto es debido a que la mayoría de la información que los seres humanos reciben del entorno llega a través de los ojos. Los problemas para obtener información causan que las personas con discapacidades visuales queden rezagadas con respecto a los demás miembros de la sociedad, impidiendo así que tengan las mismas oportunidades de vida que una persona con sus cinco sentidos intactos. Generalmente esto causa un efecto de exclusión y segregación en estas personas, que muchas veces son vistas como una carga tanto por si mismas como por las personas que los rodean. 
 
-A partir de la incidencia del problema, una manera de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan acceder a la información que se encuentra en documentos escritos tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y, mediante sintesis de voz, le lea a la persona invidente lo que esta escrito en el papel. Sin embargo, para que sea una solución efectiva al problema, se requiere un sistema que le permita a los discapacitados visuales acceder a la información escrita en cualquier momento en que lo necesiten, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio estos no poseen dicha movilidad ya que, además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en cualquier momento se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa para este problema. No obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, de las cuales se pueden resaltar las siguientes:
+A partir de la incidencia del problema, una manera de ayudar a que las personas con discapacidades visuales tengan una mejor calidad de vida es lograr que puedan acceder a la información que se encuentra en documentos escritos tales como cartas, libros, y volantes. Esto puede ser logrado a través un sistema de reconocimiento óptico de caracteres que reconozca el texto escrito en estos documentos y, mediante síntesis de voz, le lea a la persona invidente lo que esta escrito en el papel. Sin embargo, para que sea una solución efectiva al problema, se requiere un sistema que le permita a los discapacitados visuales acceder a la información escrita en cualquier momento en que lo necesiten, lo cual implica gran movilidad. Si bien existen múltiples sistemas de reconocimiento óptico de caracteres para computadores de escritorio estos no poseen dicha movilidad ya que, además del computador, también necesitan de un escáner para funcionar. Así pues, para que un sistema de este tipo pueda ser utilizado en cualquier momento se requiere de algún dispositivo que sea: pequeño, fácilmente transportable y capaz de hacer el trabajo en un tiempo razonable. Los teléfonos inteligentes parecen ser una buena alternativa para este problema. No obstante, existen grandes diferencias entre un computador de escritorio y un teléfono inteligente, de las cuales se pueden resaltar las siguientes:
 
 	\begin{itemize}
 
@@ -126,13 +128,13 @@ A partir de la incidencia del problema, una manera de ayudar a que las personas 
 
 	\end{itemize}
 
-La diferencia más importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas utilizando un escáner, logrando condiciones de iluminación altas y uniformes a traves del documento. En los teléfonos inteligentes, en cambio, las imágenes deben ser obtenidas por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso variables como la inclinación del texto, la iluminación no uniforme y las deformaciones elásticas del papel dejan de ser despreciables. La persona invidente podría tomar la fotografía inclinada, en el sentido contrario o en un lugar con poca luminosidad, y debido a su discapacidad dificilmente se percataria de su error.
+La diferencia más importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas utilizando un escáner, logrando condiciones de iluminación altas y uniformes a través del documento. En los teléfonos inteligentes, en cambio, las imágenes deben ser obtenidas por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso variables como la inclinación del texto, la iluminación no uniforme y las deformaciones elásticas del papel dejan de ser despreciables. La persona invidente podría tomar la fotografía inclinada, en el sentido contrario o en un lugar con poca luminosidad, y debido a su discapacidad difícilmente se percataría de su error.
 
-Para dar solución al problema de la limitación en la capacidad de procesamiento de los teléfonos inteligentes es posible utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay una mayor disponibilidad de redes inalámbricas en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet, para que esta sea procesada por un servidor con una capacidad de cómputo mucho mayor. La capacidad de procesamiento de los celulares inteligentes ha venido incrementado en los últimos años, asi que seria posible hacer parte del procesamiento en el celular, reduciendo el ancho de banda requerido para enviar la imagen al servidor. Este sistema tendria la movilidad y rapidez necesarias para dar solución al problema de una manera efectiva.
+Para dar solución al problema de la limitación en la capacidad de procesamiento de los teléfonos inteligentes es posible utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay una mayor disponibilidad de redes inalámbricas en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet, para que esta sea procesada por un servidor con una capacidad de cómputo mucho mayor. La capacidad de procesamiento de los celulares inteligentes ha venido incrementado en los últimos años, así que seria posible hacer parte del procesamiento en el celular, reduciendo el ancho de banda requerido para enviar la imagen al servidor. Este sistema tendría la movilidad y rapidez necesarias para dar solución al problema de una manera efectiva.
 
 Para solucionar los problemas asociados con la inclinación del texto, que se pueden producir en las imágenes tomadas por una persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
 
-La literatura cientifica relacionada con el reconocimiento optico de caracteres en telefonos moviles es limitada\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46}. Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y luminosidad antes presentados.
+La literatura científica relacionada con el reconocimiento óptico de caracteres en teléfonos móviles es limitada\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46}. Después de una búsqueda en más de 20 artículos científicos relacionados al tema de reconocimiento óptico de caracteres, y de revisar la documentación técnica de varios OCRs libres, no se encontró un sistema de reconocimiento de caracteres por un medio óptico que haya sido desarrollado para ser usado por personas invidentes en teléfonos inteligentes, que sea de código libre y abierto, y que solucione los problemas de inclinación y luminosidad antes presentados.
 
 \subsection{Definición del problema}
 
@@ -179,29 +181,29 @@ Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numérico
 	
 \section {Antecedentes}
 
-La tecnología actual permite que las personas invidentes tengan un acceso cada vez mayor a la información y al conocimiento escrito. En el área de acceso al texto, existen sistemas que convierten texto ASCII a voz, conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas que permiten reconocer el texto de una imagen y convertirlo a texto en ASCII, conocidos como sistemas OCR, los cuales funcionan usualmente con imagenes adquiridas utilizando un escáner. Según pruebas de eficacia realizadas por la TUK\footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}, los OCRs de codigo libre con mejores resultados son \textit{Tesseract} y \textit{Ocropus}. Cuando la imagen se adquiere mediante una camara digital, se deben seguir diferentes enfoques. Investigaciones pasadas han concluido\footnote{SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} que los retos más importantes son la proyección de la imagen en perspectiva en el plano y la resolución requerida para lograr un buen porcentaje de reconocimiento.
+La tecnología actual permite que las personas invidentes tengan un acceso cada vez mayor a la información y al conocimiento escrito. En el área de acceso al texto, existen sistemas que convierten texto ASCII a voz, conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas que permiten reconocer el texto de una imagen y convertirlo a texto en ASCII, conocidos como sistemas OCR, los cuales funcionan usualmente con imágenes adquiridas utilizando un escáner. Según pruebas de eficacia realizadas por la TUK\footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}, los OCRs de código libre con mejores resultados son \textit{Tesseract} y \textit{Ocropus}. Cuando la imagen se adquiere mediante una cámara digital, se deben seguir diferentes enfoques. Investigaciones pasadas han concluido\footnote{SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} que los retos más importantes son la proyección de la imagen en perspectiva en el plano y la resolución requerida para lograr un buen porcentaje de reconocimiento.
 
-En cuanto a realizar el trabajo de reconocimiento optico de caracteres en celulares, se encontro una investigación\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} en la que se utilizan imágenes de muy baja resolución (640 x 480), y como resultado solo pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos. En una investigación distinta\footnote{SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372} se propone tomar varias imágenes de baja resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto, sin embargo, incrementa significativamente la carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular. Por esta razón la solución se restringe a una arquitectura cliente-servidor. Ademas de ello la solución es poco practica para personas invidentes, ya que requeriría que el usuario supiera con anterioridad como está la estructura del documento para poder mover el celular en la dirección en la que está el texto.
+En cuanto a realizar el trabajo de reconocimiento óptico de caracteres en celulares, se encontró una investigación\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} en la que se utilizan imágenes de muy baja resolución (640 x 480), y como resultado solo pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos. En una investigación distinta\footnote{SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372} se propone tomar varias imágenes de baja resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto, sin embargo, incrementa significativamente la carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular. Por esta razón la solución se restringe a una arquitectura cliente-servidor. Además de ello la solución es poco practica para personas invidentes, ya que requeriría que el usuario supiera con anterioridad como está la estructura del documento para poder mover el celular en la dirección en la que está el texto.
 	
 \subsection{Investigaciones de temas relacionados en la Universidad Tecnológica de Pereira}
 
-Un proyecto interesante desarrollado en Ingenieria de Sistemas y Computación, llamado Proyecto IRIS, permite a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes permanentes y una matriz de electroimanes.
+Un proyecto interesante desarrollado en Ingeniería de Sistemas y Computación, llamado Proyecto IRIS, permite a los invidentes reconocer imágenes con colores a través de vibraciones a diferentes frecuencias. Para lograrlo se utiliza un guante con imanes permanentes y una matriz de electroimanes.
 
-En la maestría en Ingeniería Eléctrica se encontro una investigación\footnote{MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnológica de Pereira, 2005} para la cual se construyo un sistema que reconoce algunos caracteres y dígitos manuscritos, un problema similar al de reconocimiento optico de caracteres. Se intentaron dos maquinas de aprendizaje diferentes: el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes neuronales en todas las pruebas.
+En la maestría en Ingeniería Eléctrica se encontró una investigación\footnote{MUÑOZ, Pablo Andrés. Máquinas de aprendizaje para reconocimiento de caracteres manuscritos. Tesis de Maestría en Ingeniería Eléctrica. Pereira: Universidad Tecnológica de Pereira, 2005} para la cual se construyo un sistema que reconoce algunos caracteres y dígitos manuscritos, un problema similar al de reconocimiento óptico de caracteres. Se intentaron dos maquinas de aprendizaje diferentes: el perceptrón multicapa (comúnmente conocido como red neuronal) y la maquina de vectores de soporte. Sus resultados demostraron que las maquinas de vectores fueron superiores a las redes neuronales en todas las pruebas.
     
-En la tesis\footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2008} se utilizaron redes neuronales para lograr reconocimiento de voz en hardware sobre una FPGA. Los resultados de esta investigación permiten inferir que es posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso de memoria y con relativa eficiencia.
+En la tesis\footnote{RINCÓN, Jaime; LOAIZA, Johan Eric. Reconocimiento de palabras aisladas mediante redes neuronales sobre FPGA. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnológica de Pereira, 2008} se utilizaron redes neuronales para lograr reconocimiento de voz en hardware sobre una FPGA. Los resultados de esta investigación permiten inferir que es posible implementar maquinas de aprendizaje sofisticadas (como las redes neuronales) con un bajo uso de memoria y con relativa eficiencia.
 
-Estudiantes de ingenieria electrica desarrollaron un proyecto de grado para contar transeúntes en una imagen utilizando un sistema de visión artificial\footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnologica de Pereira, 2007}. Los resultados de la investigación indican que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de píxeles. Así mismo, permiten entender distintos problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios componentes conectados como uno solo. Problemas similares a los evidenciados en este proyecto se pueden presentan al separar los caracteres en un sistema de OCR.
+Estudiantes de ingeniería eléctrica desarrollaron un proyecto de grado para contar transeúntes en una imagen utilizando un sistema de visión artificial\footnote{VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnológica de Pereira, 2007}. Los resultados de la investigación indican que el uso de histogramas puede ser de gran utilidad a la hora de distinguir componentes conectados de píxeles. Así mismo, permiten entender distintos problemas que se pueden presentar a la hora de separar estos componentes correctamente, como por ejemplo la identificación de varios componentes conectados como uno solo. Problemas similares a los evidenciados en este proyecto se pueden presentan al separar los caracteres en un sistema de OCR.
     
 \section{Modelo general de sistema OCR}
 
 \subsection{Reconocimiento de caracteres y análisis de documentos}
 
-En esta sección se hara una introducción al reconocimiento optico de caracteres (OCR) y las etapas que son necesarias para realizarlo. Estas etapas son: binarización de la imagen, análisis y segmentación del documento, y reconocimiento óptico de caracteres.  
+En esta sección se hará una introducción al reconocimiento óptico de caracteres (OCR) y las etapas que son necesarias para realizarlo. Estas etapas son: binarización de la imagen, análisis y segmentación del documento, y reconocimiento óptico de caracteres.  
 
 \subsection{Binarización de imagen}
 
-Se refiere a convertir una imagen de escala de grises a una imagen en blanco y negro. También se puede ver como el proceso mediante el cual se separa la parte que es de interes para el reconocimiento optico de caracteres (foreground o primer plano) de la parte que no lo es (background o fondo). Una técnica que da buen resultado es la binarización de Sauvola, en la cual se hace un análisis del vecinadario de cada uno de los pixeles de la imagen para determinar si el pixel es negro o blanco. El hecho de que el analisis sea local, y no global, le brinda un mejor resultado en condiciones de luz variable como las que se pueden encontrar en fotos capturadas por la camara de un celular.
+Se refiere a convertir una imagen de escala de grises a una imagen en blanco y negro. También se puede ver como el proceso mediante el cual se separa la parte que es de interés para el reconocimiento óptico de caracteres (foreground o primer plano) de la parte que no lo es (background o fondo). Una técnica que da buen resultado es la binarización de Sauvola, en la cual se hace un análisis del vecindario de cada uno de los píxeles de la imagen para determinar si el píxel es negro o blanco. El hecho de que el análisis sea local, y no global, le brinda un mejor resultado en condiciones de luz variable como las que se pueden encontrar en fotos capturadas por la cámara de un celular.
 
 \subsection{Análisis del documento}
 
@@ -213,9 +215,9 @@ Probablemente la mejor solución para un sistema OCR resulte de la mezcla de var
 
 Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones. Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones, entre ellos se pueden encontrar algunos modelos inspirados en la biología como los que usan redes neuronales. Otros modelos son puramente matemáticos, como las máquinas de vectores de soporte, o estadísticos, como la distribución normal multivariable aplicando el teorema de Bayes.
 
-La  mayoria de los métodos para el reconocimiento de patrones tienen como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres es deseable que estas características cambien muy poco frente a ciertas variables de cada imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y Fluzzer, los cuales se calculan realizando una integral. En una imagen digital, por el hecho de ser discreta, la integral se convierte en una sumatoria en la que se le asignan diferentes pesos a cada píxel, dependiendo de la posición. Posteriormente se realizan operaciones sobre estos pixeles que permitan obtener un conjunto limitado de características. El objetivo es que estas caracteristicas sean independientes a la rotación, la translación y el escalamiento. Al ser características que no varían significativamente con respecto a estas variables se les ha dado el nombre de ``momentos invariantes''.
+La  mayoría de los métodos para el reconocimiento de patrones tienen como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres es deseable que estas características cambien muy poco frente a ciertas variables de cada imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y Fluzzer, los cuales se calculan realizando una integral. En una imagen digital, por el hecho de ser discreta, la integral se convierte en una sumatoria en la que se le asignan diferentes pesos a cada píxel, dependiendo de la posición. Posteriormente se realizan operaciones sobre estos píxeles que permitan obtener un conjunto limitado de características. El objetivo es que estas características sean independientes a la rotación, la translación y el escalamiento. Al ser características que no varían significativamente con respecto a estas variables se les ha dado el nombre de ``momentos invariantes''.
 
-Para realizar el entrenamiento se deben tomar muchas imágenes de un solo tipo, ya sea una letra, un número o una forma. Despues se calculan, para cada una de ellas, sus características invariantes. Posteriormente se etiqueta la imagen, guardando esta información en una base de datos. Cuando el sistema se pone en marcha se obtienen las características de la imagen y se aplica un algoritmo de aprendizaje sobre las mismas. Uno de los métodos mas sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y entre clases diferentes. Con esto se pueden crear regiones en el híper-espacio\footnote{Un espacio de varias dimensiones} para las diferentes clases. En este caso para clasificar una imagen de entrada se tomarian sus características, y se ubicaria en que región de este híper-espacio se encuentran.
+Para realizar el entrenamiento se deben tomar muchas imágenes de un solo tipo, ya sea una letra, un número o una forma. Después se calculan, para cada una de ellas, sus características invariantes. Posteriormente se etiqueta la imagen, guardando esta información en una base de datos. Cuando el sistema se pone en marcha se obtienen las características de la imagen y se aplica un algoritmo de aprendizaje sobre las mismas. Uno de los métodos mas sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y entre clases diferentes. Con esto se pueden crear regiones en el hiper-espacio\footnote{Un espacio de varias dimensiones} para las diferentes clases. En este caso para clasificar una imagen de entrada se tomarían sus características, y se ubicaría en que región de este hiper-espacio se encuentran.
     
 \chapter{Métodos estadísticos para la clasificación}
 \label{chap:ml}
@@ -233,14 +235,14 @@ Los métodos de aprendizaje de máquinas, sean de clasificación o de regresión
 	\label{fig:classif1}
 	\end{figure}
 
-En la figura \ref{fig:classif1} se puede apreciar el esquema general de un algoritmo clasificador. Lo que se encuentra en la caja ``clasificador'' es el modelo que va a ser utilizado para clasificar. Uno de los problemas que hay que resolver antes de proceder a la clasificación es encontrar un modelo que pueda aproximar lo mejor posible la realidad del problema que se desea solucionar. Varios autores han especificado que hasta el momento no se ha encontrado un modelo que se ajuste de la mejor manera a todos los problemas, a esto le han llamado {\it ``no free lunch theorem''}, es español esto traduciría ``teorema no hay almuezo gratis''. En algo si concuerdan la mayoría de investigadores, y es en que si varios modelos funcionan bien se debe escojer el mas sencillo de ellos. Esta observación se desprende del principio filosofico conocido como la navaja de Ockham, propuesto por Guillermo de Ockham (1280-1349), segun el cual ``cuando dos teorías en igualdad de condiciones tienen las mismas consecuencias, la teoría más simple tiene más probabilidades de ser correcta que la compleja'' \footnote{Robert Audi, ed. Ockham's razor. The Cambridge Dictionary of Philosophy (2nd Edition). Cambridge University Press}. Este principio se aplica en muchos campos, y para el caso del aprendizaje de máquinas tiene especial sentido, ya que usualmente los modelos más sencillos son más fáciles de entrenar, de comprender y sobre todo de depurar.
+En la figura \ref{fig:classif1} se puede apreciar el esquema general de un algoritmo clasificador. Lo que se encuentra en la caja ``clasificador'' es el modelo que va a ser utilizado para clasificar. Uno de los problemas que hay que resolver antes de proceder a la clasificación es encontrar un modelo que pueda aproximar lo mejor posible la realidad del problema que se desea solucionar. Varios autores han especificado que hasta el momento no se ha encontrado un modelo que se ajuste de la mejor manera a todos los problemas, a esto le han llamado {\it ``no free lunch theorem''}, es español esto traduciría ``teorema no hay almuerzo gratis''. En algo si concuerdan la mayoría de investigadores, y es en que si varios modelos funcionan bien se debe escoger el mas sencillo de ellos. Esta observación se desprende del principio filosófico conocido como la navaja de Ockham, propuesto por Guillermo de Ockham (1280-1349), según el cual ``cuando dos teorías en igualdad de condiciones tienen las mismas consecuencias, la teoría más simple tiene más probabilidades de ser correcta que la compleja'' \footnote{Robert Audi, ed. Ockham's razor. The Cambridge Dictionary of Philosophy (2nd Edition). Cambridge University Press}. Este principio se aplica en muchos campos, y para el caso del aprendizaje de máquinas tiene especial sentido, ya que usualmente los modelos más sencillos son más fáciles de entrenar, de comprender y sobre todo de depurar.
 
 \subsection{El aprendizaje de máquinas}
 \label{sect:machineLearning}
 
-Con los avances en las tecnologías de computo la sociedad tiene la posibilidad de almacenar y procesar grandes cantidades de información. Por ejemplo, las cadenas de supermercado poseen grandes volumenes de información de sus ventas, y las entidades financieras poseen la información crediticia de todos sus clientes. Para los supermercados es muy útil saber que personas compran ciertos tipos de productos y con que periodicidad, y para las entidades financieras es útil saber que personas son de mayor y menor riesgo crediticio.
+Con los avances en las tecnologías de computo la sociedad tiene la posibilidad de almacenar y procesar grandes cantidades de información. Por ejemplo, las cadenas de supermercado poseen grandes volúmenes de información de sus ventas, y las entidades financieras poseen la información crediticia de todos sus clientes. Para los supermercados es muy útil saber que personas compran ciertos tipos de productos y con que periodicidad, y para las entidades financieras es útil saber que personas son de mayor y menor riesgo crediticio.
 
-Si, por ejemplo, supieramos con exactitud como establecer si una persona es de riesgo o no para una central de crédito dados sus datos financieros, no necesitaríamos utilizar
+Si, por ejemplo, supiéramos con exactitud como establecer si una persona es de riesgo o no para una central de crédito dados sus datos financieros, no necesitaríamos utilizar
 aprendizaje de máquinas; podríamos simplemente escribir las reglas que determinan si una persona es de riesgo o no y aplicarlas. Pero dado que muchas veces no es posible establecer estas reglas, lo que se busca al realizar aprendizaje de máquinas es extraer esta información de los datos.
 
 Alpaydin indica que las personas usualmente sabemos que existen procesos que explican los datos que observamos. Por ejemplo, en el caso del supermercado, el comportamiento de los clientes no es completamente aleatorio; por tanto, se espera encontrar algunos patrones recurrentes en los datos. Aunque este autor indica que muchas veces no es posible identificar el modelo completamente, usualmente se puede construir una buena aproximación. Este es el nicho de trabajo del aprendizaje de máquinas, pues esta aproximación puede ser útil para encontrar patrones en el problema estudiado o para hacer estimaciones de datos futuros, asumiendo que en el futuro los datos van a comportarse de una manera similar a como se comportaron en el pasado.
@@ -249,7 +251,7 @@ Alpaydin indica que las personas usualmente sabemos que existen procesos que exp
 
 \section{Algunos algoritmos de clasificación}
 
-Como se indicó en la sección anterior, no hay ningun algoritmo que sea la mejor elección para todo tipo de problemas. En esta sección se pretende presentar algunos de los algoritmos o modelos de aprendizaje de máquinas, sin ahondar en cada uno de ellos, simplemente expondra brevemente de que se tratan y cuales son sus ventajas y desventajas.
+Como se indicó en la sección anterior, no hay ningún algoritmo que sea la mejor elección para todo tipo de problemas. En esta sección se pretende presentar algunos de los algoritmos o modelos de aprendizaje de máquinas, sin ahondar en cada uno de ellos, simplemente expondrá brevemente de que se tratan y cuales son sus ventajas y desventajas.
 
 \subsection{Árboles de decisión}
 
@@ -264,7 +266,7 @@ Un árbol de decisión es un modelo utilizado principalmente para clasificación
 	\label{fig:decisionTree}
 	\end{figure}
 
-En la figura \ref{fig:decisionTree}, se muestra un ejemplo de un árbol de decisión\footnote{Tomado de ``http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-spring-2005/'', 12 de Marzo de 2011}. Se puede observar que dependiendo del valor de las variables en cada nodo no terminal se escoje un camino diferente, realizando así un proceso de clasificación por etapas. En ese ejemplo las clases son ``caminar'' y ``conducir''. Es posible examinar el proceso de desición utilizado para llegar a estas variables. Naturalmente, existen procesos automáticos para generar árboles como el del ejemplo a partir de un conjunto de datos de entrenamiento.
+En la figura \ref{fig:decisionTree}, se muestra un ejemplo de un árbol de decisión\footnote{Tomado de ``http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-spring-2005/'', 12 de Marzo de 2011}. Se puede observar que dependiendo del valor de las variables en cada nodo no terminal se escoge un camino diferente, realizando así un proceso de clasificación por etapas. En ese ejemplo las clases son ``caminar'' y ``conducir''. Es posible examinar el proceso de decisión utilizado para llegar a estas variables. Naturalmente, existen procesos automáticos para generar árboles como el del ejemplo a partir de un conjunto de datos de entrenamiento.
 
 De los árboles de decisión se puede concluir:
 
@@ -292,9 +294,9 @@ La estadística es uno de los métodos mas antiguos para inferir el comportamien
 
 	\item No necesita configuración, lo único que se debe saber en un método estadístico a-priori es la distribución de probabilidad con la que se va a aproximar el modelo real.
 
-	\item Un modelo estadístico es fácil de interpretar por un humano, aunque no es tan fácil de intepretar como los árboles de decisión.
+	\item Un modelo estadístico es fácil de interpretar por un humano, aunque no es tan fácil de interpretar como los árboles de decisión.
 
-	\item El poder clasificatorio es mas alto que el de los árboles de desición.
+	\item El poder clasificatorio es mas alto que el de los árboles de decisión.
 
 	\item Brinda mucha información, en vez de solo determinar a que clase pertenece una instancia, brida la probabilidad de que la instancia pertenezca cada una de las demás clases.
 	
@@ -321,19 +323,19 @@ Algunas ventajas y desventajas de las redes neuronales son:
 
 \begin{itemize}
 
-	\item El poder clasificatorio de este método es mayor que el de los métodos anteriormente mencionados. Matemáticamente se ha demostrado que no exigen ninguna distrubución determinada de los datos, ni tampoco que estos sean separables linealmente.
+	\item El poder clasificatorio de este método es mayor que el de los métodos anteriormente mencionados. Matemáticamente se ha demostrado que no exigen ninguna distribución determinada de los datos, ni tampoco que estos sean separables linealmente.
 
 	\item Al igual que el método estadístico, con una función de activación adecuada se puede calcular la probabilidad de que una instancia pertenezca a cada clase.
 
 	\item Dada la cantidad de parámetros que se pueden configurar, estos algoritmos son muy difíciles de afinar para un problema determinado.
 
-	\item Las redes neuronales son difíciles de interpretar. Una vez entrenadas pueden dar buenos o malos resultados, pero es dificil saber cual es el error real, o si es posible mejorar los resultados cambiando los parametros.
+	\item Las redes neuronales son difíciles de interpretar. Una vez entrenadas pueden dar buenos o malos resultados, pero es difícil saber cual es el error real, o si es posible mejorar los resultados cambiando los parámetros.
 
 \end{itemize}
 
 \section{Algunos elementos de probabilidad}
 
-Un experimento aleatorio es aquel del cual no se conoce el resultado con certeza\footnote{Ross, S.M. Introduction to Probability and Statistics for Engineers and Scientists. New York: Wiley 1987.}. El conjunto de todos los posibles resultados es llamado espacio muestral $S$, y a cualquier subconjunto de $S$ se le llama evento $E$. Se puede interpretar la probabilidad como una frecuencia: cuando un experimiento aleatorio es repetido continuamente bajo las mismas condiciones, la proporción de veces que ocurre en el tiempo el evento $E$ se aproxima a un valor constante; a esto lo denotamos $P(E)$ e indica la probabilidad que el evento $E$ ocurra.
+Un experimento aleatorio es aquel del cual no se conoce el resultado con certeza\footnote{Ross, S.M. Introduction to Probability and Statistics for Engineers and Scientists. New York: Wiley 1987.}. El conjunto de todos los posibles resultados es llamado espacio muestral $S$, y a cualquier subconjunto de $S$ se le llama evento $E$. Se puede interpretar la probabilidad como una frecuencia: cuando un experimento aleatorio es repetido continuamente bajo las mismas condiciones, la proporción de veces que ocurre en el tiempo el evento $E$ se aproxima a un valor constante; a esto lo denotamos $P(E)$ e indica la probabilidad que el evento $E$ ocurra.
 
 Una variable aleatoria es aquella que puede tomar cualquier valor en distintos experimentos, es decir, su valor no se puede determinar con certeza.
 
@@ -345,7 +347,7 @@ La probabilidad condicional es la probabilidad de que un evento $A$ ocurra, dado
 		P(A|B) = \frac{P(A \cap B)}{P(B)}
 	\end{equation}
 
-Al saber que ocurrió el evento $B$, el espacio muestral se reduce al subconjunto $B$. Dado que la intersección es conmutativa, de la equación \ref{eq:condProb} se obtiene:
+Al saber que ocurrió el evento $B$, el espacio muestral se reduce al subconjunto $B$. Dado que la intersección es conmutativa, de la ecuación \ref{eq:condProb} se obtiene:
 
 \[P(A \cap B) = P(A|B)P(B) = P(B|A)P(A)\]
 
@@ -371,7 +373,7 @@ Entonces, reemplazando la ecuación \ref{eq:bayesDenominator} en la ecuación \r
 	
 \subsection{La esperanza matemática}
 
-Supongamos que se realiza un experimento sobre una variable aleatoria $x$ un número infinito de veces, entonces la esperanza de la variable $x$ es el promedio del valor de $x$ en los infinitos experimentos y se denota $E[x]$ (que se lee valor esperado de $x$ o esperanza de $x$). El concepto de esperanza es importante en la probabilidad porque además de tener usualmente un significado de interés para la variable aleatoria estudiada, se espera que independiente de la distribución de probabilidad que sigua la variable $x$, la esperanza de $x$ converja a un valor constante si las condiciones del experimento no cambian. Matematicamente, el valor de la esperanza de una variable aleatoria $x$ es el siguiente:
+Supongamos que se realiza un experimento sobre una variable aleatoria $x$ un número infinito de veces, entonces la esperanza de la variable $x$ es el promedio del valor de $x$ en los infinitos experimentos y se denota $E[x]$ (que se lee valor esperado de $x$ o esperanza de $x$). El concepto de esperanza es importante en la probabilidad porque además de tener usualmente un significado de interés para la variable aleatoria estudiada, se espera que independiente de la distribución de probabilidad que sigue la variable $x$, la esperanza de $x$ converja a un valor constante si las condiciones del experimento no cambian. Matemáticamente, el valor de la esperanza de una variable aleatoria $x$ es el siguiente:
 
 	\[ E(X) = \left\{ \begin{array}{ll}
 		\sum_{i}{x_iP(x_i)}   & \mbox{si X es una variable discreta} \\
@@ -399,21 +401,21 @@ Una función especial se da cuando $g(X) = x^n$:
 
 Esta función se denomina el enésimo momento de X. El primer momento, por ejemplo, es la media.
 
-\subsection{Desviación estandar, varianza y covarianza}
+\subsection{Desviación estándar, varianza y covarianza}
 
 La varianza mide que tanto varia $X$ alrededor de el valor esperado. Si $X$ es una variable aleatoria entonces la varianza se define como el segundo momento menos el cuadrado del primer momento:
 
 	\[Var(X) = E[X^2] - E[X]^2 = E[X^2] - \mu^2\]
 
-La desviación estandar es la raiz cuadrada de la varianza, y como se expresa en las mismas unidades de $X$ es más utilizada que la varianza, pues puede ser interpretada de una manera más facil. La desviación estandar se denota usualmente con el simbolo $\sigma$.
+La desviación estándar es la raíz cuadrada de la varianza, y como se expresa en las mismas unidades de $X$ es más utilizada que la varianza, pues puede ser interpretada de una manera más fácil. La desviación estándar se denota usualmente con el símbolo $\sigma$.
 
-La covarianza indica la relación que existe entre dos variables aleatorias $X$ y $Y$. Si la ocurrencia de $X$ hace más probable la ocurrencia de $Y$ entonces la covarianza es positiva. Si por el contrario la ocurrencia de $X$ hace menos probable la ocurrencia de $Y$ entonces la covarianza entre ambas es negativa. Si las dos variables no estan relacionadas, entonces la covarianza sera 0. La covarianza se define matematicamente como:
+La covarianza indica la relación que existe entre dos variables aleatorias $X$ y $Y$. Si la ocurrencia de $X$ hace más probable la ocurrencia de $Y$ entonces la covarianza es positiva. Si por el contrario la ocurrencia de $X$ hace menos probable la ocurrencia de $Y$ entonces la covarianza entre ambas es negativa. Si las dos variables no están relacionadas, entonces la covarianza sera 0. La covarianza se define matemáticamente como:
 
 	\[Cov(X, Y) = E[XY] - \mu_X\mu_Y\]
 
 \subsection{Distribución de probabilidad}
 
-Una distribución de probabilidad de una variable aleatoria $X$ es una función que asigna una probabilidad a cada posible valor que puede tomar la variable $X$. Cuando X es una variable discreta, la función definira un valor de probabilidad para cada uno de los valores que puede tomar. Sin embargo, cuando la variable $X$ es continua, existen infinitos valores posible que puede tomar y por tanto la probabilidad de obtener un valor especifico es 0. Por esta razón tiene poco sentido hablar de la probabilidad de un valor especifico y la distribución de probabilidad se convierte en una función de distribución, la cual define, para cada real $x$, la probabilidad de que la variable $X$ sea menor o igual a $x$. En esto caso la distribución de probabilidad $D$ se definiría matematicamente como:
+Una distribución de probabilidad de una variable aleatoria $X$ es una función que asigna una probabilidad a cada posible valor que puede tomar la variable $X$. Cuando X es una variable discreta, la función definirá un valor de probabilidad para cada uno de los valores que puede tomar. Sin embargo, cuando la variable $X$ es continua, existen infinitos valores posible que puede tomar y por tanto la probabilidad de obtener un valor especifico es 0. Por esta razón tiene poco sentido hablar de la probabilidad de un valor especifico y la distribución de probabilidad se convierte en una función de distribución, la cual define, para cada real $x$, la probabilidad de que la variable $X$ sea menor o igual a $x$. En esto caso la distribución de probabilidad $D$ se definiría matemáticamente como:
 
 	\[D(x) = P(X \leq x) = \int_{-\infty}^x{f(t)dt}\]
 
@@ -423,14 +425,14 @@ Donde f(t) es una función de densidad continua, que debe ser positiva para todo
 	
 \subsection{La distribución normal}
 
-Muchos fenomenos de la naturaleza siguen una distribución normal, al menos de manera aproximada. Esta distribución tiene forma de campana, lo que significa que los datos se obtienen alrededor de un valor típico con ligeras variaciones. Matemáticamente, si $\mu$ representa el valor típico y $\sigma$ representa cuanto varían las instancias al rededor de este valor típico, la distribución está dada por:
+Muchos fenómenos de la naturaleza siguen una distribución normal, al menos de manera aproximada. Esta distribución tiene forma de campana, lo que significa que los datos se obtienen alrededor de un valor típico con ligeras variaciones. Matemáticamente, si $\mu$ representa el valor típico y $\sigma$ representa cuanto varían las instancias al rededor de este valor típico, la distribución está dada por:
 
 	\begin{equation}
 		p(x) = \frac{1}{\sqrt{2\pi}\sigma}exp\left[-\frac{(x-\mu)^2}{2\sigma^2}\right]
 	\label{eq:normal}
 	\end{equation}
 
-Donde $exp[x]$ es la función exponencial $e^x$, $\mu$ son la media y $\sigma$ se conoce como desviación estandar, que se calculan como se especifica en las secciones anteriores. En una destribución normal el 68.27\% de los datos está entre $(\mu-\sigma, \mu+\sigma)$, el 95.45\% de los datos está entre $(\mu-2\sigma, \mu+2\sigma)$ y el 99.73\% de los datos está entre $(\mu-3\sigma, \mu+3\sigma)$.
+Donde $exp[x]$ es la función exponencial $e^x$, $\mu$ son la media y $\sigma$ se conoce como desviación estándar, que se calculan como se especifica en las secciones anteriores. En una distribución normal el 68.27\% de los datos está entre $(\mu-\sigma, \mu+\sigma)$, el 95.45\% de los datos está entre $(\mu-2\sigma, \mu+2\sigma)$ y el 99.73\% de los datos está entre $(\mu-3\sigma, \mu+3\sigma)$.
 
 \section{La distribución normal multivariable}
 \label{sect:multivar}
@@ -441,15 +443,15 @@ En muchas ocasiones, en lugar de calcular un único valor $x$ de cada elemento m
 		p(x) = \frac{1}{(2\pi)^{d/2}|\Sigma|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu})\Sigma^{-1}(\vec{x}-\vec{\mu})}\right]
 	\end{equation}
 
-Esto se denota como $\vec{x} \sim N(\vec{\mu},\Sigma)$ y significa que $\vec{x}$ sigue una distrubución normal multivariable cuya media es el vector $\vec{\mu}$ y cuya matriz de covarianza es la matriz $\Sigma$. Si para cada clase $C_i$ se calculan la media $\vec{\mu_i}$ y la matriz de covarianza $\Sigma_i$, la densidad de probabilidad $p(x|C_i)$ es:
+Esto se denota como $\vec{x} \sim N(\vec{\mu},\Sigma)$ y significa que $\vec{x}$ sigue una distribución normal multivariable cuya media es el vector $\vec{\mu}$ y cuya matriz de covarianza es la matriz $\Sigma$. Si para cada clase $C_i$ se calculan la media $\vec{\mu_i}$ y la matriz de covarianza $\Sigma_i$, la densidad de probabilidad $p(x|C_i)$ es:
 
 	\begin{equation}\label{eq:multivariate}
 		p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}\right]
 	\end{equation}
 	
-La distribución normal multivariable puede ser utilizada como un algoritmo de clasificación, pues es un modelo que ha demostrado ser robusto para varias aplicaciones diferentes\footnote{Jerome H. Friedman. Regularized discriminant analysis. Journal of the american statistical association, 84:165–175, 1989.}.	El objetivo es encontrar $P(C_i|x)$, que es la probabilidad posterior de que el vector $\vec{x}$ pertenezca a la clase $C_i$. Si se calcula $P(C_i|x)$ para cada clase $i$, se escoje como la clase correcta la que poseea la probabilidad posterior mas alta.
+La distribución normal multivariable puede ser utilizada como un algoritmo de clasificación, pues es un modelo que ha demostrado ser robusto para varias aplicaciones diferentes\footnote{Jerome H. Friedman. Regularized discriminant analysis. Journal of the american statistical association, 84:165–175, 1989.}.	El objetivo es encontrar $P(C_i|x)$, que es la probabilidad posterior de que el vector $\vec{x}$ pertenezca a la clase $C_i$. Si se calcula $P(C_i|x)$ para cada clase $i$, se escoge como la clase correcta la que posea la probabilidad posterior mas alta.
 
-Es importante notar que en lugar de simplemente determinar a que clase pertenece la instancia dada se estan calculando también las probabilidades de que pertenezca a cada una de las otras clases, lo que permite calcular el porcentaje de seguridad con el cual el algoritmo está dando su respuesta. Esto es una gran ventaja para el problema de reconocimiento óptico de caracteres, ya que algunas correcciones pueden realizarse en etapas posteriores, por ejemplo, utilizando un diccionario.
+Es importante notar que en lugar de simplemente determinar a que clase pertenece la instancia dada se están calculando también las probabilidades de que pertenezca a cada una de las otras clases, lo que permite calcular el porcentaje de seguridad con el cual el algoritmo está dando su respuesta. Esto es una gran ventaja para el problema de reconocimiento óptico de caracteres, ya que algunas correcciones pueden realizarse en etapas posteriores, por ejemplo, utilizando un diccionario.
 
 Como se puede observar en la ecuación \eqref{eq:multivariate} lo que permite calcular la distribución normal multivariable es $p(x|C_i)$, que es la densidad de probabilidad de la variable aleatoria $\vec{x}$ dada la clase $C_i$; lo que se desea calcular, en cambio, es la probabilidad de que un $\vec{x}$ dado pertenezca a la clase $C_i$, es decir, la probabilidad posterior $P(C_i|\vec{x})$. Para eso se utiliza el teorema de Bayes (ecuación \ref{eq:bayes2}), con el cual la probabilidad posterior se calcula como:
 
@@ -474,40 +476,40 @@ Donde $\vec{x_i}$ son las instancias del conjunto $T_i$, $E[x]$ es el valor espe
 
 \subsection{Simplificaciones de la distribución normal multivariable}
 
-Dado que la matriz de covarianza es de tamaño $d \times d$, el número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones $d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada\footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de trés instancias se desea calcular la media y la varianza de la población. Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuantos mas parámetros se deban calcular se necesita una mayor cantidad de datos para obtener una mejor generalización.
+Dado que la matriz de covarianza es de tamaño $d \times d$, el número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones $d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada\footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de tres instancias se desea calcular la media y la varianza de la población. Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuantos mas parámetros se deban calcular se necesita una mayor cantidad de datos para obtener una mejor generalización.
 
-Una manera de realizar las clasificación es calcular la distancia Mahalanobis entre la entrada y la media de cada clase, y escojer la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, esta dada por:
+Una manera de realizar las clasificación es calcular la distancia Mahalanobis entre la entrada y la media de cada clase, y escoger la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, esta dada por:
 
 	\begin{equation}
 		\label{eq:mahalanobis}
 		d_i = (\vec{x}-\vec{\mu_i})\Sigma(\vec{x}-\vec{\mu_i}) 
 	\end{equation}
 
-Cuando la matriz de covarianza es igual a la matriz identidad la distancia Mahalanobis se convierte en la distancia euclidiana al cuadrado, pero en los demás casos puede proporcionar valores mucho más adecuados para calcular la cercania de una entrada a cada una de las clases. En el caso de una distribución normal multivariable, es posible utilizar una matriz de covarianza compartida por todas las clases para calcular la distancia Mahalanobis. Las probabilidades posteriores pueden ser calculadas de la misma manera, y se sigue escojiendo la clase con mayor probabilidad posterior.
+Cuando la matriz de covarianza es igual a la matriz identidad la distancia Mahalanobis se convierte en la distancia euclidiana al cuadrado, pero en los demás casos puede proporcionar valores mucho más adecuados para calcular la cercanía de una entrada a cada una de las clases. En el caso de una distribución normal multivariable, es posible utilizar una matriz de covarianza compartida por todas las clases para calcular la distancia Mahalanobis. Las probabilidades posteriores pueden ser calculadas de la misma manera, y se sigue escogiendo la clase con mayor probabilidad posterior.
 
 \chapter{Extracción de características de los caracteres}
 \label{chap:features}
 
 \section{Introducción}
 
-Como se explico en la sección \ref{sect:machineLearning}, para hacer aprendizaje de maquina es necesario primero obtener unas caracteristicas que permitan diferenciar las distintas clases. En el caso del reconocimiento optico de caracteres se requieren caracteristicas que permitan diferenciar, por ejemplo, el numero '5' del numero '8'. Para obtener estas caracteristicas se requieren realizar algunas etapas de procesamiento que detecten donde estan los caracteres y que forma tienen. En las siguientes secciones se describiran las etapas de procesamiento que se realizaron en este proyecto.
+Como se explico en la sección \ref{sect:machineLearning}, para hacer aprendizaje de maquina es necesario primero obtener unas características que permitan diferenciar las distintas clases. En el caso del reconocimiento óptico de caracteres se requieren características que permitan diferenciar, por ejemplo, el numero '5' del numero '8'. Para obtener estas características se requieren realizar algunas etapas de procesamiento que detecten donde están los caracteres y que forma tienen. En las siguientes secciones se describirán las etapas de procesamiento que se realizaron en este proyecto.
 
 \section{Escala de grises}
 
-Antes de computar las caracteristicas es necesario hacer un preprocesamiento. Primero la imagen debe convertirse a un formato más apropiado para extraerle las caracteristicas. Dado que las letras no varian con el color, y que el objetivo del sistema no es reconocer colores, es conveniente convertir la imagen a una escala de grises. En este proyecto se trabajo con el modelo RGB. En este modelo se asigna una intensidad a cada uno de los tres colores primarios de la luz: rojo, verde y azul\footnote{que en ingles son red, green, y blue, de alli las iniciales RGB}, de esta manera cada pixel en una fotografia se representa mediante un valor que identifique la intensidad de cada uno de estos tres colores que, mezclados por adición, se acerque más al color verdadero del pixel. Las camaras digitales modernas utilizan valores entre\footnote{en donde 0 representa que el color no se utiliza y 255 representa la mayor intensidad} 0 y 255 ($2^8$) permitiendo de esta manera más de 16 millones de colores distintos. En una escala de grises, en cambio, cada pixel es representado con un unico valor entre 0 y 255, el cual representa que tan oscuro es el mismo. Para convertir un pixel de una imagen en color a uno en escala de grises se suele hacer un promedio ponderado de la intensidad de cada uno de los tres colores, en donde a cada color se le asigna un peso. Al ser un promedio ponderado la suma de los tres pesos debe ser igual a 1. Los pesos utilizados más comunmente son:
+Antes de computar las características es necesario hacer un preprocesamiento. Primero la imagen debe convertirse a un formato más apropiado para extraerle las características. Dado que las letras no varían con el color, y que el objetivo del sistema no es reconocer colores, es conveniente convertir la imagen a una escala de grises. En este proyecto se trabajo con el modelo RGB. En este modelo se asigna una intensidad a cada uno de los tres colores primarios de la luz: rojo, verde y azul\footnote{que en ingles son red, green, y blue, de alli las iniciales RGB}, de esta manera cada píxel en una fotografía se representa mediante un valor que identifique la intensidad de cada uno de estos tres colores que, mezclados por adición, se acerque más al color verdadero del píxel. Las cámaras digitales modernas utilizan valores entre\footnote{en donde 0 representa que el color no se utiliza y 255 representa la mayor intensidad} 0 y 255 ($2^8$) permitiendo de esta manera más de 16 millones de colores distintos. En una escala de grises, en cambio, cada píxel es representado con un único valor entre 0 y 255, el cual representa que tan oscuro es el mismo. Para convertir un píxel de una imagen en color a uno en escala de grises se suele hacer un promedio ponderado de la intensidad de cada uno de los tres colores, en donde a cada color se le asigna un peso. Al ser un promedio ponderado la suma de los tres pesos debe ser igual a 1. Los pesos utilizados más comúnmente son:
 
-\begin{equation}\label{bwtocv}
+\begin{equation}\label{eq:bwtocv}
 	gris = 0.2989 * rojo + 0.5870 * verde + 0.1140 * azul 
 \end{equation}
 
-Estos pesos se utilizan en la libreria de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
+Estos pesos se utilizan en la librería de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
 
-Haciendo uso de la ecuación \eqref{bwtocv} se implemento un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
+Haciendo uso de la ecuación \ref{eq:bwtocv} se implemento un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
 
 \section{Binarización}
 \label{sect:binarization}
 
-Una vez obtenida la imagen en escala de grises se procedió a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es útil para el reconocimiento de caracteres debido a que las letras y los dígitos en escala de grises no se distinguen por la intensidad de los pixeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imágenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada pixel, pasando de 256 posibles valores a tan solo 2. Un metodo muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada pixel $(x,y)$ y establecer el valor de cada pixel como:
+Una vez obtenida la imagen en escala de grises se procedió a hacer una binarización. La binarización es un proceso que transforma una imagen en escala de grises a una imagen en dos colores: blanco o negro. Esto es útil para el reconocimiento de caracteres debido a que las letras y los dígitos en escala de grises no se distinguen por la intensidad de los píxeles que los componen sino por la forma que estos producen. De esta manera, al convertir las imágenes a blanco y negro se pierde muy poca información relevante y se simplifica la representación de cada píxel, pasando de 256 posibles valores a tan solo 2. Un método muy utilizado para binarizar una imagen es escoger un valor umbral $T(x,y)$ para cada píxel $(x,y)$ y establecer el valor de cada píxel como:
 
 \begin{equation}\label{binEq}
 	I_2(x,y) = \left\{ \begin{array}{ll}
@@ -516,25 +518,25 @@ Una vez obtenida la imagen en escala de grises se procedió a hacer una binariza
 	\end{array} \right. 
 \end{equation}
 
-Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usualmente, la diferencia entre los distintos metodos de binarización se encuentra en como elige cada uno el valor umbral $T(x,y)$.
+Donde $I_1(x,y)$ es la imagen original y $I_2(x,y)$ es la imagen binarizada. Usualmente, la diferencia entre los distintos métodos de binarización se encuentra en como elige cada uno el valor umbral $T(x,y)$.
 
-Cuando las imágenes son adquiridas mediante un escaner, es común escoger un $T(x,y)$ constante para todos los pixeles. Esto es debido a que en una imagen escaneada se logra una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es adquirida utilizando una cámara digital, en condiciones de iluminación no tan constantes, se decidio eligir un método de binarización local adaptativo. En un metodo de este tipo $T(x,y)$ puede ser distinto para cada pixel, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de pixeles del pixel $(x,y)$. Uno de los metodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
+Cuando las imágenes son adquiridas mediante un escáner, es común escoger un $T(x,y)$ constante para todos los píxeles. Esto es debido a que en una imagen escaneada se logra una iluminación aproximadamente constante en todo el documento. Como en este caso la imagen es adquirida utilizando una cámara digital, en condiciones de iluminación no tan constantes, se decidió elegir un método de binarización local adaptativo. En un método de este tipo $T(x,y)$ puede ser distinto para cada píxel, y se dice que es local porque $T(x,y)$ se calcula utilizando información sobre el vecindario de píxeles del píxel $(x,y)$. Uno de los métodos que ha dado los mejores resultados\footnote{De hecho es el que se utiliza en varios OCRs libres.} para el reconocimiento de caracteres es el de Sauvola, en el cual $T(x,y)$ se obtiene utilizando la siguiente ecuación:
 
 \begin{equation}\label{rSauvola}
 	T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
 \end{equation}
 
-Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estandar de los pixeles en algun area alrededor de X, y R es el maximo valor de la desviación estandar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada pixel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los pixeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los pixeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$\footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapixeles, incluso con valores relativamente pequeños de $A$.
+Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estándar de los píxeles en algún área alrededor de X, y R es el máximo valor de la desviación estándar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada píxel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los píxeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los píxeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$\footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapíxeles, incluso con valores relativamente pequeños de $A$.
 
 \subsection{Optimización al algoritmo de binarización}
 
-Dada la complejidad del algoritmo estandar de binarización, se hizo una investigación para buscar algoritmos ya existentes que realizaran la tarea en un tiempo más razonable. En un artículo escrito por los creadores del proyecto Ocropus\footnote{Un proyecto de codigo abierto cuyo objetivo es crear un sistema de reconocimiento optico de caracteres} se propone\footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} un algoritmo que binariza una imagen en un tiempo $O(N \times M)$ utilizando imágenes integrales y el metodo de Sauvola. Una imagen integral se define para un pixel $(x, y)$ como la suma de todos los pixeles por encima y a la izquierda de este pixel. Matemáticamente la imagen integral del pixel $(x, y)$ se puede definir como:
+Dada la complejidad del algoritmo estándar de binarización, se hizo una investigación para buscar algoritmos ya existentes que realizaran la tarea en un tiempo más razonable. En un artículo escrito por los creadores del proyecto Ocropus\footnote{Un proyecto de código abierto cuyo objetivo es crear un sistema de reconocimiento óptico de caracteres} se propone\footnote{Efficient Implementation of Local Adaptive Thresholding Techniques Using Integral Images} un algoritmo que binariza una imagen en un tiempo $O(N \times M)$ utilizando imágenes integrales y el método de Sauvola. Una imagen integral se define para un píxel $(x, y)$ como la suma de todos los píxeles por encima y a la izquierda de este píxel. Matemáticamente la imagen integral del píxel $(x, y)$ se puede definir como:
 
 \begin{equation}
 	I(x, y) = \sum_{i=0}^{x}\sum_{j=0}^{y}Im(i, j)
 \end{equation}
 
-Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado que es posible obtener la imagen integral de una imagen en tiempo $O(N \times M)$, los autores indicaron que es posible calcular el valor de la media $m$ del area $A^{2}$ alrededor del pixel $(x, y)$ en un tiempo constante de la siguiente forma:
+Donde $Im(i, j)$ es el valor del píxel ubicado en la posición $(i, j)$. Dado que es posible obtener la imagen integral de una imagen en tiempo $O(N \times M)$, los autores indicaron que es posible calcular el valor de la media $m$ del área $A^{2}$ alrededor del píxel $(x, y)$ en un tiempo constante de la siguiente forma:
 
 \begin{align*}
   m(x, y) =& (I(x + \frac{A}{2}, y + \frac{A}{2}) + I(x - \frac{A}{2}, y - \frac{A}{2}) \\
@@ -550,44 +552,61 @@ Donde $Im(i, j)$ es el valor del pixel ubicado en la posición $(i, j)$. Dado qu
 \label{fig:integral}
 \end{figure}
 
-En el cuadrado de tamaño $A \times A$ alrededor del pixel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el pixel de más abajo a la derecha y en el pixel de más arriba a la izquierda, y restar los valores de la imagen integral en el pixel de más abajo a la izquierda y en el pixel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La formula para hallar la desviación estandar no es presentada en el articulo de los creadores de Ocropus, y solo se menciona que se puede calcular utilizando la imagen integral de los pixeles al cuadrado. Con esta pista es facil deducir matematicamente la formula para calcular la desviación estandar:
+En el cuadrado de tamaño $A \times A$ alrededor del píxel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el píxel de más abajo a la derecha y en el píxel de más arriba a la izquierda, y restar los valores de la imagen integral en el píxel de más abajo a la izquierda y en el píxel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La formula para hallar la desviación estándar no es presentada en el articulo de los creadores de Ocropus, y solo se menciona que se puede calcular utilizando la imagen integral de los píxeles al cuadrado. Con esta pista es fácil deducir matemáticamente la formula para calcular la desviación estándar:
 
 %% Poner la deduccion aqui
 
 El resultado obtenido es consistente con la formula que se utilizo en la implementación de dicho algoritmo en el proyecto Ocropus\footnote{http://code.google.com/p/ocropus}.
 
-Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor complejidad algoritmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV\footnote{poner referencia}. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un unico arreglo, el cual se accedio a traves de un unico puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración unicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rapido que la función utilizada en el proyecto Ocropus, ya que se prefirio darle mayor importancia a la eficiencia, pues en un futuro esta función podria utilizarse para binarizar imagenes en un dispositivo movil con una capacidad de procesamiento limitada.
+Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor complejidad algorítmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV\footnote{poner referencia}. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un único arreglo, el cual se accedió a través de un único puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración únicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rápido que la función utilizada en el proyecto Ocropus, ya que se prefirió darle mayor importancia a la eficiencia, pues en un futuro esta función podría utilizarse para binarizar imágenes en un dispositivo móvil con una capacidad de procesamiento limitada. El resultado del algoritmo implementando sobre una imagen se muestra en la figura \ref{fig:binarization}, la figura \ref{fig:bin1} muestra la imagen original y la figura \ref{fig:bin2} muestra la misma imagen después de aplicarle el algoritmo de binarización implementado.
 
-%poner imagenes mostrando resultado obtenido por nuestro programa (Original, Binarizado)
+	\begin{figure}
+	\centering
+		\subfloat[Antes de binarizar]{\label{fig:bin1}\includegraphics[width=4cm]{img/bin1.jpg}}
+		\subfloat[Después de binarizar]{\label{fig:bin2}\includegraphics[width=4cm]{img/bin2.png}}
+	\caption{Figuras antes y después de la binarización}
+	\label{fig:binarization}
+	\end{figure}
 
 
 \section{Componentes conectados}
 \label{sect:conComponents}
 
-Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los pixeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el metodo de sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un pixel $(x,y)$ pertence al fondo de la imagen si $I_2(x,y)=0$, y pertenece a algun caracter si $I_2(x,y)=255$. Si se establece que un pixel $(x',y')$ es vecino de un pixel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un cojunto de pixeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviendose unicamente a traves de pixeles vecinos de $C$. La idea de los componentes conectados fue utilizada, entre muchos otros, por O'Gorman\cite{docstrum93} para realizar el analisis del documento, una de las etapas del reconocimiento optico de caracteres.
+Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los píxeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el método de Sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un píxel $(x,y)$ pertenece al fondo de la imagen si $I_2(x,y)=0$, y pertenece a algún caracter si $I_2(x,y)=255$. Si se establece que un píxel $(x',y')$ es vecino de un píxel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un conjunto de píxeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviéndose únicamente a través de píxeles vecinos de $C$. La idea de los componentes conectados fue utilizada, entre muchos otros, por O'Gorman\cite{docstrum93} para realizar el análisis del documento, una de las etapas del reconocimiento óptico de caracteres.
 
 \newtheorem{pixHasOneC}{Lemma}
 \begin{pixHasOneC}
-	Cada pixel $(x,y)$ tal que $I_2(x,y)=255$ pertenece a un unico componente conectado.
+	Cada píxel $(x,y)$ tal que $I_2(x,y)=255$ pertenece a un único componente conectado.
 \end{pixHasOneC}
 \begin{proof}
-	Suponga que un pixel $(x,y)$ pertenece a más de un componente conectado. En particular, suponga que $(x,y)$ pertenece tanto al componente $C_i$ como al componente $C_j$. Entonces hay un camino desde cualquier $P_i \in C_i$ a $(x,y)$ y desde cualquier $P_j \in C_j$ a $(x,y)$. Por tanto hay al menos un camino desde todo $P_i$ a todo $P_j$, este camino es $P_i \rightarrow (x,y) \rightarrow P_j$. Esto significa que $C_i$ y $C_j$ pueden ser unidos en un unico componente conectado, y al unirlos $(x,y)$ perteneceria a un unico componente conectado.
+	Suponga que un píxel $(x,y)$ pertenece a más de un componente conectado. En particular, suponga que $(x,y)$ pertenece tanto al componente $C_i$ como al componente $C_j$. Entonces hay un camino desde cualquier $P_i \in C_i$ a $(x,y)$ y desde cualquier $P_j \in C_j$ a $(x,y)$. Por tanto hay al menos un camino desde todo $P_i$ a todo $P_j$, este camino es $P_i \rightarrow (x,y) \rightarrow P_j$. Esto significa que $C_i$ y $C_j$ pueden ser unidos en un único componente conectado, y al unirlos $(x,y)$ pertenecería a un único componente conectado.
 \end{proof}
 
-Despues de esto se puede utilizar un algoritmo de relleno por difusión ({\em flood-fill}) para encontrar cada componente conectado. Dado un pixel $(x,y)$ con $I_2(x,y)=255$, se encuentra el componente conectado al que este pertence, se guarda, y se borra de la imagen. De esta manera por cada pixel encontrado en un unico recorrido por toda la imagen se extraera un componente conectado, y al finalizar este recorrido se habran extraido todos los componentes conectados. Este algoritmo se implemento utilizando una pila para evitar la recursividad.
+Después de esto se puede utilizar un algoritmo de relleno por difusión ({\em flood-fill}) para encontrar cada componente conectado. Dado un píxel $(x,y)$ con $I_2(x,y)=255$, se encuentra el componente conectado al que este pertenece, se guarda, y se borra de la imagen. De esta manera por cada píxel encontrado en un único recorrido por toda la imagen se extraerá un componente conectado, y al finalizar este recorrido se habrán extraído todos los componentes conectados. Este algoritmo se implementó utilizando una pila para evitar la recursividad.
 
-\section{Extracción de caracteristicas}
+	\begin{figure}
+	\centering
+		\subfloat{\includegraphics[width=2cm]{img/p1.png}}
+		\hspace{1cm}
+		\subfloat{\includegraphics[width=2cm]{img/p2.png}}\\		
+	\caption{Componentes conectados extraídos por la aplicación}
+	\label{fig:concomp}
+	\end{figure}
+	
+La figura \ref{fig:concomp} muestra dos componentes conectados extraídos por la aplicación implementada de la misma imagen. Observe a pesar de estar en la misma imagen, ser del mismo tamaño y de la misma clase (Dígito '6'), ambas instancias son ligeramente diferentes.
 
-Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imágenes fueran adquiridas mediante un escaner, la inclinación podria ser muy pequeña, incluso tanto que podria despreciarse. Sin embargo, cuando las imágenes son adquiridas mediante una cámara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones es necesario encontrar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las caracteríticas sea similar. Dado que la entrada del método estadístico es un vector, esta similitud se puede expresar en terminos vectoriales como una distancia Mahalanobis (ecuación \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
+\section{Extracción de características}
 
-Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se pueden tomar dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estandar, despues de esto se pueden extraer características numéricas de la imagen que sean lo mas similares posibles para objetos de la misma clase y lo mas diferentes posibles para objetos de distintas clases. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento.
+Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imágenes fueran adquiridas mediante un escáner, la inclinación podría ser muy pequeña, incluso tanto que podría despreciarse. Sin embargo, cuando las imágenes son adquiridas mediante una cámara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones es necesario encontrar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las características sea similar. Dado que la entrada del método estadístico es un vector, esta similitud se puede expresar en términos vectoriales como una distancia Mahalanobis (ecuación \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
 
-\subsection{Rotación y escalamiento mediante transformación geometrica}
+Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se pueden tomar dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estándar, después de esto se pueden extraer características numéricas de la imagen que sean lo mas similares posibles para objetos de la misma clase y lo mas diferentes posibles para objetos de distintas clases. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento.
+
+\subsection{Rotación y escalamiento mediante transformación geométrica}
 \label{sect:rotation}
 
-Si se utilizan caracteristicas dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos angulos de rotación. Si se hace dificil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales\cite{niyogi2002}. El problema con este enfoque es que tiene una alta complejidad computacional y que instancias de una misma clase pueden quedar ampliamente repartidas por el hiper-espacio de clasificación. Como resultado sería mas dificil para un algoritmo de clasificación separar las distintas clases.
+Si se utilizan características dependientes a la rotación, se debe entrenar el clasificador con distintas instancias que tengan distintos ángulos de rotación. Si se hace difícil obtener ejemplos reales, una opción puede ser construir ejemplos virtuales\cite{niyogi2002}. El problema con este enfoque es que tiene una alta complejidad computacional y que instancias de una misma clase pueden quedar ampliamente repartidas por el hiper-espacio de clasificación. Como resultado sería mas difícil para un algoritmo de clasificación separar las distintas clases.
 
-Un enfoque mucho más practico es detectar la rotación y el escalamiento del texto, y posteriormente aplicar transformaciones geométricas para ajustar la rotación y el escalamiento a valores preestablecidos. Despues de esto se podrían obtener características dependientes a la rotación y al escalamiento para clasificar cada letra. Para detectar la rotación se pueden utilizar metodos ya existentes, como los utilizados en el algoritmo de análisis de documentos Docstrum\cite{Docstrum}, los cuales permiten establecer cual es la inclinación de cada linea de texto. Al tener la inclinación de las líneas, se puede aproximar cual es la inclinación da cada caracter en particular. Para corregir la inclinación se utilizaria una matriz de rotación: si el algoritmo de detección de rotación determina que el caracter esta rotado un angulo $\theta$ alrededor de su centroide, se puede detectar cual es la nueva ubicación $(x', y')$ del pixel $(x, y)$ utilizando la siguiente operación:
+Un enfoque mucho más practico es detectar la rotación y el escalamiento del texto, y posteriormente aplicar transformaciones geométricas para ajustar la rotación y el escalamiento a valores preestablecidos. Después de esto se podrían obtener características dependientes a la rotación y al escalamiento para clasificar cada letra. Para detectar la rotación se pueden utilizar métodos ya existentes, como los utilizados en el algoritmo de análisis de documentos Docstrum\cite{Docstrum}, los cuales permiten establecer cual es la inclinación de cada linea de texto. Al tener la inclinación de las líneas, se puede aproximar cual es la inclinación da cada caracter en particular. Para corregir la inclinación se utilizaría una matriz de rotación: si el algoritmo de detección de rotación determina que el caracter esta rotado un ángulo $\theta$ alrededor de su centroide, se puede detectar cual es la nueva ubicación $(x', y')$ del píxel $(x, y)$ utilizando la siguiente operación:
 
 	\[
 		\begin{pmatrix} 
@@ -603,20 +622,20 @@ Un enfoque mucho más practico es detectar la rotación y el escalamiento del te
 		\end{pmatrix}
 	\]
 
-El escalamiento se podría ajustar haciendo una interpolación de los pixeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el angulo $\theta$ no es un múltiplo de 90 grados, las coordenadas de los nuevos pixeles $(x', y')$ no serían enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una pérdida de información importante cuando la calidad de las imágenes no es muy buena. En cuanto al escalamiento, la interpolación también produce una pérdida de información. Tal vez el problema mas grave de esta pérdida de información en el reconocimiento de caracteres, es que en algunos casos se puede partir un unico caracter en varias partes, dificultando el proceso de reconocimiento.
+El escalamiento se podría ajustar haciendo una interpolación de los píxeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el ángulo $\theta$ no es un múltiplo de 90 grados, las coordenadas de los nuevos píxeles $(x', y')$ no serían enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una pérdida de información importante cuando la calidad de las imágenes no es muy buena. En cuanto al escalamiento, la interpolación también produce una pérdida de información. Tal vez el problema mas grave de esta pérdida de información en el reconocimiento de caracteres, es que en algunos casos se puede partir un único caracter en varias partes, dificultando el proceso de reconocimiento.
 
-Para el problema de reconocimiento de caracteres es entonces conveniente encontrar métodos de extracción de características que minimizen la pérdida de información, pero que al mismo tiempo sean invariantes a la rotación y al escalamiento. Los momento invariantes son caracteristicas que cumplen dicha propiedad.
+Para el problema de reconocimiento de caracteres es entonces conveniente encontrar métodos de extracción de características que minimicen la pérdida de información, pero que al mismo tiempo sean invariantes a la rotación y al escalamiento. Los momento invariantes son características que cumplen dicha propiedad.
 
 \subsection{Momentos invariantes de Hu}	
 \label{sect:invariants}
 
-Los momentos invariantes fueron propuestos por primera vez por Hu\cite{Hu62}. Estos momentos pueden ser considerados como un promedio ponderado de los pixeles de una imagen. Hu computo sus invariantes utilizando los momentos geométricos, los cuales son variantes a la rotación y al escalamiento. Los momentos geométricos se definen como:
+Los momentos invariantes fueron propuestos por primera vez por Hu\cite{Hu62}. Estos momentos pueden ser considerados como un promedio ponderado de los píxeles de una imagen. Hu computo sus invariantes utilizando los momentos geométricos, los cuales son variantes a la rotación y al escalamiento. Los momentos geométricos se definen como:
 
 	\begin{equation}\label{eq1}
 		\mu_{pq} = \iint{ {(x-\bar{x})^p} {(y-\bar{y})^q} f(x,y) dy dx }
 	\end{equation}
 
-Donde $\mu_{pq}$ es el momento geométrico de orden $(p+q)$, $f(x,y)$ es el valor del pixel en la posición $(x,y)$ de la imagen y $(\bar{x},\bar{y})$ es el centroide de la misma. Partiendo de estos momentos podemos obtener $n_{pq}$, un momento de orden $(p+q)$ que es invariante al escalamiento:
+Donde $\mu_{pq}$ es el momento geométrico de orden $(p+q)$, $f(x,y)$ es el valor del píxel en la posición $(x,y)$ de la imagen y $(\bar{x},\bar{y})$ es el centroide de la misma. Partiendo de estos momentos podemos obtener $n_{pq}$, un momento de orden $(p+q)$ que es invariante al escalamiento:
 
 	\begin{equation}\label{eq2}
 		n_{pq} = \frac{\mu_{pq}}{ \mu_{00}^{1+\frac{p+q}{2}} }
@@ -662,15 +681,15 @@ Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el moment
 \section{Primeros resultados}
 \label{sect:exp}
 
-Para el primer experimento se implementó un método de clasificación estadístico multivariable y se implementaron las características de Hu y de Flusser como se indica en el capítulo de diseño, implementación y pruebas del aplicativo. Después de haber corregido los errores encontrados en la etapa de pruebas se obtuvieron los resultados que se muestran en la tabla \ref{tb:exp1}.
+Para el primer experimento se implementó un método de clasificación estadístico multivariable y se implementaron las características de Hu y de Flusser como se indica en el capítulo de diseño, implementación y pruebas del aplicativo. Después de haber corregido los errores encontrados en la etapa de pruebas se obtuvieron los resultados que se muestran en la tabla \ref{tb:exp1_1}.
 
 	\begin{table}
 	\begin{center}
-	\begin{tabular}{|c|c|c|}
+	\begin{tabular}{|c|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{3cm}|}
 		\hline
-		* & \multicolumn{2}{|c|}{Distrubición normal multivariable con matriz de covarianza independiente} \\
+		* & \multicolumn{2}{|c|}{Matriz de covarianza independiente} \\
 		\hline
-		Character & Hu & Flusser \\
+		Caracter & Hu & Flusser \\
 		\hline
 		0 & 99.86\% & 100.00\% \\
 		1 & 100.00\% & 100.00\% \\
@@ -688,32 +707,32 @@ Para el primer experimento se implementó un método de clasificación estadíst
 	\end{tabular}
 	\end{center}
 	\caption{Precisión del algoritmo clasificador en el primer experimento}	
-	\label{tb:exp1}
+	\label{tb:exp1_1}
 	\end{table}
 
-Los porcentajes para algunos de los digitos fueron inusualmente bajos con relación a lo que se esperaba. Si bien se esperaba que los digitos que presentan cierta simetria, como el 0 y el 8, tuvieran porcentajes de reconocimiento menor, lo que sucedio en realidad fue que tuvieron un porcentaje muy alto, mientras que otros como el 2 y el 5 tuvieron porcentajes muy bajos. Dado que el 6 y el 9 son completamente simetricos respecto a la rotación los resultados fueron cercanos a lo esperado, con la excepción de que el 6 tuvo un porcentaje bastante alto.
+Los porcentajes para algunos de los dígitos fueron inusualmente bajos con relación a lo que se esperaba. Si bien se esperaba que los dígitos que presentan cierta simetría, como el 0 y el 8, tuvieran porcentajes de reconocimiento menor, lo que sucedió en realidad fue que tuvieron un porcentaje muy alto, mientras que otros como el 2 y el 5 tuvieron porcentajes muy bajos. Dado que el 6 y el 9 son completamente simétricos respecto a la rotación los resultados fueron cercanos a lo esperado, con la excepción de que el 6 tuvo un porcentaje bastante alto.
 
-Dado los problemas antes mencionados, se decidio indagar las razones por las que algunos digitos tenian porcentajes muy bajos. En el proceso de depuración se descubrio que el determinante de la matriz de covarianza era muy cercano a cero (con cifras cercanas a $10^{-40}$), por lo cual era muy probable que ciertos calculos con numeros de punto flotante tuvieran perdidas importantes de precisión. Se estudio la posibilidad de utilizar aritmetica de precisión arbitraria, sin embargo, dada la complejidad algoritmica, se concluyo que el uso de aritmetica implementada en software haria demasiado lento el proceso de reconocimiento.
+Dado los problemas antes mencionados, se decidió indagar las razones por las que algunos dígitos tenían porcentajes muy bajos. En el proceso de depuración se descubrió que el determinante de la matriz de covarianza era muy cercano a cero (con cifras cercanas a $10^{-40}$), por lo cual era muy probable que ciertos cálculos con números de punto flotante tuvieran perdidas importantes de precisión. Se estudio la posibilidad de utilizar aritmética de precisión arbitraria, sin embargo, dada la complejidad algorítmica, se concluyo que el uso de aritmética implementada en software haría demasiado lento el proceso de reconocimiento.
 
-Otra posibilidad que se exploro fue encontrar matematicamente una manera en la cual los calculos pudieran realizarsen sin perder mucha precisión, para lo cual se partio de la ecuación de la distribución normal multivariable:
+Otra posibilidad que se exploro fue encontrar matemáticamente una manera en la cual los cálculos pudieran realizarsen sin perder mucha precisión, para lo cual se partió de la ecuación de la distribución normal multivariable:
 
 	$p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}\right]$
 
-Como puede observarse, el determinante de la matriz de covarianza afecta al resultado en dos partes de la misma: hace parte del denominador y del exponente. Dado que para el calculo de la distancia Mahalanobis se habia calculado la matriz de covarianza compartida para todas las clases, se decidio reemplazar el valor de su determinante (que era mucho mayor) por el determinante de la matriz de covarianza. Esto se decidio dado que matematicamente el valor tiene un significado similar, y por cuanto se considero que los resultados con el valor tan pequeño que se estaba utilizando podian tener poco sentido. Matematicamente la función fue modificada de la siguiente forma:
+Como puede observarse, el determinante de la matriz de covarianza afecta al resultado en dos partes de la misma: hace parte del denominador y del exponente. Dado que para el cálculo de la distancia Mahalanobis se había calculado la matriz de covarianza compartida para todas las clases, se decidió reemplazar el valor de su determinante (que era mucho mayor) por el determinante de la matriz de covarianza. Esto se decidió dado que matemáticamente el valor tiene un significado similar, y por cuanto se considero que los resultados con el valor tan pequeño que se estaba utilizando podían tener poco sentido. Matemáticamente la función fue modificada de la siguiente forma:
 
 	\begin{equation}\label{eq:semishared}
 		p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma|^\frac{1}{2}} e^{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}
 	\end{equation} 
 
-Es decir, lo que se hizo fue una mezcla entre el método completo de distribución normal multivariable y un modelo con matriz de covarianza compartida. Inesperadamente los resultados fueron muy buenos, como se puede apreciar en la tabla \ref{tb:exp2}.
+Es decir, lo que se hizo fue una mezcla entre el método completo de distribución normal multivariable y un modelo con matriz de covarianza compartida. Inesperadamente los resultados fueron muy buenos, como se puede apreciar en la tabla \ref{tb:exp1_2}.
 
 	\begin{table}
 	\begin{center}
-	\begin{tabular}{|c|c|c|c|c|}
+	\begin{tabular}{|c|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{3cm}|}
 		\hline
-		* & \multicolumn{2}{|c|}{Distribución normal multivariable con matriz de covarianza semi-compartida} \\
+		* & \multicolumn{2}{|c|}{Matriz de covarianza semi-compartida} \\
 		\hline
-		Character & Hu & Flusser \\
+		Caracter & Hu & Flusser \\
 		\hline
 		0 & 99.34\% & 99.21\% \\
 		1 & 100.00\% & 100.00\% \\
@@ -731,14 +750,14 @@ Es decir, lo que se hizo fue una mezcla entre el método completo de distribuci�
 	\end{tabular}
 	\end{center}
 	\caption{Precisión del algoritmo clasificador en el segundo experimento}	
-	\label{tb:exp2}
+	\label{tb:exp1_2}
 	\end{table}
 
 	\begin{table}
 	\begin{center}
 	\begin{tabular}{|c|c|c|}		
 		\hline
-		Experimento & Semi-shared covariance matrix & Independent covariance matrix \\
+		Experimento & Matriz de covarianza semi-compartida & Matriz de covarianza independiente \\
 		\hline
 		1 & 96.38\% & 87.84\% \\
 		2 & 98.77\% & 92.47\% \\
@@ -751,18 +770,18 @@ Es decir, lo que se hizo fue una mezcla entre el método completo de distribuci�
 
 De las anterior tablas se puede concluir que esta mezcla puede dar buenos resultados cuando el determinante de la matriz de covarianza normal sea muy cercano a cero. La única diferencia entre la ecuación de la distribución normal multivariable y la ecuación modificada (\ref{eq:semishared}) es que la matriz de covarianza en el coeficiente es compartida para todas las clases $\Sigma$; pero la matriz de covarianza en el exponente $\Sigma_i$ sigue siendo diferente para todas las clases (no es compartida).
 
-Dado que no se encontro descrito en la literatura cientifica, a este método se le denominará ``distribución normal multivariable con matriz de covarianza semi-compartida''.
+Dado que no se encontró descrito en la literatura científica, a este método se le denominará ``distribución normal multivariable con matriz de covarianza semi-compartida''.
 
 \subsection{Problemas de simetría mutua}
 \label{sect:mutualSym}
 
 Si se analizan los resultados de la tabla \ref{tb:exp2} para el método de clasificación de matriz de covarianza semi-compartida se puede observar que el peor porcentaje se obtuvo en los dígitos 6 y 9. De hecho, se noto que estos dígitos se estaban confundiendo entre ellos.
  
-Cabe recordar que las características son invariantes a la rotación. Una situación en donde los seres humanos hacen reconocimiento de dígitos con características invariantes a la rotación ocurre cuando juegan billar y deben reconocer los dígitos marcados en las bolas de billar independientemente de la rotación de la bola. En este caso incluso los seres humanos tenemos problemas para reconocer entre la bola 6 y la 9, y necesitamos de una seña (que puede ser una raya) para reconocer entre estos dos digitos de manera apropiada.
+Cabe recordar que las características son invariantes a la rotación. Una situación en donde los seres humanos hacen reconocimiento de dígitos con características invariantes a la rotación ocurre cuando juegan billar y deben reconocer los dígitos marcados en las bolas de billar independientemente de la rotación de la bola. En este caso incluso los seres humanos tenemos problemas para reconocer entre la bola 6 y la 9, y necesitamos de una seña (que puede ser una raya) para reconocer entre estos dos dígitos de manera apropiada.
 
-En este caso, el problema no estaba previsto y solo se detectó cuando se realizaron las pruebas. Lo que sucede es que los dígitos 6 y 9 tienen simetría mutua, y son dificiles de reconocer entre ellos por cuanto en los documentos impresos no se hacen señas como en el billar. Sin embargo, cabe recordar que en los objetivos se restringió a que los documentos analizados tendrian una rotación entre $-30^\circ$ y $30^\circ$. Si el documento tuviese un ángulo de rotación por fuera de este rango, se podria llevar a un rango cercano rotando la imagen en múltiplos de $90^\circ$ sin ninguna pérdida de información (ver sección \ref{sect:rotation}), esto, si se cuenta con alguna referencia que indique la rotación adecuada, porque de lo contrario no se podria determinar con exactitud entre el 6 y el 9.
+En este caso, el problema no estaba previsto y solo se detectó cuando se realizaron las pruebas. Lo que sucede es que los dígitos 6 y 9 tienen simetría mutua, y son difíciles de reconocer entre ellos por cuanto en los documentos impresos no se hacen señas como en el billar. Sin embargo, cabe recordar que en los objetivos se restringió a que los documentos analizados tendrían una rotación entre $-30^\circ$ y $30^\circ$. Si el documento tuviese un ángulo de rotación por fuera de este rango, se podría llevar a un rango cercano rotando la imagen en múltiplos de $90^\circ$ sin ninguna pérdida de información (ver sección \ref{sect:rotation}), esto, si se cuenta con alguna referencia que indique la rotación adecuada, porque de lo contrario no se podría determinar con exactitud entre el 6 y el 9.
 
-Con estas restricciones, se creo el siguiente método para resolver el problema de la simetría mutua utilizando las ecuaciones de los momentos complejos. Supongamos que existe un problema de simetría mutua entre las clases $C_i$ y $C_j$, y que se desea clasificar una imagen $f(x,y)$ en una de estas dos clases. Entonces una rotación cercana a 180$^\circ$ de la instancia $f(x,y)$ respecto a la clase $C_i$ indica que $f(x,y)$ tiene mayor similitud a la clase $C_j$ que a la clase $C_i$. Definamos también $f_i(x,y)$ como una instancia de la clase $C_i$ que representa una instancia promedio de la clase $C_i$. Entonces se estableceria que $f(x,y)$ pertenece a $C_i$ si el ángulo de rotación con respecto a $f_i(x,y)$ es menor que 90$^\circ$, y si el ángulo es mayor que 90$^\circ$ se escojería la clase $C_j$. En el caso de que el ángulo sea exactamente igual a 90$^\circ$ no se podria determinar a cual de las dos clases pertenece, por lo cual se asignaria  cualquiera de las dos.
+Con estas restricciones, se creo el siguiente método para resolver el problema de la simetría mutua utilizando las ecuaciones de los momentos complejos. Supongamos que existe un problema de simetría mutua entre las clases $C_i$ y $C_j$, y que se desea clasificar una imagen $f(x,y)$ en una de estas dos clases. Entonces una rotación cercana a 180$^\circ$ de la instancia $f(x,y)$ respecto a la clase $C_i$ indica que $f(x,y)$ tiene mayor similitud a la clase $C_j$ que a la clase $C_i$. Definamos también $f_i(x,y)$ como una instancia de la clase $C_i$ que representa una instancia promedio de la clase $C_i$. Entonces se establecería que $f(x,y)$ pertenece a $C_i$ si el ángulo de rotación con respecto a $f_i(x,y)$ es menor que 90$^\circ$, y si el ángulo es mayor que 90$^\circ$ se escogería la clase $C_j$. En el caso de que el ángulo sea exactamente igual a 90$^\circ$ no se podría determinar a cual de las dos clases pertenece, por lo cual se asignaría  cualquiera de las dos.
 
 Para hallar el ángulo se utilizaron los momentos complejos de la siguiente manera. Sea $C'_{pq}$ el promedio de los momentos complejos de orden $p+q$ de las instancias de la clase $C_i$, sea $C_{pq}$ el momento complejo de orden $p+q$ de la imagen $f(x,y)$.
 
@@ -772,13 +791,13 @@ Entonces, utilizando la ecuación Eq.\ref{eq:rotProp}, se tiene:
 		\frac{C'_{pq}}{C_{pq}} = e^{-i(p-q)\alpha}
 	\end{equation}
 
-En la ecuación \ref{eq:angleDetection1} se observa que siempre es posible calcular el ángulo $\alpha$ entre $f(x,y)$ y $f_i(x,y)$ dividiendo sus momentos complejos de orden $p+q$ si $p \neq q$ y la magnitud de los momentos es diferente de cero. Definamos $n=\frac{C'_{pq}}{C_{pq}}$. El número complejo $n$ debe tener magnitud unitaria para poder encontrar una solución a la ecuación \ref{eq:rotProp}, en la teoría esto se garantiza, pero con imagenes reales esta suposición puede no siempre ser cierta no siempre es cierta. Para solucionar este problema se normalizó el numero complejo $n'=\frac{n}{|n|}$. Utilizando la identidad de Euler en la ecuación \ref{eq:angleDetection1}, se obtiene:
+En la ecuación \ref{eq:angleDetection1} se observa que siempre es posible calcular el ángulo $\alpha$ entre $f(x,y)$ y $f_i(x,y)$ dividiendo sus momentos complejos de orden $p+q$ si $p \neq q$ y la magnitud de los momentos es diferente de cero. Definamos $n=\frac{C'_{pq}}{C_{pq}}$. El número complejo $n$ debe tener magnitud unitaria para poder encontrar una solución a la ecuación \ref{eq:rotProp}, en la teoría esto se garantiza, pero con imágenes reales esta suposición puede no siempre ser cierta no siempre es cierta. Para solucionar este problema se normalizó el numero complejo $n'=\frac{n}{|n|}$. Utilizando la identidad de Euler en la ecuación \ref{eq:angleDetection1}, se obtiene:
 
 	\begin{equation}\label{angleDetection2}
 		n' = \cos((p-q)\alpha) - i\sin((p-q)\alpha)
 	\end{equation}
 
-Si se considera al número complejo $n'$ como un vector de dos posiciones, este se movería en un circulo unitario respecto al origen dependiendo del valor del ángulo $\alpha$. Si se considera un vector $\vec{R}$ con $\alpha=0$ como el vector de referencia, se tendría $\vec{R}=(1,0)$. Es de notar que $\vec{R}$ es un vector normal a un plano clasificador $A$. El algoritmo explicado se puede observar graficamente en la figura \ref{fig:mutualSym}.
+Si se considera al número complejo $n'$ como un vector de dos posiciones, este se movería en un circulo unitario respecto al origen dependiendo del valor del ángulo $\alpha$. Si se considera un vector $\vec{R}$ con $\alpha=0$ como el vector de referencia, se tendría $\vec{R}=(1,0)$. Es de notar que $\vec{R}$ es un vector normal a un plano clasificador $A$. El algoritmo explicado se puede observar gráficamente en la figura \ref{fig:mutualSym}.
 
 	\begin{center}
 	\setlength{\unitlength}{1cm}
@@ -798,7 +817,7 @@ Si se considera al número complejo $n'$ como un vector de dos posiciones, este 
 	\end{figure}
 	\end{center}
 
-Definamos que el lado positivo del plano $A$ es al que apunta $\vec{R}$. Entonces se escojería que $f(x,y)$ pertenece a $C_i$ si $n'$ esta al lado positivo del plano $A$, se escojería $C_j$ si $n'$ esta en el lado negativo de $A$ y no hay ninguna pista si $n'$ esta en el plano $A$. Se determina en que lado del plano $A$ esta el vector $n'$ calculando el producto punto entre $n'$ y el vector normal al plano $\vec{R}$, por cuanto:
+Definamos que el lado positivo del plano $A$ es al que apunta $\vec{R}$. Entonces se escogería que $f(x,y)$ pertenece a $C_i$ si $n'$ esta al lado positivo del plano $A$, se escogería $C_j$ si $n'$ esta en el lado negativo de $A$ y no hay ninguna pista si $n'$ esta en el plano $A$. Se determina en que lado del plano $A$ esta el vector $n'$ calculando el producto punto entre $n'$ y el vector normal al plano $\vec{R}$, por cuanto:
 
 	\[ \vec{R}.n' = real(n') \]
 
@@ -811,34 +830,34 @@ Donde $real(x)$ es una función que retorna la parte real del número complejo $
 	\end{array} \right. 
 	\end{equation}
 
-Los resultados obtenidos para los dígitos 6 y 9 después de implementar el algoritmo pueden ser apreciados en la tabla \ref{exp2}.
+Los resultados obtenidos para los dígitos 6 y 9 después de implementar el algoritmo pueden ser apreciados en la tabla \ref{tb:exp2_1}.
 
 	\begin{table}
 	\begin{center}
 	\begin{tabular}{|c|c|c|}
 		\hline
-		* & \multicolumn{2}{|c|}{Semi-shared covariance matrix} \\
+		* & \multicolumn{2}{|c|}{Matriz de covarianza semi-compartida} \\
 		\hline
-		Character & Hu Accuracy & Flusser Accuracy \\
+		Caracter & Hu & Flusser \\
 		\hline
 		6 & 99.47\% & 99.48\%	\\
 		9 & 99.49\% & 96.72\% \\
 		\hline
 	\end{tabular}
 	\end{center}
-	\caption{Improved accuracy for digits 6 and 9}	
-	\label{tb:exp2}
+	\caption{Precisión de los dígitos 6 y 9 luego de la corrección}	
+	\label{tb:exp2_1}
 	\end{table}
 
-Los resultados fueron bastante buenos, y permitieron dar solución al problema de simetria entre estos dos digitos. Dado que esta función solo se aplico para el 6 y el 9, los resultados en los otros digitos no variaron, como puede apreciarse en la tabla .
+Los resultados fueron bastante buenos, y permitieron dar solución al problema de simetría entre estos dos dígitos. Dado que esta función solo se aplico para el 6 y el 9, los resultados en los otros dígitos no variaron, como puede apreciarse en la tabla .
 
 	\begin{table}
 	\begin{center}
-	\begin{tabular}{|c|c|c|c|c|}
+	\begin{tabular}{|c|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{3cm}|}
 		\hline
-		* & \multicolumn{2}{|c|}{Distribución normal multivariable con matriz de covarianza semi-compartida} \\
+		* & \multicolumn{2}{|c|}{Matriz de covarianza semi-compartida} \\
 		\hline
-		Character & Hu & Flusser \\
+		Caracter & Hu & Flusser \\
 		\hline
 		0 & 99.34\% & 99.21\% \\
 		1 & 100.00\% & 100.00\% \\
@@ -855,27 +874,27 @@ Los resultados fueron bastante buenos, y permitieron dar solución al problema d
 		\hline
 	\end{tabular}
 	\end{center}
-	\caption{Precisión del algoritmo clasificador despues de aplicar la corrección al 6 y al 9}	
-	\label{tb:exp2}
+	\caption{Precisión del algoritmo clasificador después de aplicar la corrección al 6 y al 9}	
+	\label{tb:exp2_2}
 	\end{table}
 
 \subsection{Problemas de simetría a la rotación}
 
-Se puede observar en la tabla \ref{tb:exp2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. U Un problema similar ocurre cuando los digitos presentan simetria a la rotación. Flusser\cite{flusser06} demostro que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algun grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el articulo en que se propusieron se utilizaron para reconocer unicamente entre objetos simetricos, se intento utilizar estos momentos para reconocer entre todos los digitos, para lo cual se construyo un conjunto de momentos simetricos utilizando el procedimiento explicado por Flusser:
+Se puede observar en las tablas \ref{tb:exp1_1} y \ref{tb:exp1_2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. Un problema similar ocurre cuando los dígitos presentan simetría a la rotación. Flusser\cite{flusser06} demostró que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algún grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el articulo en que se propusieron se utilizaron para reconocer únicamente entre objetos simétricos, se intento utilizar estos momentos para reconocer entre todos los dígitos, para lo cual se construyo un conjunto de momentos simétricos utilizando el procedimiento explicado por Flusser:
 
 %% PONER MOMENTOS FLUSSER_2 ACA
 
-Para explorar distintas posibilidades se creo un script que recibe como parametro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados fueron extraordinarios, como puede observarse en la tabla tb:exp3.
+Para explorar distintas posibilidades se creo un script que recibe como parámetro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente mas altos que el de las dos anteriores, como puede observarse en la tabla \ref{tb:exp3}.
 
 %% PONER AQUI TABLA NO SHARED
 
 	\begin{table}
 	\begin{center}
-	\begin{tabular}{|c|c|c|c|}
+	\begin{tabular}{|c|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
 		\hline
-		* & \multicolumn{3}{|c|}{Semi-shared covariance matrix} \\
+		* & \multicolumn{3}{|c|}{Matriz de covarianza semi-compartida} \\
 		\hline
-		Character & Hu & Flusser & 2-Fold flusser\\
+		Caracter & Hu & Flusser & 2-Fold flusser\\
 		\hline
 		0 & 99.34\% & 99.21\% & 100.00\% \\
 		1 & 100.00\% & 100.00\% & 100.00\% \\
@@ -892,11 +911,11 @@ Para explorar distintas posibilidades se creo un script que recibe como parametr
 		\hline
 	\end{tabular}
 	\end{center}
-	\caption{Precisión del clasificador en los tres experimientos}	
-	\label{tb:exp3}
+	\caption{Precisión del clasificador en los tres experimentos}	
+	\label{tb:exp4}
 	\end{table}
 
-Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validación fueron elegidos aleatoriamente, y que el conjunto de validación consistio de PONER AQUI NUMERO DE INSTANCIAS instancias, se puede concluir de los resultados que los momentos propuestos con Fluzzer son tambien muy efectivos para hacer reconocimiento entre objetos simetricos y no simetricos. Tambien se puede observar que el metodo propuesto utilizando la matriz de covarianza compartida fue más efectivo que el metodo estandar utilizando la matriz de covarianza independiente.
+Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validación fueron elegidos aleatoriamente, y que el conjunto de validación consistió de 7461 instancias, se puede concluir de los resultados que los momentos propuestos con Fluzzer son también muy efectivos para hacer reconocimiento entre objetos simétricos y no simétricos. También se puede observar que el método propuesto utilizando la matriz de covarianza compartida fue más efectivo que el método estándar utilizando la matriz de covarianza independiente.
 
 \chapter{Diseño, implementación y pruebas del aplicativo}
 \label{chap:ingSw}
@@ -929,12 +948,12 @@ La documentación de los casos de uso se encuentra en la tabla \ref{tb:uc1} y en
 	\hline
 	Actor: Usuario administrador & Referencia: 1 \\
 	\hline
-	Precondición: Sistema no entrenado. Imagenes de entrenamiento en un mismo directorio nombradas como se explica en la sección \ref{sect:testEnvironment} & 
+	Precondición: Sistema no entrenado. Imágenes de entrenamiento en un mismo directorio nombradas como se explica en la sección \ref{sect:testEnvironment} & 
 	Postcondición: Sistema entrenado. \\
 	\hline
 	Sistema & Usuario \\
 	\hline
-	1. El usuario administrador indica en que directorio se encuentran las imagenes de entrenamiento. &
+	1. El usuario administrador indica en que directorio se encuentran las imágenes de entrenamiento. &
 	2. El sistema construye un conjunto de entrenamiento como se explica en la sección \ref{sect:trainingSet} con todas las imágenes del directorio pasado por el usuario. \\
 	\hline
 	4. El usuario recibe un mensaje que indica que el procedimiento se realizó c\label{eq:hu}on éxito. &
@@ -972,13 +991,13 @@ La documentación de los casos de uso se encuentra en la tabla \ref{tb:uc1} y en
 
 \section{Diseño}
 
-El diseño del aplicativo se realizó con los diagramas de secuencia y clases pertenecientes al estandar UML. Los diagramas de sequencia se pueden apreciar en las figuras \ref{fig:sequence1} y \ref{fig:sequence2}.
+El diseño del aplicativo se realizó con los diagramas de secuencia y clases pertenecientes al estándar UML. Los diagramas de secuencia se pueden apreciar en las figuras \ref{fig:sequence1} y \ref{fig:sequence2}.
 
 \begin{sidewaysfigure}
 \begin{center}
 \includegraphics[width=20cm]{diagrams/sequence1.jpeg}
 \end{center}
-\caption{Diagrama de sequencia del primer caso de uso}
+\caption{Diagrama de secuencia del primer caso de uso}
 \label{fig:sequence1}
 \end{sidewaysfigure}
 
@@ -986,7 +1005,7 @@ El diseño del aplicativo se realizó con los diagramas de secuencia y clases pe
 \begin{center}
 \includegraphics[width=20cm]{diagrams/sequence2.jpeg}
 \end{center}
-\caption{Diagrama de sequencia del segundo caso de uso}
+\caption{Diagrama de secuencia del segundo caso de uso}
 \label{fig:sequence2}
 \end{sidewaysfigure}
 
@@ -998,7 +1017,7 @@ El diseño del aplicativo se realizó con los diagramas de secuencia y clases pe
 \label{fig:classes}
 \end{sidewaysfigure}
 
-En el diagrama de clases (Fig. \ref{fig:classes}) se encuentran las clases con las que se pueden llevar a cabo los casos de uso con sus respectivos métodos públicos. La clase {\it ImgMatrix} es responsable de la representación de la imagen en el computador como una matriz. La clase {\it ConComponent} representa los componentes conectados de la imagen binarizada, hay un componente conectado por cada caracter de la imagen. La clase {\it OcrServer}, es la encargada de recibir las peticiones IP y coordinar las otras clases para dar respuesta a la petición. La clase {\it Transform} es la responsable de hacer la binarización de las imágenes con el algoritmo de Sauvola. La clase {\it DocLayout} es la responsable de dividir la imagen en los componentes conectados. La clase {\it ChrMoments} es responsable de calcular los momentos invariantes de Hu y Flusser para los componentes conectados, entregando un vector de características. Los momentos de Flusser implementados son tanto los momentos estándares, como los de momentos para objetos simetricos a N-rotaciones (Ver capítulo \ref{chap:features}), que se agregaron en el curso de la investigación.
+En el diagrama de clases (Fig. \ref{fig:classes}) se encuentran las clases con las que se pueden llevar a cabo los casos de uso con sus respectivos métodos públicos. La clase {\it ImgMatrix} es responsable de la representación de la imagen en el computador como una matriz. La clase {\it ConComponent} representa los componentes conectados de la imagen binarizada, hay un componente conectado por cada caracter de la imagen. La clase {\it OcrServer}, es la encargada de recibir las peticiones IP y coordinar las otras clases para dar respuesta a la petición. La clase {\it Transform} es la responsable de hacer la binarización de las imágenes con el algoritmo de Sauvola. La clase {\it DocLayout} es la responsable de dividir la imagen en los componentes conectados. La clase {\it ChrMoments} es responsable de calcular los momentos invariantes de Hu y Flusser para los componentes conectados, entregando un vector de características. Los momentos de Flusser implementados son tanto los momentos estándares, como los de momentos para objetos simétricos a N-rotaciones (Ver capítulo \ref{chap:features}), que se agregaron en el curso de la investigación.
 
 La clase {\it OcrLearning} es una clase genérica que encapsula los métodos que debe tener un método de aprendizaje para la clasificación de caracteres, se tomo la decisión de crear una clase padre porque en un futuro se pueden intentar métodos de aprendizaje distintos como redes neuronales, y el tener esta clase facilita la migración, ya que en este caso solo seria necesario crear otra clase que herede de {\it OcrLearning} con un método de aprendizaje nuevo. La clase {\it OcrMultivariate} es la que contiene la implementación de {\it OcrLearning} para el método específico de clasificación estadística, en la que se utiliza la distribución normal multivariable y el teorema de Bayes. Además de los métodos de entrenamiento y clasificación de los que se habló en el capítulo \ref{chap:ml}, se agregaron métodos de guardado y carga. La idea de estos dos métodos es que no sea necesario entrenar el método cada vez que se carga el programa, en cambio se puede guardar el modelo entrenado en un archivo en el disco y luego utilizarlo cada vez que se cargue el aplicativo.
 
@@ -1006,7 +1025,7 @@ La clase {\it OcrLearning} es una clase genérica que encapsula los métodos que
 
 En esta sección se explican las pruebas que se hicieron al software para determinar si los algoritmos fueron implementados correctamente. El objetivo de esta sección no es precisar si el resultado de los algoritmos es satisfactorio o no, ya que esto se explica en los capítulos \ref{chap:ml}, \ref{chap:features} y \ref{chap:results}.
 
-Usualmente las pruebas se hacen creando un conjunto de casos de prueba para los que se conoce la salida esperada. En estos casos el proceso de pruebas consiste en alimentar al software con los casos de prueba y observar si la salida coincide con la salida esperada. Si la salida obtenida no coincide con la salida esperada, entonces se considera que el software tiene un error y se procede a depurarlo y corregirlo. Este proceso no garantiza un software libre de errores, pero si permite hallar muchos errores comunes y por tanto producir software de mejor calidad. Es de notar que los algoritmos de clasificación y de extracción de características implementados (descritos en los capítulos \ref{chap:ml} y \ref{chap:features}), son de una naturaleza matematica y, por tanto, no es fácil aplicarle este tipo de pruebas. Esto es debido a que muchas veces no es posible determinar cual deberia ser la salida esperada, pues para hacerlo se tendrian que realizar una gran cantidad de operaciones y solo un computador podria realizarlas en un tiempo razonable. 
+Usualmente las pruebas se hacen creando un conjunto de casos de prueba para los que se conoce la salida esperada. En estos casos el proceso de pruebas consiste en alimentar al software con los casos de prueba y observar si la salida coincide con la salida esperada. Si la salida obtenida no coincide con la salida esperada, entonces se considera que el software tiene un error y se procede a depurarlo y corregirlo. Este proceso no garantiza un software libre de errores, pero si permite hallar muchos errores comunes y por tanto producir software de mejor calidad. Es de notar que los algoritmos de clasificación y de extracción de características implementados (descritos en los capítulos \ref{chap:ml} y \ref{chap:features}), son de una naturaleza matemática y, por tanto, no es fácil aplicarle este tipo de pruebas. Esto es debido a que muchas veces no es posible determinar cual debería ser la salida esperada, pues para hacerlo se tendrían que realizar una gran cantidad de operaciones y solo un computador podría realizarlas en un tiempo razonable. 
 
 \subsection{Etapas de preprocesamiento}
 
@@ -1020,25 +1039,27 @@ Para el cambio de color a escala de grises se compararon los resultados de la fu
 
 \subsection{Extracción de características}
 
-Esta etapa fue un reto en cuanto a las pruebas de software, dado que, por el gran numero de ecuaciones, era fácil cometer errores y dificil encontrarlos. En el capítulo \ref{chap:features} se explica que en la extracción de características la entrada es una imagen y la salida es un vector numérico calculado sobre la imagen. En el caso especial de los momentos invariantes, que fueron las características escojidas e implementadas, el vector se calcula con una integral sobre la imagen, que se convierte en una sumatoria de los pixeles de la imagen.
+Esta etapa fue un reto en cuanto a las pruebas de software, dado que, por el gran numero de ecuaciones, era fácil cometer errores y difícil encontrarlos. En el capítulo \ref{chap:features} se explica que en la extracción de características la entrada es una imagen y la salida es un vector numérico calculado sobre la imagen. En el caso especial de los momentos invariantes, que fueron las características escogidas e implementadas, el vector se calcula con una integral sobre la imagen, que se convierte en una sumatoria de los píxeles de la imagen.
 
-Dada la gran cantidad de pixeles, para un ser humano es dificil saber cual es el vector numérico de salida a partir de una imagen de entrada. Ademas de esto, las fórmulas son bastante extensas (ver ecuaciones \ref{eq:huMom}) y por tanto es fácil cometer algun error en su implementación. Por estas razones, las pruebas se hicieron de la siguiente manera:
+Dada la gran cantidad de píxeles, para un ser humano es difícil saber cual es el vector numérico de salida a partir de una imagen de entrada. Además de esto, las fórmulas son bastante extensas (ver ecuaciones \ref{eq:huMom}) y por tanto es fácil cometer algún error en su implementación. Por estas razones, las pruebas se hicieron de la siguiente manera:
 
 	\begin{enumerate}
 
 	\item Los momentos de Hu fueron implementados por 2 personas diferentes, es decir, se realizó una doble implementación de las funciones que los calculaban. Se considero que este método de implementación minimiza la posibilidad de que los errores no sean detectados, por cuanto la probabilidad de que dos personas cometan exactamente el mismo error es muy baja.
 	
-	\item Los momentos de Flusser fueron probados de la siguiente manera: para cada componente del conjunto de entrenamiento se calcularon los momentos de Flusser y de Hu y poseteriaromente se comprobaba si los de Flusser estaban bien revisando las equivalencias matemáticas que deben existir entre ambos vectores de características\cite{FLuzzer}. De esta forma los momentos de Fluzzer fueron implementados en realidad tres veces.
+	\item Los momentos de Flusser fueron probados de la siguiente manera: para cada componente del conjunto de entrenamiento se calcularon los momentos de Flusser y de Hu y posteriormente se comprobaba si los de Flusser estaban bien revisando las equivalencias matemáticas que deben existir entre ambos vectores de características\cite{FLuzzer}. De esta forma los momentos de Fluzzer fueron implementados en realidad tres veces.
 	
-	\item Dado que los momentos de Hu son un subconjunto de los de Fluzzer, no era posible probar todos los momentos de Flusser con los Hu. Para probar los momentos de Fluzzer restantes se utilizo el hecho de que estos momentos son invariantes a la rotación, asi que la última prueba consitió en rotar todas las imágenes 90$^\circ$, 180$^\circ$ y 270$^\circ$, y verificar que los valores fueran similares.
+	\item Dado que los momentos de Hu son un subconjunto de los de Fluzzer, no era posible probar todos los momentos de Flusser con los Hu. Para probar los momentos de Fluzzer restantes se utilizo el hecho de que estos momentos son invariantes a la rotación, así que la última prueba consistió en rotar todas las imágenes 90$^\circ$, 180$^\circ$ y 270$^\circ$, y verificar que los valores fueran similares.
 	
 	\end{enumerate}
 
-Gracias al punto 1, se detectó un error en un signo de los momentos de Hu en una de las implementaciones, y se corrigió el problema. El resto de los momentos coincidieron en ambas implementaciones. Al hacer las comprobaciones del punto 2, no se detectó ningun error, aunque como se explicó anteriormente, esto prueba solo parte de los momentos, no todos. Con el punto 3 de las comprobaciones, se detectó un cambio de signo al rotar la imagen en una de las variables del vector de características. Al revisar el código se detectó que el problema era causado por un error de digitación en el exponente de la formula, asi que se corrigió.
+Gracias al punto 1, se detectó un error en un signo de los momentos de Hu en una de las implementaciones, y se corrigió el problema. El resto de los momentos coincidieron en ambas implementaciones. Al hacer las comprobaciones del punto 2, no se detectó ningún error, aunque como se explicó anteriormente, esto prueba solo parte de los momentos, no todos. Con el punto 3 de las comprobaciones, se detectó un cambio de signo al rotar la imagen en una de las variables del vector de características. Al revisar el código se detectó que el problema era causado por un error de digitación en el exponente de la formula, así que se corrigió.
 
 \subsection{Distribución normal multivariable y clasificación}
 
-Para calcular el determinante de las matrices de covarianza y la distancia Mahalanobis se utilizaron las funciones de la libreria OpenCV XXXX y XXXX respectivamente. Estas funciones han sido probadas extensamente por la comunidad de desarrolladores de OpenCV desde el lanzamiento de esta libreria en el año 2000. Las demas funciones necesarias para realizar la clasificación se probaron depurando el programa y comprobando que en cada paso los valores coincidieran con valores calculados de forma manual. Para cada función de esta etapa el procedimiento de depuración y comparación se realizo 10 veces por parte dos personas distintas. Finalmente, se obtuvieron los resultados de los determinantes y las distancias Mahalanobis de un conjunto de 20 instancias de prueba, se realizo el calculo manualmente de los valores que debian retornar y se comprobo que el sistema estuviera retornando los mismos valores.
+Para calcular el determinante de las matrices de covarianza y la distancia Mahalanobis se utilizaron las funciones de la librería OpenCV {\it cvCalcCovarMatrix}, {\it cvMahalanobis} y {\it cvInvert} para realizar el cálculo de la matriz de covarianza, la distancia Mahalanobis y de la inversa de una matriz respectivamente. Estas funciones han sido probadas extensamente por la comunidad de desarrolladores de OpenCV desde el lanzamiento de esta librería en el año 2000, y cabe anotar que son estas funciones en las que se pueden cometer errores mas fácilmente.
+
+Para probar el resto de la lógica referente a los modelos estadísticos y la clasificación, se comprobaron las equivalencias que debían existir entre las etapas de los diferentes métodos implementados. Por ejemplo se comprobó que el resultado del método de distancia de Mahalanobis usando una matriz de covarianza diferente para cada instancia fuera equivalente al resultado del método de distribución normal multivariable con matriz de covarianza semi-compartida.
 
 \chapter{Metodología de la investigación}
 \label{chap:metodology}
@@ -1117,18 +1138,18 @@ Para construir el conjunto de datos etiquetados $S$ se realizo el siguiente proc
 
 	\item Por cada página se tomaron 5 fotos con una cámara digital de 4 megapixeles. En cada foto se vario ligeramente la distancia desde la que se tomaba la foto para incluir mas variabilidad en la escala de las imágenes. También se vario el ángulo de inclinación del texto en ángulos entre $-30^\circ$ y $30^\circ$.
 
-	\item A cada imagen se le dió un nombre que le permitiera saber al sistema que símbolos se encuentraban en la foto. A todas las imagenes de números se les dio un nombre de la forma \verb/t<num>_<consec>.jpg/, donde \verb/<num>/ representa el dígito que contiene la foto y \verb/<consec>/ es un consecutivo para diferenciar cada una de las fotos. A las imágenes de caracteres no numéricos, en cambio, se les dio un nombre de la forma \verb/n<ascii>_<consec>.jpg/, donde \verb/<ascii>/ significa el código ascii del caracter contenido en la imagen.
+	\item A cada imagen se le dio un nombre que le permitiera saber al sistema que símbolos se encontraban en la foto. A todas las imágenes de números se les dio un nombre de la forma \verb/t<num>_<consec>.jpg/, donde \verb/<num>/ representa el dígito que contiene la foto y \verb/<consec>/ es un consecutivo para diferenciar cada una de las fotos. A las imágenes de caracteres no numéricos, en cambio, se les dio un nombre de la forma \verb/n<ascii>_<consec>.jpg/, donde \verb/<ascii>/ significa el código ascii del caracter contenido en la imagen.
 
-	\item Se extrajeron los componentes conectados de cada imagen como se explicó en el capitulo \ref{chap:features}, haciendo las etapas de preprocesamiento correspondientes. Los componentes conectados se guardaron en una base de datos con el nombre de la imagen del que se sacó cada componente. Esta base de datos se convirtio en el conjunto etiquetado $S$ explicado anteriormente.
+	\item Se extrajeron los componentes conectados de cada imagen como se explicó en el capitulo \ref{chap:features}, haciendo las etapas de preprocesamiento correspondientes. Los componentes conectados se guardaron en una base de datos con el nombre de la imagen del que se sacó cada componente. Esta base de datos se convirtió en el conjunto etiquetado $S$ explicado anteriormente.
 
 \end{itemize}
 
 \subsection{Construcción del conjunto de entrenamiento y validación}
 \label{sect:trainingSet}
 
-Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se selecciono, para cada instancia, a que conjunto perteneceria, con una cierta probabilidad. Suponiendo que $P_t$ es la probabilidad de que una instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que una instancia sea asignada al conjunto de validación $V$, el procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}.
+Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se selecciono, para cada instancia, a que conjunto pertenecería, con una cierta probabilidad. Suponiendo que $P_t$ es la probabilidad de que una instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que una instancia sea asignada al conjunto de validación $V$, el procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}.
 
-El algoritmo requiere que $P_v + P_t \le 1$. Si la suma $P_v + P_t < 1$ es posible que alguna instancia no quede asignada ni al conjunto de validación ni al de entrenamiento, esto es deseable en ocasiones, y a este tercer conjunto $C$ se le denomina conjunto de pruebas. Pero en este caso, por el método de clasificación utilizado, el conjunto de pruebas no tenia mayor relevancia, y por tanto se establecio que $P_t=0.7$, $P_v=0.3$, por lo que $P_v + P_t = 1$.
+El algoritmo requiere que $P_v + P_t \le 1$. Si la suma $P_v + P_t < 1$ es posible que alguna instancia no quede asignada ni al conjunto de validación ni al de entrenamiento, esto es deseable en ocasiones, y a este tercer conjunto $C$ se le denomina conjunto de pruebas. Pero en este caso, por el método de clasificación utilizado, el conjunto de pruebas no tenia mayor relevancia, y por tanto se estableció que $P_t=0.7$, $P_v=0.3$, por lo que $P_v + P_t = 1$.
 
 \begin{figure}[htb]
 \begin{center}
@@ -1141,7 +1162,7 @@ El algoritmo requiere que $P_v + P_t \le 1$. Si la suma $P_v + P_t < 1$ es posib
 
 \subsection{Mediciones}
 
-Una vez entrenado el modelo de la distribución normal multivariable como se explicó en el capitulo \ref{chap:ml}, se llevaron a cabo las mediciones de precisión sobre las instancias del conjunto de validación, es decir, aquellas instancias que no fueron utilizadas en el proceso de entrenamiento. Para esto se utilizo el modelo entrenado y se observaron las predicciones realizadas por este modelo sobre este conjunto de validación. Dado que en el proceso de construcción de conjunto de validación cada componente fue etiquetado se conocia cual era la salida esperada para cada instancia con la que se probaba el modelo. En terminos formales, el conjunto de entrenamiento $V$ se podría definir de la siguiente manera:
+Una vez entrenado el modelo de la distribución normal multivariable como se explicó en el capitulo \ref{chap:ml}, se llevaron a cabo las mediciones de precisión sobre las instancias del conjunto de validación, es decir, aquellas instancias que no fueron utilizadas en el proceso de entrenamiento. Para esto se utilizo el modelo entrenado y se observaron las predicciones realizadas por este modelo sobre este conjunto de validación. Dado que en el proceso de construcción de conjunto de validación cada componente fue etiquetado se conocía cual era la salida esperada para cada instancia con la que se probaba el modelo. En términos formales, el conjunto de entrenamiento $V$ se podría definir de la siguiente manera:
 
 \[ V = \{\vec{x_i},r_i\}_{i=0}^N \]
 
@@ -1156,19 +1177,19 @@ Se puede observar que el valor medido $A$ significa la cantidad de aciertos sobr
 A lo largo de este documento, se han mostrado el diseño general de un sistema de reconocimiento óptico de caracteres y se han mostrado técnicas y algoritmos existentes para cada una de las etapas. Además de cada etapa se seleccionó algún algoritmo o grupo de algoritmos que por sus características teóricas resultaban mejores para el problema OCR, y se explicaron las razones por las cuales se habían escogido los algoritmos que se implementaron y se mostraron los resultados de estos algoritmos sobre el proyecto.
 
 \section{Resultados de la investigación}
-Como ya se ha expuesto a lo largo del documento, el sistema de reconocimiento óptico de caracteres al igual que otros sistemas de visión por computador, se divide en tres etapas principales: El prepocesamiento (Binarización, filtrado y segmentación de la imagen), la extracción de características (Entrega un vector de números que representa las características deseadas de la imagen) y reconocimiento (Clasificación del vector de características usando aprendizaje de máquinas).
+Como ya se ha expuesto a lo largo del documento, el sistema de reconocimiento óptico de caracteres al igual que otros sistemas de visión por computador, se divide en tres etapas principales: El preprocesamiento (Binarización, filtrado y segmentación de la imagen), la extracción de características (Entrega un vector de números que representa las características deseadas de la imagen) y reconocimiento (Clasificación del vector de características usando aprendizaje de máquinas).
 
 \subsection{Etapas de preprocesamiento}
-Para la etapa de preprocesamiento se utilizaron 3 algoritmos para cada una de sus sub-etapas. En la sub-etapa de binarización se utilizó el algoritmo de Sauvola con la mejora en tiempo de Breuel, los resultados de la binarización se muestran en la sección \ref{sect:binarization}. En la implementación del algoritmo de binarización se cambió la forma en la que se referenciaba la memoria para lograr aún mejores tiempos de respuesta, con esta mejora se disminuyó el tiempo a $\frac{1}{5}$ del tiempo de la implementación original de Breuel para imágenes de 4 MPixeles, los resultados detallados se muestran en la tabla \ref{tb:sauvolaFast}. La sub-etapa de segmentación, que divide la imagen en los componentes de interes, se implementó con un algoritmo de Flood-fill como se explica en la sección \ref{sect:conComponents}. Para la sub-etapa de filtrado se aplicaron condiciones sobre el tamaño de los componentes obtenidos en la sub-etapa de segmentación, ya que otros métodos comunes como filtros Gaussianos causaban daños a la imagen que no permitían luego una correcta segmentación.
+Para la etapa de preprocesamiento se utilizaron 3 algoritmos para cada una de sus sub-etapas. En la sub-etapa de binarización se utilizó el algoritmo de Sauvola con la mejora en tiempo de Breuel, los resultados de la binarización se muestran en la sección \ref{sect:binarization}. En la implementación del algoritmo de binarización se cambió la forma en la que se referenciaba la memoria para lograr aún mejores tiempos de respuesta, con esta mejora se disminuyó el tiempo a $\frac{1}{5}$ del tiempo de la implementación original de Breuel para imágenes de 4 MPixeles, los resultados detallados se muestran en la tabla \ref{tb:sauvolaFast}. La sub-etapa de segmentación, que divide la imagen en los componentes de interés, se implementó con un algoritmo de Flood-fill como se explica en la sección \ref{sect:conComponents}. Para la sub-etapa de filtrado se aplicaron condiciones sobre el tamaño de los componentes obtenidos en la sub-etapa de segmentación, ya que otros métodos comunes como filtros Gaussianos causaban daños a la imagen que no permitían luego una correcta segmentación.
 
 \subsection{Etapa de extracción de características}
-En la etapa de extracción de características, el reto era conseguir buenas características que fueran invariantes a la rotación. Era necesario tener características invariantes a la rotación ya que es dificil que una persona invidente pueda tomar una imagen siempre con el mismo ángulo de rotación. En el capítulo \ref{chap:features} se exploraron diferentes conjuntos de características que podían resolver el problema con diferentes enfoques y se seleccionaron 3 explicando por que las otras características no eran buenas para el reconocimiento de caracteres bajo las condiciones deseadas. 
+En la etapa de extracción de características, el reto era conseguir buenas características que fueran invariantes a la rotación. Era necesario tener características invariantes a la rotación ya que es difícil que una persona invidente pueda tomar una imagen siempre con el mismo ángulo de rotación. En el capítulo \ref{chap:features} se exploraron diferentes conjuntos de características que podían resolver el problema con diferentes enfoques y se seleccionaron 3 explicando por que las otras características no eran buenas para el reconocimiento de caracteres bajo las condiciones deseadas. 
 
 Las características seleccionadas fueron los momentos invariantes de Hu, Flusser y los de Flusser para simetría a la rotación. El funcionamiento de cada uno de estos conjuntos de características y las razones matemáticas por las que podían dar un buen resultado para el problema del reconocimiento óptico de caracteres se exponen en el capítulo \ref{chap:features}.
 
 Los resultados de estos 3 conjuntos de características fueron en general buenos. Para el mejor método de clasificación el conjunto de características con el resultado mas bajo fue el de Hu con una precisión del 98.18\% para el reconocimiento de dígitos (Vea la tabla \ref{tb:exp3}). Teniendo en cuenta que la cantidad de símbolos en este experimento son 10 (Los dígitos del 0 al 9), un método de elección aleatoria tendría una respuesta correcta en un 10\% de los casos, el rendimiento de los momentos invariantes es en general muy bueno.
 
-De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el cunjunto de Hu con un porcentaje de presición del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo el resultado de los momentos de Flusser para objetos simétricos a la rotación obtuvo un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se valla a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (Que contiene 7461 instancias) el software no cometió ningún error. 
+De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el conjunto de Hu con un porcentaje de precisión del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo el resultado de los momentos de Flusser para objetos simétricos a la rotación obtuvo un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se valla a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (Que contiene 7461 instancias) el software no cometió ningún error. 
 
 Sin embargo se pueden obtener conclusiones estadísticas, supongamos que hay una población infinita de posibles instancias de los dígitos, y tomamos una muestra de $n$ instancias. De cada instancia se dice que se clasificó correctamente con una probabilidad $p$ y que se cometió un error con una probabilidad $(1-p)$, esto corresponde perfectamente con una distribución de probabilidad binomial. Deseamos calcular cual es la probabilidad $a$ de que $p>p_i$, esto es:
 \begin{align}
@@ -1180,14 +1201,14 @@ Dado que en el experimento realizado $n=7461$, la probabilidad de que la precisi
 \subsection{Etapa de clasificación}
 Para la etapa de clasificación se exploraron diferentes algoritmos que se explican brevemente en el capítulo \ref{chap:ml}. Los algoritmos de baja potencia de clasificación como los árboles binarios de decisión no son buenos para el problema OCR, para el problema OCR usualmente se usan los algoritmos mas potentes como las redes neuronales, que no exigen separabilidad lineal. Sin embrago se tomo la decisión de no usar redes neuronales porque son difíciles de depurar, entonces en caso que el resultado del sistema no sea bueno, no se puede detectar fácilmente que parte del sistema no funciona correctamente. Por otro lado, las características utilizadas en este diseño de sistema son buenas y teóricamente generaban vectores separables linealmente para cada clase.
 
-Por esta razón se consideró utilizar el método estadístico de distribución normal multivariable explicado en la sección \ref{sect:multivar}, y dado que se sabía que las características podían entregar vectores cercanos a cero, se consideró una variación de este método en la que la matriz de covarianza se compartía en el coeficiente pero no en el exponente, y por eso se le dió el nombre de distribución multivariable con covarianza semi-compartida. Los resultados con cada uno de los métodos se pueden ver en las tablas \ref{tb:exp1}, \ref{tb:exp2} y \ref{tb:exp3}.
+Por esta razón se consideró utilizar el método estadístico de distribución normal multivariable explicado en la sección \ref{sect:multivar}, y dado que se sabía que las características podían entregar vectores cercanos a cero, se consideró una variación de este método en la que la matriz de covarianza se compartía en el coeficiente pero no en el exponente, y por eso se le dio el nombre de distribución multivariable con covarianza semi-compartida. Los resultados con cada uno de los métodos se pueden ver en las tablas \ref{tb:exp1}, \ref{tb:exp2} y \ref{tb:exp3}.
 
-La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escojidas porque estas tienen una varianza pequeña, por tanto el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (Ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
+La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escogidas porque estas tienen una varianza pequeña, por tanto el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (Ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
 
 \section{Resultados al ingresar el alfabeto}
 Aunque los objetivos iniciales consistían en trabajar solamente con dígitos numéricos, se tomo la decisión de ingresar los caracteres del alfabeto (Únicamente de letras mayúsculas), debido al buen resultado obtenido con los caracteres numéricos. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz semi-compartida se presenta en las tablas \ref{tb:alphaHuShared}, \ref{tb:alphaFlShared} y \ref{tb:alphaRotShared} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz independiente se presenta en las tablas \ref{tb:alphaHuIndep}, \ref{tb:alphaFlIndep} y \ref{tb:alphaRotIndep} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente.
 
-Las tablas que muestran los resultados del reconocimiento con los caracteres del alfabeto muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en terminos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en que consisten estos conceptos veamos el ejemplo del símbolo '0' en la tabla \ref{tb:alphaHuShared}. La tabla indica que el cero tiene 853 verdaderos positivos, 26099 verdaderos negativos, 7 falsos positivos y 106 falsos negativos. Esto quiere decir que 853 instancias que se debían reconocer como ceros efectivamente se reconocieron como ceros; 26099 instancias que no se debían reconocer como ceros, efectivamente no se reconocieron como ceros; 7 instancias que no se debían reconocer como ceros, se reconocieron como ceros; y 106 instancias que se debían reconocer como ceros no se reconocieron como ceros.
+Las tablas que muestran los resultados del reconocimiento con los caracteres del alfabeto muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en que consisten estos conceptos veamos el ejemplo del símbolo '0' en la tabla \ref{tb:alphaHuShared}. La tabla indica que el cero tiene 853 verdaderos positivos, 26099 verdaderos negativos, 7 falsos positivos y 106 falsos negativos. Esto quiere decir que 853 instancias que se debían reconocer como ceros efectivamente se reconocieron como ceros; 26099 instancias que no se debían reconocer como ceros, efectivamente no se reconocieron como ceros; 7 instancias que no se debían reconocer como ceros, se reconocieron como ceros; y 106 instancias que se debían reconocer como ceros no se reconocieron como ceros.
 
 \begin{table}
 \centering
@@ -1492,13 +1513,13 @@ Las tablas que muestran los resultados del reconocimiento con los caracteres del
 \section{Proyectos que se pueden derivar de esta investigación}
 
 
-En esta investigación se desarrollo un sistema de reconocimiento optico de caracteres para reconocer los digitos del 0 al 9. Aun cuando se agregaron las letras mayusculas, y los resultados fueron buenos, el sistema no esta optimizado para utilizarlas. Asi que el primer paso en un proyecto futuro seria desarrollar un sistema capaz de reconocer las letras del alfabeto latino, tanto mayusculas como minusculas, asi como los signos de puntuación. Para hacerlo se tendrian que solucionar problemas como la separación de la letra minuscula i en dos componentes conectados, entre muchos otros que no fueron tratados en este proyecto.
+En esta investigación se desarrollo un sistema de reconocimiento óptico de caracteres para reconocer los dígitos del 0 al 9. Aun cuando se agregaron las letras mayúsculas, y los resultados fueron buenos, el sistema no esta optimizado para utilizarlas. Así que el primer paso en un proyecto futuro seria desarrollar un sistema capaz de reconocer las letras del alfabeto latino, tanto mayúsculas como minúsculas, así como los signos de puntuación. Para hacerlo se tendrían que solucionar problemas como la separación de la letra minúscula i en dos componentes conectados, entre muchos otros que no fueron tratados en este proyecto.
 
-El sistema desarrollado permite reconocer caracteres con tamaños entre 12 y 20 puntos, e imagenes con inclinaciones entre -30$^{\circ}$ y 30$^{\circ}$. No obstante, el problema se restringió a documentos con un mismo tipo de letra. En ejemplos de la vida real normalmente se encontrarian documentos con diversos tipos de letra, lo que aumentaria la complejidad del problema. En un proyecto futuro se podrian intentar varios enfoques para solucionar este problema. Una posibilidad es hacer un preprocesamiento para reconocer el tipo de letra de cada documento y posteriormente aplicarle un modelo ya entrenado al documento dependiendo del tipo de letra. Otra posibilidad es aplicar un metodo de aprendizaje no supervisado para separar en clusters todas las letras de la misma clase, sin importar su tipo de letra, y posteriormente realizar la clasificación con este nuevo modelo. El reto en estos casos seria no aumentar significativamente la complejidad computacional de la solución.
+El sistema desarrollado permite reconocer caracteres con tamaños entre 12 y 20 puntos, e imágenes con inclinaciones entre -30$^{\circ}$ y 30$^{\circ}$. No obstante, el problema se restringió a documentos con un mismo tipo de letra. En ejemplos de la vida real normalmente se encontrarían documentos con diversos tipos de letra, lo que aumentaría la complejidad del problema. En un proyecto futuro se podrían intentar varios enfoques para solucionar este problema. Una posibilidad es hacer un preprocesamiento para reconocer el tipo de letra de cada documento y posteriormente aplicarle un modelo ya entrenado al documento dependiendo del tipo de letra. Otra posibilidad es aplicar un método de aprendizaje no supervisado para separar en clusters todas las letras de la misma clase, sin importar su tipo de letra, y posteriormente realizar la clasificación con este nuevo modelo. El reto en estos casos seria no aumentar significativamente la complejidad computacional de la solución.
 
 
 
-La etapa de reconocimiento de caracteres es muy importante, sin embargo, como fue explicado en el capitulo \ref{chap:intro}, es solo una de las etapas en el proceso de reconocimiento optico de caracteres. Una etapa muy importante que no fue desarrollada en este proyecto es la de analisis del documento. Una gran ventaja que provee la solución estadistica planteada en este proyecto es que, para cada componente conectado, se entrega un arreglo con las probabilidades de que el componente conectado pretenezca a cada clase. Esto podria ser especialmente util para una etapa de postprocesamiento en el analisis del documento, en donde se podria utilizar un diccionario y modelos de Markov para determinar la probabilidad de que una secuencia de caracteres forme una palabra. De esta manera se podrian corregir facilmente errores en los cuales se reconocieron erroneamente algunas letras de una palabra. Ademas de esto, para lograr un sistema de reconocimiento optico de caracteres que puede ser utilizado en la vida diaria por una persona invidente, es necesario realizar una etapa de analisis de documento que permita a distinguir palabras, lineas y frases.
+La etapa de reconocimiento de caracteres es muy importante, sin embargo, como fue explicado en el capitulo \ref{chap:intro}, es solo una de las etapas en el proceso de reconocimiento óptico de caracteres. Una etapa muy importante que no fue desarrollada en este proyecto es la de análisis del documento. Una gran ventaja que provee la solución estadística planteada en este proyecto es que, para cada componente conectado, se entrega un arreglo con las probabilidades de que el componente conectado pertenezca a cada clase. Esto podría ser especialmente útil para una etapa de post-procesamiento en el análisis del documento, en donde se podría utilizar un diccionario y modelos de Markov para determinar la probabilidad de que una secuencia de caracteres forme una palabra. De esta manera se podrían corregir fácilmente errores en los cuales se reconocieron erróneamente algunas letras de una palabra. Además de esto, para lograr un sistema de reconocimiento óptico de caracteres que puede ser utilizado en la vida diaria por una persona invidente, es necesario realizar una etapa de análisis de documento que permita a distinguir palabras, lineas y frases.
 
 
 \chapter{GNU Free Documentation License}
