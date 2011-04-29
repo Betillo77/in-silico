@@ -57,6 +57,10 @@
 \usepackage{amsmath, amsthm, amsfonts}
 \addto\captionsspanish{\def\refname{\textsc{Bibliografía}}}
 
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\scriptsize\bfseries}
+{\end{list}}
+
 \newcommand\portada{
 	\begin{titlepage}
 		\begin{center}
@@ -554,7 +558,7 @@ Donde $Im(i, j)$ es el valor del píxel ubicado en la posición $(i, j)$. Dado q
 
 En el cuadrado de tamaño $A \times A$ alrededor del píxel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el píxel de más abajo a la derecha y en el píxel de más arriba a la izquierda, y restar los valores de la imagen integral en el píxel de más abajo a la izquierda y en el píxel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La formula para hallar la desviación estándar no es presentada en el articulo de los creadores de Ocropus, y solo se menciona que se puede calcular utilizando la imagen integral de los píxeles al cuadrado. Con esta pista es fácil deducir matemáticamente la formula para calcular la desviación estándar:
 
-%% Poner la deduccion aqui
+\[ \sigma^2 = \frac{1}{w^2}\left(\sum_w{p(x,y)^2} - \mu \sum_w{p(x,y)}\right) \]
 
 El resultado obtenido es consistente con la formula que se utilizo en la implementación de dicho algoritmo en el proyecto Ocropus\footnote{http://code.google.com/p/ocropus}.
 
@@ -882,11 +886,53 @@ Los resultados fueron bastante buenos, y permitieron dar solución al problema d
 
 Se puede observar en las tablas \ref{tb:exp1_1} y \ref{tb:exp1_2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. Un problema similar ocurre cuando los dígitos presentan simetría a la rotación. Flusser\cite{flusser06} demostró que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algún grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el articulo en que se propusieron se utilizaron para reconocer únicamente entre objetos simétricos, se intento utilizar estos momentos para reconocer entre todos los dígitos, para lo cual se construyo un conjunto de momentos simétricos utilizando el procedimiento explicado por Flusser:
 
-%% PONER MOMENTOS FLUSSER_2 ACA
+\begin{mylisting}
+\begin{verbatim}
+#! /bin/python
 
-Para explorar distintas posibilidades se creo un script que recibe como parámetro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente mas altos que el de las dos anteriores, como puede observarse en la tabla \ref{tb:exp3}.
+print 'Este script calcula una base de invariantes de flusser para objetos simetricos'
+N = int(raw_input('N-fold rotation symmetry: '))
+r = int(raw_input('Invariants up to order: '))
+if (r<N):
+    print 'The order must be at least equal to N'
+else:
+    for q in range(0,(r/2)+1):
+        for p in range(q,r+1):
+            if (p-q)%N == 0 and (p+q)>=2 and (p+q)<=r:
+                k=(p-q)/N;
+                print 'C['+str(p)+','+str(q)+']*C[q0,p0]^'+str(k) 
+\end{verbatim}
+\end{mylisting}
 
-%% PONER AQUI TABLA NO SHARED
+Para explorar distintas posibilidades se creo un script que recibe como parámetro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente mas altos que el de las dos anteriores, como puede observarse en la tablas \ref{tb:exp4_1} y \ref{tb:exp4_2}.
+
+	%% PONER AQUI TABLA NO SHARED
+	\begin{table}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		* & \multicolumn{3}{|c|}{Matriz de covarianza independiente} \\
+		\hline
+		Caracter & Hu & Flusser & 2-Fold flusser\\
+		\hline
+		0 & 99.86\% & 100.00\% & 100.00\%\\
+		1 &	100.00\% & 100.00\% & 100.00\% \\
+		2 &	91.21\% & 93.91\% & 47.14\% \\
+		3 &	100.00\% & 100.00\% & 99.42\% \\
+		4 &	100.00\% & 96.41\% & 100.00\% \\		
+		5 & 26.95\% & 38.95\% & 100.00\% \\ 
+		6 & 93.61\% & 99.48\% & 100.00\% \\
+		7 & 100.00\% & 99.87\% & 100.00\% \\
+		8 & 96.76\% & 99.44\% & 100.00\% \\
+		9 &	65.40\% & 96.72\% & 100.00\% \\
+		\hline
+		Total & 87.38\% & 92.47\% & 94.44\% \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\caption{Precisión del clasificador en los tres experimentos}	
+	\label{exp4_1}
+	\end{table}
 
 	\begin{table}
 	\begin{center}
@@ -912,7 +958,7 @@ Para explorar distintas posibilidades se creo un script que recibe como parámet
 	\end{tabular}
 	\end{center}
 	\caption{Precisión del clasificador en los tres experimentos}	
-	\label{tb:exp4}
+	\label{tb:exp4_2}
 	\end{table}
 
 Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validación fueron elegidos aleatoriamente, y que el conjunto de validación consistió de 7461 instancias, se puede concluir de los resultados que los momentos propuestos con Fluzzer son también muy efectivos para hacer reconocimiento entre objetos simétricos y no simétricos. También se puede observar que el método propuesto utilizando la matriz de covarianza compartida fue más efectivo que el método estándar utilizando la matriz de covarianza independiente.
@@ -1205,10 +1251,155 @@ Por esta razón se consideró utilizar el método estadístico de distribución 
 
 La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escogidas porque estas tienen una varianza pequeña, por tanto el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (Ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
 
+\section{Resultados finales con los números}
+En esta sección se presentan los resultados finales obtenidos por el sistema en el reconocimiento de dígitos ya explicados a lo largo de este documento. Las tablas que muestran los resultados del reconocimiento de los dígitos numéricos muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en que consisten estos conceptos veamos el ejemplo del símbolo '8' en la tabla \ref{tb:numHuIndep}. La tabla indica que el cero tiene 341 verdaderos positivos, 3077 verdaderos negativos, 250 falsos positivos y 22 falsos negativos. Esto quiere decir que 341 instancias que se debían reconocer como ocho efectivamente se reconocieron como ochos; 3077 instancias que no se debían reconocer como ocho, efectivamente no se reconocieron como ochos; 250 instancias que no se debían reconocer como ochos, se reconocieron como ochos; y 22 instancias que se debían reconocer como ochos no se reconocieron como ochos.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 366 & 3273 & 51 & 0 & 100.000000\% \\ 
+	1 & 370 & 3320 & 0 & 0 & 100.000000\% \\ 
+	2 & 255 & 3306 & 0 & 129 & 66.406250\% \\ 
+	3 & 342 & 3348 & 0 & 0 & 100.000000\% \\ 
+	4 & 384 & 3306 & 0 & 0 & 100.000000\% \\ 
+	5 & 110 & 3324 & 0 & 256 & 30.054646\% \\ 
+	6 & 338 & 3337 & 0 & 15 & 95.750710\% \\ 
+	7 & 367 & 3323 & 0 & 0 & 100.000000\% \\ 
+	8 & 341 & 3077 & 250 & 22 & 93.939392\% \\ 
+	9 & 387 & 3166 & 129 & 8 & 97.974686\% \\ 
+	\hline
+	Total & 3260 & N/A & \multicolumn{2}{|c|}{430} & 88.346878\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con las características de Hu (Matriz de covarianza independiente)}
+\label{tb:numHuIndep}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 366 & 3247 & 77 & 0 & 100.000000\% \\ 
+	1 & 370 & 3320 & 0 & 0 & 100.000000\% \\ 
+	2 & 304 & 3306 & 0 & 80 & 79.166664\% \\ 
+	3 & 342 & 3348 & 0 & 0 & 100.000000\% \\ 
+	4 & 375 & 3306 & 0 & 9 & 97.656250\% \\ 
+	5 & 152 & 3323 & 1 & 214 & 41.530056\% \\ 
+	6 & 334 & 3337 & 0 & 19 & 94.617561\% \\ 
+	7 & 367 & 3323 & 0 & 0 & 100.000000\% \\ 
+	8 & 358 & 3145 & 182 & 5 & 98.622589\% \\ 
+	9 & 383 & 3216 & 79 & 12 & 96.962029\% \\ 
+	\hline
+	Total & 3351 & N/A & \multicolumn{2}{|c|}{339} & 90.813011\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con las características de Flusser (Matriz de covarianza independiente)}
+\label{tb:numFlIndep}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 366 & 3324 & 0 & 0 & 100.000000\% \\ 
+	1 & 370 & 3320 & 0 & 0 & 100.000000\% \\ 
+	2 & 181 & 3306 & 0 & 203 & 47.135418\% \\ 
+	3 & 340 & 3145 & 203 & 2 & 99.415207\% \\ 
+	4 & 384 & 3306 & 0 & 0 & 100.000000\% \\ 
+	5 & 366 & 3324 & 0 & 0 & 100.000000\% \\ 
+	6 & 353 & 3337 & 0 & 0 & 100.000000\% \\ 
+	7 & 367 & 3323 & 0 & 0 & 100.000000\% \\ 
+	8 & 363 & 3325 & 2 & 0 & 100.000000\% \\ 
+	9 & 395 & 3295 & 0 & 0 & 100.000000\% \\ 
+	\hline
+	Total & 3485 & N/A & \multicolumn{2}{|c|}{205} & 94.444443\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con las características de Flusser 2-Fold (Matriz de covarianza independiente)}
+\label{tb:numRotIndep}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 362 & 3324 & 0 & 4 & 98.907104\% \\ 
+	1 & 370 & 3320 & 0 & 0 & 100.000000\% \\ 
+	2 & 384 & 3262 & 44 & 0 & 100.000000\% \\ 
+	3 & 342 & 3348 & 0 & 0 & 100.000000\% \\ 
+	4 & 384 & 3306 & 0 & 0 & 100.000000\% \\ 
+	5 & 341 & 3283 & 41 & 25 & 93.169395\% \\ 
+	6 & 351 & 3335 & 2 & 2 & 99.433426\% \\ 
+	7 & 367 & 3323 & 0 & 0 & 100.000000\% \\ 
+	8 & 311 & 3327 & 0 & 52 & 85.674934\% \\ 
+	9 & 390 & 3294 & 1 & 5 & 98.734177\% \\ 
+	\hline
+	Total & 3602 & N/A & \multicolumn{2}{|c|}{88} & 97.615173\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con las características de Hu (Matriz de covarianza semi-compartida)}
+\label{tb:numHuShared}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 361 & 3324 & 0 & 5 & 98.633881\% \\ 
+	1 & 370 & 3320 & 0 & 0 & 100.000000\% \\ 
+	2 & 384 & 3280 & 26 & 0 & 100.000000\% \\ 
+	3 & 342 & 3348 & 0 & 0 & 100.000000\% \\ 
+	4 & 384 & 3306 & 0 & 0 & 100.000000\% \\ 
+	5 & 362 & 3302 & 22 & 4 & 98.907104\% \\ 
+	6 & 352 & 3335 & 2 & 1 & 99.716713\% \\ 
+	7 & 367 & 3323 & 0 & 0 & 100.000000\% \\ 
+	8 & 338 & 3326 & 1 & 25 & 93.112946\% \\ 
+	9 & 379 & 3295 & 0 & 16 & 95.949364\% \\ 
+	\hline
+	Total & 3639 & N/A & \multicolumn{2}{|c|}{51} & 98.617889\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con las características de Flusser (Matriz de covarianza semi-compartida)}
+\label{tb:numFlShared}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	Símbolo & TP & TN & FP & FN & Precisión \\ 
+	\hline
+	0 & 366 & 3324 & 0 & 0 & 100.000000\% \\ 
+	1 & 370 & 3320 & 0 & 0 & 100.000000\% \\ 
+	2 & 384 & 3306 & 0 & 0 & 100.000000\% \\ 
+	3 & 342 & 3348 & 0 & 0 & 100.000000\% \\ 
+	4 & 384 & 3306 & 0 & 0 & 100.000000\% \\ 
+	5 & 366 & 3324 & 0 & 0 & 100.000000\% \\ 
+	6 & 353 & 3337 & 0 & 0 & 100.000000\% \\ 
+	7 & 367 & 3323 & 0 & 0 & 100.000000\% \\ 
+	8 & 363 & 3327 & 0 & 0 & 100.000000\% \\ 
+	9 & 395 & 3295 & 0 & 0 & 100.000000\% \\ 
+	\hline
+	Total & 3690 & N/A & \multicolumn{2}{|c|}{0} & 100.000000\% \\
+	\hline
+\end{tabular}
+\caption{Resultados con las características de Flusser N-Fold (Matriz de covarianza semi-compartida)}
+\label{tb:numRotShared}
+\end{table}
+
 \section{Resultados al ingresar el alfabeto}
 Aunque los objetivos iniciales consistían en trabajar solamente con dígitos numéricos, se tomo la decisión de ingresar los caracteres del alfabeto (Únicamente de letras mayúsculas), debido al buen resultado obtenido con los caracteres numéricos. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz semi-compartida se presenta en las tablas \ref{tb:alphaHuShared}, \ref{tb:alphaFlShared} y \ref{tb:alphaRotShared} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz independiente se presenta en las tablas \ref{tb:alphaHuIndep}, \ref{tb:alphaFlIndep} y \ref{tb:alphaRotIndep} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente.
-
-Las tablas que muestran los resultados del reconocimiento con los caracteres del alfabeto muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en que consisten estos conceptos veamos el ejemplo del símbolo '0' en la tabla \ref{tb:alphaHuShared}. La tabla indica que el cero tiene 853 verdaderos positivos, 26099 verdaderos negativos, 7 falsos positivos y 106 falsos negativos. Esto quiere decir que 853 instancias que se debían reconocer como ceros efectivamente se reconocieron como ceros; 26099 instancias que no se debían reconocer como ceros, efectivamente no se reconocieron como ceros; 7 instancias que no se debían reconocer como ceros, se reconocieron como ceros; y 106 instancias que se debían reconocer como ceros no se reconocieron como ceros.
 
 \begin{table}
 \centering

@@ -460,15 +460,31 @@
 	En esta ecuación todas las variables son conocidas, pues se van a obtener de la siguiente  manera:
 
 	\begin{itemize}
-
 	      \item $A1$ : A partir de la pregunta 5 de la encuesta. Dada la cantidad de personas que estén dispuestas a pagar en cada uno de los rangos, se determinara, a través de regresión lineal, la variación en la demanda con respecto al precio. Esta variación, que en realidad es la pendiente de la gráfica de esa pregunta, seria A1.
-	      \item $A2$ : A partir de las preguntas 4 y 5 de la encuesta. Dado el numero de personas que están dispuestas a pagar por el servicio en cada uno de los rangos de ingreso per              	     capita, se puede estimar a través de una regresión lineal que tanto varia la demanda con respecto al ingreso per capita de los encuestados. Dicha pendiente seria A2.
+	      \item $A2$ : A partir de las preguntas 4 y 5 de la encuesta. Dado el numero de personas que están dispuestas a pagar por el servicio en cada uno de los rangos de ingreso per capita, se puede estimar a través de una regresión lineal que tanto varia la demanda con respecto al ingreso per capita de los encuestados. Dicha pendiente seria A2.
 	      \item $A3$ : Dado que esta constante especifica que tanto varia la demanda con respecto al tamaño de la población, se utilizara la pregunta 5 de la encuesta para determinar que porcentaje de los encuestados estarían dispuestos a pagar por el servicio, además también se utilizaran las preguntas 1 y 2 para filtrar las personas invidentes que estarían dispuestas a pagar por el servicio pero no tienen un celular con cámara.
 	      \item $A4$ : En este proyecto no se va a considerar la publicidad, ya que la publicidad viene implícita en la comisión, pues los proveedores publicitan el producto para ganar la comisión.
 	      \item $Y$ : Se utilizara el valor del ingreso per capita de la persona invidente promedio suministrado por el DANE.
 	      \item $Pb$ : Se utilizara la población total de personas invidentes en nuestro país, según el DANE.
 	      \item $Pub$ : Igual que $A4$
 	      \item $Cm$ : Comisión cobrada por cada uno de los proveedores. Dado que cada proveedor cobra una comisión distinta, se utilizara un precio diferenciado, por cuanto los sistemas operativos de cada proveedor también son diferenciados.
+	\end{itemize}
+	
+	Los resultados tabulados de la encuesta se pueden ver en la figura \ref{fig:result}. Solo se muestran 8 de las 20 personas encuenstadas ya que el resto de las personas encuestadas no tenían un celular con plan de datos o no tenían un celular con cámara de suficiente resolución. Los datos de los ingresos se estimaron en la media de los rangos, por ejemplo para las personas que seleccionaron entre 1 y 3 salarios mínimos se les calcula la media del salario en 2 salarios mínimos (Que se aproxima al millón). Los datos de el precio que se está dispuesto a pagar también se estimaron en la media de los intervalos.
+	
+	\begin{figure}[htb]
+	\begin{center}
+	\leavevmode
+	\includegraphics[width=6cm]{img/result.png}
+	\end{center}
+	\caption{Resultados resumidos de las encuestas}
+	\label{fig:result}
+	\end{figure}
+	
+	Después de realizar el procedimiento anteriormente descrito, se llegaron a los siguientes valores:
+	\begin{itemize}
+		\item {\bf Precio:} El precio óptimo es {\bf \$20.632}.
+		\item {\bf Demanda:} La cantidad demandada para el precio sería de {\bf 10011} personas.
 	\end{itemize}
 
 	\subsubsection{Promoción}
@@ -730,12 +746,14 @@
 	
 	Los salarios para cada uno serian:
 
-	Gerente: \$5.000.000 mensuales
-	Investigador en desarrollo: \$2.500.000 mensuales
-	Investigador en inteligencia artificial: \$2.500.000 mensuales
-	Desarrolladores: \$1.500.000 mensuales
-	Tecnico: \$1.000.000 mensuales
-	Secretaria: \$1.000.000 mensuales
+\begin{itemize}
+	\item Gerente: \$5.000.000 mensuales
+	\item Investigador en desarrollo: \$2.500.000 mensuales
+	\item Investigador en inteligencia artificial: \$2.500.000 mensuales
+	\item Desarrolladores: \$1.500.000 mensuales
+	\item Tecnico: \$1.000.000 mensuales
+	\item Secretaria: \$1.000.000 mensuales
+\end{itemize}
 
 	Se contratarian: 1 gerente, 1 investigador en desarrollo, 1 investigador en inteligencia artificial, 2 desarrolladores, 1 tecnico y 1 secretaria.
 	
@@ -744,7 +762,7 @@
 	\begin{figure}
 	\begin{center}
 	\leavevmode
-	\includegraphics[width=7cm]{img/org.jpg}
+	\includegraphics[width=12cm]{img/org.jpg}
 	\end{center}
 	\caption{Organigrama institucional}
 	\label{fig:org}
@@ -909,16 +927,38 @@
 	\end{center}
 	
 	\subsection{Tasas y valores a utilizar}
-
-	CDT (180 dias): 3.97\%
-	CDT (360 dias): 4.49\%
-	TES ( 10 años): 8.16\%
-	Inflación proyectada DANE (2011): 2 - 4\%
-	Inflación acumulado (Enero - Marzo 2011): 1.79\%
-	Inflación real proyectada (nosotros) (2011): 6 - 8\%
-	Tasa de credito para inversión en Colombia: 16.7\%
+	\begin{itemize}
+		\item CDT (180 dias): 3.97\%
+		\item CDT (360 dias): 4.49\%
+		\item TES ( 10 años): 8.16\%
+		\item Inflación proyectada DANE (2011): 2 - 4\%
+		\item Inflación acumulado (Enero - Marzo 2011): 1.79\%
+		\item Inflación real proyectada (nosotros) (2011): 6 - 8\%
+		\item Tasa de credito para inversión en Colombia: 16.7\%
+	\end{itemize}
 	
 	\subsection{Flujo de caja}
+	En el estudio de mercado se llegó a la conclusión de asignar un precio de \$20.000 al mes y con este precio se tendría una tamaño de la demanda de 7011 personas. Naturalmente en un solo perido no se puede pasar de 0\% en ventas a un 100\%, así que se modeló el crecimiento de la demanda como una función lineal. Por tanto la demanda crecería en 1402 usuarios al año. El flujo de caja se presenta en la figura \ref{fig:cashFlow}.
+	
+	\begin{figure}
+	\begin{center}
+	\leavevmode
+	\includegraphics[width=12cm]{img/cashFlow.png}
+	\end{center}
+	\caption{Flujo de caja}
+	\label{fig:cashFlow}
+	\end{figure}
+	
+	Los salarios del primer año, según el estudio organizacional, son:
+	\begin{itemize}
+	\item Gerente: \$5.000.000 mensuales
+	\item Investigador en desarrollo: \$2.500.000 mensuales
+	\item Investigador en inteligencia artificial: \$2.500.000 mensuales
+	\item Desarrolladores: \$1.500.000 mensuales
+	\item Tecnico: \$1.000.000 mensuales
+	\item Secretaria: \$1.000.000 mensuales
+	\end{itemize}
+	Los salarios para los otros años son aumentados calculados en base a los salarios del primer año incrementados un punto porcentual sobre la inflación proyectada por el banco de la república. La justificación de los costos de insumos y materiales estan dadas por el estudio técnico, al igual que los costos de las inversiones en maquinaria e infraestructura.
 	
 	\clearpage
 	
