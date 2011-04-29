@@ -1,0 +1,7 @@
+#! /bin/bash
+
+if [ ! -e /bin/ifconfig ]; then
+	ln -s /sbin/ifconfig /bin/ifconfig
+fi
+
+

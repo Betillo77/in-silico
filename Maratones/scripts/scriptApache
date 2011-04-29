@@ -15,7 +15,7 @@ iface=$1
 linea=$((ifconfig $iface | grep "inet:") || (ifconfig $iface | grep "addr:"))
 myip=$(echo $linea | cut -d: -f 2 | cut -d' ' -f 1)
 if $(test -z $myip); then
-	echo "Error, interfaz no existe"
+	echo "Error, interfaz $1 no existe"
 	exit 1
 fi
 expresion="$myip[\t\s]+$hname"
@@ -44,9 +44,9 @@ if wget --tries=5 $dburl; then
 	unzip db.zip
 	rm db.zip
 	PC2CN=pc2.server.Server
-	(echo "N" | ./pc2server>pc2server.log)&
+	(echo "N" | ./pc2server > pc2server.log 2> pc2error.log)&
 	#Ahora resta imprimir el processId para matar el servidor si es necesario
-	ps | grep java | cut -d' ' -f 2
+	echo $(ps | grep java | cut -d' ' -f 2)
 	exit 0
 else
 	echo "Error al descargar el archivo $dburl"
