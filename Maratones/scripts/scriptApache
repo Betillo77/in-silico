@@ -1,0 +1,55 @@
+#! /bin/bash
+
+#Script para configurar el pc2server, para ser ejecutado por el apache
+#Parametro 1: Interfaz de red (ej. eth0, eth1, wlan0)
+#Parametro 2: Url de donde descargar el db.zip
+
+if (test $# -lt 2); then
+	echo "El script debe tener 2 parametros, fue llamado con $#"
+	exit 127
+fi
+
+hname=$(cat /etc/hostname)
+iface=$1
+
+linea=$((ifconfig $iface | grep "inet:") || (ifconfig $iface | grep "addr:"))
+myip=$(echo $linea | cut -d: -f 2 | cut -d' ' -f 1)
+if $(test -z $myip); then
+	echo "Error, interfaz no existe"
+	exit 1
+fi
+expresion="$myip[\t\s]+$hname"
+echo $expresion
+
+if grep -P "$expresion" /etc/hosts > tmp.txt; then
+	linea=$(grep -P "$expresion" /etc/hosts)
+	if (echo $linea | grep "#")>tmp.txt; then
+		echo "ERROR: La linea correcta ($linea) esta comentada"
+		exit 2
+	fi	
+else
+	echo "ERROR en archivo /etc/hosts:"
+	echo "Debe poner la IP de la tarjeta de red($myip) al host($hname)"
+	exit 2
+fi
+
+echo "Archivo /etc/hosts correcto"
+echo ""
+
+#Descarga de db.zip y configuración del pc2server
+dburl=$2
+
+if wget --tries=5 $dburl; then
+	rm -r db/
+	unzip db.zip
+	rm db.zip
+	PC2CN=pc2.server.Server
+	(echo "N" | ./pc2server>pc2server.log)&
+	#Ahora resta imprimir el processId para matar el servidor si es necesario
+	ps | grep java | cut -d' ' -f 2
+	exit 0
+else
+	echo "Error al descargar el archivo $dburl"
+	exit 3
+fi
+
