@@ -66,7 +66,6 @@ public class Estrategia
 					ConexionMySql.agregarEntrada(id, afectada);
 				if(afectada.getNumeroLotes() <= 0)
 				{
-					Error.agregarConTitulo("rangos", id + " cerrando senal " + par);
 					for(IdProveedor id : IdProveedor.values())
 						id.darProveedor().agregar(afectada, hit);
 					senales.remove(afectada);
@@ -83,7 +82,6 @@ public class Estrategia
 				}
 				senales.add(nueva);
 				nueva.getPar().agregarSenal(nueva);
-				Error.agregarConTitulo("rangos", id + " abriendo senal " + par);
 				for(IdProveedor id : IdProveedor.values())
 					id.darProveedor().agregar(nueva, hit);
 			}

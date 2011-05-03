@@ -154,6 +154,7 @@ public class Proveedor
 				cambios[s.getEstrategia().ordinal()] = true;
 				if(hit)
 				{
+					Error.agregarConTitulo("rangos", id + " cerrando senal: " + s.getEstrategia() + ", " + s.getPar());
 					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
 					if(afectada == null)
 						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar.");
@@ -169,6 +170,7 @@ public class Proveedor
 				}
 				else
 				{
+					Error.agregarConTitulo("rangos", id + " abriendo senal: " + s.getEstrategia() + ", " + s.getPar());
 					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
 					if(afectada != null)
 						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " ya existe y se intento abrir otra vez.");
