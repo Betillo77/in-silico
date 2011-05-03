@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 
-public class Gaussian
+public class F
 {
 	// Tomado de Princeton
 	static class Rational implements Comparable <Rational> 
