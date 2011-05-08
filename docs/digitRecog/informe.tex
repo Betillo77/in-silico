@@ -107,11 +107,18 @@
 
 \contraportada
 
+%Nota de aceptación
+%Agradecimiento
+
+%Todo alineado a la izquierda
 \tableofcontents
 
-\listoffigures
-
 \listoftables
+
+\listoffigures
+%Lista de anexos(Opcional)
+%Glosario (Obligatorio)
+%Revisar si va resumen
 
 \chapter{Introducción}
 \label{chap:intro}
@@ -134,7 +141,7 @@ A partir de la incidencia del problema, una manera de ayudar a que las personas 
 
 La diferencia más importante, sin embargo, es que en los computadores de escritorio las imágenes son obtenidas utilizando un escáner, logrando condiciones de iluminación altas y uniformes a través del documento. En los teléfonos inteligentes, en cambio, las imágenes deben ser obtenidas por medio de una cámara fotográfica. Esta diferencia es muy importante para el reconocimiento óptico de caracteres, en especial si quien toma la foto es una persona invidente, ya que en este caso variables como la inclinación del texto, la iluminación no uniforme y las deformaciones elásticas del papel dejan de ser despreciables. La persona invidente podría tomar la fotografía inclinada, en el sentido contrario o en un lugar con poca luminosidad, y debido a su discapacidad difícilmente se percataría de su error.
 
-Para dar solución al problema de la limitación en la capacidad de procesamiento de los teléfonos inteligentes es posible utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay una mayor disponibilidad de redes inalámbricas en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet, para que esta sea procesada por un servidor con una capacidad de cómputo mucho mayor. La capacidad de procesamiento de los celulares inteligentes ha venido incrementado en los últimos años, así que seria posible hacer parte del procesamiento en el celular, reduciendo el ancho de banda requerido para enviar la imagen al servidor. Este sistema tendría la movilidad y rapidez necesarias para dar solución al problema de una manera efectiva.
+Para dar solución al problema de la limitación en la capacidad de procesamiento de los teléfonos inteligentes es posible utilizar una de sus grandes ventajas: son por naturaleza dispositivos de alta conectividad. Cada vez los planes de telefonía son más económicos y hay una mayor disponibilidad de redes inalámbricas en diferentes sitios públicos como institutos educativos y bibliotecas. Esta alta conectividad posibilita la construcción de un sistema de reconocimiento óptico de caracteres con una arquitectura cliente-servidor, en la cual el teléfono inteligente pueda enviar la imagen por internet, para que esta sea procesada por un servidor con una capacidad de cómputo mucho mayor. La capacidad de procesamiento de los celulares inteligentes ha venido incrementado en los últimos años, así que sería posible hacer parte del procesamiento en el celular, reduciendo el ancho de banda requerido para enviar la imagen al servidor. Este sistema tendría la movilidad y rapidez necesarias para dar solución al problema de una manera efectiva.
 
 Para solucionar los problemas asociados con la inclinación del texto, que se pueden producir en las imágenes tomadas por una persona invidente, se hace necesario un sistema de reconocimiento óptico de caracteres que pueda reconocer exitosamente fotos tomadas con distintos grados de inclinación o incluso en el sentido contrario.
 
@@ -187,7 +194,7 @@ Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numérico
 
 La tecnología actual permite que las personas invidentes tengan un acceso cada vez mayor a la información y al conocimiento escrito. En el área de acceso al texto, existen sistemas que convierten texto ASCII a voz, conocidos como sistemas \textit{Text-To-Speech}. También existen sistemas que permiten reconocer el texto de una imagen y convertirlo a texto en ASCII, conocidos como sistemas OCR, los cuales funcionan usualmente con imágenes adquiridas utilizando un escáner. Según pruebas de eficacia realizadas por la TUK\footnote{BREUEL, Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero, 2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}, los OCRs de código libre con mejores resultados son \textit{Tesseract} y \textit{Ocropus}. Cuando la imagen se adquiere mediante una cámara digital, se deben seguir diferentes enfoques. Investigaciones pasadas han concluido\footnote{SMITH, Ray. Progress in Camera-Based Document Image Analysis. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION (7: 3-6, agosto, 2003: Edimburgo, Escocia). Memorias, 2003, p. 606-617} que los retos más importantes son la proyección de la imagen en perspectiva en el plano y la resolución requerida para lograr un buen porcentaje de reconocimiento.
 
-En cuanto a realizar el trabajo de reconocimiento óptico de caracteres en celulares, se encontró una investigación\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} en la que se utilizan imágenes de muy baja resolución (640 x 480), y como resultado solo pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos. En una investigación distinta\footnote{SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372} se propone tomar varias imágenes de baja resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto, sin embargo, incrementa significativamente la carga de procesamiento, haciendo que no sea posible el procesamiento dentro del celular. Por esta razón la solución se restringe a una arquitectura cliente-servidor. Además de ello la solución es poco practica para personas invidentes, ya que requeriría que el usuario supiera con anterioridad como está la estructura del documento para poder mover el celular en la dirección en la que está el texto.
+En cuanto a realizar el trabajo de reconocimiento óptico de caracteres en celulares, se encontró una investigación\footnote{ZHOU, Steven; SYED, Gilani y WINKLER, Stefan. Open Source OCR Framework Using Mobile Devices. MULTIMEDIA ON MOBILE DEVICES (1: 28-29 enero, 2008: San José, California, Estados Unidos). Memorias, 2008, vol. 6821, p. 41-46} en la que se utilizan imágenes de muy baja resolución (640 x 480), y como resultado solo pueden reconocer textos muy cortos, tales como avisos y carteles, pero no documentos completos. En una investigación distinta\footnote{SENDA, Shuji, et al. Camera-Typing Interface for Ubiquitous Information Services. IEEE ANNUAL CONFERENCE ON PERVASIVE COMPUTING AND COMMUNICATIONS (2: 14-17, marzo, 2004: Orlando, Florida, Estados Unidos). Memorias, 2004, p. 366-372} se propone tomar varias imágenes de baja resolución en lugar de una sola, uniéndolas posteriormente para lograr una mejor resolución. Esto, sin embargo incrementa significativamente la carga de procesamiento dentro del celular y de uso de ancho de banda. Además de ello la solución es poco practica para personas invidentes, ya que requeriría que el usuario supiera con anterioridad como está la estructura del documento para poder mover el celular en la dirección en la que está el texto.
 	
 \subsection{Investigaciones de temas relacionados en la Universidad Tecnológica de Pereira}
 
@@ -221,7 +228,7 @@ Esta etapa se puede clasificar como un subproblema del reconocimiento de patrone
 
 La  mayoría de los métodos para el reconocimiento de patrones tienen como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres es deseable que estas características cambien muy poco frente a ciertas variables de cada imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y Fluzzer, los cuales se calculan realizando una integral. En una imagen digital, por el hecho de ser discreta, la integral se convierte en una sumatoria en la que se le asignan diferentes pesos a cada píxel, dependiendo de la posición. Posteriormente se realizan operaciones sobre estos píxeles que permitan obtener un conjunto limitado de características. El objetivo es que estas características sean independientes a la rotación, la translación y el escalamiento. Al ser características que no varían significativamente con respecto a estas variables se les ha dado el nombre de ``momentos invariantes''.
 
-Para realizar el entrenamiento se deben tomar muchas imágenes de un solo tipo, ya sea una letra, un número o una forma. Después se calculan, para cada una de ellas, sus características invariantes. Posteriormente se etiqueta la imagen, guardando esta información en una base de datos. Cuando el sistema se pone en marcha se obtienen las características de la imagen y se aplica un algoritmo de aprendizaje sobre las mismas. Uno de los métodos mas sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y entre clases diferentes. Con esto se pueden crear regiones en el hiper-espacio\footnote{Un espacio de varias dimensiones} para las diferentes clases. En este caso para clasificar una imagen de entrada se tomarían sus características, y se ubicaría en que región de este hiper-espacio se encuentran.
+Para realizar el entrenamiento se deben tomar muchas imágenes de un solo tipo, ya sea una letra, un número o una forma. Después se calculan, para cada una de ellas, sus características invariantes. Posteriormente se etiqueta la imagen, guardando esta información en una base de datos. Cuando el sistema se pone en marcha se obtienen las características de la imagen y se aplica un algoritmo de aprendizaje sobre las mismas. Uno de los métodos mas sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y entre clases diferentes. Con esto se pueden crear regiones en el hiper-espacio\footnote{Un espacio de varias dimensiones} para las diferentes clases. En este caso para clasificar una imagen de entrada se tomarían sus características, y se ubicaría en que región de este hiper-espacio se encuentran. Esto se explica con mas detalle en el capítulo \ref{chap:ml}.
     
 \chapter{Métodos estadísticos para la clasificación}
 \label{chap:ml}
@@ -720,7 +727,7 @@ Dado los problemas antes mencionados, se decidió indagar las razones por las qu
 
 Otra posibilidad que se exploro fue encontrar matemáticamente una manera en la cual los cálculos pudieran realizarsen sin perder mucha precisión, para lo cual se partió de la ecuación de la distribución normal multivariable:
 
-	$p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}\right]$
+	\[p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}\right]\]
 
 Como puede observarse, el determinante de la matriz de covarianza afecta al resultado en dos partes de la misma: hace parte del denominador y del exponente. Dado que para el cálculo de la distancia Mahalanobis se había calculado la matriz de covarianza compartida para todas las clases, se decidió reemplazar el valor de su determinante (que era mucho mayor) por el determinante de la matriz de covarianza. Esto se decidió dado que matemáticamente el valor tiene un significado similar, y por cuanto se considero que los resultados con el valor tan pequeño que se estaba utilizando podían tener poco sentido. Matemáticamente la función fue modificada de la siguiente forma:
 
@@ -779,7 +786,7 @@ Dado que no se encontró descrito en la literatura científica, a este método s
 \subsection{Problemas de simetría mutua}
 \label{sect:mutualSym}
 
-Si se analizan los resultados de la tabla \ref{tb:exp2} para el método de clasificación de matriz de covarianza semi-compartida se puede observar que el peor porcentaje se obtuvo en los dígitos 6 y 9. De hecho, se noto que estos dígitos se estaban confundiendo entre ellos.
+Si se analizan los resultados de la tabla \ref{tb:exp1_2} para el método de clasificación de matriz de covarianza semi-compartida se puede observar que el peor porcentaje se obtuvo en los dígitos 6 y 9. De hecho, se noto que estos dígitos se estaban confundiendo entre ellos.
  
 Cabe recordar que las características son invariantes a la rotación. Una situación en donde los seres humanos hacen reconocimiento de dígitos con características invariantes a la rotación ocurre cuando juegan billar y deben reconocer los dígitos marcados en las bolas de billar independientemente de la rotación de la bola. En este caso incluso los seres humanos tenemos problemas para reconocer entre la bola 6 y la 9, y necesitamos de una seña (que puede ser una raya) para reconocer entre estos dos dígitos de manera apropiada.
 
@@ -904,7 +911,7 @@ else:
 \end{verbatim}
 \end{mylisting}
 
-Para explorar distintas posibilidades se creo un script que recibe como parámetro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente mas altos que el de las dos anteriores, como puede observarse en la tablas \ref{tb:exp4_1} y \ref{tb:exp4_2}.
+Para explorar distintas posibilidades se creó un script que recibe como parámetro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente mas altos que el de las dos anteriores, como puede observarse en la tablas \ref{tb:exp4_1} y \ref{tb:exp4_2}.
 
 	%% PONER AQUI TABLA NO SHARED
 	\begin{table}
@@ -931,7 +938,7 @@ Para explorar distintas posibilidades se creo un script que recibe como parámet
 	\end{tabular}
 	\end{center}
 	\caption{Precisión del clasificador en los tres experimentos}	
-	\label{exp4_1}
+	\label{tb:exp4_1}
 	\end{table}
 
 	\begin{table}
@@ -962,6 +969,118 @@ Para explorar distintas posibilidades se creo un script que recibe como parámet
 	\end{table}
 
 Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validación fueron elegidos aleatoriamente, y que el conjunto de validación consistió de 7461 instancias, se puede concluir de los resultados que los momentos propuestos con Fluzzer son también muy efectivos para hacer reconocimiento entre objetos simétricos y no simétricos. También se puede observar que el método propuesto utilizando la matriz de covarianza compartida fue más efectivo que el método estándar utilizando la matriz de covarianza independiente.
+
+
+\chapter{Metodología de la investigación}
+\label{chap:metodology}
+
+\section{Diseño metodológico}
+
+\subsection{Hipótesis}
+
+Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (ver población), tomando la imagen con una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
+	
+\subsection{Tipo de investigación}
+
+En esta investigación se utilizará un enfoque cuantitativo.
+
+\subsection{Población}
+\label{sect:population}
+
+Los documentos impresos que solo contengan dígitos numéricos y que cumplan con las siguientes restricciones:
+
+\begin{itemize}
+
+	\item Forma rectangular.
+
+	\item Fondo blanco.
+
+	\item Letra de color negro y con un único tipo de letra o fuente.
+
+	\item El tamaño de los dígitos varía entre 12 y 20 puntos.
+
+	\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
+
+\end{itemize}
+
+\subsection{Unidad de análisis}
+
+Fotos de textos con las condiciones mencionadas en la población, con una única fuente.
+
+\subsection{Muestra}
+
+Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100 y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel. De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación y otro 15\% para el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del método de aprendizaje sobre datos que no se le mostraron en el entrenamiento.
+
+\subsection{Variables}
+
+Las variables a tener en cuenta para ejecución de la aplicación son:
+
+\begin{itemize}
+
+	\item Porcentaje de caracteres reconocidos exitosamente en total.
+
+	\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
+
+	\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
+
+	\item Porcentaje de seguridad con el que se reconoció cada dígito.
+
+	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
+
+\end{itemize}
+
+\section{Escenario de pruebas}
+\label{sect:testEnvironment}
+
+En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no utilizado para el entrenamiento.
+
+\subsection{Levantamiento de datos}
+
+Se entiende por un conjunto de datos de entrada etiquetado, un conjunto de datos de entrada en el que para cada dato de entrada se conoce la clase a la que pertenece. Tanto el conjunto de entrenamiento $T$ como el conjunto de validación $V$ deben ser conjuntos etiquetados.
+
+La forma mas fácil de construir estos dos conjuntos es construir un único conjunto etiquetado $S$ y luego dividirlo aleatoriamente en los dos conjuntos disjuntos $T$ y $V$, es decir, que $T \cap V = \emptyset$ y $T \cup V = S$ donde $\emptyset$ representa el conjunto vacío.
+
+Para construir el conjunto de datos etiquetados $S$ se realizo el siguiente procedimiento:
+
+\begin{itemize}
+
+	\item Se imprimió una hoja por cada símbolo a reconocer. Cada hoja contenía entre 350 y 450 instancias del mismo símbolo, con tamaño de fuente variando entre 12 puntos y 20 puntos, pero todos los símbolos fueron impresos con el mismo tipo de letra o fuente.
+
+	\item Por cada página se tomaron 5 fotos con una cámara digital de 4 megapixeles. En cada foto se vario ligeramente la distancia desde la que se tomaba la foto para incluir mas variabilidad en la escala de las imágenes. También se vario el ángulo de inclinación del texto en ángulos entre $-30^\circ$ y $30^\circ$.
+
+	\item A cada imagen se le dio un nombre que le permitiera saber al sistema que símbolos se encontraban en la foto. A todas las imágenes de números se les dio un nombre de la forma \verb/t<num>_<consec>.jpg/, donde \verb/<num>/ representa el dígito que contiene la foto y \verb/<consec>/ es un consecutivo para diferenciar cada una de las fotos. A las imágenes de caracteres no numéricos, en cambio, se les dio un nombre de la forma \verb/n<ascii>_<consec>.jpg/, donde \verb/<ascii>/ significa el código ascii del caracter contenido en la imagen.
+
+	\item Se extrajeron los componentes conectados de cada imagen como se explicó en el capitulo \ref{chap:features}, haciendo las etapas de preprocesamiento correspondientes. Los componentes conectados se guardaron en una base de datos con el nombre de la imagen del que se sacó cada componente. Esta base de datos se convirtió en el conjunto etiquetado $S$ explicado anteriormente.
+
+\end{itemize}
+
+\subsection{Construcción del conjunto de entrenamiento y validación}
+\label{sect:trainingSet}
+
+Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se selecciono, para cada instancia, a que conjunto pertenecería, con una cierta probabilidad. Suponiendo que $P_t$ es la probabilidad de que una instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que una instancia sea asignada al conjunto de validación $V$, el procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}.
+
+El algoritmo requiere que $P_v + P_t \le 1$. Si la suma $P_v + P_t < 1$ es posible que alguna instancia no quede asignada ni al conjunto de validación ni al de entrenamiento, esto es deseable en ocasiones, y a este tercer conjunto $C$ se le denomina conjunto de pruebas. Pero en este caso, por el método de clasificación utilizado, el conjunto de pruebas no tenia mayor relevancia, y por tanto se estableció que $P_t=0.7$, $P_v=0.3$, por lo que $P_v + P_t = 1$.
+
+\begin{figure}[htb]
+\begin{center}
+\leavevmode
+\includegraphics[width=7cm]{diagrams/setPartition.jpg}
+\end{center}
+\caption{Procedimiento para producir los conjuntos de entrenamiento y validación}
+\label{fig:setPartition}
+\end{figure}
+
+\subsection{Mediciones}
+
+Una vez entrenado el modelo de la distribución normal multivariable como se explicó en el capitulo \ref{chap:ml}, se llevaron a cabo las mediciones de precisión sobre las instancias del conjunto de validación, es decir, aquellas instancias que no fueron utilizadas en el proceso de entrenamiento. Para esto se utilizo el modelo entrenado y se observaron las predicciones realizadas por este modelo sobre este conjunto de validación. Dado que en el proceso de construcción de conjunto de validación cada componente fue etiquetado se conocía cual era la salida esperada para cada instancia con la que se probaba el modelo. En términos formales, el conjunto de entrenamiento $V$ se podría definir de la siguiente manera:
+
+\[ V = \{\vec{x_i},r_i\}_{i=0}^N \]
+
+%% HASTA AQUI VA PRIMERA REVISION DE SANTIAGO
+
+Donde $N$ es la cantidad de elementos del conjunto de validación y $r_i$ es la salida esperada para el valor de entrada $\vec{x}_i$. Supongamos que la salida observada del modelo entrenado para el valor $\vec{x_i}$ es $y_i$, entonces se considera que el clasificador comete un error si $r_i \ne y_i$ y acierta si $r_i = y_i$. Considerando que cada acierto cuenta  una igualdad tenga por valor 1 si es verdadera y 0 si es falsa, entonces el valor medido se calcula de la siguiente forma:
+\[ A = \frac{ \sum_{j=0}^{N}(r_i=y_i) }{N} \]
+Se puede observar que el valor medido $A$ significa la cantidad de aciertos sobre el número total de intentos de predicción. Y por tanto mide el porcentaje de efectividad del clasificador para el problema de reconocimiento de caracteres.
 
 \chapter{Diseño, implementación y pruebas del aplicativo}
 \label{chap:ingSw}
@@ -1107,116 +1226,6 @@ Para calcular el determinante de las matrices de covarianza y la distancia Mahal
 
 Para probar el resto de la lógica referente a los modelos estadísticos y la clasificación, se comprobaron las equivalencias que debían existir entre las etapas de los diferentes métodos implementados. Por ejemplo se comprobó que el resultado del método de distancia de Mahalanobis usando una matriz de covarianza diferente para cada instancia fuera equivalente al resultado del método de distribución normal multivariable con matriz de covarianza semi-compartida.
 
-\chapter{Metodología de la investigación}
-\label{chap:metodology}
-
-\section{Diseño metodológico}
-
-\subsection{Hipótesis}
-
-Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (ver población), tomando la imagen con una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
-	
-\subsection{Tipo de investigación}
-
-En esta investigación se utilizará un enfoque cuantitativo.
-
-\subsection{Población}
-\label{sect:population}
-
-Los documentos impresos que solo contengan dígitos numéricos y que cumplan con las siguientes restricciones:
-
-\begin{itemize}
-
-	\item Forma rectangular.
-
-	\item Fondo blanco.
-
-	\item Letra de color negro y con un único tipo de letra o fuente.
-
-	\item El tamaño de los dígitos varía entre 12 y 20 puntos.
-
-	\item La inclinación de los dígitos varía entre -30$^{\circ}$ y 30$^{\circ}$.
-
-\end{itemize}
-
-\subsection{Unidad de análisis}
-
-Fotos de textos con las condiciones mencionadas en la población, con una única fuente.
-
-\subsection{Muestra}
-
-Se tomará una muestra de 10 páginas, una página por cada dígito. Cada página contendrá entre 100 y 120 instancias de cada dígito con una única fuente pero con diferentes tamaños de letra en el rango especificado. De cada página se tomarán 5 fotos con diferentes inclinaciones en el rango de inclinación especificado. Las fotos deben ser tomadas desde un punto perpendicular al papel. De todo el conjunto de instancias recolectadas, se seleccionará aleatoriamente un 70\% de los datos para el conjunto de entrenamiento, un 15\% para el conjunto de validación y otro 15\% para el conjunto de pruebas. Los datos se dividen para verificar la capacidad de generalización del método de aprendizaje sobre datos que no se le mostraron en el entrenamiento.
-
-\subsection{Variables}
-
-Las variables a tener en cuenta para ejecución de la aplicación son:
-
-\begin{itemize}
-
-	\item Porcentaje de caracteres reconocidos exitosamente en total.
-
-	\item Porcentaje de caracteres reconocidos exitosamente por cada dígito.
-
-	\item Porcentaje de seguridad con el que se reconocieron los dígitos en total.
-
-	\item Porcentaje de seguridad con el que se reconoció cada dígito.
-
-	\item Latencia (Tiempo que se demora el OCR en comenzar a entregar salida)
-
-\end{itemize}
-
-\section{Escenario de pruebas}
-\label{sect:testEnvironment}
-
-En esta sección se pretende ilustrar cual fue la metodología seguida para las pruebas y las condiciones bajo las que se tomaron los datos. Para realizar las mediciones se debe contar con un conjunto de datos de entrenamiento y un conjunto de datos de validación, ya que como se explicó en el capítulo \ref{chap:ml}, primero se debe crear el modelo con los datos de entrenamiento y luego se debe probar la habilidad de generalización sobre un conjunto de datos no utilizado para el entrenamiento.
-
-\subsection{Levantamiento de datos}
-
-Se entiende por un conjunto de datos de entrada etiquetado, un conjunto de datos de entrada en el que para cada dato de entrada se conoce la clase a la que pertenece. Tanto el conjunto de entrenamiento $T$ como el conjunto de validación $V$ deben ser conjuntos etiquetados.
-
-La forma mas fácil de construir estos dos conjuntos es construir un único conjunto etiquetado $S$ y luego dividirlo aleatoriamente en los dos conjuntos disjuntos $T$ y $V$, es decir, que $T \cap V = \emptyset$ y $T \cup V = S$ donde $\emptyset$ representa el conjunto vacío.
-
-Para construir el conjunto de datos etiquetados $S$ se realizo el siguiente procedimiento:
-
-\begin{itemize}
-
-	\item Se imprimió una hoja por cada símbolo a reconocer. Cada hoja contenía entre 350 y 450 instancias del mismo símbolo, con tamaño de fuente variando entre 12 puntos y 20 puntos, pero todos los símbolos fueron impresos con el mismo tipo de letra o fuente.
-
-	\item Por cada página se tomaron 5 fotos con una cámara digital de 4 megapixeles. En cada foto se vario ligeramente la distancia desde la que se tomaba la foto para incluir mas variabilidad en la escala de las imágenes. También se vario el ángulo de inclinación del texto en ángulos entre $-30^\circ$ y $30^\circ$.
-
-	\item A cada imagen se le dio un nombre que le permitiera saber al sistema que símbolos se encontraban en la foto. A todas las imágenes de números se les dio un nombre de la forma \verb/t<num>_<consec>.jpg/, donde \verb/<num>/ representa el dígito que contiene la foto y \verb/<consec>/ es un consecutivo para diferenciar cada una de las fotos. A las imágenes de caracteres no numéricos, en cambio, se les dio un nombre de la forma \verb/n<ascii>_<consec>.jpg/, donde \verb/<ascii>/ significa el código ascii del caracter contenido en la imagen.
-
-	\item Se extrajeron los componentes conectados de cada imagen como se explicó en el capitulo \ref{chap:features}, haciendo las etapas de preprocesamiento correspondientes. Los componentes conectados se guardaron en una base de datos con el nombre de la imagen del que se sacó cada componente. Esta base de datos se convirtió en el conjunto etiquetado $S$ explicado anteriormente.
-
-\end{itemize}
-
-\subsection{Construcción del conjunto de entrenamiento y validación}
-\label{sect:trainingSet}
-
-Para dividir el conjunto etiquetado $S$ en los conjuntos $T$ y $V$ se iteró por todas las instancias en $S$ y se selecciono, para cada instancia, a que conjunto pertenecería, con una cierta probabilidad. Suponiendo que $P_t$ es la probabilidad de que una instancia sea asignada al conjunto de entrenamiento $T$ y $P_v$ es la probabilidad de que una instancia sea asignada al conjunto de validación $V$, el procedimiento para construir los conjuntos $S$ y $V$ se ilustra en la figura \ref{fig:setPartition}.
-
-El algoritmo requiere que $P_v + P_t \le 1$. Si la suma $P_v + P_t < 1$ es posible que alguna instancia no quede asignada ni al conjunto de validación ni al de entrenamiento, esto es deseable en ocasiones, y a este tercer conjunto $C$ se le denomina conjunto de pruebas. Pero en este caso, por el método de clasificación utilizado, el conjunto de pruebas no tenia mayor relevancia, y por tanto se estableció que $P_t=0.7$, $P_v=0.3$, por lo que $P_v + P_t = 1$.
-
-\begin{figure}[htb]
-\begin{center}
-\leavevmode
-\includegraphics[width=7cm]{diagrams/setPartition.jpg}
-\end{center}
-\caption{Procedimiento para producir los conjuntos de entrenamiento y validación}
-\label{fig:setPartition}
-\end{figure}
-
-\subsection{Mediciones}
-
-Una vez entrenado el modelo de la distribución normal multivariable como se explicó en el capitulo \ref{chap:ml}, se llevaron a cabo las mediciones de precisión sobre las instancias del conjunto de validación, es decir, aquellas instancias que no fueron utilizadas en el proceso de entrenamiento. Para esto se utilizo el modelo entrenado y se observaron las predicciones realizadas por este modelo sobre este conjunto de validación. Dado que en el proceso de construcción de conjunto de validación cada componente fue etiquetado se conocía cual era la salida esperada para cada instancia con la que se probaba el modelo. En términos formales, el conjunto de entrenamiento $V$ se podría definir de la siguiente manera:
-
-\[ V = \{\vec{x_i},r_i\}_{i=0}^N \]
-
-%% HASTA AQUI VA PRIMERA REVISION DE SANTIAGO
-
-Donde $N$ es la cantidad de elementos del conjunto de validación y $r_i$ es la salida esperada para el valor de entrada $\vec{x}_i$. Supongamos que la salida observada del modelo entrenado para el valor $\vec{x_i}$ es $y_i$, entonces se considera que el clasificador comete un error si $r_i \ne y_i$ y acierta si $r_i = y_i$. Considerando que cada acierto cuenta  una igualdad tenga por valor 1 si es verdadera y 0 si es falsa, entonces el valor medido se calcula de la siguiente forma:
-\[ A = \frac{ \sum_{j=0}^{N}(r_i=y_i) }{N} \]
-Se puede observar que el valor medido $A$ significa la cantidad de aciertos sobre el número total de intentos de predicción. Y por tanto mide el porcentaje de efectividad del clasificador para el problema de reconocimiento de caracteres.
 
 \chapter{Conclusiones y resultados}
 \label{chap:results}
@@ -1235,7 +1244,7 @@ Las características seleccionadas fueron los momentos invariantes de Hu, Flusse
 
 Los resultados de estos 3 conjuntos de características fueron en general buenos. Para el mejor método de clasificación el conjunto de características con el resultado mas bajo fue el de Hu con una precisión del 98.18\% para el reconocimiento de dígitos (Vea la tabla \ref{tb:exp3}). Teniendo en cuenta que la cantidad de símbolos en este experimento son 10 (Los dígitos del 0 al 9), un método de elección aleatoria tendría una respuesta correcta en un 10\% de los casos, el rendimiento de los momentos invariantes es en general muy bueno.
 
-De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el conjunto de Hu con un porcentaje de precisión del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo el resultado de los momentos de Flusser para objetos simétricos a la rotación obtuvo un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se valla a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (Que contiene 7461 instancias) el software no cometió ningún error. 
+De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el conjunto de Hu con un porcentaje de precisión del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo el resultado de los momentos de Flusser para objetos simétricos a la rotación obtuvo un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se vaya a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (Que contiene 7461 instancias) el software no cometió ningún error. 
 
 Sin embargo se pueden obtener conclusiones estadísticas, supongamos que hay una población infinita de posibles instancias de los dígitos, y tomamos una muestra de $n$ instancias. De cada instancia se dice que se clasificó correctamente con una probabilidad $p$ y que se cometió un error con una probabilidad $(1-p)$, esto corresponde perfectamente con una distribución de probabilidad binomial. Deseamos calcular cual es la probabilidad $a$ de que $p>p_i$, esto es:
 \begin{align}
@@ -1247,7 +1256,7 @@ Dado que en el experimento realizado $n=7461$, la probabilidad de que la precisi
 \subsection{Etapa de clasificación}
 Para la etapa de clasificación se exploraron diferentes algoritmos que se explican brevemente en el capítulo \ref{chap:ml}. Los algoritmos de baja potencia de clasificación como los árboles binarios de decisión no son buenos para el problema OCR, para el problema OCR usualmente se usan los algoritmos mas potentes como las redes neuronales, que no exigen separabilidad lineal. Sin embrago se tomo la decisión de no usar redes neuronales porque son difíciles de depurar, entonces en caso que el resultado del sistema no sea bueno, no se puede detectar fácilmente que parte del sistema no funciona correctamente. Por otro lado, las características utilizadas en este diseño de sistema son buenas y teóricamente generaban vectores separables linealmente para cada clase.
 
-Por esta razón se consideró utilizar el método estadístico de distribución normal multivariable explicado en la sección \ref{sect:multivar}, y dado que se sabía que las características podían entregar vectores cercanos a cero, se consideró una variación de este método en la que la matriz de covarianza se compartía en el coeficiente pero no en el exponente, y por eso se le dio el nombre de distribución multivariable con covarianza semi-compartida. Los resultados con cada uno de los métodos se pueden ver en las tablas \ref{tb:exp1}, \ref{tb:exp2} y \ref{tb:exp3}.
+Por esta razón se consideró utilizar el método estadístico de distribución normal multivariable explicado en la sección \ref{sect:multivar}, y dado que se sabía que las características podían entregar vectores cercanos a cero, se consideró una variación de este método en la que la matriz de covarianza se compartía en el coeficiente pero no en el exponente, y por eso se le dio el nombre de distribución multivariable con covarianza semi-compartida. Los resultados con cada uno de los métodos se pueden ver en las tablas \ref{tb:exp1_1}, \ref{tb:exp1_2}, \ref{tb:exp2_1} y \ref{tb:exp2_2}.
 
 La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escogidas porque estas tienen una varianza pequeña, por tanto el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (Ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
 
@@ -1547,7 +1556,7 @@ Aunque los objetivos iniciales consistían en trabajar solamente con dígitos nu
 	Total & 26871 & N/A & \multicolumn{2}{|c|}{194} & 99.283203\% \\
 	\hline
 \end{tabular}
-\caption{}
+\caption{Resultados con el alfabeto utilizando momentos de Flusser 2-Fold (Matriz semi-compartida)}
 \label{tb:alphaRotShared}
 \end{table}
 
