@@ -426,7 +426,7 @@ La covarianza indica la relación que existe entre dos variables aleatorias $X$ 
 
 \subsection{Distribución de probabilidad}
 
-Una distribución de probabilidad de una variable aleatoria $X$ es una función que asigna una probabilidad a cada posible valor que puede tomar la variable $X$. Cuando X es una variable discreta, la función definirá un valor de probabilidad para cada uno de los valores que puede tomar. Sin embargo, cuando la variable $X$ es continua, existen infinitos valores posible que puede tomar y por tanto la probabilidad de obtener un valor especifico es 0. Por esta razón tiene poco sentido hablar de la probabilidad de un valor especifico y la distribución de probabilidad se convierte en una función de distribución, la cual define, para cada real $x$, la probabilidad de que la variable $X$ sea menor o igual a $x$. En esto caso la distribución de probabilidad $D$ se definiría matemáticamente como:
+Una distribución de probabilidad de una variable aleatoria $X$ es una función que asigna una probabilidad a cada posible valor que puede tomar la variable $X$. Cuando $X$ es una variable discreta, la función definirá un valor de probabilidad para cada uno de los valores que $X$ puede tomar. Sin embargo, cuando la variable $X$ es continua, existen infinitos valores posibles que puede tomar y por tanto la probabilidad de obtener un valor especifico es 0. Por esta razón tiene poco sentido hablar de la probabilidad de un valor especifico y la distribución de probabilidad se convierte en una función de distribución, la cual define, para cada real $x$, la probabilidad de que la variable $X$ sea menor o igual a $x$. En esto caso la distribución de probabilidad $D$ se definiría matemáticamente como:
 
 	\[D(x) = P(X \leq x) = \int_{-\infty}^x{f(t)dt}\]
 
@@ -498,12 +498,14 @@ Una manera de realizar las clasificación es calcular la distancia Mahalanobis e
 
 Cuando la matriz de covarianza es igual a la matriz identidad la distancia Mahalanobis se convierte en la distancia euclidiana al cuadrado, pero en los demás casos puede proporcionar valores mucho más adecuados para calcular la cercanía de una entrada a cada una de las clases. En el caso de una distribución normal multivariable, es posible utilizar una matriz de covarianza compartida por todas las clases para calcular la distancia Mahalanobis. Las probabilidades posteriores pueden ser calculadas de la misma manera, y se sigue escogiendo la clase con mayor probabilidad posterior.
 
+%Quedó faltando la distribución normal multivariable con matriz de covarianza semi-compartida
+
 \chapter{Extracción de características de los caracteres}
 \label{chap:features}
 
 \section{Introducción}
 
-Como se explico en la sección \ref{sect:machineLearning}, para hacer aprendizaje de maquina es necesario primero obtener unas características que permitan diferenciar las distintas clases. En el caso del reconocimiento óptico de caracteres se requieren características que permitan diferenciar, por ejemplo, el numero '5' del numero '8'. Para obtener estas características se requieren realizar algunas etapas de procesamiento que detecten donde están los caracteres y que forma tienen. En las siguientes secciones se describirán las etapas de procesamiento que se realizaron en este proyecto.
+Como se explicó en la sección \ref{sect:machineLearning}, para hacer aprendizaje de maquinas es necesario primero obtener unas características que permitan diferenciar entre las distintas clases. En el caso del reconocimiento óptico de caracteres se requieren características que permitan diferenciar, por ejemplo, el numero '5' del numero '8'. Para obtener estas características se requieren realizar algunas etapas de procesamiento que detecten donde están los caracteres y que forma tienen. En las siguientes secciones se describirán las etapas de procesamiento que se realizaron en este proyecto.
 
 \section{Escala de grises}
 
@@ -515,7 +517,7 @@ Antes de computar las características es necesario hacer un preprocesamiento. P
 
 Estos pesos se utilizan en la librería de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
 
-Haciendo uso de la ecuación \ref{eq:bwtocv} se implemento un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
+Haciendo uso de la ecuación \ref{eq:bwtocv} se implementó un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
 
 \section{Binarización}
 \label{sect:binarization}
@@ -537,7 +539,7 @@ Cuando las imágenes son adquiridas mediante un escáner, es común escoger un $
 	T(x,y)=m(x,y)\left[ 1 + k(\frac{s(x,y)}{R}-1) \right]
 \end{equation}
 
-Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estándar de los píxeles en algún área alrededor de X, y R es el máximo valor de la desviación estándar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada píxel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los píxeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los píxeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$\footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapíxeles, incluso con valores relativamente pequeños de $A$.
+Donde $m(x,y)$ es la media y $s(x,y)$ la desviación estándar de los píxeles en algún área alrededor de $(x,y)$, y R es el máximo valor de la desviación estándar (128 para una imagen en escala de grises). La forma más sencilla de implementar este algoritmo es calcular para cada píxel $(x,y)$ el valor de $m$ y $s$ de manera directa, es decir, iterar por todos los píxeles en el vecindario de $(x,y)$. Sin embargo, si el área a considerar para $m$ y $s$ es de tamaño $A \times A$, entonces la complejidad computacional de calcular $T(x,y)$ para todos los píxeles de una imagen de tamaño $N \times M$ sería $O(N \times M \times A^{2})$\footnote{La función $O(f)$ se usa para indicar que la complejidad algorítmica es una función $f(N)$ que depende de la talla del problema $N$. Sea $T(N)$ el tiempo de  ejecución del algoritmo para una talla de problema $N$, entonces existe una constante $K$ tal que  $\forall N ( K*f(N) < T(N) ) $}. Con esta complejidad el algoritmo sería demasiado lento para procesar imágenes de varios megapíxeles, incluso con valores relativamente pequeños de $A$.
 
 \subsection{Optimización al algoritmo de binarización}
 
@@ -583,17 +585,17 @@ Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor
 \section{Componentes conectados}
 \label{sect:conComponents}
 
-Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los píxeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el método de Sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un píxel $(x,y)$ pertenece al fondo de la imagen si $I_2(x,y)=0$, y pertenece a algún caracter si $I_2(x,y)=255$. Si se establece que un píxel $(x',y')$ es vecino de un píxel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un conjunto de píxeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviéndose únicamente a través de píxeles vecinos de $C$. La idea de los componentes conectados fue utilizada, entre muchos otros, por O'Gorman\footnote{O’GORMAN Lawrence. The Document Spectrum for Page Layout Analysis.} para realizar el análisis del documento, una de las etapas del reconocimiento óptico de caracteres.
+Antes de reconocer los caracteres es necesario saber en que partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los píxeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el método de Sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un píxel $(x,y)$ pertenece al fondo de la imagen si $I_2(x,y)=255$, y pertenece a algún caracter si $I_2(x,y)=0$. Si se establece que un píxel $(x',y')$ es vecino de un píxel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un conjunto de píxeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviéndose únicamente a través de píxeles vecinos de $C$. La idea de los componentes conectados fue utilizada, entre muchos otros, por O'Gorman\footnote{O’GORMAN Lawrence. The Document Spectrum for Page Layout Analysis.} para realizar el análisis del documento, una de las etapas del reconocimiento óptico de caracteres.
 
 \newtheorem{pixHasOneC}{Lemma}
 \begin{pixHasOneC}
-	Cada píxel $(x,y)$ tal que $I_2(x,y)=255$ pertenece a un único componente conectado.
+	Cada píxel $(x,y)$ tal que $I_2(x,y)=0$ pertenece a un único componente conectado.
 \end{pixHasOneC}
 \begin{proof}
 	Suponga que un píxel $(x,y)$ pertenece a más de un componente conectado. En particular, suponga que $(x,y)$ pertenece tanto al componente $C_i$ como al componente $C_j$. Entonces hay un camino desde cualquier $P_i \in C_i$ a $(x,y)$ y desde cualquier $P_j \in C_j$ a $(x,y)$. Por tanto hay al menos un camino desde todo $P_i$ a todo $P_j$, este camino es $P_i \rightarrow (x,y) \rightarrow P_j$. Esto significa que $C_i$ y $C_j$ pueden ser unidos en un único componente conectado, y al unirlos $(x,y)$ pertenecería a un único componente conectado.
 \end{proof}
 
-Después de esto se puede utilizar un algoritmo de relleno por difusión ({\em flood-fill}) para encontrar cada componente conectado. Dado un píxel $(x,y)$ con $I_2(x,y)=255$, se encuentra el componente conectado al que este pertenece, se guarda, y se borra de la imagen. De esta manera por cada píxel encontrado en un único recorrido por toda la imagen se extraerá un componente conectado, y al finalizar este recorrido se habrán extraído todos los componentes conectados. Este algoritmo se implementó utilizando una pila para evitar la recursividad.
+Después de esto se puede utilizar un algoritmo de relleno por difusión ({\em flood-fill}) para encontrar cada componente conectado. Dado un píxel $(x,y)$ con $I_2(x,y)=0$, se encuentra el componente conectado al que este pertenece, se guarda, y se borra de la imagen. De esta manera por cada píxel encontrado en un único recorrido por toda la imagen se extraerá un componente conectado, y al finalizar este recorrido se habrán extraído todos los componentes conectados. Este algoritmo se implementó utilizando una pila para evitar la recursividad.
 
 	\begin{figure}
 	\centering
@@ -635,7 +637,7 @@ Un enfoque mucho más practico es detectar la rotación y el escalamiento del te
 
 El escalamiento se podría ajustar haciendo una interpolación de los píxeles al tamaño deseado. Existen, sin embargo, dos problemas con esta solución. En cuanto a la rotación, si el ángulo $\theta$ no es un múltiplo de 90 grados, las coordenadas de los nuevos píxeles $(x', y')$ no serían enteras. Esto se puede solucionar interpolando $(x',y')$ a sus vecinos enteros más cercanos, pero este proceso conlleva una pérdida de información importante cuando la calidad de las imágenes no es muy buena. En cuanto al escalamiento, la interpolación también produce una pérdida de información. Tal vez el problema mas grave de esta pérdida de información en el reconocimiento de caracteres, es que en algunos casos se puede partir un único caracter en varias partes, dificultando el proceso de reconocimiento.
 
-Para el problema de reconocimiento de caracteres es entonces conveniente encontrar métodos de extracción de características que minimicen la pérdida de información, pero que al mismo tiempo sean invariantes a la rotación y al escalamiento. Los momento invariantes son características que cumplen dicha propiedad.
+Para el problema de reconocimiento de caracteres es entonces conveniente encontrar métodos de extracción de características que minimicen la pérdida de información, pero que al mismo tiempo sean invariantes a la rotación y al escalamiento. Los momentos invariantes son características que cumplen dicha propiedad.
 
 \subsection{Momentos invariantes de Hu}	
 \label{sect:invariants}
@@ -681,7 +683,7 @@ Donde i denota la unidad imaginaria. En coordenadas polares esto es equivalente 
 		C_{pq} = \iint{ r^{p+q+1}e^{i(p-q)\theta}f(r,\theta) dr d\theta }
 	\end{equation}
 
-Una propiedad interesante de los momentos complejos, que se deriva de la ecuación \ref{eq:polarCplx}, es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un ángulo $\alpha$ sobre el origen de la imagen $f(r,\theta)$\footnote{es decir $f'(r,\theta) = f(r,\theta+\alpha)$} entonces:
+Una propiedad interesante de los momentos complejos, que se deriva de la ecuación \ref{eq:polarCplx}, es que, si hay una imagen $f'(r,\theta)$ que es una versión rotada un ángulo $\alpha$ sobre el origen de la imagen $f(r,\theta)$, es decir, que $f'(r,\theta) = f(r,\theta+\alpha)$ entonces:
 
 \begin{equation}\label{eq:rotProp}
 	C'_{pq} = e^{-i(p-q)\alpha}C_{pq}
@@ -735,7 +737,7 @@ Como puede observarse, el determinante de la matriz de covarianza afecta al resu
 		p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma|^\frac{1}{2}} e^{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}
 	\end{equation} 
 
-Es decir, lo que se hizo fue una mezcla entre el método completo de distribución normal multivariable y un modelo con matriz de covarianza compartida. Inesperadamente los resultados fueron muy buenos, como se puede apreciar en la tabla \ref{tb:exp1_2}.
+Es decir, lo que se hizo fue una mezcla entre el método completo de distribución normal multivariable y un modelo con matriz de covarianza compartida. Los resultados mejoraron significativamente como se esperaba, el resultado se puede apreciar en la tabla \ref{tb:exp1_2}.
 
 	\begin{table}
 	\begin{center}
@@ -792,7 +794,7 @@ Cabe recordar que las características son invariantes a la rotación. Una situa
 
 En este caso, el problema no estaba previsto y solo se detectó cuando se realizaron las pruebas. Lo que sucede es que los dígitos 6 y 9 tienen simetría mutua, y son difíciles de reconocer entre ellos por cuanto en los documentos impresos no se hacen señas como en el billar. Sin embargo, cabe recordar que en los objetivos se restringió a que los documentos analizados tendrían una rotación entre $-30^\circ$ y $30^\circ$. Si el documento tuviese un ángulo de rotación por fuera de este rango, se podría llevar a un rango cercano rotando la imagen en múltiplos de $90^\circ$ sin ninguna pérdida de información (ver sección \ref{sect:rotation}), esto, si se cuenta con alguna referencia que indique la rotación adecuada, porque de lo contrario no se podría determinar con exactitud entre el 6 y el 9.
 
-Con estas restricciones, se creo el siguiente método para resolver el problema de la simetría mutua utilizando las ecuaciones de los momentos complejos. Supongamos que existe un problema de simetría mutua entre las clases $C_i$ y $C_j$, y que se desea clasificar una imagen $f(x,y)$ en una de estas dos clases. Entonces una rotación cercana a 180$^\circ$ de la instancia $f(x,y)$ respecto a la clase $C_i$ indica que $f(x,y)$ tiene mayor similitud a la clase $C_j$ que a la clase $C_i$. Definamos también $f_i(x,y)$ como una instancia de la clase $C_i$ que representa una instancia promedio de la clase $C_i$. Entonces se establecería que $f(x,y)$ pertenece a $C_i$ si el ángulo de rotación con respecto a $f_i(x,y)$ es menor que 90$^\circ$, y si el ángulo es mayor que 90$^\circ$ se escogería la clase $C_j$. En el caso de que el ángulo sea exactamente igual a 90$^\circ$ no se podría determinar a cual de las dos clases pertenece, por lo cual se asignaría  cualquiera de las dos.
+Con estas restricciones, se creó el siguiente método para resolver el problema de la simetría mutua utilizando las ecuaciones de los momentos complejos. Supongamos que existe un problema de simetría mutua entre las clases $C_i$ y $C_j$, y que se desea clasificar una imagen $f(x,y)$ en una de estas dos clases. Entonces una rotación cercana a 180$^\circ$ de la instancia $f(x,y)$ respecto a la clase $C_i$ indica que $f(x,y)$ tiene mayor similitud a la clase $C_j$ que a la clase $C_i$. Definamos también $f_i(x,y)$ como una instancia de la clase $C_i$ que representa una instancia promedio de la clase $C_i$. Entonces se establecería que $f(x,y)$ pertenece a $C_i$ si el ángulo de rotación con respecto a $f_i(x,y)$ es menor que 90$^\circ$, y si el ángulo es mayor que 90$^\circ$ se escogería la clase $C_j$. En el caso de que el ángulo sea exactamente igual a 90$^\circ$ no se podría determinar a cual de las dos clases pertenece, por lo cual se asignaría  cualquiera de las dos.
 
 Para hallar el ángulo se utilizaron los momentos complejos de la siguiente manera. Sea $C'_{pq}$ el promedio de los momentos complejos de orden $p+q$ de las instancias de la clase $C_i$, sea $C_{pq}$ el momento complejo de orden $p+q$ de la imagen $f(x,y)$.
 
@@ -802,7 +804,7 @@ Entonces, utilizando la ecuación Eq.\ref{eq:rotProp}, se tiene:
 		\frac{C'_{pq}}{C_{pq}} = e^{-i(p-q)\alpha}
 	\end{equation}
 
-En la ecuación \ref{eq:angleDetection1} se observa que siempre es posible calcular el ángulo $\alpha$ entre $f(x,y)$ y $f_i(x,y)$ dividiendo sus momentos complejos de orden $p+q$ si $p \neq q$ y la magnitud de los momentos es diferente de cero. Definamos $n=\frac{C'_{pq}}{C_{pq}}$. El número complejo $n$ debe tener magnitud unitaria para poder encontrar una solución a la ecuación \ref{eq:rotProp}, en la teoría esto se garantiza, pero con imágenes reales esta suposición puede no siempre ser cierta no siempre es cierta. Para solucionar este problema se normalizó el numero complejo $n'=\frac{n}{|n|}$. Utilizando la identidad de Euler en la ecuación \ref{eq:angleDetection1}, se obtiene:
+En la ecuación \ref{eq:angleDetection1} se observa que siempre es posible calcular el ángulo $\alpha$ entre $f(x,y)$ y $f_i(x,y)$ dividiendo sus momentos complejos de orden $p+q$ si $p \neq q$ y la magnitud de los momentos es diferente de cero. Definamos $n=\frac{C'_{pq}}{C_{pq}}$. El número complejo $n$ debe tener magnitud unitaria para poder encontrar una solución a la ecuación \ref{eq:rotProp}, en la teoría esto se garantiza, pero con imágenes reales esta suposición puede no siempre ser cierta. Para solucionar este problema se normalizó el numero complejo $n'=\frac{n}{|n|}$. Utilizando la identidad de Euler en la ecuación \ref{eq:angleDetection1}, se obtiene:
 
 	\begin{equation}\label{angleDetection2}
 		n' = \cos((p-q)\alpha) - i\sin((p-q)\alpha)
@@ -891,7 +893,7 @@ Los resultados fueron bastante buenos, y permitieron dar solución al problema d
 
 \subsection{Problemas de simetría a la rotación}
 
-Se puede observar en las tablas \ref{tb:exp1_1} y \ref{tb:exp1_2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. Un problema similar ocurre cuando los dígitos presentan simetría a la rotación. Flusser\cite{flusser06} demostró que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algún grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el articulo en que se propusieron se utilizaron para reconocer únicamente entre objetos simétricos, se intento utilizar estos momentos para reconocer entre todos los dígitos, para lo cual se construyo un conjunto de momentos simétricos utilizando el procedimiento explicado por Flusser:
+Se puede observar en las tablas \ref{tb:exp1_1} y \ref{tb:exp1_2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. Un problema similar ocurre cuando los dígitos presentan simetría a la rotación. Flusser\cite{flusser06} demostró que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algún grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el artículo en que se propusieron se utilizaron para reconocer únicamente entre objetos simétricos, se intento utilizar estos momentos para reconocer entre todos los dígitos, para lo cual se construyó un conjunto de momentos simétricos utilizando el procedimiento explicado por Flusser:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -911,7 +913,7 @@ else:
 \end{verbatim}
 \end{mylisting}
 
-Para explorar distintas posibilidades se creó un script que recibe como parámetro un numero N, que representa el grado hasta el cual se desean generar los momentos y entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente mas altos que el de las dos anteriores, como puede observarse en la tablas \ref{tb:exp4_1} y \ref{tb:exp4_2}.
+Para explorar distintas posibilidades se creó un script que recibe como parámetro los números N y R, que representan la simetría al girar un objeto $\frac{2\pi}{N}$ radianes y el orden hasta el cual se desean generar los momentos respectivamente. Este script entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente mas altos que el de las dos anteriores, como puede observarse en la tablas \ref{tb:exp4_1} y \ref{tb:exp4_2}.
 
 	%% PONER AQUI TABLA NO SHARED
 	\begin{table}
