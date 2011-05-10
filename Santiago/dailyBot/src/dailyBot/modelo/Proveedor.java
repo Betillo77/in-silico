@@ -63,7 +63,7 @@ public class Proveedor
 	protected Rangos[][] rangos = new Rangos[IdEstrategia.values().length][Par.values().length];
 	protected boolean[][] activos = new boolean[IdEstrategia.values().length][Par.values().length];
 	protected boolean[] cambios = new boolean[IdEstrategia.values().length];
-	protected SenalProveedor[][] senales = new SenalProveedor[IdEstrategia.values().length][Par.values().length];;
+	protected SenalProveedor[][] senales = new SenalProveedor[IdEstrategia.values().length][Par.values().length];
 	protected Escritor escritor;
 	protected boolean cambio;
 	protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
@@ -154,7 +154,6 @@ public class Proveedor
 				cambios[s.getEstrategia().ordinal()] = true;
 				if(hit)
 				{
-					Error.agregarConTitulo("rangos", id + " cerrando senal: " + s.getEstrategia() + ", " + s.getPar());
 					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
 					if(afectada == null)
 						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " no existe y se intento cerrar.");
@@ -162,7 +161,7 @@ public class Proveedor
 					{
 						if(!s.isTocoStop() && afectada.getMagico() != 1000)
 						{
-							Error.agregarConTitulo("rangos", id + " cerrando " + s.getEstrategia() + ", " + s.getPar());
+							Error.agregarConTitulo("rangos", id + " cerrando senal: " + s.getEstrategia() + ", " + s.getPar());
 							escritor.cerrar(afectada);
 						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = null;
@@ -170,7 +169,6 @@ public class Proveedor
 				}
 				else
 				{
-					Error.agregarConTitulo("rangos", id + " abriendo senal: " + s.getEstrategia() + ", " + s.getPar());
 					SenalProveedor afectada = senales[s.getEstrategia().ordinal()][s.getPar().ordinal()];
 					if(afectada != null)
 						Error.agregar("Senal con par: " + s.getPar() + ", estrategia: " + s.getEstrategia() + ", proveedor " + id + " ya existe y se intento abrir otra vez.");
@@ -182,7 +180,7 @@ public class Proveedor
 							afectada.setMagico(1000);
 						else
 						{
-							Error.agregarConTitulo("rangos", id + " abriendo " + s.getEstrategia() + ", " + s.getPar());
+							Error.agregarConTitulo("rangos", id + " abriendo senal: " + s.getEstrategia() + ", " + s.getPar());
 							escritor.abrir(afectada);
 						}
 						senales[s.getEstrategia().ordinal()][s.getPar().ordinal()] = afectada;
@@ -283,7 +281,7 @@ public class Proveedor
 			String mensaje = id + " OK\n"; 
 	        DateFormat df = new SimpleDateFormat("MM/dd/yy hh:mm");
 	        Date hoy = Calendar.getInstance().getTime();
-			String mensajeCorto = df.format(hoy) + " " + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 11 ? "PM" : "AM") + " OK\n";
+			String mensajeCorto = df.format(hoy) + " " + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + " OK\n";
 			String mensajeError = "";
 			ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
 			ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
@@ -339,7 +337,7 @@ public class Proveedor
 						mensajeCorto += " " + pm.par;
 						for(IdProveedor id : IdProveedor.values())
 						{
-							if(id.darProveedor().darActivo(pm.id, pm.par))
+							if(id.darProveedor().darActivoConMagico(pm.id, pm.par))
 								mensajeCorto += " " + id.toString().charAt(0);
 							else
 								mensajeCorto += " -";
@@ -360,12 +358,8 @@ public class Proveedor
 			{ 
 				SenalProveedor s = null; 
 				for(int i = 0; i < IdEstrategia.values().length; i++)
-				{
 					if(activos[i][pm.par.ordinal()] && senales[i][pm.par.ordinal()] != null && senales[i][pm.par.ordinal()].isCompra() == pm.esCompra && senales[i][pm.par.ordinal()].getMagico() == 0)
-					{
 						s = senales[i][pm.par.ordinal()];
-					}
-				}
 				if(s != null)
 				{ 
 					if(escritor.chequearMagico(s) == 0)
@@ -471,6 +465,19 @@ public class Proveedor
 		try
 		{
 			return activos[id.ordinal()][p.ordinal()];
+		}
+		finally
+		{
+			read.unlock();
+		}
+	}
+
+	private boolean darActivoConMagico(IdEstrategia id, Par p) 
+	{
+		read.lock();
+		try
+		{
+			return activos[id.ordinal()][p.ordinal()] && senales[id.ordinal()][p.ordinal()] != null && senales[id.ordinal()][p.ordinal()].getMagico() != 1000;
 		}
 		finally
 		{
