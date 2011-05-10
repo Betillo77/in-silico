@@ -330,7 +330,7 @@ public class Proveedor
 				if(parMagicosRealesEste.remove(pm)) 
 				{
 					mensaje += pm + " OK\n"; 
-					if(id == IdProveedor.HFT)
+					if(id == IdProveedor.HFT  && id.darProveedor().darActivoConMagico(pm.id, pm.par))
 					{
 						mensajeCorto += pm.id.toString().charAt(0) + "";
 						mensajeCorto += (char) pm.id.toString().charAt(pm.id.toString().length() - 1) + "";
