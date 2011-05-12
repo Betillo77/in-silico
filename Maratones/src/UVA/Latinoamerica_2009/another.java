@@ -1,5 +1,3 @@
-package UVA;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,7 +47,7 @@ public class another
 			int acum = 0;
 			double numero = 0;
 			double tam = trabajador.subordinados.size();
-			double necesarios = (t / 100) * tam;
+			double necesarios = ((t * tam) / 100);
 			for(trabajador tr : trabajador.subordinados)
 			{
 				if(numero++ >= necesarios)
@@ -74,3 +72,4 @@ public class another
 		
 	}
 }
+
