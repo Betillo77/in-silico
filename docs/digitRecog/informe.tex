@@ -108,7 +108,10 @@
 \contraportada
 
 %Nota de aceptación
-%Agradecimiento
+\chapter*{Agradecimientos}
+A la ingeniera Ana María López Echeverry por contribuir al desarrollo de este proyecto con su experiencia investigativa, y al ingeniero Saulo de Jesús Torres Rengifo por sus aportes en temas de accesibilidad y asistencia a personas invidentes. También agradecemos a nuestras familias por su apoyo incondicional.
+
+Finalmente agradecemos a la Universidad Tecnológica de Pereira por los conocimientos que nos brindaron durante la carrera, necesarios para el desarrollo de este proyecto.
 
 %Todo alineado a la izquierda
 \tableofcontents
@@ -117,8 +120,48 @@
 
 \listoffigures
 %Lista de anexos(Opcional)
-%Glosario (Obligatorio)
-%Revisar si va resumen
+\chapter*{Glosario}
+\begin{itemize}
+    \item Análisis de documentos: Proceso que consiste en encontrar características de un documento,
+    y dividirlo en sus componentes básicos (párrafos, líneas, palabras y caracteres).\footnote{BREUEL,
+    Thomas. The OCRopus Open Source OCR System. DOCUMENT RECOGNITION AND RETRIVAL. (15: 29-31, febrero,
+    2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}
+    \item Reconocimiento óptico de caracteres (OCR): Un OCR como proceso de cómputo, es un conjunto de
+    algoritmos cuyo resultado esperado es la extracción de información  que este contenida dentro de
+    una imagen, que sean parte de un sistema de escritura humano, y que pueda ser codificada
+    posteriormente como texto entendible.\footnote{Ibid., p.2}
+    \item Manhattan layout: Es una forma de distribución de los elementos de un documento escrito o
+    impreso, en los que los elementos como párrafos o imágenes se pueden inscribir
+    dentro de rectángulos de área mínima, de modo que la pendiente entre dos lados sea igual para
+    todos los rectángulos.\footnote{Ibid., p.5}
+    \item Escala de grises: Una imagen en la que cada píxel es representado como un valor entre 0 y
+    255, siendo 0 negro y 255 blanco y cualquier otro valor intermedio algún tipo de gris. \footnote{
+    BREUEL Thomas M. Efficient implementation of local adaptative thersholding techniques using integral 
+    images. Image Understanding and Pattern Recognition (IUPR) Research Group, 2008.}
+    \item Binarización:	Es el proceso de asignar un valor binario (uno o cero por ejemplo) a una
+    variable dependiendo de	ciertas condiciones, en el contexto del procesamiento de imágenes se le
+    llama binarización al proceso de cambiar el valor de un píxel dentro de un formato de imagen
+    estándar a 1 o 0, dependiendo generalmente de un valor límite llamado threshold.
+    \footnote{Ibid., p.2}
+    \item Filtrado de imagen: Consiste en remover de una imagen elementos indeseables, que no
+    son interesantes para el procesamiento requerido de la imagen y en algunos casos dificultan
+    o imposibilitan obtener los resultados deseados.
+    \footnote{Ibid., p.2}
+    \item Píxel adyacente: Dos píxeles $(x_1,y_1)$, $(x_2,y_2)$ son adyacentes, si $|x_1-x_2| \le 1$
+    y $|y_1-y_2| \le 1$
+    \item Componente conectado: Después de tener una imagen binarizada (blanco y negro), un
+    componente conectado es un conjunto de píxeles negros adyacentes rodeados por un fondo blanco.
+    \item Características o momentos invariantes: Son vectores numéricos que se calculan a partir
+    de una imagen, y dependen de la forma de la imagen. Pero son independientes de la rotación,
+    translación y escalamiento.
+    \footnote{Shafait, Keysers y Breuel. Performance Evaluation and Benchmarking of Six-Page segmentation
+    Algorithms, IEEE Transactions on Pattern Analysis And Machine Intelligence, 2008, p.6}
+\end{itemize}
+
+\chapter*{Resumen}
+Este proyecto propone una alternativa para asistir a las personas invidentes en la lectura de documentos impresos usando un celular inteligente con cámara fotográfica. A lo largo del documento se muestran los algoritmos utilizados para procesar las imágenes, extraer características de las imágenes y clasificarlas para hacer reconocimiento óptico de dígitos numéricos. También se plantean los retos planteados por el problema y las soluciones planteadas para lograr una buena tasa de reconocimiento.
+
+Finalmente se analizan los resultados obtenidos por los diferentes algoritmos implementados para el reconocimiento de dígitos, y se muestra la flexibilidad del sistema al incluir reconocimiento de los caracteres del alfabeto latino en mayúsculas. Se muestran los resultados del reconocimiento de caracteres y se plantean proyectos futuros para poder agregar la funcionalidad requerida por las personas invidentes.
 
 \chapter{Introducción}
 \label{chap:intro}
@@ -1264,7 +1307,7 @@ Por esta razón se consideró utilizar el método estadístico de distribución 
 La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escogidas porque estas tienen una varianza pequeña, por tanto el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (Ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
 
 \section{Resultados finales con los números}
-En esta sección se presentan los resultados finales obtenidos por el sistema en el reconocimiento de dígitos ya explicados a lo largo de este documento. Las tablas que muestran los resultados del reconocimiento de los dígitos numéricos muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en que consisten estos conceptos veamos el ejemplo del símbolo '8' en la tabla \ref{tb:numHuIndep}. La tabla indica que el cero tiene 341 verdaderos positivos, 3077 verdaderos negativos, 250 falsos positivos y 22 falsos negativos. Esto quiere decir que 341 instancias que se debían reconocer como ocho efectivamente se reconocieron como ochos; 3077 instancias que no se debían reconocer como ocho, efectivamente no se reconocieron como ochos; 250 instancias que no se debían reconocer como ochos, se reconocieron como ochos; y 22 instancias que se debían reconocer como ochos no se reconocieron como ochos.
+En esta sección se presentan los resultados finales obtenidos por el sistema en el reconocimiento de dígitos ya explicados a lo largo de este documento. Las tablas que muestran los resultados del reconocimiento de los dígitos numéricos muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en que consisten estos conceptos veamos el ejemplo del símbolo '8' en la tabla \ref{tb:numHuIndep}. La tabla indica que el ocho tiene 341 verdaderos positivos, 3077 verdaderos negativos, 250 falsos positivos y 22 falsos negativos. Esto quiere decir que 341 instancias que se debían reconocer como ocho efectivamente se reconocieron como ochos; 3077 instancias que no se debían reconocer como ocho, efectivamente no se reconocieron como ochos; 250 instancias que no se debían reconocer como ochos, se reconocieron como ochos; y 22 instancias que se debían reconocer como ochos no se reconocieron como ochos.
 
 \begin{table}
 \centering
