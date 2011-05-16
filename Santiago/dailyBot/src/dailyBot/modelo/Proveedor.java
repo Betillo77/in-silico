@@ -175,7 +175,7 @@ public class Proveedor
 					else
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
-						String mensaje = "Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString();
+						String mensaje = "Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString() + ", " + s.getPrecioEntrada();
 						if(!rangos[s.getEstrategia().ordinal()][s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, mensaje))
 							afectada.setMagico(1000);
 						else
@@ -281,7 +281,7 @@ public class Proveedor
 			String mensaje = id + " OK\n"; 
 	        DateFormat df = new SimpleDateFormat("MM/dd/yy hh:mm");
 	        Date hoy = Calendar.getInstance().getTime();
-			String mensajeCorto = df.format(hoy) + " " + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + " OK\n";
+			String mensajeCorto = df.format(hoy) + "\nDailyBot-Android OK\n";
 			String mensajeError = "";
 			ArrayList <ParMagico> parMagicosEste = new ArrayList <ParMagico> ();
 			ArrayList <ParMagico> parMagicosEsteNoAbiertos = new ArrayList <ParMagico> ();
@@ -352,7 +352,35 @@ public class Proveedor
 					boolean tocoStop = pm.isTocoStop();
 					mensaje += tocoStop ? pm + " TOCO STOP\n" : pm + " CERRADO_PREMATURAMENTE\n";
 					if(!pm.isTocoStop())
-						mensajeCorto += pm + " CERRADO_PREMATURAMENTE - ";
+					{
+						mensajeCorto += pm.id.toString().charAt(0) + "";
+						mensajeCorto += (char) pm.id.toString().charAt(pm.id.toString().length() - 1) + "";
+						mensajeCorto += " " + pm.par;
+						for(IdProveedor id : IdProveedor.values())
+						{
+							if(id.darProveedor().darActivoConMagico(pm.id, pm.par))
+								mensajeCorto += " " + id.toString().charAt(0);
+							else
+								mensajeCorto += " -";
+						}
+						mensajeCorto += " C " + (pm.darGanancia() >= 0 ? "+" : "") + pm.darGanancia();
+						mensajeCorto += "\n";
+					}
+					else
+					{
+						mensajeCorto += pm.id.toString().charAt(0) + "";
+						mensajeCorto += (char) pm.id.toString().charAt(pm.id.toString().length() - 1) + "";
+						mensajeCorto += " " + pm.par;
+						for(IdProveedor id : IdProveedor.values())
+						{
+							if(id.darProveedor().darActivoConMagico(pm.id, pm.par))
+								mensajeCorto += " " + id.toString().charAt(0);
+							else
+								mensajeCorto += " -";
+						}
+						mensajeCorto += " TS " + (pm.darGanancia() >= 0 ? "+" : "") + pm.darGanancia();
+						mensajeCorto += "\n";
+					}
 				}
 			for(ParMagico pm : parMagicosRealesEste) 
 			{ 
