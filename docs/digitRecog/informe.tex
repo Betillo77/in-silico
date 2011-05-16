@@ -12,7 +12,6 @@
 %    Una copia de la licencia está incluida en la sección titulada GNU Free
 %    Documentation License.
 
-
 \documentclass[a4paper, 11pt, oneside]{report}
 
 % idioma
@@ -112,9 +111,10 @@
 
 %Nota de aceptación
 \chapter*{Agradecimientos}
-A la ingeniera Ana María López Echeverry por contribuir al desarrollo de este proyecto con su experiencia investigativa, y al ingeniero Saulo de Jesús Torres Rengifo por sus aportes en temas de accesibilidad y asistencia a personas invidentes. También agradecemos a nuestras familias por su apoyo incondicional.
 
-Finalmente agradecemos a la Universidad Tecnológica de Pereira por los conocimientos que nos brindaron durante la carrera, necesarios para el desarrollo de este proyecto.
+A la ingeniera Ana María López Echeverry por contribuir al desarrollo de este proyecto con su experiencia investigativa, y al ingeniero Saulo de Jesús Torres Rengifo por sus aportes en los temas de accesibilidad y asistencia a personas invidentes. También agradecemos a nuestras familias por su apoyo incondicional.
+
+Finalmente agradecemos a la Universidad Tecnológica de Pereira por los conocimientos que nos brindaron durante la carrera, y que fueron indispensables para el desarrollo de este proyecto.
 
 %Todo alineado a la izquierda
 \tableofcontents
@@ -131,10 +131,10 @@ Finalmente agradecemos a la Universidad Tecnológica de Pereira por los conocimi
     2008: San José, Estados Unidos). Memorias, 2008, p. 68-150}
     \item Reconocimiento óptico de caracteres (OCR): Un OCR como proceso de cómputo, es un conjunto de
     algoritmos cuyo resultado esperado es la extracción de información  que este contenida dentro de
-    una imagen, que sean parte de un sistema de escritura humano, y que pueda ser codificada
+    una imagen, que sea parte de un sistema de escritura humano, y que pueda ser codificada
     posteriormente como texto entendible.\footnote{Ibíd., p.2}
     \item Manhattan layout: Es una forma de distribución de los elementos de un documento escrito o
-    impreso, en los que los elementos como párrafos o imágenes se pueden inscribir
+    impreso, en la que los elementos (como párrafos o imágenes) se pueden inscribir
     dentro de rectángulos de área mínima, de modo que la pendiente entre dos lados sea igual para
     todos los rectángulos.\footnote{Ibíd., p.5}
     \item Escala de grises: Una imagen en la que cada píxel es representado como un valor entre 0 y
@@ -147,7 +147,7 @@ Finalmente agradecemos a la Universidad Tecnológica de Pereira por los conocimi
     estándar a 1 o 0, dependiendo generalmente de un valor límite llamado threshold.
     \footnote{Ibíd., p.2}
     \item Filtrado de imagen: Consiste en remover de una imagen elementos indeseables, que no
-    son interesantes para el procesamiento requerido de la imagen y en algunos casos dificultan
+    son interesantes para el procesamiento requerido de la imagen y que en algunos casos dificultan
     o imposibilitan obtener los resultados deseados.
     \footnote{Ibíd., p.2}
     \item Píxel adyacente: Dos píxeles $(x_1,y_1)$, $(x_2,y_2)$ son adyacentes, si $|x_1-x_2| \le 1$
@@ -155,16 +155,17 @@ Finalmente agradecemos a la Universidad Tecnológica de Pereira por los conocimi
     \item Componente conectado: Después de tener una imagen binarizada (blanco y negro), un
     componente conectado es un conjunto de píxeles negros adyacentes rodeados por un fondo blanco.
     \item Características o momentos invariantes: Son vectores numéricos que se calculan a partir
-    de una imagen, y dependen de la forma de la imagen. Pero son independientes de la rotación,
+    de una imagen, y dependen de la forma de la imagen, pero son independientes de la rotación,
     translación y escalamiento.
     \footnote{Shafait, Keysers y Breuel. Performance Evaluation and Benchmarking of Six-Page segmentation
     Algorithms, IEEE Transactions on Pattern Analysis And Machine Intelligence, 2008, p.6}
 \end{itemize}
 
 \chapter*{Resumen}
-Este proyecto propone una alternativa para asistir a las personas invidentes en la lectura de documentos impresos usando un celular inteligente con cámara fotográfica. A lo largo del documento se muestran los algoritmos utilizados para procesar las imágenes, extraer características de las imágenes y clasificarlas para hacer reconocimiento óptico de dígitos numéricos. También se plantean los retos planteados por el problema y las soluciones planteadas para lograr una buena tasa de reconocimiento.
 
-Finalmente se analizan los resultados obtenidos por los diferentes algoritmos implementados para el reconocimiento de dígitos, y se muestra la flexibilidad del sistema al incluir reconocimiento de los caracteres del alfabeto latino en mayúsculas. Se muestran los resultados del reconocimiento de caracteres y se plantean proyectos futuros para poder agregar la funcionalidad requerida por las personas invidentes.
+Este proyecto propone una alternativa para asistir a las personas invidentes en la lectura de documentos impresos usando un celular inteligente con cámara fotográfica. A lo largo del documento se muestran los algoritmos utilizados para procesar las imágenes, extraer características de las imágenes y clasificarlas para hacer reconocimiento óptico de dígitos numéricos. También se plantean los retos planteados por el problema y las soluciones que se propusieron para lograr una buena tasa de reconocimiento.
+
+Finalmente se analizan los resultados obtenidos por los diferentes algoritmos implementados para el reconocimiento de dígitos, y se muestra la flexibilidad y escalabilidad del sistema, al incluir reconocimiento de los caracteres del alfabeto latino en mayúsculas. Se analisan los resultados del reconocimiento optico de caracteres y se plantean proyectos futuros para agregar la funcionalidad requerida por las personas invidentes.
 
 \chapter{Introducción}
 \label{chap:intro}
@@ -303,8 +304,6 @@ Si, por ejemplo, supiéramos con exactitud cómo establecer si una persona es de
 aprendizaje de máquinas; podríamos simplemente escribir las reglas que determinan si una persona es de riesgo o no y aplicarlas. Pero dado que muchas veces no es posible establecer estas reglas, lo que se busca al realizar aprendizaje de máquinas es extraer esta información de los datos.
 
 Alpaydin indica que las personas usualmente sabemos que existen procesos que explican los datos que observamos. Por ejemplo, en el caso del supermercado, el comportamiento de los clientes no es completamente aleatorio; por tanto, se espera encontrar algunos patrones recurrentes en los datos. Aunque este autor indica que muchas veces no es posible identificar el modelo completamente, usualmente se puede construir una buena aproximación. Este es el nicho de trabajo del aprendizaje de máquinas, pues esta aproximación puede ser útil para encontrar patrones en el problema estudiado o para hacer estimaciones de datos futuros, asumiendo que en el futuro los datos van a comportarse de una manera similar a como se comportaron en el pasado.
-
-%% HASTA AQUI VA SEGUNDA REVISION DE SANTIAGO
 
 \section{Algunos algoritmos de clasificación}
 
@@ -561,7 +560,7 @@ Antes de computar las características es necesario hacer un preprocesamiento. P
 	gris = 0.2989 * rojo + 0.5870 * verde + 0.1140 * azul 
 \end{equation}
 
-Estos pesos se utilizan en la librería de visión computador OpenCV\footnote{$http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
+Estos pesos se utilizan en la librería de visión computador OpenCV\footnote{tomado de $http://opencv.willowgarage.com/documentation/c/miscellaneous_image_transformations.html$, abril 4 de 2011} y fueron calculados a partir de observaciones de la sensibilidad del ojo humano a cada uno de los tres colores. 
 
 Haciendo uso de la ecuación \ref{eq:bwtocv} se implementó un algoritmo para obtener una imagen en escala de grises a partir de una imagen RGB. 
 
@@ -615,9 +614,9 @@ En el cuadrado de tamaño $A \times A$ alrededor del píxel $(x, y)$, esto equiv
 
 \[ \sigma^2 = \frac{1}{w^2}\left(\sum_w{p(x,y)^2} - \mu \sum_w{p(x,y)}\right) \]
 
-El resultado obtenido es consistente con la formula que se utilizo en la implementación de dicho algoritmo en el proyecto Ocropus\footnote{http://code.google.com/p/ocropus}.
+El resultado obtenido es consistente con la formula que se utilizo en la implementación de dicho algoritmo en el proyecto Ocropus\footnote{Ocropus es un software de OCR libre desarrollado por Google, esta licenciado bajo Apache Licence 2.0}.
 
-Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor complejidad algorítmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV\footnote{poner referencia}. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un único arreglo, el cual se accedió a través de un único puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración únicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rápido que la función utilizada en el proyecto Ocropus, ya que se prefirió darle mayor importancia a la eficiencia, pues en un futuro esta función podría utilizarse para binarizar imágenes en un dispositivo móvil con una capacidad de procesamiento limitada. El resultado del algoritmo implementando sobre una imagen se muestra en la figura \ref{fig:binarization}, la figura \ref{fig:bin1} muestra la imagen original y la figura \ref{fig:bin2} muestra la misma imagen después de aplicarle el algoritmo de binarización implementado.
+Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor complejidad algorítmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un único arreglo, el cual se accedió a través de un único puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración únicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rápido que la función utilizada en el proyecto Ocropus, ya que se prefirió darle mayor importancia a la eficiencia, pues en un futuro esta función podría utilizarse para binarizar imágenes en un dispositivo móvil con una capacidad de procesamiento limitada. El resultado del algoritmo implementando sobre una imagen se muestra en la figura \ref{fig:binarization}, la figura \ref{fig:bin1} muestra la imagen original y la figura \ref{fig:bin2} muestra la misma imagen después de aplicarle el algoritmo de binarización implementado.
 
 	\begin{figure}
 	\centering
@@ -1124,8 +1123,6 @@ Una vez entrenado el modelo de la distribución normal multivariable como se exp
 
 \[ V = \{\vec{x_i},r_i\}_{i=0}^N \]
 
-%% HASTA AQUI VA PRIMERA REVISION DE SANTIAGO
-
 Donde $N$ es la cantidad de elementos del conjunto de validación y $r_i$ es la salida esperada para el valor de entrada $\vec{x}_i$. Supongamos que la salida observada del modelo entrenado para el valor $\vec{x_i}$ es $y_i$, entonces se considera que el clasificador comete un error si $r_i \ne y_i$ y acierta si $r_i = y_i$. Considerando que cada acierto cuenta  una igualdad tenga por valor 1 si es verdadera y 0 si es falsa, entonces el valor medido se calcula de la siguiente forma:
 \[ A = \frac{1}{N} \sum_{j=0}^{N}(r_i=y_i) \]
 Se puede observar que el valor medido $A$ significa la cantidad de aciertos sobre el número total de intentos de predicción. Y por tanto mide el porcentaje de efectividad del clasificador para el problema de reconocimiento de caracteres.
@@ -1274,44 +1271,50 @@ Para calcular el determinante de las matrices de covarianza y la distancia Mahal
 
 Para probar el resto de la lógica referente a los modelos estadísticos y la clasificación, se comprobaron las equivalencias que debían existir entre las etapas de los diferentes métodos implementados. Por ejemplo se comprobó que el resultado del método de distancia de Mahalanobis usando una matriz de covarianza diferente para cada instancia fuera equivalente al resultado del método de distribución normal multivariable con matriz de covarianza semi-compartida.
 
-
 \chapter{Análisis de los datos, conclusiones y resultados}
 \label{chap:results}
-A lo largo de este documento, se han mostrado el diseño general de un sistema de reconocimiento óptico de caracteres y se han mostrado técnicas y algoritmos existentes para cada una de las etapas. Además de cada etapa se seleccionó algún algoritmo o grupo de algoritmos que por sus características teóricas resultaban mejores para el problema OCR, y se explicaron las razones por las cuales se habían escogido los algoritmos que se implementaron y se mostraron los resultados de estos algoritmos sobre el proyecto.
+
+A lo largo de este documento, se ha expuesto el diseño general de un sistema de reconocimiento óptico de caracteres y se han mostrado técnicas y algoritmos existentes para cada una de las etapas. Además de cada etapa se seleccionó algún algoritmo o grupo de algoritmos que por sus características teóricas resultaban mejores para el problema OCR, y se explicaron las razones por las cuales se habían escogido los algoritmos que se implementaron y se mostraron los resultados de estos algoritmos sobre el proyecto.
 
 \section{Resultados de la investigación}
-Como ya se ha expuesto a lo largo del documento, el sistema de reconocimiento óptico de caracteres al igual que otros sistemas de visión por computador, se divide en tres etapas principales: El preprocesamiento (Binarización, filtrado y segmentación de la imagen), la extracción de características (Entrega un vector de números que representa las características deseadas de la imagen) y reconocimiento (Clasificación del vector de características usando aprendizaje de máquinas).
+
+Como ya se ha expuesto a lo largo del documento, el sistema de reconocimiento óptico de caracteres al igual que otros sistemas de visión por computador, se divide en tres etapas principales: el preprocesamiento (binarización, filtrado y segmentación de la imagen), la extracción de características (entrega un vector de números que representa las características deseadas de la imagen) y el reconocimiento (clasificación del vector de características usando aprendizaje de máquinas).
 
 \subsection{Etapas de preprocesamiento}
+
 Para la etapa de preprocesamiento se utilizaron 3 algoritmos para cada una de sus sub-etapas. En la sub-etapa de binarización se utilizó el algoritmo de Sauvola con la mejora en tiempo de Breuel, los resultados de la binarización se muestran en la sección \ref{sect:binarization}. En la implementación del algoritmo de binarización se cambió la forma en la que se referenciaba la memoria para lograr aún mejores tiempos de respuesta, con esta mejora se disminuyó el tiempo a $\frac{1}{5}$ del tiempo de la implementación original de Breuel para imágenes de 4 mega píxeles. %, los resultados detallados se muestran en la tabla \ref{tb:sauvolaFast}.
 La sub-etapa de segmentación, que divide la imagen en los componentes de interés, se implementó con un algoritmo de Flood-fill como se explica en la sección \ref{sect:conComponents}. Para la sub-etapa de filtrado se aplicaron condiciones sobre el tamaño de los componentes obtenidos en la sub-etapa de segmentación, ya que otros métodos comunes como filtros Gaussianos causaban daños a la imagen que no permitían luego una correcta segmentación.
 
 \subsection{Etapa de extracción de características}
+
 En la etapa de extracción de características, el reto era conseguir buenas características que fueran invariantes a la rotación. Era necesario tener características invariantes a la rotación ya que es difícil que una persona invidente pueda tomar una imagen siempre con el mismo ángulo de rotación. En el capítulo \ref{chap:features} se exploraron diferentes conjuntos de características que podían resolver el problema con diferentes enfoques y se seleccionaron 3 explicando por qué las otras características no eran buenas para el reconocimiento de caracteres bajo las condiciones deseadas. 
 
 Las características seleccionadas fueron los momentos invariantes de Hu, Flusser y los de Flusser para simetría a la rotación. El funcionamiento de cada uno de estos conjuntos de características y las razones matemáticas por las que podían dar un buen resultado para el problema del reconocimiento óptico de caracteres se exponen en el capítulo \ref{chap:features}.
 
 Los resultados de estos 3 conjuntos de características fueron en general buenos. Para el mejor método de clasificación el conjunto de características con el resultado más bajo fue el de Hu con una precisión del 98.18\% para el reconocimiento de dígitos (Vea la tabla \ref{tb:exp4_2}). Teniendo en cuenta que la cantidad de símbolos en este experimento son 10 (Los dígitos del 0 al 9), un método de elección aleatoria tendría una respuesta correcta en un 10\% de los casos, el rendimiento de los momentos invariantes es en general muy bueno.
 
-De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el conjunto de Hu con un porcentaje de precisión del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo el resultado de los momentos de Flusser para objetos simétricos a la rotación obtuvo un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se vaya a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (Que contiene 7461 instancias) el software no cometió ningún error. 
+De estos 3 conjuntos de características, para el mejor método de clasificación probado en los experimentos, el conjunto de características con mejor resultado fue el de Flusser para la simetría a la rotación con un porcentaje de precisión del 100\%, el siguiente fue el conjunto de Flusser con un porcentaje de precisión del 98.77\% y el siguiente fue el conjunto de Hu con un porcentaje de precisión del 98.18\%. Para la clasificación de dígitos realmente no fue mucha la diferencia entre los momentos de Flusser y lo de Hu. Sin embargo los momentos de Flusser para objetos simétricos a la rotación obtuvieron un porcentaje mayor debido a que dígitos como el 0 y el 8 tienen un cierto grado de simetría que causa confusión en los dos primeros conjuntos de características. 
 
-Sin embargo se pueden obtener conclusiones estadísticas, supongamos que hay una población infinita de posibles instancias de los dígitos, y tomamos una muestra de $n$ instancias. De cada instancia se dice que se clasificó correctamente con una probabilidad $p$ y que se cometió un error con una probabilidad $(1-p)$, esto corresponde perfectamente con una distribución de probabilidad binomial. Deseamos calcular cual es la probabilidad $a$ de que $p>p_i$, esto es:
+Cabe anotar que un resultado de 100\% no quiere decir que el software nunca se vaya a equivocar, lo que este porcentaje indica es que en el conjunto de instancias de validación (que contiene 7461 instancias) el software no cometió ningún error. Sin embargo se pueden obtener conclusiones estadísticas, supongamos que hay una población infinita de posibles instancias de los dígitos, y tomamos una muestra de $n$ instancias. De cada instancia se dice que se clasificó correctamente con una probabilidad $p$ y que se cometió un error con una probabilidad $(1-p)$, esto corresponde perfectamente a una distribución de probabilidad binomial. Deseamos calcular cual es la probabilidad $a$ de que $p>p_i$, esto es:
+
 \begin{align}
 	p_i^n &= (1-a) \notag \\
 	a &= 1-p_i^n \label{eq:binomProb}
 \end{align}
+
 Dado que en el experimento realizado $n=7461$, la probabilidad de que la precisión del sistema para el reconocimiento de números en las condiciones especificadas sea mayor a 99,9\% se calcula usando la ecuación \ref{eq:binomProb} y es del 99,94\%.
 
 \subsection{Etapa de clasificación}
 
 Para la etapa de clasificación se exploraron distintos algoritmos que se explican brevemente en el capítulo \ref{chap:ml}. Los algoritmos de bajo poder clasificatorio, como los árboles binarios de decisión, no son buenos para el problema OCR. para el problema OCR usualmente se usan los algoritmos más potentes como las redes neuronales, que no exigen separabilidad lineal. Sin embargo se tomo la decisión de no utilizar redes neuronales porque son difíciles de depurar, entonces en caso que el resultado del sistema no sea bueno, no se puede detectar fácilmente que parte del sistema no funciona correctamente. Por otro lado, las características utilizadas en este diseño de sistema son buenas y teóricamente generaban vectores separables linealmente para cada clase.
 
-Por esta razón se consideró utilizar el método estadístico de distribución normal multivariable explicado en la sección \ref{sect:multivar}, y dado que se sabía que las características podían entregar vectores cercanos a cero, se consideró una variación de este método en la que la matriz de covarianza se compartía en el coeficiente pero no en el exponente, y por eso se le dio el nombre de distribución multivariable con covarianza semi-compartida. Los resultados con cada uno de los métodos se pueden ver en las tablas \ref{tb:exp1_1}, \ref{tb:exp1_2}, \ref{tb:exp2_1} y \ref{tb:exp2_2}.
+Por esta razón se consideró utilizar el método estadístico de distribución normal multivariable explicado en la sección \ref{sect:multivar}, y dado que se sabía que las características podían entregar vectores cercanos a cero, se consideró una variación de este método, propuesta por los autores, en la que la matriz de covarianza se compartía en el coeficiente pero no en el exponente, a la que le fue dada el nombre de distribución multivariable con matriz de covarianza semi-compartida. Los resultados para cada uno de los métodos se pueden apreciar en las tablas \ref{tb:exp1_1}, \ref{tb:exp1_2}, \ref{tb:exp2_1} y \ref{tb:exp2_2}.
 
-La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escogidas porque estas tienen una varianza pequeña, por tanto el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (Ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
+La experiencia mostró que el método de matriz de covarianza semi-compartida tuvo mejor resultado en todos los experimentos. El método modificado es mejor para las características escogidas porque estas tienen una varianza pequeña, por lo que el determinante de la matriz de covarianza tiende a cero y causa gran inestabilidad al estar en el denominador (ver ecuaciones \ref{eq:multivariate} y \ref{eq:semishared}).
 
 \section{Resultados finales con los números}
-En esta sección se presentan los resultados finales obtenidos por el sistema en el reconocimiento de dígitos ya explicados a lo largo de este documento. Las tablas que muestran los resultados del reconocimiento de los dígitos numéricos muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en qué consisten estos conceptos veamos el ejemplo del símbolo '8' en la tabla \ref{tb:numHuIndep}. La tabla indica que el ocho tiene 341 verdaderos positivos, 3077 verdaderos negativos, 250 falsos positivos y 22 falsos negativos. Esto quiere decir que 341 instancias que se debían reconocer como ocho efectivamente se reconocieron como ochos; 3077 instancias que no se debían reconocer como ocho, efectivamente no se reconocieron como ochos; 250 instancias que no se debían reconocer como ochos, se reconocieron como ochos; y 22 instancias que se debían reconocer como ochos no se reconocieron como ochos.
+
+En esta sección se presentan los resultados finales obtenidos por el sistema en el reconocimiento de dígitos ya explicados a lo largo de este documento. Las tablas que muestran los resultados del reconocimiento de los dígitos numéricos muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en qué consisten estos conceptos veamos el ejemplo del símbolo '8' en la tabla \ref{tb:numHuIndep}. La tabla indica que el ocho tiene 341 verdaderos positivos, 3077 verdaderos negativos, 250 falsos positivos y 22 falsos negativos. Esto quiere decir que 341 instancias que se debían reconocer como ocho efectivamente se reconocieron como ochos; 3077 instancias que no se debían reconocer como ocho, efectivamente no se reconocieron como ochos; 250 instancias que no se debían reconocer como ochos, se reconocieron como ochos; y 22 instancias que se debían reconocer como ochos no se reconocieron como ochos. Los resultados obtenidos en estas tablas son distintos a los resultados presentados en el capitulo de construcción del sistema debido a que, para esta publicación final de resultados, se generaron nuevamente los conjuntos de validación y entrenamiento. De esta manera se pudo demostrar que el algoritmo tiene capacidad de generalización. Los resultados confirman que el sistema construido, ademas de poder generalizar, es bastante preciso, pues obtuvo nuevamente un 100% de efectividad en el  experimento de matriz de covarianza semi-compartida con momentos de Fluzzer N-fold.
 
 \begin{table}
 \centering
@@ -1333,7 +1336,7 @@ En esta sección se presentan los resultados finales obtenidos por el sistema en
 	Total & 3260 & N/A & \multicolumn{2}{|c|}{430} & 88.346878\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con las características de Hu (Matriz de covarianza independiente)}
+\caption{Resultados con las características de Hu (matriz de covarianza independiente)}
 \label{tb:numHuIndep}
 \end{table}
 
@@ -1357,7 +1360,7 @@ En esta sección se presentan los resultados finales obtenidos por el sistema en
 	Total & 3351 & N/A & \multicolumn{2}{|c|}{339} & 90.813011\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con las características de Flusser (Matriz de covarianza independiente)}
+\caption{Resultados con las características de Flusser (matriz de covarianza independiente)}
 \label{tb:numFlIndep}
 \end{table}
 
@@ -1381,7 +1384,7 @@ En esta sección se presentan los resultados finales obtenidos por el sistema en
 	Total & 3485 & N/A & \multicolumn{2}{|c|}{205} & 94.444443\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con las características de Flusser 2-Fold (Matriz de covarianza independiente)}
+\caption{Resultados con las características de Flusser N-fold (matriz de covarianza independiente)}
 \label{tb:numRotIndep}
 \end{table}
 
@@ -1405,7 +1408,7 @@ En esta sección se presentan los resultados finales obtenidos por el sistema en
 	Total & 3602 & N/A & \multicolumn{2}{|c|}{88} & 97.615173\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con las características de Hu (Matriz de covarianza semi-compartida)}
+\caption{Resultados con las características de Hu (matriz de covarianza semi-compartida)}
 \label{tb:numHuShared}
 \end{table}
 
@@ -1429,7 +1432,7 @@ En esta sección se presentan los resultados finales obtenidos por el sistema en
 	Total & 3639 & N/A & \multicolumn{2}{|c|}{51} & 98.617889\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con las características de Flusser (Matriz de covarianza semi-compartida)}
+\caption{Resultados con las características de Flusser (matriz de covarianza semi-compartida)}
 \label{tb:numFlShared}
 \end{table}
 
@@ -1453,12 +1456,13 @@ En esta sección se presentan los resultados finales obtenidos por el sistema en
 	Total & 3690 & N/A & \multicolumn{2}{|c|}{0} & 100.000000\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con las características de Flusser N-Fold (Matriz de covarianza semi-compartida)}
+\caption{Resultados con las características de Flusser N-fold (matriz de covarianza semi-compartida)}
 \label{tb:numRotShared}
 \end{table}
 
 \section{Resultados al ingresar el alfabeto}
-Aunque los objetivos iníciales consistían en trabajar solamente con dígitos numéricos, se tomo la decisión de ingresar los caracteres del alfabeto (Únicamente de letras mayúsculas), debido al buen resultado obtenido con los caracteres numéricos. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz semi-compartida se presenta en las tablas \ref{tb:alphaHuShared}, \ref{tb:alphaFlShared} y \ref{tb:alphaRotShared} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz independiente se presenta en las tablas \ref{tb:alphaHuIndep}, \ref{tb:alphaFlIndep} y \ref{tb:alphaRotIndep} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente.
+
+Aunque los objetivos iníciales consistían en trabajar solamente con dígitos numéricos, se tomo la decisión de ingresar los caracteres del alfabeto (únicamente de letras mayúsculas) debido al buen resultado obtenido con los caracteres numéricos. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz semi-compartida se presenta en las tablas \ref{tb:alphaHuShared}, \ref{tb:alphaFlShared} y \ref{tb:alphaRotShared} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente. Los resultados del reconocimiento de caracteres para el método de reconocimiento de distribución normal multivariable con matriz independiente se presenta en las tablas \ref{tb:alphaHuIndep}, \ref{tb:alphaFlIndep} y \ref{tb:alphaRotIndep} para las características invariantes de Hu, Flusser y Flusser para simetría a la rotación respectivamente. La efectividad relativa entre los dos metodos se mantuvo.
 
 \begin{table}
 \centering
@@ -1506,7 +1510,7 @@ Aunque los objetivos iníciales consistían en trabajar solamente con dígitos n
 	Total & 25113 & N/A & \multicolumn{2}{|c|}{1952} & 92.7877\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con el alfabeto utilizando momentos de Hu (Matriz semi-compartida)}
+\caption{Resultados con el alfabeto utilizando momentos de Hu (matriz semi-compartida)}
 \label{tb:alphaHuShared}
 \end{table}
 
@@ -1556,7 +1560,7 @@ Aunque los objetivos iníciales consistían en trabajar solamente con dígitos n
 	Total & 26143 & N/A & \multicolumn{2}{|c|}{922} & 96.5934\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con el alfabeto utilizando momentos de Flusser (Matriz semi-compartida)}
+\caption{Resultados con el alfabeto utilizando momentos de Flusser (matriz semi-compartida)}
 \label{tb:alphaFlShared}
 \end{table}
 
@@ -1606,7 +1610,7 @@ Aunque los objetivos iníciales consistían en trabajar solamente con dígitos n
 	Total & 26871 & N/A & \multicolumn{2}{|c|}{194} & 99.283203\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con el alfabeto utilizando momentos de Flusser 2-Fold (Matriz semi-compartida)}
+\caption{Resultados con el alfabeto utilizando momentos de Flusser 2-Fold (matriz semi-compartida)}
 \label{tb:alphaRotShared}
 \end{table}
 
@@ -1656,7 +1660,7 @@ Aunque los objetivos iníciales consistían en trabajar solamente con dígitos n
 	Total & 23163 & N/A & \multicolumn{2}{|c|}{3902} & 85.582855\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con el alfabeto utilizando momentos de Hu (Matriz independiente)}
+\caption{Resultados con el alfabeto utilizando momentos de Hu (matriz independiente)}
 \label{tb:alphaHuIndep}
 \end{table}
 
@@ -1706,7 +1710,7 @@ Aunque los objetivos iníciales consistían en trabajar solamente con dígitos n
 	Total & 22062 & N/A & \multicolumn{2}{|c|}{5003} & 81.514870\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con el alfabeto utilizando momentos de flusser (Matriz independiente)}
+\caption{Resultados con el alfabeto utilizando momentos de flusser (matriz independiente)}
 \label{tb:alphaFlIndep}
 \end{table}
 
@@ -1756,20 +1760,19 @@ Aunque los objetivos iníciales consistían en trabajar solamente con dígitos n
 	Total & 22811 & N/A & \multicolumn{2}{|c|}{4254} & 84.282288\% \\
 	\hline
 \end{tabular}
-\caption{Resultados con el alfabeto utilizando momentos de flusser (Matriz independiente)}
+\caption{Resultados con el alfabeto utilizando momentos de flusser (matriz independiente)}
 \label{tb:alphaRotIndep}
 \end{table}
 
 \section{Proyectos que se pueden derivar de esta investigación}
 
-
-En esta investigación se desarrollo un sistema de reconocimiento óptico de caracteres para reconocer los dígitos del 0 al 9. Aun cuando se agregaron las letras mayúsculas, y los resultados fueron buenos, el sistema no está optimizado para utilizarlas. Así que el primer paso en un proyecto futuro sería desarrollar un sistema capaz de reconocer las letras del alfabeto latino, tanto mayúsculas como minúsculas, así como los signos de puntuación. Para hacerlo se tendrían que solucionar problemas como la separación de la letra minúscula i en dos componentes conectados, entre muchos otros que no fueron tratados en este proyecto.
+En esta investigación se desarrollo un sistema de reconocimiento óptico de caracteres para reconocer los dígitos del 0 al 9. Aunque se agregaron las letras mayúsculas, y los resultados fueron buenos, el sistema no está optimizado para utilizarlas. Así que el primer paso en un proyecto futuro sería desarrollar un sistema capaz de reconocer las letras del alfabeto latino, tanto mayúsculas como minúsculas, así como los signos de puntuación. Para hacerlo se tendrían que solucionar problemas como la separación de la letra minúscula i en dos componentes conectados, entre muchos otros que no fueron tratados en este proyecto.
 
 El sistema desarrollado permite reconocer caracteres con tamaños entre 12 y 20 puntos, e imágenes con inclinaciones entre -30$^{\circ}$ y 30$^{\circ}$. No obstante, el problema se restringió a documentos con un mismo tipo de letra. En ejemplos de la vida real normalmente se encontrarían documentos con diversos tipos de letra, lo que aumentaría la complejidad del problema. En un proyecto futuro se podrían intentar varios enfoques para solucionar este problema. Una posibilidad es hacer un preprocesamiento para reconocer el tipo de letra de cada documento y posteriormente aplicarle un modelo ya entrenado al documento dependiendo del tipo de letra. Otra posibilidad es aplicar un método de aprendizaje no supervisado para separar en clusters todas las letras de la misma clase, sin importar su tipo de letra, y posteriormente realizar la clasificación con este nuevo modelo. El reto en estos casos sería no aumentar significativamente la complejidad computacional de la solución.
 
 La etapa de reconocimiento de caracteres es muy importante, sin embargo, como fue explicado en el capitulo \ref{chap:intro}, es solo una de las etapas en el proceso de reconocimiento óptico de caracteres. Una etapa muy importante que no fue desarrollada en este proyecto es la de análisis del documento. Una gran ventaja que provee la solución estadística planteada en este proyecto es que, para cada componente conectado, se entrega un arreglo con las probabilidades de que el componente conectado pertenezca a cada clase. Esto podría ser especialmente útil para una etapa de post-procesamiento en el análisis del documento, en donde se podría utilizar un diccionario y modelos de Markov para determinar la probabilidad de que una secuencia de caracteres forme una palabra. De esta manera se podrían corregir fácilmente errores en los cuales se reconocieron erróneamente algunas letras de una palabra. Además de esto, para lograr un sistema de reconocimiento óptico de caracteres que pueda ser utilizado en la vida diaria por una persona invidente, es necesario realizar una etapa de análisis de documento que permita a distinguir palabras, líneas y frases.
 
-El sistema planteado en este proyecto es solo uno de muchos aportes que la tecnología puede brindar a las personas invidentes. En un futuro no tan distante se podría desarrollar un sistema que reconozca no solo documentos, sino todo tipo de objetos en general. Este sistema podría darle al usuario, por medio de ayudas auditivas, un panorama general de todo lo que lo rodea. De esta manera se podría finalmente lograr que las personas invidentes no necesitaran de guías humanos ni caninos para desarrollar sus actividades cotidianas.
+El sistema planteado en este proyecto es solo uno de muchos aportes que la tecnología puede brindar a las personas invidentes. En un futuro no tan distante se podría desarrollar un sistema que reconozca no solo documentos, sino todo tipo de objetos en general. Este sistema podría darle al usuario, por medio de ayudas auditivas, un panorama general de todo lo que lo rodea. De esta manera se podría finalmente lograr que las personas invidentes no necesitaran de guías humanos ni caninos para desarrollar sus actividades cotidianas, lo que les permitiría ser más independientes y autónomos.
 
 \begin{comment}
 \chapter{GNU Free Documentation License}
