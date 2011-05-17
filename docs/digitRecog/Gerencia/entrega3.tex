@@ -602,7 +602,7 @@ Donde $E$ es el costo de energía en un año y $M$ es el costo del mantenimiento
 	
 	Las inversiones en materiales se muestran en la tabla \ref{tb:invMateriales}, los cálculos se hicieron teniendo en cuenta el personal y los requerimientos de la prestación del servicio.
 
-	Las inversiones en insumos se muestran en la tabla \ref{tb:invInsumos}. Se calculo que los dispositivos utilizaran 1 kWh durante todo el año, los demás insumos se calcularon teniendo en cuenta el numero de personal. Las sillas y las mesas se clasificaron como insumos ya que se considero que esta era la categoría más lógica para estos elementos.
+	Las inversiones en insumos se muestran en la tabla \ref{tb:invInsumos}. Se calculo que los dispositivos utilizaran 1 kWh durante todo el año, los demás insumos se calcularon teniendo en cuenta el numero de personal. Las sillas y las mesas se clasificaron como insumos ya que se considero que esta era la categoría más lógica para estos elementos. El precio del lote se obtuvo en MercadoLibre.
 	
 	\begin{table}
 		\caption{Inversiones en obra física}
@@ -610,7 +610,7 @@ Donde $E$ es el costo de energía en un año y $M$ es el costo del mantenimiento
 		\hline
 		Item & Cant. & Costo unit. & Costo total & Vida útil & Valor residual \\
 		\hline					
-		Lote \footnote{http://lote-casalote.mercadolibre.com.co/MCO-17772606-vendo-permuto-lote-en-olival-stder-198-m-_JM} & $100m^2$ & \$100.000 & \$10.000.000 & N/A & \$10.000.000 \\
+		Lote & $100m^2$ & \$100.000 & \$10.000.000 & N/A & \$10.000.000 \\
 		\hline					
 		Planta & 1 & \$200.000.000 & \$200.000.000 & 20 años & \$150.000.000 \\
 		\hline
@@ -713,6 +713,8 @@ Donde $E$ es el costo de energía en un año y $M$ es el costo del mantenimiento
 	 \item Capacidad máxima: $max(U, U_s)$
 	 \item Capacidad normal: $min(U, U_s)$
 	\end{itemize}
+	
+	Dado que el servidor a adquirir puede correr 8 hilos al mismo tiempo la cantidad de peticiones que se pueden atender al mismo tiempo para garantizar que la latencia no es mayor a un segundo, y que por tanto se va a mantener la calidad del servicio es 16 peticiones simultaneas.	
 	
 	\subsection{Decisiones de localización}
 	Se decidió localizar el proyecto en la ciudad de Pereira, ya que los factores más relevantes para este proyecto se cumplen: 
@@ -925,6 +927,12 @@ Donde $E$ es el costo de energía en un año y $M$ es el costo del mantenimiento
 	\paragraph{Cultura}
 
 	Ley 397 de 1997 “Por la cual...se dictan normas sobre el patrimonio cultural, fomentos y estímulos de la cultura, se crea el Ministerio de la Cultura...”. En el numeral 13 del Artículo 1 (Principios fundamentales) señala que el Estado, al formular la política cultural tendrá en cuenta y concederá “especial tratamiento a las personas limitadas física, sensorial y psíquicamente...”. E igualmente, en los Artículos 50 y 60, se fija que en los Consejos nacional, departamentales, distritales y municipales, habrá un representante de las agremiaciones culturales de discapacitados físicos, psíquicos y sensoriales.	
+	
+	\subsection{Como afecta el marco legal al proyecto}
+	Lo importante ahora es saber como afecta el marco legal anteriormente expuesto al proyecto. En resumen, el marco legal expone una responsabilidad del estado de protejer a las personas con discapacidades, que es lo que busca el proyecto. Desde este punto de vista, una forma de entrar al mercado es a través de convenios con entidades gubernamentales dedicadas a la protección de las personas con discapacidades.
+	
+	Otro aspecto importante expuesto en el marco legal es que a nivel internacional también se cuenta con este mismo apoyo del estado, lo que indica que sería posible ampliar el marcado al mercado internacional cuando la estrategia organizacional indique que es el mejor momento.
+	
 	\clearpage
 	
 	\begin{center}
@@ -938,7 +946,7 @@ Donde $E$ es el costo de energía en un año y $M$ es el costo del mantenimiento
 		\item TES ( 10 años): 8.16\%
 		\item Inflación proyectada DANE (2011): 2 - 4\%
 		\item Inflación acumulado (Enero - Marzo 2011): 1.79\%
-		\item Inflación real proyectada (nosotros) (2011): 6 - 8\%
+		\item Inflación real proyectada (DANE) (2011): 4 - 7\%
 		\item Tasa de credito para inversión en Colombia: 16.7\%
 	\end{itemize}
 	
@@ -965,6 +973,8 @@ Donde $E$ es el costo de energía en un año y $M$ es el costo del mantenimiento
 	\end{itemize}
 	Los salarios para los otros años son aumentados calculados en base a los salarios del primer año incrementados un punto porcentual sobre la inflación proyectada por el banco de la república. La justificación de los costos de insumos y materiales estan dadas por el estudio técnico, al igual que los costos de las inversiones en maquinaria e infraestructura.
 	
+	Para los cálculos se asumirá que la tasa de crecimiento del PIB y de la población es la misma a la que se a presentado en los últimos 5 años (Del 2006-2011).
+	
 	\clearpage
 	
 	\begin{center}
@@ -978,6 +988,9 @@ Donde $E$ es el costo de energía en un año y $M$ es el costo del mantenimiento
 	de escritura tradicional Braille se desea remplazar lentamente con alternativas de alta tecnología
 	que les permita a las personas invidentes gozar de una mayor inclusión en la sociedad, conseguir empleos
 	y tener cada vez menos restricciones por su limitación.
+	
+	\subsection{Otras formas de generar ingresos con el proyecto}
+	Dado que se desarrollará un producto de Software que permita realizar reconocimiento óptico de caracteres, una aplicación donde esto es inmediatamente útil es en el reconocimiento de placas de automóviles. Por ejemplo para el proyecto desarrollado por el grupo de investigación Sirius, en el cual buscan detectar infractores de los semáforos de manera automática este proyecto sería de especial utilidad.
 	
 	\clearpage
 	\begin{center}
