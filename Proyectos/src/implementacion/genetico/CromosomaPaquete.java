@@ -5,7 +5,10 @@ import genericos.genetico.Genetico;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.MediaTracker;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JApplet;
 import javax.swing.JPanel;
 
@@ -215,18 +218,26 @@ public class CromosomaPaquete implements Cromosoma
 	{
 		private static final long serialVersionUID = 4596205343676591069L;
 		private static PanelInicial panelInicial;
+		
 		public Image darImagen(String imagen)
 		{
-			try {
-			    Image img = getImage(getDocumentBase(), imagen);
-			    System.out.print(getDocumentBase());
-				MediaTracker mt = new MediaTracker(this);
-				mt.addImage(img,0);
-				mt.waitForID(0);
-				return img;
-			} catch (InterruptedException e) {
-				return null;
-			}
+//			try {
+//			    Image img = getImage(getDocumentBase(), imagen);
+//			    System.out.print(getDocumentBase());
+//				MediaTracker mt = new MediaTracker(this);
+//				mt.addImage(img,0);
+//				mt.waitForID(0);
+//				return img;
+				try {
+					return ImageIO.read(new File("C:\\sga\\Proyectos\\" + imagen));
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+				
+//			} catch (InterruptedException e) {
+//				return null;
+//			}
 		}
 		public void init()
 		{

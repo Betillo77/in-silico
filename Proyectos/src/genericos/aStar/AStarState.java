@@ -15,14 +15,14 @@ public interface AStarState extends Estado {
      * Retorna una lista con los estado siguientes al estado actual
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked"})
 	public LinkedList sigEstados();
     
     /**
      * Retorna un valor que sea único para cada estado, su clave primaria
      * @return
      */
-    @SuppressWarnings({ "rawtypes" })
+    @SuppressWarnings({ "unchecked"})
 	public Comparable getKey();
     
     /**

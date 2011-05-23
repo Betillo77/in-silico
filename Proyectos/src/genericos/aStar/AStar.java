@@ -64,10 +64,10 @@ public class AStar {
     class MyList {
     
         PriorityQueue<MyState> pq;
-        @SuppressWarnings({ "rawtypes" })
+		@SuppressWarnings("unchecked")
 		TreeMap<Comparable, AStarState> arbol;
 
-        @SuppressWarnings("rawtypes")
+		@SuppressWarnings("unchecked")
 		public MyList() {
             pq = new PriorityQueue<MyState>();
             arbol = new TreeMap<Comparable, AStarState>();

@@ -1,6 +1,7 @@
 package implementacion.reinforcement;
 
 import genericos.reinforcement.Estado;
+
 import java.util.HashMap;
 
 /**
@@ -28,6 +29,11 @@ public class BJState implements Estado
     	equalCards = eC;
     }
     
+    public BJState duplicate()
+    {
+    	return new BJState(sum, nAces, dealerCard, count, twoCards, equalCards);
+    }
+    
     static BJState temp = new BJState(0, 0, 0, 0, false, false);
     
     public static BJState getBJState(int sum, int nAces, int dealerCard, int count, boolean twoCards, boolean equalCards)
@@ -38,9 +44,11 @@ public class BJState implements Estado
     	temp.count = count;
     	temp.twoCards = twoCards;
     	temp.equalCards = equalCards;
+    	temp.hash = null;
     	if(states.containsKey(temp))
     		return states.get(temp);
-    	states.put(temp, new BJState(sum, nAces, dealerCard, count, twoCards, equalCards));
+    	BJState nuevo = new BJState(sum, nAces, dealerCard, count, twoCards, equalCards);
+    	states.put(nuevo, nuevo);
     	return states.get(temp);
     }
     
@@ -64,7 +72,7 @@ public class BJState implements Estado
 	public boolean equals(Object obj) 
 	{
 		BJState other = (BJState) obj;
-		return count == other.count && nAces == other.nAces && sum == other.sum && twoCards == other.twoCards;
+		return count == other.count && nAces == other.nAces && dealerCard == other.dealerCard && sum == other.sum && twoCards == other.twoCards && equalCards == other.equalCards;
 	}
 
 	@Override
@@ -77,10 +85,30 @@ public class BJState implements Estado
     		return nAces > other.nAces ? 1 : -1;
     	if(count != other.count)
     		return count > other.count ? 1 : -1;
+    	if(dealerCard != other.dealerCard)
+    		return dealerCard > other.dealerCard ? 1 : -1;
     	if(twoCards && !other.twoCards)
     		return 1;
     	if(!twoCards && other.twoCards)
     		return -1;
+    	if(equalCards && !other.equalCards)
+    		return 1;
+    	if(!equalCards && other.equalCards)
+    		return -1;
     	return 0;
     }
+
+	public boolean blackJack() 
+	{
+		return twoCards && getCount() == 21 && nAces == 1;
+	}
+
+	public int getCount() 
+	{
+		int cuenta = sum - nAces + nAces * 11;
+		int aces = nAces;
+		while(aces-- != 0 && cuenta > 21)
+			cuenta -= 10;
+		return cuenta;
+	}
 }

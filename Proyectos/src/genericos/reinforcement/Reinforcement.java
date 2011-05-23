@@ -1,36 +1,47 @@
 package genericos.reinforcement;
 
 
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.TreeMap;
+import java.util.Random;
 
 /**
  *
- * @author sebastian
+ * @author santiago, sebastian
  */
 public class Reinforcement
 {
     public Ambiente amb;
-    TreeMap <Par <Estado, Accion>, Double> Q = new TreeMap <Par <Estado, Accion>, Double> ();
-    public double nabla, gamma, T = 1000, cooling = 0.99;
+    public Random r;
+    HashMap <Par <Estado, Accion>, Double> Q = new HashMap <Par <Estado, Accion>, Double> ();
+    public double nabla = 0.2, gamma = 0.1269230769230769, T = Double.MAX_VALUE, cooling = 0.999;
 
+    static double[] p = new double[10];
     public Accion chooseAction(Estado s, LinkedList<Accion> actions)
     {
-        double [] p = new double[actions.size()];
         if(T > 1)
             T *= cooling;
         double sum = 0; int i = 0;
+        int mejor = 0;
+        double mejorReward = Double.MIN_NORMAL;
         for (Accion a : actions)
         {
             Par <Estado,Accion> key = new Par <Estado, Accion> (s, a);
             Double q = Q.get(key);
             if(q == null)
                 q = 0.0d;
+            else if(q > mejorReward)
+            {
+            	mejorReward = q;
+            	mejor = i;
+            }
             p[i] = Math.exp(q / T);
             sum += p[i];
             i++;
         }
-        double rnd = Math.random() * sum;
+        if(T < 1)
+        	return actions.get(mejor);
+        double rnd = r.nextDouble() * sum;
         sum = 0;
         for (i = 0; i < actions.size(); i++)
         {

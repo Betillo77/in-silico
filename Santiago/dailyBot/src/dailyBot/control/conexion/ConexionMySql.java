@@ -428,7 +428,7 @@ public class ConexionMySql
 	
     private static Connection nuevaConexion()
     {
-    	String db_connect_string = "jdbc:mysql://192.168.0.105:3306/DailyFX";
+    	String db_connect_string = Propiedades.darPropiedad("dailyBot.control.conexion.ConexionMySql.direccionDB");
     	String db_userid = "root";
     	String db_password = Propiedades.darPropiedad("dailyBot.control.conexion.ConexionMySql.claveDB");
     	for(int intento = 0; intento < 11; intento++)

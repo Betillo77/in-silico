@@ -6,9 +6,17 @@ import java.util.Random;
 
 public class Shoe 
 {
-	Random random = new Random();
+	public static Random random = new Random();
 	int[] cards;
+	int[] strategy = //new int[] {0, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+					 //new int[] {0, -1, 1, 1, 1, 1, 1, 1, 0, 0, -1};
+	 				 //new int[] {0, -1, 1, 1, 1, 1, 1, 0, 0, 0, -1};
+	 				 //new int[] {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, -1};
+					 new int[] {0, 0, 1, 1, 2, 2, 1, 1, 0, 0, -2};
+					 //new int[] {0, -1, 1, 1, 2, 2, 2, 1, 0, 0, -2};
+					 //new int[] {0, 0, 1, 1, 2, 2, 2, 1, 0, -1, -2};
 	int actual = 0;
+	public int count = 0;
 	
 	public Shoe(int nBarajas)
 	{
@@ -26,11 +34,15 @@ public class Shoe
 	public double porcentajeFaltante()
 	{
 		double f = cards.length - actual;
-		return  f / cards.length;
+		return  1 - f / cards.length;
 	}
 	
-	public int carta()
+	public int card()
 	{
-		return cards[actual++];
+		if(actual == cards.length)
+			return Math.min(10, random.nextInt(13) + 1);
+		int carta = cards[actual++];
+		count += strategy[carta];
+		return carta;
 	}
 }

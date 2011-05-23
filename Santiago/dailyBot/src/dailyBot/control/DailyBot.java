@@ -16,7 +16,6 @@ import dailyBot.modelo.SistemaEstrategias;
 import dailyBot.modelo.Estrategia.IdEstrategia;
 import dailyBot.modelo.Proveedor.IdProveedor;
 import dailyBot.modelo.dailyFx.SistemaDailyFX;
-import dailyBot.vista.VentanaPrincipal;
 
 public class DailyBot
 {
@@ -203,6 +202,5 @@ public class DailyBot
 		cargarEstrategias();
 		cargarProveedores();
 		iniciarHilos();
-		VentanaPrincipal.iniciar(true);
 	}
 }

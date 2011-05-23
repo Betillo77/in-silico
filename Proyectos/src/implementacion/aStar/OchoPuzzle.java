@@ -10,8 +10,6 @@ import genericos.anchura.Estado;
 
 public class OchoPuzzle implements AStarState
 {
-
-	
 	public String tablero = "";
 	public String pasos = "";
 	public int nPasos = 0;
@@ -52,8 +50,7 @@ public class OchoPuzzle implements AStarState
 		return darDistanciaManhattan() + nPasos;
 	}
 
-	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public Comparable getKey() 
 	{
 		int acum = 0;
@@ -74,7 +71,7 @@ public class OchoPuzzle implements AStarState
 		this.padre = padre;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public LinkedList sigEstados() 
 	{
 		String tableroNuevo = tablero;

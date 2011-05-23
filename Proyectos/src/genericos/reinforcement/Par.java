@@ -26,5 +26,16 @@ public class Par<T1 extends Comparable<? super T1>,
         }
         return cmp;
     }
+    
+    @Override
+    public int hashCode() {
+    	return val1.hashCode() ^ val2.hashCode();
+    }
 
+    @SuppressWarnings("unchecked")
+	@Override
+    public boolean equals(Object obj) {
+    	Par <T1, T2> p = (Par <T1, T2>) obj;
+    	return p.val1.equals(val1) && p.val2.equals(val2);
+    }
 }

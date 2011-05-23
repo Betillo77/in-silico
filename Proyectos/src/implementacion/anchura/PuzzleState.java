@@ -10,8 +10,7 @@ import java.util.LinkedList;
  *
  * @author sebastian
  */
-@SuppressWarnings("rawtypes")
-public class PuzzleState implements Estado, Comparable {
+public class PuzzleState implements Estado, Comparable <Object> {
     
     MyKey tablero;
     Estado papa;
