@@ -11,7 +11,6 @@ import javax.swing.WindowConstants;
 
 import dailyBot.control.DailyBot;
 import dailyBot.control.Error;
-import dailyBot.control.Propiedades;
 import dailyBot.control.conexion.ConexionRMI;
 import dailyBot.control.conexion.ConexionServidorRMI;
 import dailyBot.modelo.Estrategia.IdEstrategia;
@@ -93,7 +92,7 @@ public class VentanaPrincipal extends JFrame
         try 
         {
             String name = "Conexion";
-            Registry registry = LocateRegistry.getRegistry(Propiedades.darPropiedad("dailyBot.vista.VentanaPrincipal.direccionRMI"));
+            Registry registry = LocateRegistry.getRegistry("186.86.4.148");
             conexion = new ConexionServidorRMI.Local((ConexionRMI) registry.lookup(name));
         } 
         catch (Exception e)

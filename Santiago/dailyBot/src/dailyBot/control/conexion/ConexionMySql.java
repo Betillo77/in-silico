@@ -99,30 +99,6 @@ public class ConexionMySql
 			double VIX = afectada.getVIX();
 			double SSI1 = afectada.getSSI1();
 			double SSI2 = afectada.getSSI2();
-			if(SSI1 > 0)
-			{
-				SSI1 -= 1;
-				if(Math.abs(SSI1) < 0.02)
-					SSI1 = 0.01;
-			}
-			else
-			{
-				SSI1 += 1;
-				if(Math.abs(SSI1) < 0.02)
-					SSI1 = -0.01;
-			}
-			if(SSI2 > 0)
-			{
-				SSI2 -= 1;
-				if(Math.abs(SSI2) < 0.02)
-					SSI2 = 0.01;
-			}
-			else
-			{
-				SSI2 += 1;
-				if(Math.abs(SSI2) < 0.02)
-					SSI2 = -0.01;
-			}
 			Statement st = null;
 			try
 			{

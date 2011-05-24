@@ -288,7 +288,20 @@ public class ConexionServidorDailyFx extends ConexionServidor
 		    		if(matcher.find())
 		    		{
 		    			Par actual = Par.stringToPar(constantes[i]);
-		    			actual.ponerSSI(Double.parseDouble(matcher.group().substring(17)));
+		    			double SSI = Double.parseDouble(matcher.group().substring(17));
+		    			if(SSI > 0)
+		    			{
+		    				SSI -= 1;
+		    				if(Math.abs(SSI) < 0.02)
+		    					SSI = 0.01;
+		    			}
+		    			else
+		    			{
+		    				SSI += 1;
+		    				if(Math.abs(SSI) < 0.02)
+		    					SSI = -0.01;
+		    			}
+		    			actual.ponerSSI(SSI);
 		    		}
 		    	}
 	    	}

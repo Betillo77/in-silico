@@ -175,6 +175,7 @@ public class DailyBot
 	
 	public static void iniciarPropiedades()
 	{
+		System.out.println(System.getProperty("user.dir"));
 		System.setProperty("java.rmi.server.codebase", "file:" + System.getProperty("user.dir") + "/bin/");
 		System.setProperty("java.security.policy", "file:" + System.getProperty("user.dir") + "/libs/server.policy");
 	}
