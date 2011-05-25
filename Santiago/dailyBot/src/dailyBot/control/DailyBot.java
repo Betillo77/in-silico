@@ -175,8 +175,8 @@ public class DailyBot
 	
 	public static void iniciarPropiedades()
 	{
-		System.setProperty("java.rmi.server.codebase", "file:" + "/home/santiago/dailyBot" + "/bin/");
-		System.setProperty("java.security.policy", "file:"  + "/home/santiago/dailyBot" + "/libs/server.policy");
+		System.setProperty("java.rmi.server.codebase", "file:" + Propiedades.darPropiedad("dailyBot.control.DailyBot.directorioDailyBot") + "/bin/");
+		System.setProperty("java.security.policy", "file:"  + Propiedades.darPropiedad("dailyBot.control.DailyBot.directorioDailyBot") + "/libs/server.policy");
 	}
 	
 	public static void main(String [] args) throws IOException

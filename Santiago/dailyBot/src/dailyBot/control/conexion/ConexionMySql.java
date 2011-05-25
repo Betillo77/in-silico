@@ -405,7 +405,7 @@ public class ConexionMySql
     private static Connection nuevaConexion()
     {
     	String db_connect_string = Propiedades.darPropiedad("dailyBot.control.conexion.ConexionMySql.direccionDB");
-    	String db_userid = "root";
+    	String db_userid = Propiedades.darPropiedad("dailyBot.control.conexion.ConexionMySql.usuarioDB");
     	String db_password = Propiedades.darPropiedad("dailyBot.control.conexion.ConexionMySql.claveDB");
     	for(int intento = 0; intento < 11; intento++)
     	{
@@ -434,7 +434,8 @@ public class ConexionMySql
 	private static LinkedBlockingQueue <Connection> iniciarPool() 
 	{
 		LinkedBlockingQueue <Connection> nueva = new LinkedBlockingQueue <Connection> ();
-		for(int i = 0; i < 10; i++)
+		int numeroConexiones = Integer.parseInt(Propiedades.darPropiedad("dailyBot.control.conexion.ConexionMySql.numeroConexionesDB"));
+		for(int i = 0; i < numeroConexiones; i++)
 			try 
 			{
 				nueva.put(nuevaConexion());
