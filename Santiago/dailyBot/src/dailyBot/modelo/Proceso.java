@@ -145,7 +145,7 @@ public class Proceso
 		try
 		{
 			ProcessBuilder pb = new ProcessBuilder("");
-			pb.directory(new File("/home/santiago/Desktop/dailyBot/" + path));
+			pb.directory(new File("/home/santiago/dailyBot/" + path));
 			pb.command("wine", "terminal.exe");
 			proceso = pb.start();
 			if(iniciarSocket())

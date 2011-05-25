@@ -1,10 +1,10 @@
 #Fat Jar Configuration File
-#Tue Jan 18 07:14:22 COT 2011
+#Mon May 23 00:27:17 COT 2011
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
-jarname=/home/santiago/Desktop/lastBuilds/dailyBot.jar
+jarname=/home/santiago/dailyBot/dailyBot.jar
 manifest.mergeall=true
 manifest.mainclass=dailyBot.control.DailyBot
 manifest.file=<createnew>

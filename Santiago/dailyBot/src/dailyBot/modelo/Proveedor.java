@@ -406,7 +406,7 @@ public class Proveedor
 			escritor.terminarCiclo(); 
 			if(id == IdProveedor.HFT)
 			{
-				FileWriter fw = new FileWriter("/home/santiago/Dropbox/Public/dailyBot.txt", false);
+				FileWriter fw = new FileWriter("/var/www/index.html", false);
 				fw.write(mensajeCorto);
 				fw.close();
 			}
