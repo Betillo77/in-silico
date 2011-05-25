@@ -17,6 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import dailyBot.control.AdministradorHilos;
 import dailyBot.control.Error;
 import dailyBot.control.HiloDaily;
+import dailyBot.control.Propiedades;
 import dailyBot.control.RunnableDaily;
 
 public class Proceso 
@@ -145,7 +146,7 @@ public class Proceso
 		try
 		{
 			ProcessBuilder pb = new ProcessBuilder("");
-			pb.directory(new File("/home/santiago/dailyBot/" + path));
+			pb.directory(new File(Propiedades.darPropiedad("dailyBot.control.DailyBot.directorioDailyBot") + "/" + path));
 			pb.command("wine", "terminal.exe");
 			proceso = pb.start();
 			if(iniciarSocket())

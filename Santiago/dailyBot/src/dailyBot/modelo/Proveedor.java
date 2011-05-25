@@ -24,6 +24,7 @@ import dailyBot.analisis.RegistroHistorial;
 import dailyBot.control.AdministradorHilos;
 import dailyBot.control.Error;
 import dailyBot.control.HiloDaily;
+import dailyBot.control.Propiedades;
 import dailyBot.control.RunnableDaily;
 import dailyBot.control.conexion.ConexionMySql;
 import dailyBot.modelo.Estrategia.IdEstrategia;
@@ -406,7 +407,7 @@ public class Proveedor
 			escritor.terminarCiclo(); 
 			if(id == IdProveedor.HFT)
 			{
-				FileWriter fw = new FileWriter("/var/www/index.html", false);
+				FileWriter fw = new FileWriter(Propiedades.darPropiedad("dailyBot.modelo.Proveedor.archivoDB"), false);
 				fw.write(mensajeCorto);
 				fw.close();
 			}
