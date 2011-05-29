@@ -78,7 +78,7 @@ public class RangosGrafico extends JFrame
 			gridLayout.setRows(6);
 			gridLayout.setColumns(1);
 			panelRangos.setLayout(gridLayout);
-			panelRangos.setSize(700, 600);
+			panelRangos.setSize(350, 600);
 			for(Indicador i : Indicador.values())
 			{
 				RangoGrafico r = new RangoGrafico(this, i.darRango().duplicar(), rangos, graficaProgreso, graficaIndicador, graficaHistorial, i);

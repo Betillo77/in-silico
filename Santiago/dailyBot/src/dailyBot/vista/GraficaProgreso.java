@@ -75,7 +75,7 @@ public class GraficaProgreso extends JPanel
 	    info.desviacion.setText(df.format(desviacionD));
 	    XYSeriesCollection xySeriesCollection = new XYSeriesCollection(series);
 	    JFreeChart chart = ChartFactory.createXYAreaChart("Ganancia vs tiempo", "Ganancia", "Tiempo", xySeriesCollection, PlotOrientation.VERTICAL, false, false, false);
-	    label.setIcon(new ImageIcon(chart.createBufferedImage(400, 210)));
+	    label.setIcon(new ImageIcon(chart.createBufferedImage(600, 420)));
 	}
 	
 	public List <RegistroHistorial> darRegistros()

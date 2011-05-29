@@ -55,7 +55,7 @@ public class RangoGrafico extends JPanel
         	minimo.setValue(2);
         else
         	minimo.setValue((int) rango.getMinimo(rangos));
-        minimo.setPreferredSize(new Dimension(600, 39));
+        minimo.setPreferredSize(new Dimension(400, 39));
         minimo.setMinorTickSpacing(Math.min(1, i.darEspaciado()));
         minimo.setMajorTickSpacing(i.darEspaciado());
         minimo.setPaintTicks(true);
@@ -129,7 +129,7 @@ public class RangoGrafico extends JPanel
         add(nombre, new GridBagConstraints());
         maximo = new JSlider((int) original.getMinimoCompra(), (int) original.getMaximoCompra());
         maximo.setValue((int) rango.getMaximo(rangos));
-        maximo.setPreferredSize(new Dimension(600, 39));
+        maximo.setPreferredSize(new Dimension(400, 39));
         maximo.setMinorTickSpacing(Math.min(1, i.darEspaciado()));
         maximo.setMajorTickSpacing(i.darEspaciado());
         maximo.setPaintTicks(true);

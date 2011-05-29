@@ -87,7 +87,7 @@ public class DailyBot
 						{
 							try
 							{
-								Runtime.getRuntime().exec("/home/santiago/backup");
+//								Runtime.getRuntime().exec("/home/santiago/backup");
 								HiloDaily.sleep(60000);
 								Calendar actual = Calendar.getInstance();
 								Error.agregarInfo("Apagando equipo automaticamente: " + actual.get(Calendar.DAY_OF_MONTH) + "/" + (actual.get(Calendar.MONTH) + 1) + "/" + actual.get(Calendar.YEAR) + " " + actual.get(Calendar.HOUR_OF_DAY) + ":" + actual.get(Calendar.MINUTE) + ":" + actual.get(Calendar.SECOND) + "." + actual.get(Calendar.MILLISECOND));
@@ -95,12 +95,19 @@ public class DailyBot
 								for(Par p : Par.values())
 									if(p != Par.TODOS)
 										p.cerrarDia();
-								Runtime.getRuntime().exec("shutdown now -P");
-								System.exit(0);
+//								Runtime.getRuntime().exec("shutdown now -P");
+								salir();
 							}
 							catch(Exception e)
 							{
-								System.exit(0);
+								try
+								{
+									salir();
+								}
+								catch(Exception e1)
+								{
+									System.exit(0);
+								}
 							}
 						}
 						HiloDaily.sleep(600000);

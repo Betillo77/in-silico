@@ -124,7 +124,7 @@ public class GraficaIndicador extends JPanel
         xyplot.getRenderer().setSeriesPaint(0, Color.BLUE);
         x = new XYBoxAnnotation(maximo - delta, -100000, maximo, 100000, null, null, gradientpaint);
         xyplot.getRenderer().addAnnotation(x, Layer.BACKGROUND);
-	    label.setIcon(new ImageIcon(chart.createBufferedImage(400, 210)));
+	    label.setIcon(new ImageIcon(chart.createBufferedImage(600, 420)));
 		this.setVisible(true);
 	}
 }

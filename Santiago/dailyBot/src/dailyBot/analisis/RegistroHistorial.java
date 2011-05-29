@@ -47,8 +47,11 @@ public class RegistroHistorial implements Comparable <RegistroHistorial>
 		this.fechaCierre = fechaCierre;
 		this.ganancia = ganancia;
 		this.low = low;
-		if(low < -200 || this.ganancia < -200)
-			this.ganancia = -200;
+		if(low <= -170 || this.ganancia <= -170)
+		{
+			this.ganancia = -170;
+			this.low = -170;
+		}	
 		this.high = high;
 		this.VIX = vIX;
 		this.SSI1 = sSI1;

@@ -88,7 +88,7 @@ public enum Indicador
 			return 100 * ssi;
 		}
 		
-	}, new Rango(-500, 500, -500, 500), 50, false),
+	}, new Rango(-500, 500, -500, 500), 50, true, new Object[][] {{-500, "-500"}, {500, "500"}}),
 	
 	ATR(new Calculable()
 	{
