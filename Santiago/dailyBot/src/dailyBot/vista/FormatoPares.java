@@ -61,7 +61,7 @@ public class FormatoPares extends JPanel
 				paresB.add(p);
 		}
 		boolean parA = false;
-		for(int i = 0; !paresA.isEmpty(); i++)
+		while(!paresA.isEmpty())
 		{
 			if(parA)
 				this.add(darBoton(paresA.pollFirst()));
