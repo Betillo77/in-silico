@@ -101,14 +101,13 @@ public class FormatoPares extends JPanel
 				try 
 				{
 					boolean activar = ((AbstractButton) e.getSource()).isSelected();
+					VentanaPrincipal.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), activar, false);						
 					if(activar && VentanaPrincipal.conexion.darAbiertoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal()))
 					{
 						int a = JOptionPane.showConfirmDialog(null, "La senal estaba abierta, desea abrirla nuevamente?", "Confirmacion", JOptionPane.YES_NO_OPTION);
 						boolean abrir = a == JOptionPane.YES_OPTION;
 						VentanaPrincipal.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), activar, abrir);
 					}
-					else
-						VentanaPrincipal.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), activar, false);
 				} 
 				catch (RemoteException e1) 
 				{
