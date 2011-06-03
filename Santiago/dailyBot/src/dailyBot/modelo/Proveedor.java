@@ -590,7 +590,7 @@ public class Proveedor
 		read.lock();
 		try
 		{
-			return activos[idEstrategia.ordinal()][par.ordinal()] && senales[idEstrategia.ordinal()][par.ordinal()] != null;
+			return senales[idEstrategia.ordinal()][par.ordinal()] != null;
 		}
 		finally
 		{
