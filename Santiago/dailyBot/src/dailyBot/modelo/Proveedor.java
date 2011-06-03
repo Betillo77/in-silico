@@ -195,6 +195,41 @@ public class Proveedor
 		}
 	}
 	
+	public void abrirActivo(IdEstrategia idEstrategia, Par par)
+	{
+		boolean activo = false;
+		read.lock();
+		try
+		{
+			activo = activos[idEstrategia.ordinal()][par.ordinal()];
+		}
+		finally
+		{
+			read.unlock();
+		}
+		if(activo)
+		{
+			write.lock();
+			try
+			{
+				cambios[idEstrategia.ordinal()] = true;
+				SenalProveedor afectada = senales[idEstrategia.ordinal()][par.ordinal()];
+				if(afectada == null)
+					Error.agregar("Senal con par: " + par + ", estrategia: " + idEstrategia + ", proveedor " + id + " no estaba abierta y se intento reabrir.");
+				else
+				{
+					afectada.setMagico(0);
+					Error.agregarConTitulo("rangos", id + " abriendo senal por orden manual: " + idEstrategia + ", " + par);
+					escritor.abrir(afectada);
+				}
+			}
+			finally
+			{
+				write.unlock();
+			}	
+		}
+	}
+	
 	public void tocoStop(SenalEstrategia s) 
 	{
 		read.lock();
@@ -547,6 +582,19 @@ public class Proveedor
 		finally
 		{
 			write.unlock();
+		}
+	}
+
+	public boolean darAbierto(IdEstrategia idEstrategia, Par par) 
+	{
+		read.lock();
+		try
+		{
+			return activos[idEstrategia.ordinal()][par.ordinal()] && senales[idEstrategia.ordinal()][par.ordinal()] != null;
+		}
+		finally
+		{
+			read.unlock();
 		}
 	}
 	

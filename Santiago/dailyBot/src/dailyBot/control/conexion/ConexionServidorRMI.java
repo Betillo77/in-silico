@@ -27,10 +27,16 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 		}
 		
 		@Override
-		public synchronized void cambiarActivoProveedor(int idProveedor, int idEstrategia, int idPar, boolean activo) throws RemoteException 
+		public synchronized void cambiarActivoProveedor(int idProveedor, int idEstrategia, int idPar, boolean activo, boolean abierto) throws RemoteException 
 		{
-			servidor.cambiarActivoProveedor(idProveedor, idEstrategia, idPar, activo);
+			servidor.cambiarActivoProveedor(idProveedor, idEstrategia, idPar, activo, abierto);
 			dpActivos[idProveedor][idEstrategia][idPar] = activo;
+		}
+		
+		@Override
+		public boolean darAbiertoProveedor(int idProveedor, int idEstrategia, int idPar) throws RemoteException 
+		{
+			return servidor.darAbiertoProveedor(idProveedor, idEstrategia, idPar);
 		}
 		
 		@Override
@@ -82,15 +88,23 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 	}
 	
 	@Override
-	public void cambiarActivoProveedor(int idProveedor, int idEstrategia, int idPar, boolean activo) throws RemoteException 
+	public void cambiarActivoProveedor(int idProveedor, int idEstrategia, int idPar, boolean activo, boolean abrir) throws RemoteException 
 	{
 		IdProveedor.values()[idProveedor].darProveedor().cambiarActivo(IdEstrategia.values()[idEstrategia], Par.values()[idPar], activo);
+		if(activo && abrir)
+			IdProveedor.values()[idProveedor].darProveedor().abrirActivo(IdEstrategia.values()[idEstrategia], Par.values()[idPar]);
 	}
 	
 	@Override
 	public boolean darActivoProveedor(int idProveedor, int idEstrategia, int idPar) throws RemoteException
 	{
 		return IdProveedor.values()[idProveedor].darProveedor().darActivo(IdEstrategia.values()[idEstrategia], Par.values()[idPar]);
+	}
+	
+	@Override
+	public boolean darAbiertoProveedor(int idProveedor, int idEstrategia, int idPar) throws RemoteException 
+	{
+		return IdProveedor.values()[idProveedor].darProveedor().darAbierto(IdEstrategia.values()[idEstrategia], Par.values()[idPar]);
 	}
 
 	@Override

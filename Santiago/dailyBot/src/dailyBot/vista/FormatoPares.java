@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -99,7 +100,15 @@ public class FormatoPares extends JPanel
 			{
 				try 
 				{
-					VentanaPrincipal.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), ((AbstractButton) e.getSource()).isSelected());
+					boolean activar = ((AbstractButton) e.getSource()).isSelected();
+					if(activar && VentanaPrincipal.conexion.darAbiertoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal()))
+					{
+						int a = JOptionPane.showConfirmDialog(null, "La senal estaba abierta, desea abrirla nuevamente?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+						boolean abrir = a == JOptionPane.YES_OPTION;
+						VentanaPrincipal.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), activar, abrir);
+					}
+					else
+						VentanaPrincipal.conexion.cambiarActivoProveedor(idP.ordinal(), idE.ordinal(), par.ordinal(), activar, false);
 				} 
 				catch (RemoteException e1) 
 				{
