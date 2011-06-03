@@ -89,7 +89,7 @@ public class VentanaPrincipal extends JFrame
 	
 	public static void iniciar(boolean servidor)
 	{
-//        System.setSecurityManager(new SecurityManager());
+        System.setSecurityManager(new SecurityManager());
         try 
         {
             String name = "Conexion";

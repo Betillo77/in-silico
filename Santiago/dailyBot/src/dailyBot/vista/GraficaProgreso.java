@@ -45,7 +45,6 @@ public class GraficaProgreso extends JPanel
 	    XYSeries series = new XYSeries("Serie ganancia");
 	    double acum = 0;
 	    int nTransacciones = 0;
-	    int i = 0;
 	    for(RegistroHistorial r : registros)
 	    {
 	    	if(rangos.cumple(r, false, ""))
@@ -54,7 +53,6 @@ public class GraficaProgreso extends JPanel
 	    		acum += r.ganancia;
 		        series.add(r.fechaApertura, acum);
 	    	}
-	        i++;
 	    }
 	    double media = acum / nTransacciones;
 	    double desviacionD = 0;
@@ -75,7 +73,7 @@ public class GraficaProgreso extends JPanel
 	    info.desviacion.setText(df.format(desviacionD));
 	    XYSeriesCollection xySeriesCollection = new XYSeriesCollection(series);
 	    JFreeChart chart = ChartFactory.createXYAreaChart("Ganancia vs tiempo", "Ganancia", "Tiempo", xySeriesCollection, PlotOrientation.VERTICAL, false, false, false);
-	    label.setIcon(new ImageIcon(chart.createBufferedImage(600, 420)));
+	    label.setIcon(new ImageIcon(chart.createBufferedImage(600, 350)));
 	}
 	
 	public List <RegistroHistorial> darRegistros()

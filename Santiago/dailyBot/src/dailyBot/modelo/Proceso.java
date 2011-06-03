@@ -257,9 +257,14 @@ public class Proceso
 			{
 				socket.setSoTimeout(600000);
 				String resultado = socketIn.readLine();
+				resultado = resultado.substring(0, resultado.length() - 3);
 				if(resultado.equals(""))
 					resultado = " ";
 				return resultado;
+			}
+			catch(NullPointerException e)
+			{
+				throw e;
 			}
 			finally
 			{

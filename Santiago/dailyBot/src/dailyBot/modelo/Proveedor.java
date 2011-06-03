@@ -221,6 +221,7 @@ public class Proveedor
 					afectada.setMagico(0);
 					Error.agregarConTitulo("rangos", id + " abriendo senal por orden manual: " + idEstrategia + ", " + par);
 					escritor.abrir(afectada);
+					escritor.terminarCiclo();
 				}
 			}
 			finally
