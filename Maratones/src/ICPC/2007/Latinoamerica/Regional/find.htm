@@ -1,0 +1,101 @@
+<html><head><title>3932 - Finding Seats</title></head><body><table cellpadding=3 cellspacing=0 border=1 align=center><tr valign=center><td ROWSPAN=2 align=center valign=center><font size=5 color=0000A0><b><img src="icono.gif"></b></font></td><td COLSPAN=5 width=500 align=center><font size=5 color=0000A0><b>3932 - Finding Seats</b></font><br><a href="http://acmicpc-live-archive.uva.es/nuevoportal/region.php?r=sa&year=2007"><b>Latin America - South America - 2007/2008</b></a></font></td></tr><tr valign=center><td width=100 align=center><a href="http://acmicpc-live-archive.uva.es/nuevoportal/data/p3932.pdf"><b>PDF</b></a></td><td width=100>&nbsp;</td><td width=100 align=center><a href="http://acmicpc-live-archive.uva.es/nuevoportal/mailer.php?problem=3932"><b>Submit</b></a></td><td width=100>&nbsp;</td><td width=100 align=center><a href="http://acmicpc-live-archive.uva.es/nuevoportal/rankprob.php?p=3932"><b>Ranking</b></a></td></tr></table><p>&nbsp;</p>
+<P>
+A group of <SPAN CLASS="MATH"><I>K</I></SPAN>
+<tex2html_verbatim_mark> friends is going to see a movie. However, they are too late to get good tickets, so they are looking for a good way to sit all nearby. Since they are all science students, they decided to come up with an optimization problem instead of going on with informal arguments to decide which tickets to buy. 
+
+<P>
+The movie theater has <SPAN CLASS="MATH"><I>R</I></SPAN>
+<tex2html_verbatim_mark> rows of <SPAN CLASS="MATH"><I>C</I></SPAN>
+<tex2html_verbatim_mark> seats each, and they can see a map with the currently available seats marked. They decided that seating close to each other is all that matters, even if that means seating in the front row where the screen is so big it's impossible to see it all at once. In order to have a formal criteria, they thought they would buy seats in order to minimize the <SPAN  CLASS="textit">extension</SPAN> of their group. 
+
+<P>
+The <SPAN  CLASS="textit">extension</SPAN> is defined as the area of the smallest rectangle with sides parallel to the seats that contains all bought seats. The area of a rectangle is the number of seats contained in it. They've taken out a laptop and pointed at you to help them find those desired seats.
+
+<P>
+
+<H2><FONT size=4 COLOR=#ff0000><A NAME="SECTION0001001000000000000000">
+Input</A>&nbsp;</FONT>
+</H2>
+
+<P>
+Each test case will consist on several lines. The first line will contain three positive integers <SPAN CLASS="MATH"><I>R</I></SPAN>
+<tex2html_verbatim_mark>, <SPAN CLASS="MATH"><I>C</I></SPAN>
+<tex2html_verbatim_mark> and <SPAN CLASS="MATH"><I>K</I></SPAN>
+<tex2html_verbatim_mark> as explained above (<SPAN CLASS="MATH">1<IMG
+ WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="3932img1.png"
+ ALT="$ \le$"><I>R</I></SPAN>
+<tex2html_verbatim_mark>, <SPAN CLASS="MATH"><I>C</I><IMG
+ WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="3932img1.png"
+ ALT="$ \le$">300</SPAN>
+<tex2html_verbatim_mark>, <!-- MATH
+ $1 \le K \le R \times C$
+ -->
+<SPAN CLASS="MATH">1<IMG
+ WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="3932img1.png"
+ ALT="$ \le$"><I>K</I><IMG
+ WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="3932img1.png"
+ ALT="$ \le$"><I>R</I>&#215;<I>C</I></SPAN>
+<tex2html_verbatim_mark>). The next <SPAN CLASS="MATH"><I>R</I></SPAN>
+<tex2html_verbatim_mark> lines will contain exactly <SPAN CLASS="MATH"><I>C</I></SPAN>
+<tex2html_verbatim_mark> characters each. The <SPAN CLASS="MATH"><I>j</I></SPAN>
+<tex2html_verbatim_mark>-th character of the <SPAN CLASS="MATH"><I>i</I></SPAN>
+<tex2html_verbatim_mark>-th line will be `<TT>X</TT>' if the <SPAN CLASS="MATH"><I>j</I></SPAN>
+<tex2html_verbatim_mark>-th seat on the <SPAN CLASS="MATH"><I>i</I></SPAN>
+<tex2html_verbatim_mark>-th row is taken or `<TT>.</TT>' if it is available. There will always be at least <SPAN CLASS="MATH"><I>K</I></SPAN>
+<tex2html_verbatim_mark> available seats in total. 
+
+<P>
+Input is terminated with <!-- MATH
+ $R = C = K = 0$
+ -->
+<SPAN CLASS="MATH"><I>R</I> = <I>C</I> = <I>K</I> = 0</SPAN>
+<tex2html_verbatim_mark>. 
+
+<P>
+
+<H2><FONT size=4 COLOR=#ff0000><A NAME="SECTION0001002000000000000000">
+Output</A>&nbsp;</FONT>
+</H2>
+
+<P>
+For each test case, output a single line containing the minimum extension the group can have. 
+
+<P>
+
+<H2><FONT size=4 COLOR=#ff0000><A NAME="SECTION0001003000000000000000">
+Sample Input</A>&nbsp;</FONT>
+</H2> 
+
+<P>
+<PRE>
+3 5 5 
+...XX 
+.X.XX 
+XX... 
+5 6 6 
+..X.X. 
+.XXX.. 
+.XX.X. 
+.XXX.X 
+.XX.XX 
+0 0 0
+</PRE>
+
+<P>
+
+<H2><FONT size=4 COLOR=#ff0000><A NAME="SECTION0001004000000000000000">
+Sample Output</A>&nbsp;</FONT>
+</H2> 
+
+<P>
+<PRE>
+6 
+9
+</PRE>
+
+<P>
+<hr><ADDRESS>South America 2007-2008</ADDRESS><p></body></html>
