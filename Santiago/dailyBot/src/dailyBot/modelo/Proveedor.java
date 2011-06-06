@@ -575,7 +575,6 @@ public class Proveedor
 				{
 					senales[id.ordinal()][p.ordinal()] = new SenalProveedor(this.id, id, p, s.isCompra());
 					senales[id.ordinal()][p.ordinal()].setMagico(1000);
-					Error.agregar("Proveedor " + this.id + ", estrategia: " + id + ", par: " + p + " estaba abierta y se activo.");
 				}
 			}
 			activos[id.ordinal()][p.ordinal()] = b;
