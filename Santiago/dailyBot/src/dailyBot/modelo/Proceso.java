@@ -262,10 +262,6 @@ public class Proceso
 					resultado = " ";
 				return resultado;
 			}
-			catch(NullPointerException e)
-			{
-				throw e;
-			}
 			finally
 			{
 				lock.unlock();
