@@ -80,17 +80,33 @@ public class FormatoPares extends JPanel
 		JCheckBox nuevo = new JCheckBox();
 		nuevo.setText("Activo");
 		nuevo.setSize(new Dimension(30, 30));
-		nuevo.setSelected(VentanaPrincipal.conexion.darActivo(idP.ordinal()));
-		nuevo.addActionListener(new ActionListener()
-    	{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				boolean activar = ((AbstractButton) e.getSource()).isSelected();
-				VentanaPrincipal.conexion.cambiarActivo(idP.ordinal(), activar);
-			}
-		});
-		return nuevo;
+		try
+		{
+			nuevo.setSelected(VentanaPrincipal.conexion.darActivo(idP.ordinal()));
+		}
+		catch(RemoteException e)
+		{
+			Error.agregarRMI(e.getMessage() + " Error haciendo la conexion RMI");
+        	System.exit(0);
+		}
+			nuevo.addActionListener(new ActionListener()
+	    	{
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					try
+					{
+						boolean activar = ((AbstractButton) e.getSource()).isSelected();
+						VentanaPrincipal.conexion.cambiarActivo(idP.ordinal(), activar);
+					}
+					catch(RemoteException e1)
+					{
+						Error.agregarRMI(e1.getMessage() + " Error haciendo la conexion RMI");
+			        	System.exit(0);
+					}
+				}
+			});
+			return nuevo;
 	}
 
 	private JCheckBox darBoton(Par p) 

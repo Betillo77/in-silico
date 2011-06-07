@@ -87,13 +87,13 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 		}
 
 		@Override
-		public boolean darActivo(int idProveedor)
+		public boolean darActivo(int idProveedor) throws RemoteException
 		{
 			return servidor.darActivo(idProveedor);
 		}
 
 		@Override
-		public void cambiarActivo(int idProveedor, boolean activo)
+		public void cambiarActivo(int idProveedor, boolean activo) throws RemoteException
 		{
 			servidor.cambiarActivo(idProveedor, activo);
 		}
@@ -158,13 +158,13 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 	}
 
 	@Override
-	public boolean darActivo(int idProveedor)
+	public boolean darActivo(int idProveedor) throws RemoteException
 	{
 		return IdProveedor.values()[idProveedor].darProveedor().isActivo();
 	}
 
 	@Override
-	public void cambiarActivo(int idProveedor, boolean activo) 
+	public void cambiarActivo(int idProveedor, boolean activo) throws RemoteException
 	{
 		IdProveedor.values()[idProveedor].darProveedor().setActivo(activo);
 	}
