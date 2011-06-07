@@ -1,5 +1,6 @@
 package dailyBot.vista;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -62,6 +63,7 @@ public class FormatoPares extends JPanel
 				paresB.add(p);
 		}
 		boolean parA = false;
+		this.add(darBotonActivo());
 		while(!paresA.isEmpty())
 		{
 			if(parA)
@@ -71,6 +73,24 @@ public class FormatoPares extends JPanel
 			parA = !parA;
 		}
 		this.setVisible(true);
+	}
+
+	private Component darBotonActivo()
+	{
+		JCheckBox nuevo = new JCheckBox();
+		nuevo.setText("Activo");
+		nuevo.setSize(new Dimension(30, 30));
+		nuevo.setSelected(VentanaPrincipal.conexion.darActivo(idP.ordinal()));
+		nuevo.addActionListener(new ActionListener()
+    	{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				boolean activar = ((AbstractButton) e.getSource()).isSelected();
+				VentanaPrincipal.conexion.cambiarActivo(idP.ordinal(), activar);
+			}
+		});
+		return nuevo;
 	}
 
 	private JCheckBox darBoton(Par p) 

@@ -18,5 +18,7 @@ public interface ConexionRMI extends Remote
 	public Rangos darRangosProveedor(int idProveedor, int idEstrategia, int idPar) throws RemoteException;
 	public void cambiarRangosProveedor(int idProveedor, int idEstrategia, int idPar, Rangos rangos) throws RemoteException;
 	public SenalEstrategia darSenalEstrategia(int idEstrategia, int idPar) throws RemoteException;
+	public boolean darActivo(int idProveedor);
+	public void cambiarActivo(int idProveedor, boolean activo);
 	public int darGananciaSenalEstrategia(int idEstrategia, int idPar) throws RemoteException;
 }

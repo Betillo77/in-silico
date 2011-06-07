@@ -85,6 +85,18 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 		{
 			return servidor.darSenalEstrategia(idEstrategia, idPar);
 		}
+
+		@Override
+		public boolean darActivo(int idProveedor)
+		{
+			return servidor.darActivo(idProveedor);
+		}
+
+		@Override
+		public void cambiarActivo(int idProveedor, boolean activo)
+		{
+			servidor.cambiarActivo(idProveedor, activo);
+		}
 	}
 	
 	@Override
@@ -143,5 +155,17 @@ public class ConexionServidorRMI extends ConexionServidor implements ConexionRMI
 	public SenalEstrategia darSenalEstrategia(int idEstrategia, int idPar) throws RemoteException
 	{
 		return IdEstrategia.values()[idEstrategia].darEstrategia().tienePar(Par.values()[idPar]);
+	}
+
+	@Override
+	public boolean darActivo(int idProveedor)
+	{
+		return IdProveedor.values()[idProveedor].darProveedor().isActivo();
+	}
+
+	@Override
+	public void cambiarActivo(int idProveedor, boolean activo) 
+	{
+		IdProveedor.values()[idProveedor].darProveedor().setActivo(activo);
 	}
 }

@@ -61,6 +61,7 @@ public class Proveedor
 	}
 	
 	protected IdProveedor id;
+	protected boolean activo = false;
 	protected Rangos[][] rangos = new Rangos[IdEstrategia.values().length][Par.values().length];
 	protected boolean[][] activos = new boolean[IdEstrategia.values().length][Par.values().length];
 	protected boolean[] cambios = new boolean[IdEstrategia.values().length];
@@ -177,7 +178,7 @@ public class Proveedor
 					{
 						afectada = new SenalProveedor(id, s.getEstrategia(), s.getPar(), s.isCompra());
 						String mensaje = "Intentando abrir " + id.toString() + ", " + s.getEstrategia().toString() + ", " + s.getPar().toString() + ", " + s.getPrecioEntrada();
-						if(!rangos[s.getEstrategia().ordinal()][s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, mensaje))
+						if(!rangos[s.getEstrategia().ordinal()][s.getPar().ordinal()].cumple(new RegistroHistorial(s.getPar(), s.isCompra()), true, mensaje) || !this.activo)
 							afectada.setMagico(1000);
 						else
 						{
@@ -809,6 +810,32 @@ public class Proveedor
 		try
 		{
 			escritor.cerrarProceso();
+		}
+		finally
+		{
+			write.unlock();
+		}
+	}
+
+	public boolean isActivo() 
+	{
+		read.lock();
+		try
+		{
+			return activo;
+		}
+		finally
+		{
+			read.unlock();
+		}
+	}
+
+	public void setActivo(boolean a) 
+	{
+		write.lock();
+		try
+		{
+			activo = a;
 		}
 		finally
 		{
