@@ -775,7 +775,7 @@ Los porcentajes para algunos de los dígitos fueron inusualmente bajos con relac
 
 Dado los problemas antes mencionados, se decidió indagar las razones por las que algunos dígitos tenían porcentajes muy bajos. En el proceso de depuración se descubrió que el determinante de la matriz de covarianza era muy cercano a cero (con cifras cercanas a $10^{-40}$), por lo cual era muy probable que ciertos cálculos con números de punto flotante tuvieran pérdidas importantes de precisión. Se estudio la posibilidad de utilizar aritmética de precisión arbitraria, sin embargo, dada la complejidad algorítmica, se concluyo que el uso de aritmética implementada en software haría demasiado lento el proceso de reconocimiento.
 
-Otra posibilidad que se exploro fue encontrar matemáticamente una manera en la cual los cálculos pudieran realizarse sin perder mucha precisión, para lo cual se partió de la ecuación de la distribución normal multivariable:
+Otra posibilidad que se exploró fue encontrar matemáticamente una manera en la cual los cálculos pudieran realizarse sin perder mucha precisión, para lo cual se partió de la ecuación de la distribución normal multivariable:
 
 	\[p(x|C_i) = \frac{1}{(2\pi)^{d/2}|\Sigma_i|^\frac{1}{2}} exp\left[{-\frac{1}{2}(\vec{x}-\vec{\mu_i})\Sigma_i^{-1}(\vec{x}-\vec{\mu_i})}\right]\]
 
