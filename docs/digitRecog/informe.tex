@@ -6,11 +6,7 @@
 %    A copy of the license is included in the section entitled "GNU
 %    Free Documentation License" in spanish.
 
-%    Se concede permiso para copiar, distribuir y/o modificar este documento bajo 
-%    los términos de la Licencia de Documentación Libre de GNU, Versión 1.3 o 
-%    cualquier otra versión posterior publicada por la Free Software Foundation;
-%    Una copia de la licencia está incluida en la sección titulada GNU Free
-%    Documentation License.
+%    Se concede permiso para copiar, distribuir y/o modificar este documento bajo los términos de la Licencia de Documentación Libre de GNU, Versión 1.3 o cualquier otra versión posterior publicada por la Free Software Foundation; Una copia de la licencia está incluida en la sección titulada GNU Free Documentation License.
 
 \documentclass[a4paper, 11pt, oneside]{report}
 
@@ -268,7 +264,7 @@ Se refiere a convertir una imagen de escala de grises a una imagen en blanco y n
 
 \subsection{Análisis del documento}
 
-Esta etapa puede\footnote{MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San José, Estados Unidos).  Memorias, 2003, p. 197-207} ser vista como un análisis sintáctico en el que el documento se divide en sus partes estructurales, de una manera similar a como se hace en un árbol de análisis sintáctico. Como todo análisis gramatical es posible seguir los enfoques \textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde los píxeles y luego los relacionaría en grupos más grandes (caracteres, palabras, líneas y párrafos). Un enfoque \textit{top-down}, por el contrario, comienza con la imagen de un documento y la divide hasta llegar a sus componentes. Cada algoritmo tiene sus limitaciones, ventajas y distintos tiempos de ejecución. Una investigación realizada sobre diferentes algoritmos\footnote{SHAFAITA Faisal; KEYSERSA,  Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence.  Junio, 2008. vol. 30, no. 6, p. 941-954}, indica que los mejores resultados sobre documentos escogidos aleatoriamente con distintas estructuras visuales fueron para Docstrum y Voronoi con porcentajes de error del 4.3\% y 4.7\% respectivamente. Otro método interesante es el \textit{RLSA}, que es bastante sencillo y puede brindar buenos resultados en documentos \textit{Manhattan-Layout}. 
+Esta etapa puede\footnote{MAO Song; AZRIEL, Rosenfelda y KANUNGOB, Tapas. Document structure analysis algorithms: A literature survey. DOCUMENT RECOGNITION AND RETRIVAL. (10: enero, 2003: San José, Estados Unidos).  Memorias, 2003, p. 197-207} ser vista como un análisis sintáctico en el que el documento se divide en sus partes estructurales, de una manera similar a como se hace en un árbol de análisis sintáctico. Como todo análisis gramatical es posible seguir los enfoques \textit{buttom-up} y \textit{top-down}. Un enfoque \textit{buttom-up} comenzaría desde los píxeles y luego los relacionaría en grupos más grandes (caracteres, palabras, líneas y párrafos). Un enfoque \textit{top-down}, por el contrario, comienza con la imagen de un documento y la divide hasta llegar a sus componentes. Cada algoritmo tiene sus limitaciones, ventajas y distintos tiempos de ejecución. Una investigación realizada sobre diferentes algoritmos\footnote{SHAFAITA Faisal; KEYSERSA,  Daniel y BREUEL, Thomas. Performance Evaluation and Benchmarking of Six-Page segmentation Algorithms. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence.  Junio, 2008. vol. 30, no. 6, p. 941-954}, indica que los mejores resultados sobre documentos escogidos aleatoriamente con distintas estructuras visuales fueron para Docstrum y Voronoi con porcentajes de error del 4.3\% y 4.7\% respectivamente. Otro método interesante es el \textit{RLSA}, que es bastante sencillo y puede brindar buenos resultados en documentos \textit{Manhattan-Layout}. \footnote{FERILLI, Stefano y NAGY, George. Automatic Digital Document Processing and Management: Problems, Algorithms and Techniques. Berlin, Alemania: Springer, 2011. 297 p.} 
 
 Probablemente la mejor solución para un sistema OCR resulte de la mezcla de varios de los algoritmos existentes. En una investigación en el tema\footnote{KISE, Koichi; SATO Akinori y MATSUMOTO,  Keinosuke. Document Image Segmentation as Selection of Voronoi Edges. IEEE COMPUTER SOCIETY: CONFERENCE ON COMPUTER VISION AND PATTERN RECOGNITION (66: 17-19, junio, 1997: San Juan,  Puerto Rico). Memorias, 1997, p. 32-39} se observa cómo se pueden mejorar los resultados mezclando los beneficios de diferentes algoritmos para soluciones particulares. Esta investigación aporta elementos importantes para escoger cuál de estos algoritmos es ventajoso para cada solución en particular.  
 
@@ -303,8 +299,8 @@ En la figura \ref{fig:classif1} se puede apreciar el esquema general de un algor
 
 Con los avances en las tecnologías de cómputo la sociedad tiene la posibilidad de almacenar y procesar grandes cantidades de información. Por ejemplo, las cadenas de supermercado poseen grandes volúmenes de información de sus ventas, y las entidades financieras poseen la información crediticia de todos sus clientes. Para los supermercados es muy útil saber que personas compran ciertos tipos de productos y con qué periodicidad, y para las entidades financieras es útil saber que personas son de mayor y menor riesgo crediticio.
 
-Si, por ejemplo, supiéramos con exactitud cómo establecer si una persona es de riesgo o no para una central de crédito dados sus datos financieros, no necesitaríamos utilizar
-aprendizaje de máquinas; podríamos simplemente escribir las reglas que determinan si una persona es de riesgo o no y aplicarlas. Pero dado que muchas veces no es posible establecer estas reglas, lo que se busca al realizar aprendizaje de máquinas es extraer esta información de los datos.
+Si, por ejemplo, se supiera con exactitud cómo establecer si una persona es de riesgo o no para una central de crédito, partiendo de sus datos financieros, no seria necesario utilizar
+aprendizaje de máquinas; en dicho caso seria mucho más conveniente escribir las reglas que determinan si una persona es de riesgo o no y diseñar un sistema encargado de aplicarlas. Pero dado que muchas veces no es posible establecer estas reglas, lo que se busca al realizar aprendizaje de máquinas es extraer esta información de los mismos datos.
 
 Alpaydin indica que las personas usualmente sabemos que existen procesos que explican los datos que observamos. Por ejemplo, en el caso del supermercado, el comportamiento de los clientes no es completamente aleatorio; por tanto, se espera encontrar algunos patrones recurrentes en los datos. Aunque este autor indica que muchas veces no es posible identificar el modelo completamente, usualmente se puede construir una buena aproximación. Este es el nicho de trabajo del aprendizaje de máquinas, pues esta aproximación puede ser útil para encontrar patrones en el problema estudiado o para hacer estimaciones de datos futuros, asumiendo que en el futuro los datos van a comportarse de una manera similar a como se comportaron en el pasado.
 
@@ -357,7 +353,7 @@ La estadística es uno de los métodos más antiguos para inferir el comportamie
 
 	\item El poder clasificatorio es más alto que el de los árboles de decisión.
 
-	\item Brinda mucha información, en vez de solo determinar a qué clase pertenece una instancia, brida la probabilidad de que la instancia pertenezca cada una de las demás clases.
+	\item Brinda mucha información, en vez de solo determinar a qué clase pertenece una instancia, brida la probabilidad de que la instancia pertenezca a cada una de las demás clases.
 	
 	\end{itemize}
 	
@@ -424,7 +420,7 @@ Cuando el espacio muestral se compone de varios eventos mutuamente exclusivos $A
 		P(B) = \sum_{i=1}^{n}{P(B|A_i)P(A_i)}
 	\end{equation}
 
-Entonces, reemplazando la ecuación \ref{eq:bayesDenominator} en la ecuación \ref{eq:bayes}, tenemos:
+Entonces, reemplazando la ecuación \ref{eq:bayesDenominator} en la ecuación \ref{eq:bayes}, se tiene:
 	
 	\begin{equation}\label{eq:bayes2}
 		P(A|B) = \frac{P(B|A)P(A)}{\sum_{i=1}^{n}{P(B|A_i)P(A_i)}}
@@ -432,14 +428,14 @@ Entonces, reemplazando la ecuación \ref{eq:bayesDenominator} en la ecuación \r
 	
 \subsection{La esperanza matemática}
 
-Supongamos que se realiza un experimento sobre una variable aleatoria $x$ un número infinito de veces, entonces la esperanza de la variable $x$ es el promedio del valor de $x$ en los infinitos experimentos y se denota $E[x]$ (que se lee valor esperado de $x$ o esperanza de $x$). El concepto de esperanza es importante en la probabilidad porque además de tener usualmente un significado de interés para la variable aleatoria estudiada, se espera que independiente de la distribución de probabilidad que sigue la variable $x$, la esperanza de $x$ converja a un valor constante si las condiciones del experimento no cambian. Matemáticamente, el valor de la esperanza de una variable aleatoria $x$ es el siguiente:
+Suponga que se realiza un experimento sobre una variable aleatoria $x$ un número infinito de veces, entonces la esperanza de la variable $x$ es el promedio del valor de $x$ en los infinitos experimentos y se denota $E[x]$ (que se lee valor esperado de $x$ o esperanza de $x$). El concepto de esperanza es importante en la probabilidad porque además de tener usualmente un significado de interés para la variable aleatoria estudiada, se espera que independiente de la distribución de probabilidad que sigue la variable $x$, la esperanza de $x$ converja a un valor constante si las condiciones del experimento no cambian. Matemáticamente, el valor de la esperanza de una variable aleatoria $x$ es el siguiente:
 
 	\[ E(X) = \left\{ \begin{array}{ll}
 		\sum_{i}{x_iP(x_i)}   & \mbox{si X es una variable discreta} \\
 		\int {xp(x)dx} & \mbox{si X es una variable continua}
 	\end{array} \right. \]
 
-La esperanza es entonces un promedio ponderado, en donde el peso de cada valor tomado es la probabilidad de que la variable $X$ tome dicho valor. Suponiendo que $X$ y $Y$ son dos variables aleatorias, la esperanza cumpla las siguientes propiedades:
+La esperanza es entonces un promedio ponderado, en donde el peso de cada valor tomado es la probabilidad de que la variable $X$ tome dicho valor. Suponiendo que $X$ y $Y$ son dos variables aleatorias, la esperanza cumple las siguientes propiedades:
 
 	\[E[aX + b] = aE[X] + b\]
 	\[E[X + Y] = E[X] + E[Y]\]
@@ -510,7 +506,7 @@ Esto se denota como $\vec{x} \sim N(\vec{\mu},\Sigma)$ y significa que $\vec{x}$
 	
 La distribución normal multivariable puede ser utilizada como un algoritmo de clasificación, pues es un modelo que ha demostrado ser robusto para varias aplicaciones diferentes\footnote{Jerome H. Friedman. Regularized discriminant analysis. Journal of the american statistical association, 84:165–175, 1989.}.	El objetivo es encontrar $P(C_i|x)$, que es la probabilidad posterior de que el vector $\vec{x}$ pertenezca a la clase $C_i$. Si se calcula $P(C_i|x)$ para cada clase $i$, se escoge como la clase correcta la que posea la probabilidad posterior más alta.
 
-Es importante notar que en lugar de simplemente determinar a qué clase pertenece la instancia dada se están calculando también las probabilidades de que pertenezca a cada una de las otras clases, lo que permite calcular el porcentaje de seguridad con el cual el algoritmo está dando su respuesta. Esto es una gran ventaja para el problema de reconocimiento óptico de caracteres, ya que algunas correcciones pueden realizarse en etapas posteriores, por ejemplo, utilizando un diccionario.
+Es importante notar que en lugar de simplemente determinar a qué clase pertenece la instancia dada, se están calculando también las probabilidades de que pertenezca a cada una de las otras clases, lo que permite calcular el porcentaje de seguridad con el cual el algoritmo está dando su respuesta. Esto es una gran ventaja para el problema de reconocimiento óptico de caracteres, ya que algunas correcciones pueden realizarse en etapas posteriores, por ejemplo, utilizando un diccionario.
 
 Como se puede observar en la ecuación \eqref{eq:multivariate} lo que permite calcular la distribución normal multivariable es $p(x|C_i)$, que es la densidad de probabilidad de la variable aleatoria $\vec{x}$ dada la clase $C_i$; lo que se desea calcular, en cambio, es la probabilidad de que un $\vec{x}$ dado pertenezca a la clase $C_i$, es decir, la probabilidad posterior $P(C_i|\vec{x})$. Para eso se utiliza el teorema de Bayes (ecuación \ref{eq:bayes2}), con el cual la probabilidad posterior se calcula como:
 
@@ -535,9 +531,9 @@ Donde $\vec{x_i}$ son las instancias del conjunto $T_i$, $E[x]$ es el valor espe
 
 \subsection{Simplificaciones de la distribución normal multivariable}
 
-Dado que la matriz de covarianza es de tamaño $d \times d$, el número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones $d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada\footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Supongamos que de una muestra de tres instancias se desea calcular la media y la varianza de la población. Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuantos más parámetros se deban calcular se necesita una mayor cantidad de datos para obtener una mejor generalización.
+Dado que la matriz de covarianza es de tamaño $d \times d$, el número de parámetros de la distribución normal multivariable crece cuadráticamente con el número de dimensiones $d$. Esto se convierte en un problema cuando no hay suficientes datos para estimar los parámetros de manera apropiada\footnote{Wald and Kornmal. Discriminant functions when covariances are unequal and sample sizes are moderate. Biometrics, 33:479–484, 1977.}. Suponga que de una muestra de tres instancias se desea calcular la media y la varianza de la población. Es claro que aunque los parámetros pueden ser calculados, probablemente no representarán bien los parámetros de la población. De la misma manera, cuantos más parámetros se deban calcular, sera necesario una mayor cantidad de datos para obtener una mejor generalización.
 
-Una manera de realizar las clasificación es calcular la distancia Mahalanobis entre la entrada y la media de cada clase, y escoger la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, está dada por:
+Una manera de realizar la clasificación es calcular la distancia Mahalanobis entre la entrada y la media de cada clase, y escoger la que tenga la menor distancia. La distancia Mahalanobis $d_i$ entre la entrada $\vec{x}$ y la clase $C_i$, está dada por:
 
 	\begin{equation}
 		\label{eq:mahalanobis}
@@ -613,13 +609,13 @@ Donde $Im(i, j)$ es el valor del píxel ubicado en la posición $(i, j)$. Dado q
 \label{fig:integral}
 \end{figure}
 
-En el cuadrado de tamaño $A \times A$ alrededor del píxel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el píxel de más abajo a la derecha y en el píxel de más arriba a la izquierda, y restar los valores de la imagen integral en el píxel de más abajo a la izquierda y en el píxel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La fórmula para hallar la desviación estándar no es presentada en el artículo de los creadores de Ocropus, y solo se menciona que se puede calcular utilizando la imagen integral de los píxeles al cuadrado. Con esta pista es fácil deducir matemáticamente la fórmula para calcular la desviación estándar:
+En el cuadrado de tamaño $A \times A$ alrededor del píxel $(x, y)$, esto equivale simplemente a sumar los valores de la imagen integral en el píxel de más abajo a la derecha y en el píxel de más arriba a la izquierda, y restar los valores de la imagen integral en el píxel de más abajo a la izquierda y en el píxel de más arriba a la derecha. La representación gráfica de las imágenes integrales se puede apreciar en la figura \ref{fig:integral}\footnote{Xu Liu. ``Mobile Currency Reader for People with Visual Impairments''. ACM Student research competition}. La fórmula para hallar la desviación estándar no es presentada en el artículo de los creadores de Ocropus, y solo se menciona que se puede calcular utilizando la imagen integral de los píxeles al cuadrado. Con esta pista es posible deducir matemáticamente la fórmula para calcular la desviación estándar:
 
 \[ \sigma^2 = \frac{1}{w^2}\left(\sum_w{p(x,y)^2} - \mu \sum_w{p(x,y)}\right) \]
 
 El resultado obtenido es consistente con la formula que se utilizo en la implementación de dicho algoritmo en el proyecto Ocropus\footnote{Ocropus es un software de OCR libre desarrollado por Google, esta licenciado bajo Apache Licence 2.0}.
 
-Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor complejidad algorítmica en el sistema, se implemento de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un único arreglo, el cual se accedió a través de un único puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración únicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rápido que la función utilizada en el proyecto Ocropus, ya que se prefirió darle mayor importancia a la eficiencia, pues en un futuro esta función podría utilizarse para binarizar imágenes en un dispositivo móvil con una capacidad de procesamiento limitada. El resultado del algoritmo implementando sobre una imagen se muestra en la figura \ref{fig:binarization}, la figura \ref{fig:bin1} muestra la imagen original y la figura \ref{fig:bin2} muestra la misma imagen después de aplicarle el algoritmo de binarización implementado.
+Posteriormente se implementó el algoritmo. Ya que era una de las partes de mayor complejidad algorítmica en el sistema, se implementó de la manera más eficiente posible, utilizando las recomendaciones del libro oficial de OpenCV. En especial se utilizaron punteros en donde fuera posible en vez de contadores, reemplazando la matriz por un único arreglo, el cual se accedió a través de un único puntero. Es decir, para acceder a cada posición en una matriz normalmente se requiere multiplicar la fila actual por el tamaño de cada fila, a esto sumarle la posición de la columna actual, multiplicar todo esto por el tamaño de cada elemento dentro del arreglo, y finalmente sumarle este valor al puntero base de la matriz. De la forma en que se implemento, en cada iteración únicamente era necesario sumarle el tamaño de cada elemento al puntero. La función resultante realiza la binarización 7 veces más rápido que la función utilizada en el proyecto Ocropus, ya que se prefirió darle mayor importancia a la eficiencia, pues en un futuro esta función podría utilizarse para binarizar imágenes en un dispositivo móvil con una capacidad de procesamiento limitada. El resultado del algoritmo implementando sobre una imagen se muestra en la figura \ref{fig:binarization}, la figura \ref{fig:bin1} muestra la imagen original y la figura \ref{fig:bin2} muestra la misma imagen después de aplicarle el algoritmo de binarización implementado.
 
 	\begin{figure}
 	\centering
@@ -633,7 +629,7 @@ Posteriormente se implemento el algoritmo. Ya que era una de las partes de mayor
 \section{Componentes conectados}
 \label{sect:conComponents}
 
-Antes de reconocer los caracteres es necesario saber en qué partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los píxeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si asumimos que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el método de Sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces podemos definir que un píxel $(x,y)$ pertenece al fondo de la imagen si $I_2(x,y)=255$, y pertenece a algún caracter si $I_2(x,y)=0$. Si se establece que un píxel $(x',y')$ es vecino de un píxel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un conjunto de píxeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviéndose únicamente a través de píxeles vecinos de $C$. La idea de los componentes conectados fue utilizada, entre muchos otros, por O'Gorman\footnote{O’GORMAN Lawrence. The Document Spectrum for Page Layout Analysis.} para realizar el análisis del documento, una de las etapas del reconocimiento óptico de caracteres.
+Antes de reconocer los caracteres es necesario saber en qué partes de la imagen se encuentran ubicados. Para encontrarlos es necesario agrupar los píxeles de tal forma que todos los puntos pertenecientes a un caracter queden en un mismo grupo. Si se asume que $I_2(x,y)$ es la imagen binarizada resultante de aplicar el método de Sauvola de la ecuación \eqref{rSauvola} en la ecuación \eqref{binEq}, entonces se puede definir que un píxel $(x,y)$ pertenece al fondo de la imagen si $I_2(x,y)=255$, y pertenece a algún caracter si $I_2(x,y)=0$. Si se establece que un píxel $(x',y')$ es vecino de un píxel $(x,y)$ si $|x-x'|=1$ y $|y-y'|=1$ entonces se puede definir un componente conectado como un conjunto de píxeles $C=\{(x_i,y_i)\}$ en donde $\forall{(x_i,y_i)}, I_2(x_i,y_i)=0$ y para cada $i,j$ existe un camino entre $(x_i,y_i)$ y $(x_j,y_j)$ moviéndose únicamente a través de píxeles vecinos de $C$. La idea de los componentes conectados fue utilizada, entre muchos otros, por O'Gorman\footnote{O’GORMAN Lawrence. The Document Spectrum for Page Layout Analysis.} para realizar el análisis del documento, una de las etapas del reconocimiento óptico de caracteres.
 
 \newtheorem{pixHasOneC}{Lemma}
 \begin{pixHasOneC}
@@ -654,11 +650,11 @@ Después de esto se puede utilizar un algoritmo de relleno por difusión ({\em f
 	\label{fig:concomp}
 	\end{figure}
 	
-La figura \ref{fig:concomp} muestra dos componentes conectados extraídos por la aplicación implementada de la misma imagen. Observe a pesar de estar en la misma imagen, ser del mismo tamaño y de la misma clase (Dígito '6'), ambas instancias son ligeramente diferentes.
+La figura \ref{fig:concomp} muestra dos componentes conectados extraídos por la aplicación implementada de la misma imagen. Observe que, a pesar de estar en la misma imagen, ser del mismo tamaño y de la misma clase (dígito '6'), ambas instancias son ligeramente diferentes.
 
 \section{Extracción de características}
 
-Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter independiente de el tamaño o inclinación que tenga en caracter en cuestión. Si las imágenes fueran adquiridas mediante un escáner, la inclinación podría ser muy pequeña, incluso tanto que podría despreciarse. Sin embargo, cuando las imágenes son adquiridas mediante una cámara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones es necesario encontrar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las características sea similar. Dado que la entrada del método estadístico es un vector, esta similitud se puede expresar en términos vectoriales como una distancia Mahalanobis (ecuación \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
+Como se explicó en el capítulo \ref{chap:ml}, los métodos de clasificación necesitan unas características de entrada que permitan diferenciar los objetos a clasificar. En el caso específico de los métodos estadísticos, se necesitan vectores de números reales que sean similares para el mismo caracter, independiente del tamaño o inclinación que tenga el caracter en cuestión. Si las imágenes fueran adquiridas mediante un escáner, la inclinación podría ser muy pequeña, incluso tanto que podría despreciarse. Sin embargo, cuando las imágenes son adquiridas mediante una cámara digital, la inclinación entra a ser un factor importante, más aun cuando quien las obtiene es una persona invidente. Por estas razones es necesario encontrar características que sean invariantes a la rotación y al escalamiento, es decir, que al rotar o escalar un mismo caracter el valor numérico de las características sea similar. Dado que la entrada del método estadístico es un vector, esta similitud se puede expresar en términos vectoriales como una distancia Mahalanobis (ecuación \ref{eq:mahalanobis}) relativamente pequeña entre el vector de características de la imagen original y de la imagen rotada.
 
 Para lograr un cierto grado de independencia de las características a la rotación y al escalamiento se pueden tomar dos enfoques: un primer enfoque es transformar la imagen, esto significa rotarla y escalarla para hacerla lo mas similar posible a un patrón estándar, después de esto se pueden extraer características numéricas de la imagen que sean lo más similares posibles para objetos de la misma clase y lo mas diferentes posibles para objetos de distintas clases. Un segundo enfoque consiste en trabajar la imagen tal cual es tomada por la cámara, y utilizar características en las que se obtengan valores numéricos similares para una misma imagen rotada y escalada, es decir, que sean invariantes a la rotación y el escalamiento.
 
@@ -1913,12 +1909,16 @@ El operador de un Sitio CMM puede volver a publicar una CMM contenida en el siti
 \end{comment}
 
 \chapter*{Bibliografía}
+	
+	Y.S. Abu-Mostafa, D. Psaltis. Recognitive aspects of moment invariants. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Noviembre, 1984. vol. 6 p. 698-706
 
-Everitt, B.S. (2006) The Cambridge Dictionary of Statistics, Third Edition. pp. 313–314. Cambridge University Press, Cambridge. ISBN 0521690277
 
-Weisstein, Eric W. "Probability Density Function." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/ProbabilityDensityFunction.html
 
-AGRAWAL, Mudit y DOERMANN, David. Voronoi++: A Dynamic Page Segmentation approach based on Voronoi and Docstrum features. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION. (10: 26-29, julio, 2009: Barcelona, Spain). Memorias, 2009. p. 1011-1015
+	Everitt, B.S. (2006) The Cambridge Dictionary of Statistics, Third Edition. pp. 313–314. Cambridge University Press, Cambridge. ISBN 0521690277
+
+	Weisstein, Eric W. "Probability Density Function." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/ProbabilityDensityFunction.html
+
+	AGRAWAL, Mudit y DOERMANN, David. Voronoi++: A Dynamic Page Segmentation approach based on Voronoi and Docstrum features. INTERNATIONAL CONFERENCE ON DOCUMENT ANALYSIS AND RECOGNITION. (10: 26-29, julio, 2009: Barcelona, Spain). Memorias, 2009. p. 1011-1015
 	
 	O'GORMAN Lawrence. The Document Spectrum for Page Layout Analysis. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Noviembre, 1993. vol. 15, no. 11, p. 1162-1173
 	
@@ -1946,6 +1946,8 @@ AGRAWAL, Mudit y DOERMANN, David. Voronoi++: A Dynamic Page Segmentation approac
 	
 	SEUL, Machael , O'GORMAN Lawrence y SAMMON, Michael J. Practical Algorithms for Image Analysis. Nueva York: Cambridge University Press, 2000. 301 p.
 	
+	FERILLI, Stefano y NAGY, George. Automatic Digital Document Processing and Management: Problems, Algorithms and Techniques. Berlin, Alemania: Springer, 2011. 297 p.
+	
 	FLUSSER Jan, SUK, Tomas Suk y ZITOVA, Barbara. Moments and Moment Invariants in Pattern Recognition. Sussex, Reino Unido: Jhon Wiley \& Sons Ltd, 2009. 291 p.
 	
 	ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004. 415 p.
@@ -1961,4 +1963,5 @@ AGRAWAL, Mudit y DOERMANN, David. Voronoi++: A Dynamic Page Segmentation approac
 	VALENCIA, Joan Mauricio; ABRIL Mauricio. Registro de transeúntes en tiempo real utilizando un sistema de visión artificial sobre un ambiente controlado. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnológica de Pereira, 2007
 	
 	ALVAREZ, Lorena. Acondicionamiento de Señales Bioeléctricas. Trabajo de grado Ingeniero Electricista. Pereira: Universidad Tecnológica de Pereira, 2007
+	
 \end{document}
