@@ -218,7 +218,7 @@ Un sistema móvil para reconocer texto de documentos impresos presentaría los s
 	
 \subsection{Objetivo general}
 
-Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes y un vector de características invariantes (momentos de Hu y Fluzzer).
+Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numéricos bajo condiciones especificadas, usando para el reconocimiento una distribución normal multivariable con el teorema de Bayes y un vector de características invariantes (momentos de Hu y Flusser).
 
 \subsection{Objetivos específicos}
 	
@@ -226,7 +226,7 @@ Desarrollar un sistema prototipo de reconocimiento óptico de dígitos numérico
 	
 	\item Realizar un estudio del funcionamiento de la distribución normal multivariable para dar solución a problemas de reconocimiento en general utilizando el teorema de Bayes.
 
-	\item Realizar la extracción de características de un conjunto de imágenes de dígitos. Las características a extraer serán invariantes a la rotación, translación y escalamiento (Momentos de Hu y Fluzzer).
+	\item Realizar la extracción de características de un conjunto de imágenes de dígitos. Las características a extraer serán invariantes a la rotación, translación y escalamiento (Momentos de Hu y Flusser).
 	
 	\item Diseñar e implementar una aplicación que integre estos algoritmos y permita el reconocimiento óptico de dígitos.
 	
@@ -272,7 +272,7 @@ Probablemente la mejor solución para un sistema OCR resulte de la mezcla de var
 
 Esta etapa se puede clasificar como un subproblema del reconocimiento de patrones. Existen varias aproximaciones para solucionar el problema de reconocimiento de patrones, entre ellos se pueden encontrar algunos modelos inspirados en la biología como los que usan redes neuronales. Otros modelos son puramente matemáticos, como las máquinas de vectores de soporte, o estadísticos, como la distribución normal multivariable aplicando el teorema de Bayes.
 
-La  mayoría de los métodos para el reconocimiento de patrones tienen como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres es deseable que estas características cambien muy poco frente a ciertas variables de cada imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y Fluzzer, los cuales se calculan realizando una integral. En una imagen digital, por el hecho de ser discreta, la integral se convierte en una sumatoria en la que se le asignan diferentes pesos a cada píxel, dependiendo de la posición. Posteriormente se realizan operaciones sobre estos píxeles que permitan obtener un conjunto limitado de características. El objetivo es que estas características sean independientes a la rotación, la translación y el escalamiento. Al ser características que no varían significativamente con respecto a estas variables se les ha dado el nombre de ``momentos invariantes''.
+La  mayoría de los métodos para el reconocimiento de patrones tienen como entrada un vector de características. Para el problema de reconocimiento de dígitos o caracteres es deseable que estas características cambien muy poco frente a ciertas variables de cada imagen como el escalamiento o la rotación. Ejemplos de este tipo de características son los momentos de Hu y Flusser, los cuales se calculan realizando una integral. En una imagen digital, por el hecho de ser discreta, la integral se convierte en una sumatoria en la que se le asignan diferentes pesos a cada píxel, dependiendo de la posición. Posteriormente se realizan operaciones sobre estos píxeles que permitan obtener un conjunto limitado de características. El objetivo es que estas características sean independientes a la rotación, la translación y el escalamiento. Al ser características que no varían significativamente con respecto a estas variables se les ha dado el nombre de ``momentos invariantes''.
 
 Para realizar el entrenamiento se deben tomar muchas imágenes de un solo tipo, ya sea una letra, un número o una forma. Después se calculan, para cada una de ellas, sus características invariantes. Posteriormente se etiqueta la imagen, guardando esta información en una base de datos. Cuando el sistema se pone en marcha se obtienen las características de la imagen y se aplica un algoritmo de aprendizaje sobre las mismas. Uno de los métodos más sencillos consiste en tomar la distancia euclidiana normalizada entre valores de la misma clase y entre clases diferentes. Con esto se pueden crear regiones en el híper-espacio\footnote{Un espacio de varias dimensiones} para las diferentes clases. En este caso para clasificar una imagen de entrada se tomarían sus características, y se ubicaría en que región de este híper-espacio se encuentran. Esto se explica con más detalle en el capítulo \ref{chap:ml}.
     
@@ -715,7 +715,7 @@ Utilizando $n_{pq}$, Hu logro un conjunto de momentos invariantes, todos con un 
 				& \times (3(n_{30} + n_{12})^{2} - (n_{21} + n_{03})^{2}) \label{eq:huMom} \\ \notag
 	\end{align}
 
-\subsection{Momentos complejos y momentos de Fluzzer}
+\subsection{Momentos complejos y momentos de Flusser}
 
 En 1984 Mostafa y Psaltis \cite{mostaf84} propusieron los momentos complejos como una forma alternativa de lograr momentos invariantes. Un momento complejo $C_{pq}$ de orden $(p+q)$ para una imagen $f(x,y)$ se define como:
 
@@ -733,7 +733,7 @@ Una propiedad interesante de los momentos complejos, que se deriva de la ecuaci�
 	C'_{pq} = e^{-i(p-q)\alpha}C_{pq}
 \end{equation}
 
-Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto\cite{flusser99} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
+Donde $C'_{pq}$ es el momento complejo de $f'(r,\theta)$ y $C_{pq}$ es el momento complejo de $f(r,\theta)$. Flusser noto\footnote{FLUSSER Jan y SUK, Thomas. Rotation moment invariants for recognition of symmetric objects. IEEE Transactions on Pattern Analysis and Machine Intelligence. Diciembre, 2006. vol. 15 p. 3784-3790} que aun cuando se puede probar de la ecuación \ref{eq:rotProp} que $|C_{pq}|$ es invariable a la rotación, estos momentos no generan un conjunto completo de invariantes. Flusser también demostró que los momentos de Hu no eran ni completos ni independientes, y propuso un método para generar un conjunto completo de momentos invariantes de orden arbitrario. Cuando este método se utiliza para generar momentos de grado menor o igual a cuatro, se obtienen 11 momentos invariantes.
 
 \section{Primeros resultados}
 \label{sect:exp}
@@ -937,7 +937,7 @@ Los resultados fueron bastante buenos, y permitieron dar solución al problema d
 
 \subsection{Problemas de simetría a la rotación}
 
-Se puede observar en las tablas \ref{tb:exp1_1} y \ref{tb:exp1_2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. Un problema similar ocurre cuando los dígitos presentan simetría a la rotación. Flusser\cite{flusser06} demostró que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algún grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el artículo en que se propusieron se utilizaron para reconocer únicamente entre objetos simétricos, se intento utilizar estos momentos para reconocer entre todos los dígitos, para lo cual se construyó un conjunto de momentos simétricos utilizando el procedimiento explicado por Flusser:
+Se puede observar en las tablas \ref{tb:exp1_1} y \ref{tb:exp1_2} que el resultado de el método de clasificación con matriz de covarianza semi-compartida fue significativamente mejor que el método de matriz de covarianza independiente. La razón por la que esto sucede, como se explicó anteriormente, es porque el determinante de la matriz de covarianza es muy cercano a cero. Un problema similar ocurre cuando los dígitos presentan simetría a la rotación. Flusser\footnote{FLUSSER Jan y SUK, Thomas. Rotation moment invariants for recognition of symmetric objects. IEEE Transactions on Pattern Analysis and Machine Intelligence. Diciembre, 2006. vol. 15 p. 3784-3790} demostró que muchos de estos momentos son iguales a cero cuando los objetos que se intentan reconocer con ellos tienen algún grado de simetría y, para solucionar este problema, propuso un nuevo método para generar momentos adecuados para reconocer objetos con simetría de grado N. A pesar de que en el artículo en que se propusieron se utilizaron para reconocer únicamente entre objetos simétricos, se intento utilizar estos momentos para reconocer entre todos los dígitos, para lo cual se construyó un conjunto de momentos simétricos utilizando el procedimiento explicado por Flusser:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -957,7 +957,7 @@ else:
 \end{verbatim}
 \end{mylisting}
 
-Para explorar distintas posibilidades se creó un script que recibe como parámetro los números N y R, que representan la simetría al girar un objeto $\frac{2\pi}{N}$ radianes y el orden hasta el cual se desean generar los momentos respectivamente. Este script entrega un conjunto de momentos generados utilizando el procedimiento de Fluzzer. Los resultados de este tercer conjunto de características fueron significativamente más altos que el de las dos anteriores, como puede observarse en la tablas \ref{tb:exp4_1} y \ref{tb:exp4_2}.
+Para explorar distintas posibilidades se creó un script que recibe como parámetro los números N y R, que representan la simetría al girar un objeto $\frac{2\pi}{N}$ radianes y el orden hasta el cual se desean generar los momentos respectivamente. Este script entrega un conjunto de momentos generados utilizando el procedimiento de Flusser. Los resultados de este tercer conjunto de características fueron significativamente más altos que el de las dos anteriores, como puede observarse en la tablas \ref{tb:exp4_1} y \ref{tb:exp4_2}.
 
 	%% PONER AQUI TABLA NO SHARED
 	\begin{table}
@@ -1014,7 +1014,7 @@ Para explorar distintas posibilidades se creó un script que recibe como paráme
 	\label{tb:exp4_2}
 	\end{table}
 
-Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validación fueron elegidos aleatoriamente, y que el conjunto de validación consistió de 7461 instancias, se puede concluir de los resultados que los momentos propuestos con Fluzzer son también muy efectivos para hacer reconocimiento entre objetos simétricos y no simétricos. También se puede observar que el método propuesto utilizando la matriz de covarianza compartida fue más efectivo que el método estándar utilizando la matriz de covarianza independiente.
+Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validación fueron elegidos aleatoriamente, y que el conjunto de validación consistió de 7461 instancias, se puede concluir de los resultados que los momentos propuestos con Flusser son también muy efectivos para hacer reconocimiento entre objetos simétricos y no simétricos. También se puede observar que el método propuesto utilizando la matriz de covarianza compartida fue más efectivo que el método estándar utilizando la matriz de covarianza independiente.
 
 
 \chapter{Metodología de la investigación}
@@ -1024,7 +1024,7 @@ Si se tiene en cuenta que tanto el conjunto de entrenamiento como el de validaci
 
 \subsection{Hipótesis}
 
-Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Fluzzer al procesar una imagen de un documento que cumpla con las restricciones establecidas (ver población), tomando la imagen con una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
+Es posible desarrollar un sistema de reconocimiento óptico de dígitos usando el teorema de Bayes con una distribución normal multivariable y tomando como características los momentos invariantes de Hu y de Flusser al procesar una imagen de un documento que cumpla con las restricciones establecidas (ver población), tomando la imagen con una cámara de un celular inteligente y ejecutando el programa en un sistema de cómputo.
 	
 \subsection{Tipo de investigación}
 
@@ -1313,7 +1313,7 @@ La experiencia mostró que el método de matriz de covarianza semi-compartida tu
 
 \section{Resultados finales con los números}
 
-En esta sección se presentan los resultados finales obtenidos por el sistema en el reconocimiento de dígitos ya explicados a lo largo de este documento. Las tablas que muestran los resultados del reconocimiento de los dígitos numéricos muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en qué consisten estos conceptos veamos el ejemplo del símbolo '8' en la tabla \ref{tb:numHuIndep}. La tabla indica que el ocho tiene 341 verdaderos positivos, 3077 verdaderos negativos, 250 falsos positivos y 22 falsos negativos. Esto quiere decir que 341 instancias que se debían reconocer como ocho efectivamente se reconocieron como ochos; 3077 instancias que no se debían reconocer como ocho, efectivamente no se reconocieron como ochos; 250 instancias que no se debían reconocer como ochos, se reconocieron como ochos; y 22 instancias que se debían reconocer como ochos no se reconocieron como ochos. Los resultados obtenidos en estas tablas son distintos a los resultados presentados en el capitulo de construcción del sistema debido a que, para esta publicación final de resultados, se generaron nuevamente los conjuntos de validación y entrenamiento. De esta manera se pudo demostrar que el algoritmo tiene capacidad de generalización. Los resultados confirman que el sistema construido, ademas de poder generalizar, es bastante preciso, pues obtuvo nuevamente un 100% de efectividad en el  experimento de matriz de covarianza semi-compartida con momentos de Fluzzer N-fold.
+En esta sección se presentan los resultados finales obtenidos por el sistema en el reconocimiento de dígitos ya explicados a lo largo de este documento. Las tablas que muestran los resultados del reconocimiento de los dígitos numéricos muestran la tasa de reconocimiento para cada una de las clases. La comunidad científica que trabaja en el tema de aprendizaje de máquinas propone que los errores y aciertos del sistema de reconocimiento se deben dar en términos de verdaderos positivos (TP), verdaderos negativos (TN), falsos positivos (FP) y falsos negativos (FN). Para explicar en qué consisten estos conceptos veamos el ejemplo del símbolo '8' en la tabla \ref{tb:numHuIndep}. La tabla indica que el ocho tiene 341 verdaderos positivos, 3077 verdaderos negativos, 250 falsos positivos y 22 falsos negativos. Esto quiere decir que 341 instancias que se debían reconocer como ocho efectivamente se reconocieron como ochos; 3077 instancias que no se debían reconocer como ocho, efectivamente no se reconocieron como ochos; 250 instancias que no se debían reconocer como ochos, se reconocieron como ochos; y 22 instancias que se debían reconocer como ochos no se reconocieron como ochos. Los resultados obtenidos en estas tablas son distintos a los resultados presentados en el capitulo de construcción del sistema debido a que, para esta publicación final de resultados, se generaron nuevamente los conjuntos de validación y entrenamiento. De esta manera se pudo demostrar que el algoritmo tiene capacidad de generalización. Los resultados confirman que el sistema construido, ademas de poder generalizar, es bastante preciso, pues obtuvo nuevamente un 100\% de efectividad en el  experimento de matriz de covarianza semi-compartida con momentos de Flusser N-fold.
 
 \begin{table}
 \centering
@@ -1912,8 +1912,6 @@ El operador de un Sitio CMM puede volver a publicar una CMM contenida en el siti
 	
 	Y.S. Abu-Mostafa, D. Psaltis. Recognitive aspects of moment invariants. \underline{En}: IEEE Transactions on Pattern Analysis And Machine Intelligence. Noviembre, 1984. vol. 6 p. 698-706
 
-
-
 	Everitt, B.S. (2006) The Cambridge Dictionary of Statistics, Third Edition. pp. 313–314. Cambridge University Press, Cambridge. ISBN 0521690277
 
 	Weisstein, Eric W. "Probability Density Function." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/ProbabilityDensityFunction.html
@@ -1949,6 +1947,8 @@ El operador de un Sitio CMM puede volver a publicar una CMM contenida en el siti
 	FERILLI, Stefano y NAGY, George. Automatic Digital Document Processing and Management: Problems, Algorithms and Techniques. Berlin, Alemania: Springer, 2011. 297 p.
 	
 	FLUSSER Jan, SUK, Tomas Suk y ZITOVA, Barbara. Moments and Moment Invariants in Pattern Recognition. Sussex, Reino Unido: Jhon Wiley \& Sons Ltd, 2009. 291 p.
+	
+	FLUSSER Jan y SUK, Thomas. Rotation moment invariants for recognition of symmetric objects. IEEE Transactions on Pattern Analysis and Machine Intelligence. Diciembre, 2006. vol. 15 p. 3784-3790
 	
 	ALPAYDIN, Ethem. Introduction to Machine Learning. Estados Unidos: MIT Press, 2004. 415 p.
 	
