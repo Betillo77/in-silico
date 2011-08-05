@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Split
 {
-	static HashMap <Integer, Integer> mapa = new HashMap <Integer, Integer> (532000, 1f);
+	static HashMap <Integer, Integer> mapa = new HashMap <Integer, Integer> (250000, 1f);
 	
 	static long sumas[] = new long[532000];
 	static int tamSumas = 0;
@@ -19,7 +19,6 @@ public class Split
 		long actual = lista.get(0);
 		sumas[tamSumas++] = (((actual << 32) >>> 32) | actual << 32);
 		sumas[tamSumas++] = (0L);
-		sumas[tamSumas++] = (((-actual << 32) >>> 32) | actual << 32);
 		for(int i = 1; i < lista.size(); i++)
 		{
 			actual = lista.get(i);
@@ -31,6 +30,7 @@ public class Split
 				long acumulado = esta >> 32;
 				long suma = sumaA + actual;
 				long resta = sumaA - actual;
+				resta = Math.abs(resta);
 				sumas[tamSumas++] = (((suma << 32) >>> 32) | (acumulado + actual) << 32);
 				sumas[tamSumas++] = (((resta << 32) >>> 32) | (acumulado + actual) << 32);
 			}
@@ -58,7 +58,6 @@ public class Split
 		long actual = lista.get(0);
 		sumas1[tamSumas1++] = (((actual << 32) >>> 32) | actual << 32);
 		sumas1[tamSumas1++] = (0L);
-		sumas1[tamSumas1++] = (((-actual << 32) >>> 32) | actual << 32);
 		for(int i = 1; i < lista.size(); i++)
 		{
 			actual = lista.get(i);
@@ -70,6 +69,7 @@ public class Split
 				long acumulado = esta >> 32;
 				long suma = sumaA + actual;
 				long resta = sumaA - actual;
+				resta = Math.abs(resta);
 				sumas1[tamSumas1++] = (((suma << 32) >>> 32) | (acumulado + actual) << 32);
 				sumas1[tamSumas1++] = (((resta << 32) >>> 32) | (acumulado + actual) << 32);
 			}
@@ -86,9 +86,7 @@ public class Split
 				mejor = Math.max(mejor, acumulado);
 			Integer posible = mapa.get(sumaA);
 			if(posible != null)
-			{
 					mejor = Math.max(mejor, acumulado + posible);
-			}
 		}
 		return mejor;
 	}
@@ -110,9 +108,7 @@ public class Split
 				acumTotal += valorNuevo;
 			}
 			if(numeros.size() == 1)
-			{
 				System.out.println(numeros.get(0));
-			}
 			else
 			{
 				generarSumas(numeros.subList(0, n / 2));
