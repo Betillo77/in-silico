@@ -1,122 +1,92 @@
-/*
-  Accepted
-  Andres Mejia EAFIT
- */
-#include<iostream>
-#include<string>
-#include<cstring>
-#include<math.h>
-#include<algorithm>
-#include<vector>
-#include<map>
-#include<set>
-#include<stack>
-#include<queue>
-#include<list>
-#include<sstream>
-#include<assert.h>
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <queue>
+
 using namespace std;
 
-struct state{
-  int i, j, used, w;
-  state(){}
-  state(int I, int J, int U, int W) : i(I), j(J), used(U), w(W) {}
-  bool operator < (const state &t) const {
-    return (i < t.i || (i == t.i && j < t.j) ||
-            (i == t.i && j == t.j && used < t.used));
-  }
-  bool operator == (const state &t) const {
-    return (i == t.i && j == t.j && used == t.used);
-  }
+struct Entrada
+{
+      int i, j, maximo, pasos;
+      
+      Entrada(int ii, int jj, int maximoi, int pasosi)
+      {
+            i = ii;
+            j = jj;
+            maximo = maximoi;
+            pasos = pasosi;
+      }
 };
 
-typedef pair<char, pair<int, int> > trap;
 
-string order;
-int pos_trampas[26];
+int diff[] = {1, 0, -1, 0, 0, 1, 0, -1};
 
-inline bool isTrap(char c){ return  c != 'x' && c != 'o'; }
-
-int di[] = {+1, -1, +0, +0};
-int dj[] = {+0, +0, +1, -1};
-
-int main(){
-  while (cin >> order){
-    for (int i=0, _n=order.size(); i<_n; ++i){
-      pos_trampas[order[i]-'A'] = i;
-    }
-    int rows, cols;
-    cin >> cols >> rows;
-    char g[rows][cols];
-
-
-    for (int i=0; i<rows; ++i)
-      for (int j=0; j<cols; ++j){
-        cin >> g[i][j];
-      }
-
-    state initial;
-    pair<int, int>  end;
-    cin >> initial.j >> initial.i;
-    initial.w = 0;
-
-    if (isTrap(g[initial.i][initial.j])) initial.used = pos_trampas[g[initial.i][initial.j]-'A'];
-    else initial.used = -1;
-
-    cin >> end.second >> end.first;
-
-
-    bool solved = false;
-    queue<state> q;
-    bool visited[rows][cols][27];
-    for (int i=0; i<rows; ++i){
-      for (int j=0; j<cols; ++j){
-        for (int k=0; k<=26; ++k){
-          visited[i][j][k] = false;
-        }
-      }
-    }
-
-    q.push(initial);
-    while (q.size()){
-      state u = q.front();
-
-      q.pop();
-
-      //printf("popped i=%d, j=%d, used=%X, w=%d\n", u.i, u.j, u.used, u.w);
-
-      if (u.i == end.first && u.j == end.second){
-        cout << u.w << endl;
-        solved = true;
-        break;
-      }
-
-      if (visited[u.i][u.j][u.used+1]) continue;
-      visited[u.i][u.j][u.used+1] = true;
-
-      for (int k=0; k<4; ++k){
-        state v = u;
-        v.i += di[k];
-        v.j += dj[k];
-        //printf(" v.i=%d, v.j=%d, v.used=%d\n", v.i, v.j, v.used);
-        if (0 <= v.i && v.i < rows && 0 <= v.j && v.j < cols){
-          if (isTrap(g[v.i][v.j]) && u.used < pos_trampas[g[v.i][v.j]-'A']){
-            //Uso esta trampa y todas las menores
-            v.used = pos_trampas[g[v.i][v.j]-'A'];
-            if (!visited[v.i][v.j][v.used+1]){
-              v.w += 1;
-              q.push(v);
+int main()
+{
+      string trampas;
+      while(cin >> trampas)
+      {
+            int h, w;
+            cin >> w >> h;
+            int mapa[h][w];
+            for(int i = 0; i < h; i++)
+                  for(int j = 0; j < w; j++)
+                  {
+                        char e;
+                        cin >> e;
+                        if(e == 'o')
+                            mapa[i][j] = 0;
+                        else if(e == 'x')
+                            mapa[i][j] = -1;
+                        else
+                            mapa[i][j] = trampas.find(e) + 1;
+                  }
+            int  ci, fi, cf, ff;
+            cin >> ci >> fi;
+            cin >> cf >> ff;
+            int maximoi = -1;
+            if (mapa[fi][ci] != -1) 
+                maximoi = mapa[fi][ci];
+            bool visitados[h][w][28];
+            for(int i = 0; i < h; i++)
+                  for(int j = 0; j < w; j++)
+                        for(int k = 0; k < 28; k++)
+                              visitados[i][j][k] = false; 
+            bool termino = false;
+            queue <Entrada> cola;
+            if(maximoi != -1)
+            {
+                visitados[fi][ci][maximoi] = true;
+                cola.push(Entrada(fi, ci, maximoi, 0));
             }
-
-            //no hay trampa en esa casilla
-          }else if (g[v.i][v.j] == 'o' && !visited[v.i][v.j][v.used+1]){
-            v.w += 1;
-            q.push(v);
-          }
-        }
+            while(!cola.empty())
+            {
+                  Entrada actual = cola.front();
+                  cola.pop();
+                  if (actual.i == ff && actual.j == cf)
+                  {
+                        cout << actual.pasos << endl;
+                        termino = true;
+                        break;
+                  }
+                  for(int k = 0; k < 4; k++)
+                  {
+                        int in = actual.i + diff[k * 2 + 0];
+                        int jn = actual.j + diff[k * 2 + 1];
+                        if(in < 0 || jn < 0 || in >= h || jn >= w || mapa[in][jn] == -1 || (mapa[in][jn] != 0 && mapa[in][jn] <= actual.maximo))
+                            continue;
+                        int maximon = actual.maximo;
+                        if(maximon < mapa[in][jn])
+                            maximon = mapa[in][jn];
+                        if(!visitados[in][jn][maximon])
+                        {
+                            visitados[in][jn][maximon] = true;  
+                            cola.push(Entrada(in, jn, maximon, actual.pasos + 1));
+                        }
+                  }
+            }
+            if(!termino)
+                cout << "IMPOSSIBLE" << endl;
       }
-    }
-    if (!solved) cout << "IMPOSSIBLE" << endl;
-  }
-  return 0;
+      return 0;
 }
