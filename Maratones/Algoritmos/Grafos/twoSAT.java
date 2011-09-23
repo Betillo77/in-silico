@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Scanner;
 
-public class SCC 
+public class twoSAT 
 {
 	static class Node implements Comparable <Node> 
 	{
