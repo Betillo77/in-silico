@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 
-public class A
+public class D
 {
 	 
 	static class Entrada implements Comparable <Entrada>

@@ -2,108 +2,175 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 
-public class F 
+public class F
 {
+	
 	static class Nodo implements Comparable <Nodo>
 	{
-		int numero;
-		int nPadres = 0;
-		int valor = 0;
-		ArrayList <Nodo> siguientes = new ArrayList <Nodo> ();
+		int n;
+		int fuel;
+		int best;
+		boolean visitado;
 		
+		public Nodo(int nn, int f)
+		{
+			n = nn;
+			fuel = f;
+		}
+
 		@Override
 		public int compareTo(Nodo o) 
 		{
-			return Integer.valueOf(valor).compareTo(o.valor);
+			if(best == o.best)
+			{
+				if(n == o.n)
+					return Integer.valueOf(fuel).compareTo(o.fuel);
+				return Integer.valueOf(n).compareTo(o.n);
+			}
+			return Integer.valueOf(best).compareTo(o.best);
 		}
 	}
 	
-	static class Respuesta
+	static class Arista
 	{
-		int valor;
-		int numero;
+		Ciudad o;
+		int d;
 		
-		public Respuesta(int valor, int numero) {
-			super();
-			this.valor = valor;
-			this.numero = numero;
+		public Arista(Ciudad oo, int dd)
+		{
+			o = oo;
+			d = dd;
 		}
 	}
-	static ArrayList <Nodo> nodos = new ArrayList <Nodo> ();
+	static class Ciudad
+	{
+		int n;
+		int cost;
+		ArrayList <Arista> adjacentes = new ArrayList <Arista> ();
+		
+		public Ciudad(int nn, int c)
+		{
+			n = nn;
+			cost = c;
+		}
+	}
+	
+	static Nodo[][] nodos = new Nodo[1000][101];
+	static Ciudad[] ciudades = new Ciudad[1000];
 	
 	public static void main(String[] args) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Pattern p = Pattern.compile(" ");
-		while(true)
+		String[] pedazos = p.split(br.readLine());
+		int n = Integer.parseInt(pedazos[0]);
+		int m = Integer.parseInt(pedazos[1]);
+		pedazos = p.split(br.readLine());
+		for(int i = 0; i < n; i++)
 		{
-			int n = Integer.parseInt(br.readLine());
-			if(n == 0)
-				return;
-			while(n + 1 > nodos.size())
+			ciudades[i] = new Ciudad(i, Integer.parseInt(pedazos[i]));
+			for(int j = 0; j < 101; j++)
 			{
-				nodos.add(new Nodo());
+				nodos[i][j] = new Nodo(i, j);
 			}
-			for(int i = 1; i <= n; i++)
-			{
-				nodos.get(i).nPadres = 0;
-			}
-			for(int i = 0; i < n; i++)
-			{
-				String[] pedazos = p.split(br.readLine());
-				int esta = Integer.parseInt(pedazos[0]);
-				int bolas = Integer.parseInt(pedazos[1]);
-				Nodo actual = nodos.get(esta);
-				actual.numero = bolas;
-				actual.siguientes.clear();
-				int nHijos = Integer.parseInt(pedazos[2]);
-				for(int j = 0; j < nHijos; j++)
+		}
+		for(int i = 0; i < m; i++)
+		{
+			pedazos = p.split(br.readLine());
+			int u = Integer.parseInt(pedazos[0]);
+			int v = Integer.parseInt(pedazos[1]);
+			int d = Integer.parseInt(pedazos[2]);
+			ciudades[u].adjacentes.add(new Arista(ciudades[v], d));
+			ciudades[v].adjacentes.add(new Arista(ciudades[u], d));
+		}
+		pedazos = p.split(br.readLine());
+		int q = Integer.parseInt(pedazos[0]);
+		TreeMap <Nodo, Nodo> pq = new TreeMap <Nodo, Nodo> ();
+		for(int i = 0; i < q; i++)
+		{
+			pedazos = p.split(br.readLine());
+			int c = Integer.parseInt(pedazos[0]);
+			int s = Integer.parseInt(pedazos[1]);
+			int e = Integer.parseInt(pedazos[2]);
+			for(int j = 0; j < n; j++)
+				for(int k = 0; k <= c; k++)
 				{
-					actual.siguientes.add(nodos.get(Integer.parseInt(pedazos[3 + j])));
-					nodos.get(Integer.parseInt(pedazos[3 + j])).nPadres++;
+					nodos[j][k].best = Integer.MAX_VALUE;
+					nodos[j][k].visitado = false;
+				}
+			pq.clear();
+			for(int j = 0; j <= c; j++)
+			{
+				nodos[s][j].best = ciudades[s].cost * j;
+				pq.put(nodos[s][j], nodos[s][j]);
+			}
+			boolean termino = false;
+			while(!pq.isEmpty())
+			{
+				Nodo actual = pq.pollFirstEntry().getKey();
+				actual.visitado = true;
+				if(actual.n == e)
+				{
+					System.out.println(actual.best);
+					termino = true;
+					break;
+				}
+				for(Arista a : ciudades[actual.n].adjacentes)
+				{
+					if(a.d > actual.fuel)
+						continue;
+					int siguiente = actual.fuel - a.d;
+					if(siguiente >= 0)
+					{
+						Nodo este = nodos[a.o.n][siguiente];
+						if(este.visitado)
+							continue;
+						Nodo esta = pq.get(este);
+						if(esta != null)
+						{
+							if(actual.best < esta.best)
+							{
+								pq.remove(esta);
+								esta.best = actual.best;
+								pq.put(esta, esta);
+							}
+						}
+						else
+						{
+							este.best = actual.best;
+							pq.put(este, este);
+						}
+					}
+				}
+				if(actual.fuel < c)
+				{
+					Nodo este = nodos[actual.n][actual.fuel + 1];
+					if(este.visitado)
+						continue;
+					Nodo esta = pq.get(este);
+					if(esta != null)
+					{
+						if(actual.best + ciudades[actual.n].cost < esta.best)
+						{
+							pq.remove(esta);
+							esta.best = actual.best + ciudades[actual.n].cost;
+							pq.put(esta, esta);
+						}
+					}
+					else
+					{
+						este.best = actual.best + ciudades[actual.n].cost;
+						pq.put(este, este);
+					}
 				}
 			}
-			Nodo raiz = null;
-			for(int i = 1; i <= n; i++)
-			{
-				if(nodos.get(i).nPadres == 0)
-					raiz = nodos.get(i);
-			}
-			System.out.println(valor(raiz).valor);
+			if(!termino)
+				System.out.println("impossible");
 		}
 	}
 
-	private static int visitar(Nodo nodo) 
-	{
-		if(nodo.siguientes.isEmpty())
-			return nodo.numero - 1;
-		int cuenta = nodo.numero - 1;
-		for(Nodo siguiente : nodo.siguientes)
-		{
-			cuenta += visitar(siguiente);
-		}
-		return cuenta;
-	}
-	
-	private static Respuesta valor(Nodo nodo) 
-	{
-		for(Nodo siguiente : nodo.siguientes)
-		{
-			siguiente.valor = visitar(siguiente);
-		}
-		Collections.sort(nodo.siguientes, Collections.reverseOrder());
-		Respuesta inicial = new Respuesta(0, nodo.numero - 1); 
-		for(Nodo siguiente : nodo.siguientes)
-		{
-			Respuesta actual = valor(siguiente);
-			inicial.numero += actual.numero;
-			inicial.valor += actual.valor;
-		}
-		inicial.valor += Math.abs(inicial.numero);
-		return inicial;
-	}
 }
