@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 
-public class G 
+public class E 
 {
 	public static void main(String[] args) throws IOException
 	{
