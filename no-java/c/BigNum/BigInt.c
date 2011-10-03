@@ -201,6 +201,7 @@ void bnIntToStr(char* ans, BigInt* a) {
         bnDivIntWord(a,a,10,&res);
         ans[i++] = (char)(res + 0x30);
     }
+    ans[i++] = a->d[0] + 0x30;
     ans[i] = '\0';
     invStr(ans, i);
 }

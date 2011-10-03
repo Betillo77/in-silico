@@ -57,8 +57,8 @@ void fac(int n) {
  */
 int main(int argc, char** argv) {
     clock_t t = clock();
-    //fac(500);test_lib
-    testSum();
+    fac(500);
+    //testSum();
     t = clock()-t;
     printf("Time elapsed: %i ms\n",(t*1000/CLOCKS_PER_SEC));
     return (EXIT_SUCCESS);

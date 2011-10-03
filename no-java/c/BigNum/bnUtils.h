@@ -18,7 +18,7 @@ extern "C" {
 #define REPB(i,N) for((i)=(N)-1; (i)>=0; (i)--)
 
 typedef unsigned int word;
-typedef unsigned long dword;
+typedef unsigned long long dword;
 
 void copyw(word* res, word* a, word size);
 
