@@ -1,68 +1,75 @@
-#include <iostream>
-#define MAX 300
+
+#include <cstdlib>
+#include <cstdio>
+#include <algorithm>
 
 using namespace std;
 
-int tab[MAX][MAX]; // cantidad de sillas vacias de 0,0 a r,c
+#define MAXV 350
+#define rep(i,n) for (int i=0; i<(n); i++)
 
-//retorna cantidad de sillas vacias de 0,0 a r,c
-int get(int i, int j) {
-    if (i<0 || j<0)
-        return 0;
-    return tab[i][j];
+int ii[MAXV][MAXV];
+char board[MAXV][MAXV];
+int R,C,K;
+bool debug=false;
+
+void compII() {
+	ii[0][0] = (board[0][0]=='.');
+	for (int i=1; i<R; i++) ii[i][0] = ii[i-1][0] + (board[i][0]=='.');
+	for (int i=1; i<C; i++) ii[0][i] = ii[0][i-1] + (board[0][i]=='.');
+	for (int i=1; i<R; i++) {
+		for (int j=1; j<C; j++) {
+			ii[i][j] = ii[i-1][j] + ii[i][j-1] - ii[i-1][j-1] + (board[i][j]=='.');
+		}
+	}
+	if (debug) {
+		rep(i,R) {
+			rep(j,C) {
+				printf("%d,", ii[i][j]);
+			}
+			printf("\n");
+		}
+	}
 }
 
-int contar(int i1, int j1, int i2, int j2) {
-    return get(i2,j2)-get(i1-1,j2)-get(i2,j1-1)+get(i1-1,j1-1);
-}
-
-int resolver(int rows, int cols, int k) {
-    int area = 0x3FFFFFFF, narea, sillas;
-    for (int i1=0; i1<rows; i1++) {
-        for (int j1=0; j1<cols; j1++) {
-            if (contar(i1,j1,rows,cols) > k) return area;
-            for (int i2=i1; i2 < rows; i2++) {
-                for (int j2=j1; j2<cols; j2++) {
-                    narea = (i2-i1+1) * (j2-j1+1);
-                    if (narea >= area) break;
-                    if (narea >= k) {
-                        sillas = contar(i1,j1,i2,j2);
-                        if (sillas>=k) {
-                            area = narea;
-                            if (area==k) return area;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return area;
-}
-
-void prueba(int r, int c) {
-    for (int i=0; i<r; i++) {
-        for (int j=0; j<c; j++)
-            cout << get(i,j) << "\t";
-        cout << "\n";
-    }
+int solve() {
+	int area = 0x7fffffff;
+	compII();
+	int tmp[R+1];
+	for (int j1=0; j1<C; j1++) {
+		for (int j2=j1; j2<C; j2++) {
+			tmp[0]=0;
+			for (int i=0; i<R; i++) {
+				int subs = (j1==0) ? 0 : ii[i][j1-1];
+				tmp[i+1] = (ii[i][j2] - subs);
+			}
+			int width = j2-j1+1, i1=0, i2=1;
+			while (i2 <= R) {
+				int freech = tmp[i2]-tmp[i1];
+				if (freech >= K) {
+					int narea = width * (i2-i1);
+					if (debug && narea<area) {
+						printf("New best area=%d: [%d,%d]->[%d,%d]\n",narea,i1,j1,i2-1,j2);
+					}
+					area = min(area, narea);
+					i1++;
+				} else {
+					i2++;
+				}
+			}
+		}
+	}
+	return area;
 }
 
 int main() {
-    int r,c,k;
-    char linea[MAX];
-    while (true) {
-        cin >> r >> c >> k;
-        if (r==0 && c==0 && k==0) break;        
-        for (int i=0; i<r; i++) {
-            int acfila = 0; //acumulado de la fila
-            cin >> linea;
-            for (int j=0; j<c; j++) {
-                acfila += (linea[j]=='.') ? 1 : 0;
-                tab[i][j] = acfila + ((i==0) ? 0 : get(i-1,j));
-            }            
-        }
-        //prueba(r,c);
-        cout << resolver(r,c,k) << "\n";
-    }
+	while (true) {
+		scanf("%d %d %d", &R, &C, &K);
+		if (R==0 && C==0 && K==0) break;
+		rep(i,R) {
+			scanf("%s",board[i]);
+		}
+		int ans=solve();
+		printf("%d\n", ans);
+	}
 }
