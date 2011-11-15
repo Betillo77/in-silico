@@ -1,7 +1,7 @@
 
 #include "bnlib.c"
 
-using namespace std;
+
 
 char a[1000];
 char b[1000];
@@ -50,7 +50,8 @@ int main()
                 bnDivInt(ans, aa, bb,ans1);
                 bnIntToStr(a,ans);
                 bnIntToStr(b,ans1);
-                printf("%s mod:%s\n",a,b);
+                /*printf("%s mod:%s\n",a,b);*/
+                printf("%s\n",a);
                 break;  
         }
         

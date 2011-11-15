@@ -247,20 +247,20 @@ void bnDivIntWord(BigInt* ans, BigInt* a, word b, word *res) {
     }
     ans->size = a->size; bnRemCeros(a);
     ans->sign = a->sign;
-    if (res != 0) *res = carry;
+    if (res != 0) *res = carry; 
 }
 
 void bnIntToStr(char* ans, BigInt* x) {
     word i=0, res;
     BigInt *a = bnNewBigInt(x->size, 0);
     bnCopyInt(a,x);
-    if (x->sign==BN_NEG)
-        ans[i++]='-';
     while (a->size > 1 || a->d[0] >= 10) {
         bnDivIntWord(a,a,10,&res);
         ans[i++] = (char)(res + 0x30);
     }
     ans[i++] = a->d[0] + 0x30;
+    if (x->sign==BN_NEG)
+        ans[i++]='-';
     ans[i] = '\0';
     invStr(ans, i);
     bnDelBigInt(a);
@@ -343,6 +343,4 @@ void bnStrToInt(BigInt *ans, const char *input) {
     }
     bnDelBigInt(ten);
 }
-
-
 

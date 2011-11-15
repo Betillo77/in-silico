@@ -11,5 +11,11 @@ mirar el signo de la división, se lo está asignando al residuo.
 >/ 3645455454549789989898454545  232232323232323
 17592186044415 mod:7730929690379536054340080590
 
+---------------------
+
+Curiosamente se volvió a correr el anterior caso de prueba (/ 3645455454549789989898454545  232232323232323)y dió correctamente.
+Se probó la librería con test.in y todavía hay algunos errores pero solo en la
+división, mirar los errores en el archivo diff.
+
 
 
