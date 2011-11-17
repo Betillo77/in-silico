@@ -288,11 +288,11 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
             cos->d[0]=0; cos->size=1; tmp->size=a->size;
             copyw(tmp->d,a->d,a->size);
         } else {
-            REPB(i,b->size-1) {
+            /*REPB(i,b->size-2) {
                 tmp->d[i] = a->d[a->size-i-1];
             }
-            tmp->size = b->size-1; cos->d[0]=0; cos->size=1;
-            REPB(i,a->size - b->size + 1) {
+            tmp->size = b->size-1; cos->d[0]=0; cos->size=1;*/
+            REPB(i,a->size) {
                 REPB(j,WBITS) {
                     bit = (a->d[i]>>j) & 1;
                     bnShiftLBits(tmp,tmp,1);
@@ -338,7 +338,10 @@ void bnStrToInt(BigInt *ans, const char *input) {
     }
     while (input[i] != '\0') {
         bnMulInt(ans, ans, ten);
-        ans->d[0] += input[i]-'0';
+        //ans->d[0] += input[i]-'0';
+        ten->d[0] = input[i]-'0';
+        bnAddInt(ans, ans, ten);
+        ten->d[0] = 10;
         i++;
     }
     bnDelBigInt(ten);
