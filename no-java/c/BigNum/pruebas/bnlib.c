@@ -333,8 +333,24 @@ void bnPowInt(BigInt* ans, BigInt* a, int b) {
     }
 }
 
+//No puede ser usada aun, falta shift right
 void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
-	
+	ans->d[0]=1; ans->size=1;
+	BigInt *exponent = bnNewBigInt(b->size+1, 0);
+	BigInt *base = bnNewBigInt(a->size+1, 0);
+	BigInt *tmp1 = bnNewBigInt(a->size + b->size + 1, 0);
+	bnCopyInt(exponent, b); bnCopyInt(base, a);
+	while (exponent->size > 1 || exponent->d[0]>0) {
+		if ((exponent->d[0] & 1) == 1) {
+			bnMulInt(tmp1, ans, base);
+			bnDivInt(tmp1, tmp1, mod, ans);
+		}
+		//shift right not implemented yet but required
+		//exponent = exponent >> 1
+		bnMulInt(tmp1, base, base);
+		bnDivInt(tmp1, tmp1, mod, base);			
+	}
+	bnDelBigInt(exponent); bnDelBigInt(base); bnDelBigInt(tmp1);
 }
 
 void bnStrToInt(BigInt *ans, const char *input) {
