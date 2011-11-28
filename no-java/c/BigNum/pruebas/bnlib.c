@@ -246,7 +246,7 @@ void bnDivIntWord(BigInt* ans, BigInt* a, word b, word *res) {
         ans->d[i] = (word)(num / b);
         carry = (word)(num % b);
     }
-    ans->size = a->size; bnRemCeros(a);
+    ans->size = a->size; bnRemCeros(ans);
     ans->sign = a->sign;
     if (res != 0) *res = carry; 
 }
@@ -256,6 +256,7 @@ void bnIntToStr(char* ans, BigInt* x) {
 	int j;
     word i=0, res;
     BigInt *a = bnNewBigInt(x->size, 0);
+    bnRemCeros(x);
     bnCopyInt(a,x);
     while (a->size > 1 || a->d[0] >= 1000000000) {
         bnDivIntWord(a,a,1000000000,&res);
