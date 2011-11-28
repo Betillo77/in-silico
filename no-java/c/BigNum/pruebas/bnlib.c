@@ -283,7 +283,7 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     int i,j,bit;
     char sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
 
-    cos = bnNewBigInt(a->size,0); tmp=bnNewBigInt(a->size, 0);
+    cos = bnNewBigInt(ans->maxSize,0); tmp=bnNewBigInt(res->maxSize, 0);
     tmp->sign=sign;  cos->sign = sign;
 
     if (b->size == 1) {
