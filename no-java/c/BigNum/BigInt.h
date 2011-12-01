@@ -36,5 +36,6 @@ void bnSubInt(BigInt *res, BigInt *a, BigInt *b);
 void bnMulInt(BigInt *res, BigInt *a, BigInt *b);
 void bnDivIntWord(BigInt *ans, BigInt *a, word b, word *res);
 void bnDivInt(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);
+void bnPowInt(BigInt *ans, BigInt *a, int b);
 void bnIntToStr(char *ans, BigInt *a);
 void bnCopyInt(BigInt *res, BigInt *a);

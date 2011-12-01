@@ -5,6 +5,7 @@
 
 char a[1000];
 char b[1000];
+char c[1000];
 char op;
 
 int main()
@@ -12,6 +13,7 @@ int main()
 	int t;
     BigInt *aa=bnNewBigInt(100,0);
     BigInt *bb=bnNewBigInt(100,0);
+    BigInt *cc=bnNewBigInt(100,0);
     BigInt *ans=bnNewBigInt(100,0);
     BigInt *ans1=bnNewBigInt(100,0);
     while(scanf("%c",&op)!=EOF)
@@ -65,11 +67,19 @@ int main()
             case 'l':
                 scanf("%s %d",a,&t);
                 bnStrToInt(aa, a);
-                bnShiftLBits(ans, aa, t);
+                bnShiftRBits(ans, aa, t);
                 bnIntToStr(a,ans);
-                /*printf("%s mod:%s\n",a,b);*/
                 printf("%s\n",a);
                 break;  
+            case '^':
+            	scanf("%s %s %s",a,b,c);
+            	bnStrToInt(aa, a);
+                bnStrToInt(bb, b);
+                bnStrToInt(cc, c);
+                bnPowModInt(ans, aa, bb, cc);
+                bnIntToStr(a,ans);
+                printf("%s\n",a);
+                break;
         }
         
     

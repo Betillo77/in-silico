@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="51">
-  <logicalFolder name="root" displayName="root" projectFiles="true">
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
@@ -28,68 +28,28 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
       </toolsSet>
       <compileType>
-        <linkerTool>
-          <linkerLibItems>
-          </linkerLibItems>
-        </linkerTool>
       </compileType>
-      <item path="BigInt.c">
-        <itemTool>0</itemTool>
-      </item>
-      <item path="BigInt.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="bnUtils.c">
-        <itemTool>0</itemTool>
-      </item>
-      <item path="bnUtils.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="test_lib.c">
-        <itemTool>0</itemTool>
-      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
       </toolsSet>
       <compileType>
-        <cCompilerTool>
+        <cTool>
           <developmentMode>5</developmentMode>
-        </cCompilerTool>
-        <ccCompilerTool>
+        </cTool>
+        <ccTool>
           <developmentMode>5</developmentMode>
-        </ccCompilerTool>
+        </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
-        <linkerTool>
-          <linkerLibItems>
-          </linkerLibItems>
-        </linkerTool>
       </compileType>
-      <item path="BigInt.c">
-        <itemTool>0</itemTool>
-      </item>
-      <item path="BigInt.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="bnUtils.c">
-        <itemTool>0</itemTool>
-      </item>
-      <item path="bnUtils.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="test_lib.c">
-        <itemTool>0</itemTool>
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>

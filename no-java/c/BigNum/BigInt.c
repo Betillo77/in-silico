@@ -251,3 +251,18 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     if (res != 0) bnCopyInt(res, tmp);
     bnDelBigInt(tmp); bnDelBigInt(cos);
 }
+
+void bnPowInt(BigInt* ans, BigInt* a, int b) {
+    if (b==0) { 
+        ans->d[0]=1; ans->size=1; ans->sign=BN_POS;
+    } else {
+        BigInt* tmp = bnNewBigInt(a->size * b, 0);
+        bnPowInt(tmp, a, b/2);
+        bnMulInt(tmp, tmp, tmp);
+        if ( (b & 1) == 1 ) {
+            bnMulInt(tmp, tmp, a);
+        }
+        bnCopyInt(ans, tmp);
+        bnDelBigInt(tmp);
+    }
+}

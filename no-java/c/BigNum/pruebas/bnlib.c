@@ -51,6 +51,7 @@ void bnDelBigInt(BigInt *a);
 int bnUCompareInt(BigInt *a, BigInt *b);
 void bnNegInt(BigInt *a);
 void bnShiftLBits(BigInt *res, BigInt *a, word bits);
+void bnShiftRBits(BigInt *res, BigInt *a, word bits);
 void bnAddInt(BigInt *res, BigInt *a, BigInt *b);
 void bnSubInt(BigInt *res, BigInt *a, BigInt *b);
 void bnMulInt(BigInt *res, BigInt *a, BigInt *b);
@@ -160,6 +161,37 @@ void bnShiftLBits(BigInt* res, BigInt* a, word bits) {
     rdig[i+shdig] = carry;
     res->size = a->size + shdig + 1;
     res->sign = a->sign;
+    copyw(res->d, rdig, res->size);
+    bnRemCeros(res);
+}
+
+void bnShiftRBits(BigInt* res, BigInt* a, word bits) {
+    word rdig[res->maxSize];
+    word carry, shdig, shbits, otbits, i, temp;
+    dword rshift;
+    carry = 0;
+    shdig = bits/WBITS; shbits = bits%WBITS; otbits = (WBITS-shbits);
+    if(shdig>res->maxSize) {
+    	shdig = res->maxSize;
+    }
+    REP(i,shdig) {
+        rdig[i]=0;
+    }
+    for(i = shdig; i < a->size-1; i++) {
+        rshift = a->d[i+1];
+        rshift = rshift << otbits;   
+    	rdig[i-shdig] = (a->d[i] >> shbits) | ((word) rshift);
+    }
+    if(a->size<shdig+1) {
+    	rdig[0] = 0;
+    	res->size = 1;
+    	res->sign = a->sign;
+    }
+    else {
+    	rdig[a->size-shdig-1] = (a->d[a->size-1] >> shbits);
+    	res->size = a->size-shdig;
+    	res->sign = a->sign;
+    }
     copyw(res->d, rdig, res->size);
     bnRemCeros(res);
 }
@@ -339,7 +371,7 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 	ans->d[0]=1; ans->size=1;
 	BigInt *exponent = bnNewBigInt(b->size+1, 0);
 	BigInt *base = bnNewBigInt(a->size+1, 0);
-	BigInt *tmp1 = bnNewBigInt(a->size + b->size + 1, 0);
+	BigInt *tmp1 = bnNewBigInt(2*MAX(mod->size,a->size) + 1, 0);
 	bnCopyInt(exponent, b); bnCopyInt(base, a);
 	while (exponent->size > 1 || exponent->d[0]>0) {
 		if ((exponent->d[0] & 1) == 1) {
@@ -348,6 +380,7 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 		}
 		//shift right not implemented yet but required
 		//exponent = exponent >> 1
+		bnShiftRBits(exponent, exponent, 1);
 		bnMulInt(tmp1, base, base);
 		bnDivInt(tmp1, tmp1, mod, base);			
 	}
