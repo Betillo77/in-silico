@@ -14,8 +14,8 @@ int main()
     BigInt *aa=bnNewBigInt(100,0);
     BigInt *bb=bnNewBigInt(100,0);
     BigInt *cc=bnNewBigInt(100,0);
-    BigInt *ans=bnNewBigInt(100,0);
-    BigInt *ans1=bnNewBigInt(100,0);
+    BigInt *ans=bnNewBigInt(200,0);
+    BigInt *ans1=bnNewBigInt(200,0);
     while(scanf("%c",&op)!=EOF)
     {
         switch(op)
@@ -53,8 +53,8 @@ int main()
                 bnDivInt(ans, aa, bb,ans1);
                 bnIntToStr(a,ans);
                 bnIntToStr(b,ans1);
-                /*printf("%s mod:%s\n",a,b);*/
-                printf("%s\n",a);                
+                printf("%s %s\n",a,b);
+                //printf("%s\n",a);                
                 break;
             case '%':
             	scanf("%s %s",a,b);

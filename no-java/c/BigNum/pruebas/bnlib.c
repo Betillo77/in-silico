@@ -242,11 +242,16 @@ void bnDelBigInt(BigInt* a) {
 }
 
 void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
-    BigInt *tmp=0, *sum=0;
+	word d1[res->maxSize]; d1[0]=0;
+	BigInt tmp1; tmp1.size=1; tmp1.maxSize=res->maxSize; tmp1.sign=BN_POS; tmp1.d=d1;
+	word d2[res->maxSize]; d2[0]=0;
+	BigInt tmp2; tmp2.size=1; tmp2.maxSize=res->maxSize; tmp2.sign=BN_POS; tmp2.d=d2;
+	
+	BigInt *tmp= &tmp1, *sum = &tmp2;
     word i, j, carry;
     dword m;
-    tmp = bnNewBigInt(res->maxSize,0);
-    sum = bnNewBigInt(res->maxSize,0);
+    //tmp = bnNewBigInt(res->maxSize,0); sum = bnNewBigInt(res->maxSize,0);
+
     REP(i, b->size) {
         carry = 0;
         REP(j, a->size) {
@@ -261,11 +266,11 @@ void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
         bnShiftLBits(tmp,tmp,WBITS*i);
         bnAddInt(sum,sum,tmp);
     }
-    res->size = sum->size;
+    //word *swap=res->d; res->d=sum->d; sum->d=swap;
+    //res->size = sum->size;
+    //bnDelBigInt(tmp); bnDelBigInt(sum);
+    bnCopyInt(res, sum);
     res->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
-    word *swap=res->d; res->d=sum->d; sum->d=swap;
-    bnDelBigInt(tmp);
-    bnDelBigInt(sum);
 }
 
 /*ans = a / b ; res = a % b #División sin signo*/
@@ -316,7 +321,13 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     int i,j,bit;
     char sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
 
-    cos = bnNewBigInt(ans->maxSize,0); tmp=bnNewBigInt(res->maxSize, 0);
+	word d1[res->maxSize]; d1[0]=0;
+	BigInt tmp1; tmp1.size=1; tmp1.maxSize=res->maxSize; tmp1.sign=BN_POS; tmp1.d=d1;
+	tmp = &tmp1;
+	word d2[ans->maxSize]; d2[0]=0;
+	BigInt tmp2; tmp2.size=1; tmp2.maxSize=ans->maxSize; tmp2.sign=BN_POS; tmp2.d=d2;
+	cos = &tmp2;
+	
     tmp->sign=sign;  cos->sign = sign;
 
     if (b->size == 1) {
@@ -327,11 +338,12 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
             cos->d[0]=0; cos->size=1; tmp->size=a->size;
             copyw(tmp->d,a->d,a->size);
         } else {
-            /*REPB(i,b->size-2) {
-                tmp->d[i] = a->d[a->size-i-1];
+        	word opt1 = b->size-1;
+            REP(i,opt1) {
+                tmp->d[i] = a->d[a->size + i - opt1];
             }
-            tmp->size = b->size-1; cos->d[0]=0; cos->size=1;*/
-            REPB(i,a->size) {
+            tmp->size = b->size-1; cos->d[0]=0; cos->size=1;
+            REPB(i,(a->size-tmp->size)) {
                 REPB(j,WBITS) {
                     bit = (a->d[i]>>j) & 1;
                     bnShiftLBits(tmp,tmp,1);
@@ -348,7 +360,6 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     }
     if (ans != 0) bnCopyInt(ans, cos);
     if (res != 0) bnCopyInt(res, tmp);
-    bnDelBigInt(tmp); bnDelBigInt(cos);
 }
 
 void bnPowInt(BigInt* ans, BigInt* a, int b) {
@@ -366,7 +377,6 @@ void bnPowInt(BigInt* ans, BigInt* a, int b) {
     }
 }
 
-//No puede ser usada aun, falta shift right
 void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 	ans->d[0]=1; ans->size=1;
 	BigInt *exponent = bnNewBigInt(b->size+1, 0);
@@ -378,9 +388,7 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 			bnMulInt(tmp1, ans, base);
 			bnDivInt(tmp1, tmp1, mod, ans);
 		}
-		//shift right not implemented yet but required
-		//exponent = exponent >> 1
-		bnShiftRBits(exponent, exponent, 1);
+		bnShiftRBits(exponent, exponent, 1);		
 		bnMulInt(tmp1, base, base);
 		bnDivInt(tmp1, tmp1, mod, base);			
 	}
