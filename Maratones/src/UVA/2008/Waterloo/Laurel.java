@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 
-public class F 
+public class Laurel 
 {
 	
 	static int r, c;
