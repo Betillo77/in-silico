@@ -380,7 +380,7 @@ void bnPowInt(BigInt* ans, BigInt* a, int b) {
 void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 	ans->d[0]=1; ans->size=1;
 	BigInt *exponent = bnNewBigInt(b->size+1, 0);
-	BigInt *base = bnNewBigInt(a->size+1, 0);
+	BigInt *base = bnNewBigInt(MAX(mod->size,a->size) + 1, 0);
 	BigInt *tmp1 = bnNewBigInt(2*MAX(mod->size,a->size) + 1, 0);
 	bnCopyInt(exponent, b); bnCopyInt(base, a);
 	while (exponent->size > 1 || exponent->d[0]>0) {
