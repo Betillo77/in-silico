@@ -472,25 +472,7 @@ public class D
 	static SuffixArray sa;
 	static int p, s;
 	static int diff;
-	
-	static TreeSet <Integer> port = new TreeSet <Integer> ();
-	static TreeSet <String> sufi = new TreeSet <String> ();
-	
-	public static int rapido(Scanner sc, TreeSet <Prefijo> prefijosT)
-	{
-		port.clear();
-		sufi.clear();
-		for(int i = 0; i < s; i++)
-		{
-			String suf = sufijos[i].p;
-			for(int j = 0; j < suf.length(); j++)
-				sufi.add(suf.substring(j, suf.length()));
-		}
-		for(Prefijo s : prefijosT)
-			for(String s1 : sufi)
-				port.add(s.prefijo.hashCode() + s1.hashCode());
-		return port.size();
-	}
+
 	public static void main(String[] args)
 	{
 		Scanner sc = new Scanner();
