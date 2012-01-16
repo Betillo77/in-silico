@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 
 #define MAX(x,y) ( ((x)>(y)) ? (x) : (y) )
 #define MIN(x,y) ( ((x)<(y)) ? (x) : (y) )
@@ -45,7 +44,6 @@ typedef struct {
     word *d; /*value of each digits*/
 } BigInt;
 
-void printHex(BigInt *a);
 BigInt* bnNewBigInt(word size, word initVal);
 void bnDelBigInt(BigInt *a);
 int bnUCompareInt(BigInt *a, BigInt *b);
@@ -62,16 +60,6 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod);
 void bnIntToStr(char *ans, BigInt *a);
 void bnCopyInt(BigInt *res, BigInt *a);
 void bnStrToInt(BigInt *ans, const char *input);
-
-void printHex(BigInt *a) {
-    int i;
-    if (a->sign == BN_NEG)
-        printf("-");
-    REPB(i,a->size) {
-        printf("%x ",a->d[i]);
-    }
-    printf("\n");
-}
 
 /*Removes leading ceros*/
 void bnRemCeros(BigInt *a) {
@@ -297,12 +285,16 @@ void bnIntToStr(char* ans, BigInt* x) {
     bnCopyInt(a,x);
     while (a->size > 1 || a->d[0] >= 1000000000) {
         bnDivIntWord(a,a,1000000000,&res);
-        sprintf(strres, "%.9d", res);
-        for(j=8;j>=0;j--)
-        	ans[i++] = strres[j];
+        for(j=8;j>=0;j--) {
+        	ans[i++] = (res % 10) + '0';
+        	res /= 10;
+        }
     }
-    for(j=sprintf(strres, "%d", a->d[0]) - 1;j>=0;j--)
-    	ans[i++] = strres[j];
+    word lsw = a->d[0];
+    while (lsw > 0) {
+    	ans[i++] = '0' + (lsw % 10);
+    	lsw /= 10;
+    }    
     if (x->sign==BN_NEG)
         ans[i++]='-';
     ans[i] = '\0';

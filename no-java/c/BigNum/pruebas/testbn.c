@@ -1,6 +1,6 @@
 
 #include "bnlib.c"
-
+#include <stdio.h>
 
 
 char a[1000];
@@ -52,8 +52,8 @@ int main()
                 bnStrToInt(bb, b);
                 bnDivInt(ans, aa, bb,ans1);
                 bnIntToStr(a,ans);
-                bnIntToStr(b,ans1);
-                printf("%s %s\n",a,b);
+                //bnIntToStr(b,ans1);
+                printf("%s\n",a);
                 //printf("%s\n",a);                
                 break;
             case '%':
