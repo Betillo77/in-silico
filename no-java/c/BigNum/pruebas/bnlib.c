@@ -29,7 +29,8 @@ void invStr(char* str, int n) {
 }
 
 #define WBITS 32
-#define WMASK ( ((dword)1 << WBITS) - 1
+#define BASE ( ((dword)1) << WBITS )
+#define WMASK ( BASE - 1 )
 #define BN_NEG 0
 #define BN_POS 1
 
@@ -55,6 +56,7 @@ void bnSubInt(BigInt *res, BigInt *a, BigInt *b);
 void bnMulInt(BigInt *res, BigInt *a, BigInt *b);
 void bnDivIntWord(BigInt *ans, BigInt *a, word b, word *res);
 void bnDivInt(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);
+void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);
 void bnPowInt(BigInt *ans, BigInt *a, int b);
 void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod);
 void bnIntToStr(char *ans, BigInt *a);
@@ -229,6 +231,20 @@ void bnDelBigInt(BigInt* a) {
     free(d);
 }
 
+void bnMulIntWord(BigInt* res, BigInt *a, word b) {
+	word j, carry = 0;
+	dword m;
+    REP(j, a->size) {
+        m = ((dword)b)*a->d[j];
+        m += carry;
+        res->d[j] = (word)m;
+        carry = (word)(m >> WBITS);
+    }
+    res->d[j] = carry;
+    res->size = a->size+1;
+    bnRemCeros(res);
+}
+
 void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
 	word d1[res->maxSize]; d1[0]=0;
 	BigInt tmp1; tmp1.size=1; tmp1.maxSize=res->maxSize; tmp1.sign=BN_POS; tmp1.d=d1;
@@ -352,6 +368,52 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     }
     if (ans != 0) bnCopyInt(ans, cos);
     if (res != 0) bnCopyInt(res, tmp);
+}
+
+void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
+	BigInt* u = bnNewBigInt(a->size + 1, 0);
+	BigInt* v = bnNewBigInt(b->size + 1, 0);
+	#define V(i) ((dword)v->d[v->size - (i)])
+	#define U(i) ((dword)u->d[u->size - (i) - 1])
+	bnCopyInt(u, a);
+	bnCopyInt(v, b);
+    word m = u->size - v->size;
+    word n = v->size;
+	word d = (word) (BASE / (V(1) + (dword)1));
+	bnMulIntWord(u, u, d); bnMulIntWord(v, v, d);
+	if(u->size == a->size) u->d[u->size++] = 0;
+	word j = 0, qs;
+	BigInt* tmp = bnNewBigInt(v->size + 2, 0);
+	ans->size = m + 1;
+	do {
+		if (U(j) == V(1)) qs = WMASK;
+		else qs = (U(j)*BASE + U(j+1)) / V(1);
+		while ( V(2)*qs > ( (U(j)*BASE + U(j+1) - qs*V(1))*BASE + U(j+2) ) ) qs--;
+		bnMulIntWord(tmp, v, qs);
+		BigInt uPrima;
+		uPrima.d = &u->d[u->size - (j+n) - 1];
+		uPrima.sign = BN_POS;
+		uPrima.size = n + 1;
+		uPrima.maxSize = uPrima.size;
+		if(bnUCompareInt(&uPrima, tmp) < 0)
+		{
+			qs--;
+			bnSubInt(tmp, tmp, v);
+		}
+		bnSubInt(&uPrima, &uPrima, tmp);
+		ans->d[m - (j)] = qs;
+		j++;
+	} while (j <= m);
+	BigInt uRes;
+	uRes.d = u->d;
+	uRes.sign = BN_POS;
+    uRes.size = n;
+    uRes.maxSize = uRes.size;
+	bnRemCeros(&uRes);
+    bnCopyInt(res, &uRes);
+    bnDelBigInt(u); bnDelBigInt(v); bnDelBigInt(tmp);
+    #undef V
+    #undef U
 }
 
 void bnPowInt(BigInt* ans, BigInt* a, int b) {

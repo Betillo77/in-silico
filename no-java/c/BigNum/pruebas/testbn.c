@@ -50,7 +50,7 @@ int main()
                 scanf("%s %s",a,b);
                 bnStrToInt(aa, a);
                 bnStrToInt(bb, b);
-                bnDivInt(ans, aa, bb,ans1);
+                bnDivIntF(ans, aa, bb,ans1);
                 bnIntToStr(a,ans);
                 //bnIntToStr(b,ans1);
                 printf("%s\n",a);
@@ -60,7 +60,7 @@ int main()
             	scanf("%s %s",a,b);
                 bnStrToInt(aa, a);
                 bnStrToInt(bb, b);
-                bnDivInt(ans, aa, bb,ans1);
+                bnDivIntF(ans, aa, bb,ans1);
                 bnIntToStr(a,ans1);
                 printf("%s\n",a);
                 break;
