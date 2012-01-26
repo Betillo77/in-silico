@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #define MAX(x,y) ( ((x)>(y)) ? (x) : (y) )
 #define MIN(x,y) ( ((x)<(y)) ? (x) : (y) )
@@ -209,9 +210,13 @@ void bnAddInt(BigInt* res, BigInt* sum1, BigInt* sum2) {
  * Computes res = a-b for BigInts
  */
 void bnSubInt(BigInt* res, BigInt* a, BigInt* b) {
+	char temp[2000];
+	bnIntToStr(temp, a);
+	bnIntToStr(temp, b);
     bnNegInt(b);
     bnAddInt(res,a,b);
     bnNegInt(b);
+    bnIntToStr(temp, res);
 }
 
 BigInt* bnNewBigInt(word maxSize, word initVal) {
@@ -298,6 +303,7 @@ void bnIntToStr(char* ans, BigInt* x) {
     word i=0, res;
     BigInt *a = bnNewBigInt(x->size, 0);
     bnRemCeros(x);
+    int k;
     bnCopyInt(a,x);
     while (a->size > 1 || a->d[0] >= 1000000000) {
         bnDivIntWord(a,a,1000000000,&res);
@@ -313,6 +319,8 @@ void bnIntToStr(char* ans, BigInt* x) {
     }    
     if (x->sign==BN_NEG)
         ans[i++]='-';
+    if(i == 0)
+    	ans[i++] = '0';
     ans[i] = '\0';
     invStr(ans, i);
     bnDelBigInt(a);
@@ -370,7 +378,45 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     if (res != 0) bnCopyInt(res, tmp);
 }
 
+word numberOfLeadingZeros(word i) {
+        if (i == 0)
+            return 32;
+        word n = 1;
+        if (i >> 16 == 0) { n += 16; i <<= 16; }
+        if (i >> 24 == 0) { n +=  8; i <<=  8; }
+        if (i >> 28 == 0) { n +=  4; i <<=  4; }
+        if (i >> 30 == 0) { n +=  2; i <<=  2; }
+        n -= i >> 31;
+        return n;
+}
+    
 void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
+	ans->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
+	if(b->size == 1)
+	{
+		bnDivIntWord(ans, a, b->d[0], res == 0 ? 0 : &res->d[0]);
+		ans->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
+		if(res != 0) res->size = 1;
+		return;
+	}
+	int resComp = bnUCompareInt(a, b);
+	if(resComp < 0)
+	{
+		ans->d[0] = 0;
+		ans->size = 1;
+		if(res != 0) bnCopyInt(res, a);
+		return;
+	}
+	if(resComp == 0)
+	{
+		ans->d[0] = 1;
+		ans->size = 1;
+		if(res != 0){
+			res->d[0] = 0;
+			res->size = 1;
+		}
+		return;
+	}
 	BigInt* u = bnNewBigInt(a->size + 1, 0);
 	BigInt* v = bnNewBigInt(b->size + 1, 0);
 	#define V(i) ((dword)v->d[v->size - (i)])
@@ -379,7 +425,7 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	bnCopyInt(v, b);
     word m = u->size - v->size;
     word n = v->size;
-	word d = (word) (BASE / (V(1) + (dword)1));
+	word d = BASE / (V(1) + 1);
 	bnMulIntWord(u, u, d); bnMulIntWord(v, v, d);
 	if(u->size == a->size) u->d[u->size++] = 0;
 	word j = 0, qs;
@@ -388,29 +434,32 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	do {
 		if (U(j) == V(1)) qs = WMASK;
 		else qs = (U(j)*BASE + U(j+1)) / V(1);
-		while ( V(2)*qs > ( (U(j)*BASE + U(j+1) - qs*V(1))*BASE + U(j+2) ) ) qs--;
+		while ((((double) V(2))*qs - U(j+2)) / BASE > ( (((long long int)U(j))*BASE + U(j+1) - qs*V(1)) )) qs--;
 		bnMulIntWord(tmp, v, qs);
 		BigInt uPrima;
 		uPrima.d = &u->d[u->size - (j+n) - 1];
 		uPrima.sign = BN_POS;
 		uPrima.size = n + 1;
 		uPrima.maxSize = uPrima.size;
+		bnRemCeros(&uPrima);
 		if(bnUCompareInt(&uPrima, tmp) < 0)
 		{
 			qs--;
+			printf("llego\n");
 			bnSubInt(tmp, tmp, v);
 		}
 		bnSubInt(&uPrima, &uPrima, tmp);
-		ans->d[m - (j)] = qs;
+		ans->d[m - j] = qs;
 		j++;
 	} while (j <= m);
+	bnRemCeros(ans);
 	BigInt uRes;
 	uRes.d = u->d;
 	uRes.sign = BN_POS;
     uRes.size = n;
     uRes.maxSize = uRes.size;
 	bnRemCeros(&uRes);
-    bnCopyInt(res, &uRes);
+	if(res != 0) bnDivIntWord(res, &uRes, d, 0);
     bnDelBigInt(u); bnDelBigInt(v); bnDelBigInt(tmp);
     #undef V
     #undef U
@@ -454,9 +503,10 @@ void bnStrToInt(BigInt *ans, const char *input) {
     ans->size = 1; ans->d[0] = 0;
     int i=0,j; word w;
     int pow10[10]={1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
+    char sign = BN_POS;
     if (input[0]=='-') {
         i++;
-        ans->sign=BN_NEG;
+        sign = BN_NEG;
     }
     while (input[i] != '\0') {
     	for (j=0, w=0; j<9; j++, i++) {
@@ -468,6 +518,7 @@ void bnStrToInt(BigInt *ans, const char *input) {
     	tmp->d[0]=w;
     	bnAddInt(ans, ans, tmp);        
     }
+    ans->sign = sign;
     bnDelBigInt(tmp);
 }
 
