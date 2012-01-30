@@ -389,6 +389,33 @@ word numberOfLeadingZeros(word i) {
         n -= i >> 31;
         return n;
 }
+
+
+inline char stepD3(dword v2, word qs, dword uj, dword uj1, dword v1, dword uj2)
+{
+/*	char a = ( (((double) v2) * qs - uj2) / BASE ) > ( (long long int) uj * BASE + uj1 - qs * v1 );
+	char b; */
+	dword temp = (uj << WBITS) | uj1;
+	dword temp1 = qs * v1;
+	dword temp2 = v2 * qs;
+	char sright = (temp >= temp1) ? 1 : 0;
+	char sleft = (temp2 >= uj2) ? 1 : 0;
+	if(sleft != sright)
+		return sleft == 1;
+	else if(sleft == 0) {
+		dword temp4 = (uj2 - temp2);
+		dword temp5 = temp4 >> WBITS;
+		temp4 = temp1 - temp;
+		return (temp5 < temp4);
+	}
+	else {
+		dword temp4 = (temp2 - uj2);
+		dword temp5 = temp4 >> WBITS;
+		dword temp6 = temp4 & WMASK;
+		temp4 = temp - temp1;
+		return (temp5 > temp4) || ((temp5 == temp4) && (temp6 != 0));
+	}
+}
     
 void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	ans->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
@@ -417,6 +444,7 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 		}
 		return;
 	}
+	
 	BigInt* u = bnNewBigInt(a->size + 1, 0);
 	BigInt* v = bnNewBigInt(b->size + 1, 0);
 	#define V(i) ((dword)v->d[v->size - (i)])
@@ -434,7 +462,7 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	do {
 		if (U(j) == V(1)) qs = WMASK;
 		else qs = (U(j)*BASE + U(j+1)) / V(1);
-		while ((((double) V(2))*qs - U(j+2)) / BASE > ( (((long long int)U(j))*BASE + U(j+1) - qs*V(1)) )) qs--;
+		while (stepD3(V(2), qs, U(j), U(j+1), V(1), U(j+2))) qs--;
 		bnMulIntWord(tmp, v, qs);
 		BigInt uPrima;
 		uPrima.d = &u->d[u->size - (j+n) - 1];
