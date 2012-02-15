@@ -84,7 +84,7 @@ int main()
         
     
     }
-    
+    printf("Llamados while: %d\n", nLlamadosWhile);
     bnDelBigInt(aa);
     bnDelBigInt(bb);
     bnDelBigInt(ans);

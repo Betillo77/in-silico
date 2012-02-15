@@ -12,5 +12,7 @@ for i in sys.stdin:
 	exponent = int(lista[2])
 	if(lista[0] == "%"):
 		print base % exponent
-	if(lista[0] == "/"):
+	elif(lista[0] == "/"):
 		print base / exponent
+	elif(lista[0] == "*"):
+		print base * exponent

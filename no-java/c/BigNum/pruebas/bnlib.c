@@ -417,6 +417,9 @@ inline char stepD3(dword v2, word qs, dword uj, dword uj1, dword v1, dword uj2)
 	}
 }
     
+
+int nLlamadosWhile = 0;
+
 void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	ans->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
 	if(b->size == 1)
@@ -453,22 +456,25 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	bnCopyInt(v, b);
     word m = u->size - v->size;
     word n = v->size;
+    word shift = numberOfLeadingZeros(v->d[0]);
 	word d = BASE / (V(1) + 1);
+//    bnShiftRBits(u, u, shift);
+//    bnShiftRBits(v, v, shift);
 	bnMulIntWord(u, u, d); bnMulIntWord(v, v, d);
 	if(u->size == a->size) u->d[u->size++] = 0;
 	word j = 0, qs;
 	BigInt* tmp = bnNewBigInt(v->size + 2, 0);
 	ans->size = m + 1;
+	BigInt uPrima;
+	uPrima.d = &u->d[u->size - n - 1];
+	uPrima.sign = BN_POS;
+	uPrima.size = n + 1;
+	uPrima.maxSize = uPrima.size;
 	do {
 		if (U(j) == V(1)) qs = WMASK;
 		else qs = (U(j)*BASE + U(j+1)) / V(1);
-		while (stepD3(V(2), qs, U(j), U(j+1), V(1), U(j+2))) qs--;
+		while (++nLlamadosWhile && stepD3(V(2), qs, U(j), U(j+1), V(1), U(j+2))) qs--;
 		bnMulIntWord(tmp, v, qs);
-		BigInt uPrima;
-		uPrima.d = &u->d[u->size - (j+n) - 1];
-		uPrima.sign = BN_POS;
-		uPrima.size = n + 1;
-		uPrima.maxSize = uPrima.size;
 		bnRemCeros(&uPrima);
 		if(bnUCompareInt(&uPrima, tmp) < 0)
 		{
@@ -478,6 +484,8 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 		}
 		bnSubInt(&uPrima, &uPrima, tmp);
 		ans->d[m - j] = qs;
+		uPrima.d--;
+		uPrima.size = n + 1;
 		j++;
 	} while (j <= m);
 	bnRemCeros(ans);
