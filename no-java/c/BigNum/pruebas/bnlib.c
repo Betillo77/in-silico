@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 #define MAX(x,y) ( ((x)>(y)) ? (x) : (y) )
 #define MIN(x,y) ( ((x)<(y)) ? (x) : (y) )
@@ -210,13 +212,9 @@ void bnAddInt(BigInt* res, BigInt* sum1, BigInt* sum2) {
  * Computes res = a-b for BigInts
  */
 void bnSubInt(BigInt* res, BigInt* a, BigInt* b) {
-	char temp[2000];
-	bnIntToStr(temp, a);
-	bnIntToStr(temp, b);
     bnNegInt(b);
     bnAddInt(res,a,b);
     bnNegInt(b);
-    bnIntToStr(temp, res);
 }
 
 BigInt* bnNewBigInt(word maxSize, word initVal) {
@@ -332,6 +330,7 @@ void bnCopyInt(BigInt* res, BigInt* a) {
     res->sign = a->sign;
 }
 
+
 void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     BigInt *tmp=0, *cos=0;
     int i,j,bit;
@@ -416,25 +415,21 @@ inline char stepD3(dword v2, word qs, dword uj, dword uj1, dword v1, dword uj2)
 		return (temp5 > temp4) || ((temp5 == temp4) && (temp6 != 0));
 	}
 }
-    
-
-int nLlamadosWhile = 0;
 
 void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	ans->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
 	if(b->size == 1)
 	{
 		bnDivIntWord(ans, a, b->d[0], res == 0 ? 0 : &res->d[0]);
-		ans->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
 		if(res != 0) res->size = 1;
 		return;
 	}
 	int resComp = bnUCompareInt(a, b);
 	if(resComp < 0)
 	{
+		if(res != 0) bnCopyInt(res, a);
 		ans->d[0] = 0;
 		ans->size = 1;
-		if(res != 0) bnCopyInt(res, a);
 		return;
 	}
 	if(resComp == 0)
@@ -447,9 +442,12 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 		}
 		return;
 	}
-	
-	BigInt* u = bnNewBigInt(a->size + 1, 0);
-	BigInt* v = bnNewBigInt(b->size + 1, 0);
+	word d1[a->size + 1]; d1[0] = 0;
+	word d2[b->size + 1]; d2[0] = 0;	
+	BigInt ud; ud.size=1; ud.sign=BN_POS; ud.d = d1;
+	BigInt vd; vd.size=1; vd.sign=BN_POS; vd.d = d2;
+	BigInt* u = &ud;
+	BigInt* v = &vd;
 	#define V(i) ((dword)v->d[v->size - (i)])
 	#define U(i) ((dword)u->d[u->size - (i) - 1])
 	bnCopyInt(u, a);
@@ -463,7 +461,9 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	bnMulIntWord(u, u, d); bnMulIntWord(v, v, d);
 	if(u->size == a->size) u->d[u->size++] = 0;
 	word j = 0, qs;
-	BigInt* tmp = bnNewBigInt(v->size + 2, 0);
+	word d3[v->size + 2]; d3[0]=0;
+	BigInt tmpd; tmpd.size=1; tmpd.sign=BN_POS; tmpd.d = d3;
+	BigInt* tmp = &tmpd;
 	ans->size = m + 1;
 	BigInt uPrima;
 	uPrima.d = &u->d[u->size - n - 1];
@@ -473,13 +473,12 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	do {
 		if (U(j) == V(1)) qs = WMASK;
 		else qs = (U(j)*BASE + U(j+1)) / V(1);
-		while (++nLlamadosWhile && stepD3(V(2), qs, U(j), U(j+1), V(1), U(j+2))) qs--;
+		while (stepD3(V(2), qs, U(j), U(j+1), V(1), U(j+2))) qs--;
 		bnMulIntWord(tmp, v, qs);
 		bnRemCeros(&uPrima);
 		if(bnUCompareInt(&uPrima, tmp) < 0)
 		{
 			qs--;
-			printf("llego\n");
 			bnSubInt(tmp, tmp, v);
 		}
 		bnSubInt(&uPrima, &uPrima, tmp);
@@ -496,7 +495,7 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
     uRes.maxSize = uRes.size;
 	bnRemCeros(&uRes);
 	if(res != 0) bnDivIntWord(res, &uRes, d, 0);
-    bnDelBigInt(u); bnDelBigInt(v); bnDelBigInt(tmp);
+    //bnDelBigInt(u); bnDelBigInt(v); bnDelBigInt(tmp);
     #undef V
     #undef U
 }
@@ -525,11 +524,11 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 	while (exponent->size > 1 || exponent->d[0]>0) {
 		if ((exponent->d[0] & 1) == 1) {
 			bnMulInt(tmp1, ans, base);
-			bnDivInt(tmp1, tmp1, mod, ans);
+			bnDivIntF(tmp1, tmp1, mod, ans);
 		}
 		bnShiftRBits(exponent, exponent, 1);		
 		bnMulInt(tmp1, base, base);
-		bnDivInt(tmp1, tmp1, mod, base);			
+		bnDivIntF(tmp1, tmp1, mod, base);		
 	}
 	bnDelBigInt(exponent); bnDelBigInt(base); bnDelBigInt(tmp1);
 }
@@ -557,4 +556,3 @@ void bnStrToInt(BigInt *ans, const char *input) {
     ans->sign = sign;
     bnDelBigInt(tmp);
 }
-

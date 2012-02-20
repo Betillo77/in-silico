@@ -80,16 +80,11 @@ int main()
                 bnIntToStr(a,ans);
                 printf("%s\n",a);
                 break;
-        }
-        
-    
+        }   
     }
-    printf("Llamados while: %d\n", nLlamadosWhile);
     bnDelBigInt(aa);
     bnDelBigInt(bb);
     bnDelBigInt(ans);
     bnDelBigInt(ans1);
-
-
     return 0;
 }
