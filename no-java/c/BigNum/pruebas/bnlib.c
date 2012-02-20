@@ -9,10 +9,10 @@
 #define REP(i,N) for((i)=0; (i)<(N); (i)++)
 #define REPB(i,N) for((i)=(N)-1; (i)>=0; (i)--)
 
-typedef unsigned int word;
-typedef unsigned long long dword;
+typedef unsigned int bn_word;
+typedef unsigned long long bn_dword;
 
-void copyw(word* res, word* a, word size) {
+void copyw(bn_word* res, bn_word* a, bn_word size) {
     int i;
     REP(i,size) {
         res[i] = a[i];
@@ -20,8 +20,8 @@ void copyw(word* res, word* a, word size) {
 }
 
 void invStr(char* str, int n) {
-    word i=0;
-    word j=n-1;
+    bn_word i=0;
+    bn_word j=n-1;
     char tmp;
     while (i < j) {
         tmp = str[i];
@@ -32,7 +32,7 @@ void invStr(char* str, int n) {
 }
 
 #define WBITS 32
-#define BASE ( ((dword)1) << WBITS )
+#define BASE ( ((bn_dword)1) << WBITS )
 #define WMASK ( BASE - 1 )
 #define BN_NEG 0
 #define BN_POS 1
@@ -42,22 +42,22 @@ void invStr(char* str, int n) {
  * digit while d[size-1] is the most significant digit
  */
 typedef struct {
-    word maxSize; /*Maximum number of digits that d can hold*/
-    word size; /*number of digits*/
+    bn_word maxSize; /*Maximum number of digits that d can hold*/
+    bn_word size; /*number of digits*/
     char sign; /*zero->negative, other->positive*/
-    word *d; /*value of each digits*/
+    bn_word *d; /*value of each digits*/
 } BigInt;
 
-BigInt* bnNewBigInt(word size, word initVal);
+BigInt* bnNewBigInt(bn_word size, bn_word initVal);
 void bnDelBigInt(BigInt *a);
 int bnUCompareInt(BigInt *a, BigInt *b);
 void bnNegInt(BigInt *a);
-void bnShiftLBits(BigInt *res, BigInt *a, word bits);
-void bnShiftRBits(BigInt *res, BigInt *a, word bits);
+void bnShiftLBits(BigInt *res, BigInt *a, bn_word bits);
+void bnShiftRBits(BigInt *res, BigInt *a, bn_word bits);
 void bnAddInt(BigInt *res, BigInt *a, BigInt *b);
 void bnSubInt(BigInt *res, BigInt *a, BigInt *b);
 void bnMulInt(BigInt *res, BigInt *a, BigInt *b);
-void bnDivIntWord(BigInt *ans, BigInt *a, word b, word *res);
+void bnDivIntWord(BigInt *ans, BigInt *a, bn_word b, bn_word *res);
 void bnDivInt(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);
 void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);
 void bnPowInt(BigInt *ans, BigInt *a, int b);
@@ -74,16 +74,16 @@ void bnRemCeros(BigInt *a) {
 
 /*Suma a y b, independiente de que signos tenga; Se debe cumplir a>=b*/
 void bnUAddInt(BigInt *res, BigInt *a, BigInt *b) {
-    word i,n,carry,tmp;
-    dword r;
+    bn_word i,n,carry,tmp;
+    bn_dword r;
     n = a->size;
     carry=0;
     REP(i,n) {
     	tmp = (i < b->size) ? b->d[i] : 0;
-        r = ((dword)a->d[i]) + tmp;
+        r = ((bn_dword)a->d[i]) + tmp;
         r += carry;
-        res->d[i] = (word)r;
-        carry = (word)(r>>WBITS);
+        res->d[i] = (bn_word)r;
+        carry = (bn_word)(r>>WBITS);
     }
     if (carry != 0) {
         res->d[n++] = carry;
@@ -93,21 +93,21 @@ void bnUAddInt(BigInt *res, BigInt *a, BigInt *b) {
 
 /*resta a y b, independiente del signo; Se debe cumplir que a >= b*/
 void bnUSubInt(BigInt *res, BigInt *a, BigInt *b) {
-    word borrow,i,n,tmp;
-    dword s,m,base;
+    bn_word borrow,i,n,tmp;
+    bn_dword s,m,base;
     n = a->size;
     borrow=0;
-    base = ((dword)1 << WBITS);
+    base = ((bn_dword)1 << WBITS);
     REP(i,n) {
     	tmp = (i < b->size) ? b->d[i] : 0;
         s = a->d[i];
-        m = ((dword)tmp) + borrow;
+        m = ((bn_dword)tmp) + borrow;
         borrow=0;
         if (s < m) {
             s += base;
             borrow=1;
         }
-        res->d[i] = (word)(s-m);
+        res->d[i] = (bn_word)(s-m);
     }
     res->size=n;
     bnRemCeros(res);
@@ -135,10 +135,10 @@ void bnNegInt(BigInt* a) {
         a->sign=BN_NEG;
 }
 
-void bnShiftLBits(BigInt* res, BigInt* a, word bits) {
-    word rdig[res->maxSize];
-    word carry, shdig, shbits, i;
-    dword lshift;
+void bnShiftLBits(BigInt* res, BigInt* a, bn_word bits) {
+    bn_word rdig[res->maxSize];
+    bn_word carry, shdig, shbits, i;
+    bn_dword lshift;
     carry = 0;
     shdig = bits/WBITS; shbits = bits%WBITS;
     REP(i,shdig) {
@@ -148,8 +148,8 @@ void bnShiftLBits(BigInt* res, BigInt* a, word bits) {
         lshift = a->d[i];
         lshift <<= shbits;
         lshift |= carry;
-        rdig[i+shdig] = (word)lshift;
-        carry = (word)(lshift >> WBITS);
+        rdig[i+shdig] = (bn_word)lshift;
+        carry = (bn_word)(lshift >> WBITS);
     }
     rdig[i+shdig] = carry;
     res->size = a->size + shdig + 1;
@@ -158,10 +158,10 @@ void bnShiftLBits(BigInt* res, BigInt* a, word bits) {
     bnRemCeros(res);
 }
 
-void bnShiftRBits(BigInt* res, BigInt* a, word bits) {
-    word rdig[res->maxSize];
-    word carry, shdig, shbits, otbits, i, temp;
-    dword rshift;
+void bnShiftRBits(BigInt* res, BigInt* a, bn_word bits) {
+    bn_word rdig[res->maxSize];
+    bn_word carry, shdig, shbits, otbits, i, temp;
+    bn_dword rshift;
     carry = 0;
     shdig = bits/WBITS; shbits = bits%WBITS; otbits = (WBITS-shbits);
     if(shdig>res->maxSize) {
@@ -173,7 +173,7 @@ void bnShiftRBits(BigInt* res, BigInt* a, word bits) {
     for(i = shdig; i < a->size-1; i++) {
         rshift = a->d[i+1];
         rshift = rshift << otbits;   
-    	rdig[i-shdig] = (a->d[i] >> shbits) | ((word) rshift);
+    	rdig[i-shdig] = (a->d[i] >> shbits) | ((bn_word) rshift);
     }
     if(a->size<shdig+1) {
     	rdig[0] = 0;
@@ -217,31 +217,31 @@ void bnSubInt(BigInt* res, BigInt* a, BigInt* b) {
     bnNegInt(b);
 }
 
-BigInt* bnNewBigInt(word maxSize, word initVal) {
+BigInt* bnNewBigInt(bn_word maxSize, bn_word initVal) {
     BigInt *a = (BigInt*) malloc(sizeof(BigInt));
     a->size=1;
     a->maxSize = maxSize;
     a->sign=BN_POS;
     a->d = 0;
-    a->d = (word*) malloc(maxSize * sizeof(word));
+    a->d = (bn_word*) malloc(maxSize * sizeof(bn_word));
     a->d[0] = initVal;
     return a;
 }
 
 void bnDelBigInt(BigInt* a) {
-    word *d = a->d;
+    bn_word *d = a->d;
     free(a);
     free(d);
 }
 
-void bnMulIntWord(BigInt* res, BigInt *a, word b) {
-	word j, carry = 0;
-	dword m;
+void bnMulIntWord(BigInt* res, BigInt *a, bn_word b) {
+	bn_word j, carry = 0;
+	bn_dword m;
     REP(j, a->size) {
-        m = ((dword)b)*a->d[j];
+        m = ((bn_dword)b)*a->d[j];
         m += carry;
-        res->d[j] = (word)m;
-        carry = (word)(m >> WBITS);
+        res->d[j] = (bn_word)m;
+        carry = (bn_word)(m >> WBITS);
     }
     res->d[j] = carry;
     res->size = a->size+1;
@@ -249,23 +249,23 @@ void bnMulIntWord(BigInt* res, BigInt *a, word b) {
 }
 
 void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
-	word d1[res->maxSize]; d1[0]=0;
+	bn_word d1[res->maxSize]; d1[0]=0;
 	BigInt tmp1; tmp1.size=1; tmp1.maxSize=res->maxSize; tmp1.sign=BN_POS; tmp1.d=d1;
-	word d2[res->maxSize]; d2[0]=0;
+	bn_word d2[res->maxSize]; d2[0]=0;
 	BigInt tmp2; tmp2.size=1; tmp2.maxSize=res->maxSize; tmp2.sign=BN_POS; tmp2.d=d2;
 	
 	BigInt *tmp= &tmp1, *sum = &tmp2;
-    word i, j, carry;
-    dword m;
+    bn_word i, j, carry;
+    bn_dword m;
     //tmp = bnNewBigInt(res->maxSize,0); sum = bnNewBigInt(res->maxSize,0);
 
     REP(i, b->size) {
         carry = 0;
         REP(j, a->size) {
-            m = ((dword)b->d[i])*a->d[j];
+            m = ((bn_dword)b->d[i])*a->d[j];
             m += carry;
-            tmp->d[j] = (word)m;
-            carry = (word)(m >> WBITS);
+            tmp->d[j] = (bn_word)m;
+            carry = (bn_word)(m >> WBITS);
         }
         tmp->d[j] = carry;
         tmp->size = a->size+1;
@@ -273,7 +273,7 @@ void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
         bnShiftLBits(tmp,tmp,WBITS*i);
         bnAddInt(sum,sum,tmp);
     }
-    //word *swap=res->d; res->d=sum->d; sum->d=swap;
+    //bn_word *swap=res->d; res->d=sum->d; sum->d=swap;
     //res->size = sum->size;
     //bnDelBigInt(tmp); bnDelBigInt(sum);
     bnCopyInt(res, sum);
@@ -281,14 +281,14 @@ void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
 }
 
 /*ans = a / b ; res = a % b #División sin signo*/
-void bnDivIntWord(BigInt* ans, BigInt* a, word b, word *res) {
-    dword num;
-    word carry; int i;
+void bnDivIntWord(BigInt* ans, BigInt* a, bn_word b, bn_word *res) {
+    bn_dword num;
+    bn_word carry; int i;
     carry = 0;
     REPB(i, a->size) {
-        num = a->d[i] | ((dword)carry)<<WBITS;
-        ans->d[i] = (word)(num / b);
-        carry = (word)(num % b);
+        num = a->d[i] | ((bn_dword)carry)<<WBITS;
+        ans->d[i] = (bn_word)(num / b);
+        carry = (bn_word)(num % b);
     }
     ans->size = a->size; bnRemCeros(ans);
     ans->sign = a->sign;
@@ -298,7 +298,7 @@ void bnDivIntWord(BigInt* ans, BigInt* a, word b, word *res) {
 void bnIntToStr(char* ans, BigInt* x) {
 	char strres[15];
 	int j;
-    word i=0, res;
+    bn_word i=0, res;
     BigInt *a = bnNewBigInt(x->size, 0);
     bnRemCeros(x);
     int k;
@@ -310,7 +310,7 @@ void bnIntToStr(char* ans, BigInt* x) {
         	res /= 10;
         }
     }
-    word lsw = a->d[0];
+    bn_word lsw = a->d[0];
     while (lsw > 0) {
     	ans[i++] = '0' + (lsw % 10);
     	lsw /= 10;
@@ -336,10 +336,10 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     int i,j,bit;
     char sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
 
-	word d1[res->maxSize]; d1[0]=0;
+	bn_word d1[res->maxSize]; d1[0]=0;
 	BigInt tmp1; tmp1.size=1; tmp1.maxSize=res->maxSize; tmp1.sign=BN_POS; tmp1.d=d1;
 	tmp = &tmp1;
-	word d2[ans->maxSize]; d2[0]=0;
+	bn_word d2[ans->maxSize]; d2[0]=0;
 	BigInt tmp2; tmp2.size=1; tmp2.maxSize=ans->maxSize; tmp2.sign=BN_POS; tmp2.d=d2;
 	cos = &tmp2;
 	
@@ -353,7 +353,7 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
             cos->d[0]=0; cos->size=1; tmp->size=a->size;
             copyw(tmp->d,a->d,a->size);
         } else {
-        	word opt1 = b->size-1;
+        	bn_word opt1 = b->size-1;
             REP(i,opt1) {
                 tmp->d[i] = a->d[a->size + i - opt1];
             }
@@ -377,10 +377,10 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     if (res != 0) bnCopyInt(res, tmp);
 }
 
-word numberOfLeadingZeros(word i) {
+bn_word numberOfLeadingZeros(bn_word i) {
         if (i == 0)
             return 32;
-        word n = 1;
+        bn_word n = 1;
         if (i >> 16 == 0) { n += 16; i <<= 16; }
         if (i >> 24 == 0) { n +=  8; i <<=  8; }
         if (i >> 28 == 0) { n +=  4; i <<=  4; }
@@ -390,27 +390,27 @@ word numberOfLeadingZeros(word i) {
 }
 
 
-inline char stepD3(dword v2, word qs, dword uj, dword uj1, dword v1, dword uj2)
+inline char stepD3(bn_dword v2, bn_word qs, bn_dword uj, bn_dword uj1, bn_dword v1, bn_dword uj2)
 {
 /*	char a = ( (((double) v2) * qs - uj2) / BASE ) > ( (long long int) uj * BASE + uj1 - qs * v1 );
 	char b; */
-	dword temp = (uj << WBITS) | uj1;
-	dword temp1 = qs * v1;
-	dword temp2 = v2 * qs;
+	bn_dword temp = (uj << WBITS) | uj1;
+	bn_dword temp1 = qs * v1;
+	bn_dword temp2 = v2 * qs;
 	char sright = (temp >= temp1) ? 1 : 0;
 	char sleft = (temp2 >= uj2) ? 1 : 0;
 	if(sleft != sright)
 		return sleft == 1;
 	else if(sleft == 0) {
-		dword temp4 = (uj2 - temp2);
-		dword temp5 = temp4 >> WBITS;
+		bn_dword temp4 = (uj2 - temp2);
+		bn_dword temp5 = temp4 >> WBITS;
 		temp4 = temp1 - temp;
 		return (temp5 < temp4);
 	}
 	else {
-		dword temp4 = (temp2 - uj2);
-		dword temp5 = temp4 >> WBITS;
-		dword temp6 = temp4 & WMASK;
+		bn_dword temp4 = (temp2 - uj2);
+		bn_dword temp5 = temp4 >> WBITS;
+		bn_dword temp6 = temp4 & WMASK;
 		temp4 = temp - temp1;
 		return (temp5 > temp4) || ((temp5 == temp4) && (temp6 != 0));
 	}
@@ -442,26 +442,26 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 		}
 		return;
 	}
-	word d1[a->size + 1]; d1[0] = 0;
-	word d2[b->size + 1]; d2[0] = 0;	
+	bn_word d1[a->size + 1]; d1[0] = 0;
+	bn_word d2[b->size + 1]; d2[0] = 0;	
 	BigInt ud; ud.size=1; ud.sign=BN_POS; ud.d = d1;
 	BigInt vd; vd.size=1; vd.sign=BN_POS; vd.d = d2;
 	BigInt* u = &ud;
 	BigInt* v = &vd;
-	#define V(i) ((dword)v->d[v->size - (i)])
-	#define U(i) ((dword)u->d[u->size - (i) - 1])
+	#define V(i) ((bn_dword)v->d[v->size - (i)])
+	#define U(i) ((bn_dword)u->d[u->size - (i) - 1])
 	bnCopyInt(u, a);
 	bnCopyInt(v, b);
-    word m = u->size - v->size;
-    word n = v->size;
-    word shift = numberOfLeadingZeros(v->d[0]);
-	word d = BASE / (V(1) + 1);
+    bn_word m = u->size - v->size;
+    bn_word n = v->size;
+    bn_word shift = numberOfLeadingZeros(v->d[0]);
+	bn_word d = BASE / (V(1) + 1);
 //    bnShiftRBits(u, u, shift);
 //    bnShiftRBits(v, v, shift);
 	bnMulIntWord(u, u, d); bnMulIntWord(v, v, d);
 	if(u->size == a->size) u->d[u->size++] = 0;
-	word j = 0, qs;
-	word d3[v->size + 2]; d3[0]=0;
+	bn_word j = 0, qs;
+	bn_word d3[v->size + 2]; d3[0]=0;
 	BigInt tmpd; tmpd.size=1; tmpd.sign=BN_POS; tmpd.d = d3;
 	BigInt* tmp = &tmpd;
 	ans->size = m + 1;
@@ -536,7 +536,7 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 void bnStrToInt(BigInt *ans, const char *input) {
     BigInt *tmp = bnNewBigInt(1,0);
     ans->size = 1; ans->d[0] = 0;
-    int i=0,j; word w;
+    int i=0,j; bn_word w;
     int pow10[10]={1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
     char sign = BN_POS;
     if (input[0]=='-') {
