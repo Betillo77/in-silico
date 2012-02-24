@@ -1,11 +1,14 @@
 \documentclass{book}
 
 \usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{amsmath}
+
 
 \begin{document}
 
 \chapter{Using BigNum library}
-The following is the structure of a arbitrary precision integer in the BigNum library.
+The following is the structure of an arbitrary precision integer in the BigNum library.
 \begin{verbatim}
 /**
  * Structure that represents big integers, d[0] is the least significant
@@ -19,8 +22,23 @@ typedef struct {
 } BigInt;
 \end{verbatim}
 
-%unas cosas
+This structure represents a common positional number system, so the Big Integer N is determined by the following expression:
 
-\[N = \sum_{i=0}^{size-1}{d_i b^i} \]
+\[N = \sum_{i=0}^{size-1}{d_i b^i} \quad\quad (0 \le d_i < b) \]
 
+where $b$ represents the number system base, $d_i$  are the digits which represent the number N and $size$ is the amount of digits that represent N in base $b$.
+
+In BigNum library the base $b$ is $2^N$, where $N$ is the bit length of a \verb+int+ data type in the enviroment used for running the library, normally this number is 16 for microcontrollers and 32 for general purpose CPU's and high level embedded systems.\\
+
+Notice that the sign representation used in "BigNum" is the sign-magnitude representation, for this reason the big integer structure has a "sign" field.
+
+It is important to mention that the $maxSize$ field establish a bound about the biggest and smallest number which can be represented, for example if a big integer $T$ has a $maxSize$ value of 50, this big integer can hold a number $k$ such that $-2^{50N}<k<2^{50N}$, pay attention to this for avoiding overflow errors in BigNum library.
+
+\section{BigInteger creation}
+
+\subsection{How to create an arbitrary precision }
+
+
+\chapter{Intern Structure}
+ 
 \end{document}
