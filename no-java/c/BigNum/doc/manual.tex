@@ -8,6 +8,7 @@
 \begin{document}
 
 \chapter{Using BigNum library}
+\label{chap:api}
 The following is the structure of an arbitrary precision integer in the BigNum library.
 \begin{verbatim}
 /**
@@ -40,5 +41,32 @@ It is important to mention that the $maxSize$ field establish a bound about the 
 
 
 \chapter{Intern Structure}
+
+\section{Addition and subtraction}
+For addition and subtraction the library uses the schoolbook algorithms. To support signed integer addition and subtraction, the library has methods implemented for unsigned addition and subtraction. The function for unsigned addition is:
+    \begin{verbatim}
+    bnUAddInt(BigInt *res, BigInt *a, BigInt *b)
+    \end{verbatim}
+The function receives two integers \verb+a+ and \verb+b+ and adds them ignoring the signs in \verb+res+. Let $a_i$ and $b_i$ be the digit $i$-th of the first and second operands respectively, and $c_i$ be the $i$-th digit of the result, then the internal behavior of this function is given by:
+\[c_i = a_i + b_i + k \]
+where $k$ is the carry digit of the operation on the $(i-1)$-th digit. The function for unsigned subtraction is:
+    \begin{verbatim}
+    bnUSubInt(BigInt *res, BigInt *a, BigInt *b)
+    \end{verbatim}
+The function receives two integers \verb+a+ and \verb+b+ and subtracts them in \verb+res+ as with natural numbers, the magnitude of \verb+a+ must be greater or equal to \verb+b+ to avoid a less than zero result. Let $a_i$ and $b_i$ be the digit $i$-th of the first and second operands respectively, and $c_i$ be the $i$-th digit of the result, then the internal behavior of this function is given by:
+\[c_i = a_i - b_i - k \]
+where $k$ is the borrow digit of the operation on the $(i-1)$-th digit. \\
+
+With the operations for addition and subtraction on natural numbers implemented, is easy to implement a signed addition with the following algorithm:
+\begin{itemize}
+\item If the signs of both operands are equal, then use unsigned addition and put the sign of the operands to the results
+\item If the signs are different, then use unsigned subtraction to subtract the operand of lowest magnitude from the operand of highest magnitude and keep the sign of the operand of highest magnitude.
+\end{itemize}
+
+With the signed addition implemented, the signed subtraction was implemented by changing the sign of the second operand and calling the signed addition. The signature of the functions for signed addition and subtraction was explained in the chapter \ref{chap:api}.
+
+\section{Multiplication}
+
+\section{Division}
  
 \end{document}
