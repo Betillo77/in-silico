@@ -1,0 +1,26 @@
+\documentclass{book}
+
+\usepackage{verbatim}
+
+\begin{document}
+
+\chapter{Using BigNum library}
+The following is the structure of a arbitrary precision integer in the BigNum library.
+\begin{verbatim}
+/**
+ * Structure that represents big integers, d[0] is the least significant
+ * digit while d[size-1] is the most significant digit
+ */
+typedef struct {
+    bn_word maxSize; /*Maximum number of digits that d can hold*/
+    bn_word size; /*number of digits*/
+    char sign; /*zero->negative, other->positive*/
+    bn_word *d; /*value of each digits*/
+} BigInt;
+\end{verbatim}
+
+%unas cosas
+
+\[N = \sum_{i=0}^{size-1}{d_i b^i} \]
+
+\end{document}

@@ -338,7 +338,10 @@ void bnStrToInt(BigInt *ans, const char *input) {
     }
     while (input[i] != '\0') {
         bnMulInt(ans, ans, ten);
-        ans->d[0] += input[i]-'0';
+        //ans->d[0] += input[i]-'0';
+        ten->d[0] = input[i]-'0';
+        bnAddInt(ans, ans, ten);
+        ten->d[0] = 10;
         i++;
     }
     bnDelBigInt(ten);
