@@ -40,6 +40,92 @@ It is important to mention that the $maxSize$ field establish a bound about the 
 \subsection{How to create an arbitrary precision }
 
 
+\subsection{How to initialize an arbitrary precision number in BigNum?}
+
+In the last section it was told that the big integer creation function has a constrained mechanism for initializing the big integer, in general it is possible to use the following function for this purpose.\\
+
+\verb+void bnStrToInt(BigInt *ans, const char *input)+\\
+
+\paragraph{Purpose:} 
+
+To get a \emph{big integer} representation of a number represented as a characters array.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item
+
+\br{ans:} it is a pointer to the \verb+BigInt+ struct which will save the number represented by the characters array \verb+input+, the big integer pointed by \verb+ans+ must have enough size in digits, if this is not the case the conversion can not be achieved.
+
+\item 
+
+\br{input:} it is a pointer to a characters array, this array represents a number in the common way (e.g. "-1234"), it is is important that the end of the number is represented by the \emph{end of line} character ('\0').  
+
+\end{itemize}
+
+\paragraph{Return Value:}
+
+None.
+
+\paragraph{Examples:}
+
+\begin{itemize}
+\item
+
+\begin{verbatim}
+	BigInt *a=bnNewBigInt(50, 0);
+	bnStrToInt(a, “-123456789000”);
+\end{verbatim}
+
+\item
+
+\begin{verbatim}
+	BigInt *a=bnNewBigInt(50, 0);
+	char *input=”-123456789000”;
+	bnStrToInt(a, input);
+\end{verbatim}
+\end{itemize}
+
+In both cases the big integer \verb+a+ will represent the number -123456789000.
+
+\subsection{How to get a conventional and readable representation of a BigNum arbitrary precision number?}
+
+It is useful to get an appropiate representation of a big integer for the human beings after all the operations required have been applied to the number, taking into account that the \emph{BigNum} number representation is not very natural because of some aspects as the numerical base, the following function gives a mechanism for getting a decimal reprensentation of a big integer.\\
+
+\verb+void bnIntToStr(char* ans, BigInt* x)+\\
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item
+
+\br{ans:}
+
+\item 
+
+\br{x:}  
+
+\end{itemize}
+
+\paragraph{Return Value:}
+
+None.
+
+\paragraph{Examples:}
+
+\begin{itemize}
+\item
+
+\begin{verbatim}
+	char ans[100];
+	BigInt *a=bnNewBigInt(50, 0);
+	char *input=”-123456789000”;
+	bnStrToInt(a, input);
+	bnIntToStr(ans,a);
+\end{verbatim}
+\end{itemize}
+
+
 \chapter{Intern Structure}
 
 \section{Addition and subtraction}
