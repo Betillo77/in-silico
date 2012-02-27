@@ -159,7 +159,8 @@ After executing this code the value of the array pointed by \verb+ ans + will be
 \chapter{Intern Structure}
 
 \section{Addition and subtraction}
-For addition and subtraction the library uses the schoolbook algorithms. To support signed integer addition and subtraction, the library has methods implemented for unsigned addition and subtraction. The function for unsigned addition is:
+\label{sect:add}
+For addition and subtraction the library uses the schoolbook algorithms but in base $b$. To support signed integer addition and subtraction, the library has methods implemented for unsigned addition and subtraction. The function for unsigned addition is:
     \begin{verbatim}
     bnUAddInt(BigInt *res, BigInt *a, BigInt *b)
     \end{verbatim}
@@ -181,9 +182,28 @@ With the operations for addition and subtraction on natural numbers implemented,
 
 With the signed addition implemented, the signed subtraction was implemented by changing the sign of the second operand and calling the signed addition. The signature of the functions for signed addition and subtraction was explained in the chapter \ref{chap:api}.
 
+\subsection{Complexity}
+Let $n$ be the number of digits in base $2^B$ of each operand. As both addition and subtraction make a single loop on the number of digits its complexity is $O(n)$.
+
 \section{Multiplication}
+For multiplication the library also uses the schoolbook algorithm over base $2^B$. When someone wants to multiply numbers of several digits in base 10, the only thing that person needs to know is how to multiply single digits (Using the multiplication table for example) and also how to add numbers of several digits. For this algorithm we use the fact that the processor already knows how to multiply two numbers of a single digit in base $2^B$ and the algorithm of section \ref{sect:add} to add numbers of several digits in base $2^B$. The algorithm to multiply two big integers $a$ and $b$ require two temporal big integer numbers (\verb+tmp+ and \verb+sum+) to store the result of multiplying all $a$ by the digit $i$ of $b$ and the sum of all partial multiplication respectively, the algorithm works as follows:
+
+\begin{itemize}
+\item set \verb+sum+ to zero
+\item for each digit $b_i$ of $b$:
+    \begin{itemize}
+    \item multiply the operand $a$ by the digit $b_i$ and store it in \verb+tmp+
+    \item accumulate \verb+tmp+ shifted $i$ digits to the left in \verb+sum+ (\verb/sum = sum + digitShift(tmp,i)/)
+    \end{itemize}
+\end{itemize}
+
+The previous algorithm uses a method for multiplying a full big integer by a single digit in base $2^B$, the method \verb+bnMulIntWord(BigInt* res, BigInt *a, bn_word b)+ were implemented for that purpose. The implementation for this method also uses the schoolbook algorithm, taking into account that the multiplication of two single digits never overflows a two digit variable the algorithm multiplies each digit of $a$ by the digit $b$ and stores the result in a variable $m$ of type \verb+bn_dword+ and $2B$ bits capacity. Then the least significant digit in base $2^B$ of $m$ is stored in the resulting integer and the other digit of $m$ is taken as the carry for the next operation.
+
+\subsection{Complexity}
+Let $n$ be the number of digits in base $2^B$ of the operands $a$ and $b$. The complexity of \verb+bnMulIntWord+ would be $O(n)$, and the complexity of \verb+bnMulInt+ would be $O(n^2)$.
 
 \section{Division}
  
+\section{Exponentiation and modular exponentiation}
 
 \end{document}
