@@ -110,7 +110,7 @@ None.
 \end{verbatim}
 \end{itemize}
 
-In both cases the big integer \verb+a+ will represent the number -123456789000.
+In both cases the big integer \verb+'a'+ will represent the number \verb+"-123456789000"+.
 
 \subsection{How to get a conventional and readable representation of a BigNum arbitrary precision number?}
 
@@ -153,7 +153,50 @@ None.
 \end{verbatim}
 \end{itemize}
 
-After executing this code the value of the array pointed by \verb+ ans + will be \verb+"-123456789000"+.
+After executing this code the value of the array pointed by \verb+ans+ will be \verb+"-123456789000"+.
+
+\subsection{How to free the memory assigned to a big integer?}
+
+It is very important to remember that you must free the allocated memory for a big integer when it is not needed anymore, because the memory allocation is dynamic, therefore you must explicitly free that memory space for using it in the future.\\
+
+\verb+void bnIntToStr(char* ans, BigInt* x)+\\
+
+\paragraph{Purpose:} 
+
+To get a decimal representation saved in a characteres array from a big integer.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf ans:}
+
+Pointer to the characters array where the decimal representation of the big integer \verb+'x'+ will be saved, keep in mind that the array size must be enough for saving the decimal representation of \verb+'x'+. This  function appends an \emph{end of line} character to the array pointed by ans.
+
+\item {\bf x:}
+
+Pointer to the big integer whose decimal representation is desired.
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Examples:}
+
+\begin{itemize}
+\item
+
+\begin{verbatim}
+	char ans[100];
+	BigInt *a=bnNewBigInt(50, 0);
+	char *input=”-123456789000”;
+	bnStrToInt(a, input);
+	bnIntToStr(ans,a);
+\end{verbatim}
+\end{itemize}
+
+After executing this code the value of the array pointed by \verb+ans+ will be \verb+"-123456789000"+.
 
 
 \chapter{Intern Structure}
