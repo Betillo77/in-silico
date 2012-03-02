@@ -198,6 +198,155 @@ None.
 
 After executing this code the value of the array pointed by \verb+ans+ will be \verb+"-123456789000"+.
 
+\section{Arithmetic Operations}
+
+\subsection{Addition}
+
+For adding two big integers you can use the following function:\\
+
+\verb+void bnAddInt(BigInt* res, BigInt* sum1, BigInt* sum2)+\\
+
+\paragraph{Purpose:} 
+
+To compute the sum of two big integers, \verb+res+ = \verb+sum1+ + \verb+sum2+.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf res:}
+
+Pointer to the big integer where the result of adding \verb+sum1+ and \verb+sum2+ will be saved, remember that the size of \verb+res+ must be enough for holding the result.
+
+\item {\bf sum1:}
+
+Pointer to the big integer which is the first summand.
+
+\item {\bf sum2:}
+
+Pointer to the big integer which is the second summand.
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+    char array[100];
+    BigInt *a=bnNewBigInt(50, 0);
+    BigInt *b=bnNewBigInt(50, 0);
+    BigInt *ans=bnNewBigInt(50, 0);
+    bnStrToInt(a, "2000000000");
+    bnStrToInt(b,"3000000001");
+    bnAddInt(ans,a,b);
+    bnIntToStr(array,ans);
+\end{verbatim}
+\end{itemize}
+
+After this code is executed the value of the big integer \verb+ans+ will be the sum of \verb+a+ and \verb+b+, and the value of the array pointed by \verb+array+ will be \verb+"5000000001"+.
+
+\subsection{Subtraction}
+
+For subtracting two big integers you can use the following function:\\
+
+\verb+void bnSubInt(BigInt *res, BigInt *a, BigInt *b);+\\
+
+\paragraph{Purpose:} 
+
+To compute the subtraction of two big integers, \verb+res+ = \verb+ a + - \verb+ b +.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf res:}
+
+Pointer to the big integer where the result of computing \verb+ a + minus  \verb+ b + will be saved.
+
+\item {\bf a:}
+
+Pointer to the big integer which is the minuend. 
+
+\item {\bf b:}
+
+Pointer to the big integer which is the subtrahend.
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+    char array[100];
+    BigInt *a=bnNewBigInt(50, 0);
+    BigInt *b=bnNewBigInt(50, 0);
+    BigInt *ans=bnNewBigInt(50, 0);
+    bnStrToInt(a, "24545646464464789789746");
+    bnStrToInt(b,"387979789746464679");
+    bnSubInt(ans,a,b);
+    bnIntToStr(array,ans);
+\end{verbatim}
+\end{itemize}
+
+After this code is executed the value of the big integer \verb+ans+ will be the result of computing \verb+a+ minus \verb+b+, and the value of the array pointed by \verb+array+ will be \verb+"24545258484675043325067"+.
+
+\subsection{Multiplication}
+
+For computing the multiplication of two big integers you can use the following function:\\
+
+\verb+void bnMulInt(BigInt *res, BigInt *a, BigInt *b);+\\
+
+\paragraph{Purpose:} 
+
+To multiply two big integers, \verb+res+ = \verb+ a + * \verb+ b +.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf res:}
+
+Pointer to the big integer where the result of multiplying \verb+ a + and \verb+ b + will be saved.
+
+\item {\bf a:}
+
+Pointer to the big integer which represents one factor. 
+
+\item {\bf b:}
+
+Pointer to the big integer which represents one factor. 
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+    char array[100];
+    BigInt *a=bnNewBigInt(50, 0);
+    BigInt *b=bnNewBigInt(50, 0);
+    BigInt *ans=bnNewBigInt(50, 0);
+    bnStrToInt(a, "123456789");
+    bnStrToInt(b,"987654321");
+    bnMulInt(ans,a,b);
+    bnIntToStr(array,ans);
+\end{verbatim}
+\end{itemize}
+
+After this code is executed the value of the big integer \verb+ans+ will be the result of multiplying two big integers (\verb+a+ and \verb+b+), and the value of the array pointed by \verb+array+ will be \verb+"121932631112635269"+.
+
 
 \chapter{Intern Structure}
 
