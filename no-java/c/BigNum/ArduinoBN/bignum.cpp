@@ -1,16 +1,7 @@
+
+#include "bignum.h"
+#include "WProgram.h"
 #include <stdlib.h>
-#include <stdio.h>
-#include <sys/time.h>
-#include <unistd.h>
-
-#define MAX(x,y) ( ((x)>(y)) ? (x) : (y) )
-#define MIN(x,y) ( ((x)<(y)) ? (x) : (y) )
-
-#define REP(i,N) for((i)=0; (i)<(N); (i)++)
-#define REPB(i,N) for((i)=(N)-1; (i)>=0; (i)--)
-
-typedef unsigned int bn_word;
-typedef unsigned long long bn_dword;
 
 void copyw(bn_word* res, bn_word* a, bn_word size) {
     int i;
@@ -30,42 +21,6 @@ void invStr(char* str, int n) {
         i++; j--;
     }
 }
-
-#define WBITS 32
-#define BASE ( ((bn_dword)1) << WBITS )
-#define WMASK ( BASE - 1 )
-#define BN_NEG 0
-#define BN_POS 1
-
-/**
- * Structure that represents big integers, d[0] is the least significant
- * digit while d[size-1] is the most significant digit
- */
-typedef struct {
-    bn_word maxSize; /*Maximum number of digits that d can hold*/
-    bn_word size; /*number of digits*/
-    char sign; /*zero->negative, other->positive*/
-    bn_word *d; /*value of each digits*/
-} BigInt;
-
-BigInt* bnNewBigInt(bn_word size, bn_word initVal);
-void bnDelBigInt(BigInt *a);
-int bnUCompareInt(BigInt *a, BigInt *b);
-void bnNegInt(BigInt *a);
-void bnShiftLBits(BigInt *res, BigInt *a, bn_word bits);
-void bnShiftRBits(BigInt *res, BigInt *a, bn_word bits);
-void bnAddInt(BigInt *res, BigInt *a, BigInt *b);
-void bnSubInt(BigInt *res, BigInt *a, BigInt *b);
-void bnMulInt(BigInt *res, BigInt *a, BigInt *b);
-void bnMulIntWord(BigInt* res, BigInt *a, bn_word b);
-void bnDivIntWord(BigInt *ans, BigInt *a, bn_word b, bn_word *res);
-void bnDivInt(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);
-void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);
-void bnPowInt(BigInt *ans, BigInt *a, int b);
-void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod);
-void bnIntToStr(char *ans, BigInt *a);
-void bnCopyInt(BigInt *res, BigInt *a);
-void bnStrToInt(BigInt *ans, const char *input);
 
 /*Removes leading ceros*/
 void bnRemCeros(BigInt *a) {
@@ -213,9 +168,9 @@ void bnAddInt(BigInt* res, BigInt* sum1, BigInt* sum2) {
  * Computes res = a-b for BigInts
  */
 void bnSubInt(BigInt* res, BigInt* a, BigInt* b) {
-    bnNegInt(b);
+	bnNegInt(b);
     bnAddInt(res,a,b);
-    bnNegInt(b);
+    bnNegInt(b);    
 }
 
 BigInt* bnNewBigInt(bn_word maxSize, bn_word initVal) {
@@ -246,7 +201,6 @@ void bnMulIntWord(BigInt* res, BigInt *a, bn_word b) {
     }
     res->d[j] = carry;
     res->size = a->size+1;
-    res->sign = a->sign;
     bnRemCeros(res);
 }
 
@@ -288,41 +242,11 @@ void bnDivIntWord(BigInt* ans, BigInt* a, bn_word b, bn_word *res) {
     if (res != 0) *res = carry; 
 }
 
-void bnIntToStr(char* ans, BigInt* x) {
-	char strres[15];
-	int j;
-    bn_word i=0, res;
-    BigInt *a = bnNewBigInt(x->size, 0);
-    bnRemCeros(x);
-    int k;
-    bnCopyInt(a,x);
-    while (a->size > 1 || a->d[0] >= 1000000000) {
-        bnDivIntWord(a,a,1000000000,&res);
-        for(j=8;j>=0;j--) {
-        	ans[i++] = (res % 10) + '0';
-        	res /= 10;
-        }
-    }
-    bn_word lsw = a->d[0];
-    while (lsw > 0) {
-    	ans[i++] = '0' + (lsw % 10);
-    	lsw /= 10;
-    }    
-    if (x->sign==BN_NEG)
-        ans[i++]='-';
-    if(i == 0)
-    	ans[i++] = '0';
-    ans[i] = '\0';
-    invStr(ans, i);
-    bnDelBigInt(a);
-}
-
 void bnCopyInt(BigInt* res, BigInt* a) {
     copyw(res->d,a->d,a->size);
     res->size = a->size;
     res->sign = a->sign;
 }
-
 
 void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     BigInt *tmp=0, *cos=0;
@@ -383,7 +307,7 @@ bn_word numberOfLeadingZeros(bn_word i) {
 }
 
 
-inline char stepD3(bn_dword v2, bn_word qs, bn_dword uj, bn_dword uj1, bn_dword v1, bn_dword uj2)
+char stepD3(bn_dword v2, bn_word qs, bn_dword uj, bn_dword uj1, bn_dword v1, bn_dword uj2)
 {
 /*	char a = ( (((double) v2) * qs - uj2) / BASE ) > ( (long long int) uj * BASE + uj1 - qs * v1 );
 	char b; */
@@ -521,23 +445,51 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 		}
 		bnShiftRBits(exponent, exponent, 1);		
 		bnMulInt(tmp1, base, base);
-		bnDivIntF(tmp1, tmp1, mod, base);		
+		bnDivIntF(tmp1, tmp1, mod, base);			
 	}
 	bnDelBigInt(exponent); bnDelBigInt(base); bnDelBigInt(tmp1);
+}
+
+void bnIntToStr(char* ans, BigInt* x) {
+	int j;
+    bn_word i=0, res;
+    BigInt *a = bnNewBigInt(x->size, 0);
+    bnRemCeros(x);
+    int k;
+    bnCopyInt(a,x);
+    while (a->size > 1 || a->d[0] >= 10000) {
+        bnDivIntWord(a,a,10000,&res);
+        for(j=3;j>=0;j--) {
+        	ans[i++] = (res % 10) + '0';
+        	res /= 10;
+        }
+    }
+    bn_word lsw = a->d[0];
+    while (lsw > 0) {
+    	ans[i++] = '0' + (lsw % 10);
+    	lsw /= 10;
+    }    
+    if (x->sign==BN_NEG)
+        ans[i++]='-';
+    if(i == 0)
+    	ans[i++] = '0';
+    ans[i] = '\0';
+    invStr(ans, i);
+    bnDelBigInt(a);
 }
 
 void bnStrToInt(BigInt *ans, const char *input) {
     BigInt *tmp = bnNewBigInt(1,0);
     ans->size = 1; ans->d[0] = 0;
     int i=0,j; bn_word w;
-    int pow10[10]={1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
+    int pow10[10]={1,10,100,1000,10000};
     char sign = BN_POS;
     if (input[0]=='-') {
         i++;
         sign = BN_NEG;
     }
     while (input[i] != '\0') {
-    	for (j=0, w=0; j<9; j++, i++) {
+    	for (j=0, w=0; j<4; j++, i++) {
     		if(input[i] == '\0') break;
     		w *= 10; w += input[i]-0x30;
     	}
