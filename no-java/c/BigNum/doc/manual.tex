@@ -29,7 +29,7 @@ This structure represents a common positional number system, so the Big Integer 
 
 where $b$ represents the number system base, $d_i$  are the digits which represent the number N and $size$ is the amount of digits that represent N in base $b$.
 
-In BigNum library the base $b$ is $2^B$, where $B$ is the bit length of an \verb+int+ data type in the enviroment used for running the library, normally this number is 16 for microcontrollers and 32 for general purpose CPU's and high level embedded systems.\\
+In BigNum library the base $b$ is $2^B$, where $B$ is the bit length of an \verb+int+ data type in the environment used for running the library, normally this number is 16 for microcontrollers and 32 for general purpose CPUs and high level embedded systems.\\
 
 Notice that the sign representation used in "BigNum" is the sign-magnitude representation, for this reason the big integer structure has a "sign" field.
 
@@ -45,14 +45,14 @@ For creating a new big integer with this library, you can use the following func
 BigInt* bnNewBigInt(unsigned int maxSize, unsigned int initVal);
 \end{verbatim}
 
-\paragraph{Purpuse}:\\
+\paragraph{Purpose}:\\
 
 To create a Big Integer with dynamic memory allocation.
 
 \paragraph{Arguments}:\\
 
 \begin{itemize}
-\item {\bf maxSize:} Is the biggest amount of base $2^B$ digits (where B is the bit length of an \verb+int+ data type)  that this big integer can handle, remember that this number represents a constraint about the biggest and smallest number that can be represented in the big integer,therefore it must be choosen with care because you can not change it after the big integer creation.\\
+\item {\bf maxSize:} Is the biggest amount of base $2^B$ digits (where B is the bit length of an \verb+int+ data type)  that this big integer can handle, remember that this number represents a constraint about the biggest and smallest number that can be represented in the big integer,therefore it must be chosen with care because you can not change it after the big integer creation.\\
 \item {\bf initVal:} Is the initial value of the new big integer, this number must satisfy the following: $0 \leq initval< 2^B$ , the reason of this is because the data type of this argument is an \verb+unsigned int+, for initializing the big integer with numbers bigger than $2^B$ or with negative numbers review the function \verb+bnStrToInt+.
 \end{itemize}
 
@@ -98,29 +98,29 @@ None.
 
 \begin{verbatim}
 	BigInt *a=bnNewBigInt(50, 0);
-	bnStrToInt(a, “-123456789000”);
+	bnStrToInt(a, "-123456789000");
 \end{verbatim}
 
 \item
 
 \begin{verbatim}
 	BigInt *a=bnNewBigInt(50, 0);
-	char *input=”-123456789000”;
+	char *input="-123456789000";
 	bnStrToInt(a, input);
 \end{verbatim}
 \end{itemize}
 
-In both cases the big integer \verb+'a'+ will represent the number \verb+"-123456789000"+.
+In both cases the big integer \verb+'a'+ will represent the number \verb+-123456789000+.
 
 \subsection{How to get a conventional and readable representation of a BigNum arbitrary precision number?}
 
-It is useful to get an appropiate representation of a big integer for the human beings after all the operations required have been applied to the number, taking into account that the \emph{BigNum} number representation is not very natural because of some aspects as the numerical base, the following function gives a mechanism for getting a decimal reprensentation of a big integer.\\
+It is useful to get an appropriate representation of a big integer for the human beings after all the operations required have been applied to the number, taking into account that the \emph{BigNum} number representation is not very natural because of some aspects as the numerical base, the following function gives a mechanism for getting a decimal representation of a big integer.\\
 
 \verb+void bnIntToStr(char* ans, BigInt* x)+\\
 
 \paragraph{Purpose:} 
 
-To get a decimal representation saved in a characteres array from a big integer.
+To get a decimal representation saved in a character array from a big integer.
 
 \paragraph{Arguments:}
 
@@ -163,7 +163,7 @@ It is very important to remember that you must free the allocated memory for a b
 
 \paragraph{Purpose:} 
 
-To get a decimal representation saved in a characteres array from a big integer.
+To get a decimal representation saved in a character array from a big integer.
 
 \paragraph{Arguments:}
 
@@ -219,11 +219,11 @@ Pointer to the big integer where the result of adding \verb+sum1+ and \verb+sum2
 
 \item {\bf sum1:}
 
-Pointer to the big integer which is the first summand.
+Pointer to the big integer which is the first operand.
 
 \item {\bf sum2:}
 
-Pointer to the big integer which is the second summand.
+Pointer to the big integer which is the second operand.
 
 \end{itemize}
 
