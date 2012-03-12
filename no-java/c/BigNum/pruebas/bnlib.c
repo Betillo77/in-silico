@@ -370,18 +370,6 @@ void bnDivInt(BigInt* ans, BigInt* a, BigInt* b, BigInt* res) {
     if (res != 0) bnCopyInt(res, tmp);
 }
 
-bn_word numberOfLeadingZeros(bn_word i) {
-        if (i == 0)
-            return 32;
-        bn_word n = 1;
-        if (i >> 16 == 0) { n += 16; i <<= 16; }
-        if (i >> 24 == 0) { n +=  8; i <<=  8; }
-        if (i >> 28 == 0) { n +=  4; i <<=  4; }
-        if (i >> 30 == 0) { n +=  2; i <<=  2; }
-        n -= i >> 31;
-        return n;
-}
-
 
 inline char stepD3(bn_dword v2, bn_word qs, bn_dword uj, bn_dword uj1, bn_dword v1, bn_dword uj2)
 {
@@ -407,6 +395,21 @@ inline char stepD3(bn_dword v2, bn_word qs, bn_dword uj, bn_dword uj1, bn_dword 
 		temp4 = temp - temp1;
 		return (temp5 > temp4) || ((temp5 == temp4) && (temp6 != 0));
 	}
+}
+        
+bn_word mulsub(bn_word *q, bn_word *a, bn_word qs, bn_word size) 
+{
+        bn_dword xLong = qs;
+        bn_dword carry = 0;
+        bn_word *end = q + size;
+        for (; q != end; q++, a++) 
+        {
+            bn_dword product = (*a) * xLong + carry;
+            bn_word difference = (bn_word) ((*q) - product);
+            *(q) = difference;
+            carry = (product >> WBITS) + ((difference > (~(bn_word)product)) ? 1 : 0);
+        }
+        return (bn_word) carry;
 }
 
 void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
@@ -447,26 +450,29 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	bnCopyInt(v, b);
     bn_word m = u->size - v->size;
     bn_word n = v->size;
-    bn_word shift = numberOfLeadingZeros(v->d[0]);
 	bn_word d = BASE / (V(1) + 1);
-//    bnShiftRBits(u, u, shift);
-//    bnShiftRBits(v, v, shift);
 	bnMulIntWord(u, u, d); bnMulIntWord(v, v, d);
 	if(u->size == a->size) u->d[u->size++] = 0;
 	bn_word j = 0, qs;
+	#define PRUEBA 0
+	#if PRUEBA == 1
 	bn_word d3[v->size + 2]; d3[0]=0;
 	BigInt tmpd; tmpd.size=1; tmpd.sign=BN_POS; tmpd.d = d3;
 	BigInt* tmp = &tmpd;
+	#endif
 	ans->size = m + 1;
 	BigInt uPrima;
 	uPrima.d = &u->d[u->size - n - 1];
 	uPrima.sign = BN_POS;
 	uPrima.size = n + 1;
 	uPrima.maxSize = uPrima.size;
+	bn_dword V1 = V(1);
+	bn_dword V2 = V(2);
 	do {
-		if (U(j) == V(1)) qs = WMASK;
-		else qs = (U(j)*BASE + U(j+1)) / V(1);
-		while (stepD3(V(2), qs, U(j), U(j+1), V(1), U(j+2))) qs--;
+		if (U(j) == V1) qs = WMASK;
+		else qs = ((U(j) << WBITS) | U(j+1)) / V1;
+		while (stepD3(V2, qs, U(j), U(j+1), V1, U(j+2))) qs--;
+		#if PRUEBA == 1
 		bnMulIntWord(tmp, v, qs);
 		bnRemCeros(&uPrima);
 		if(bnUCompareInt(&uPrima, tmp) < 0)
@@ -475,6 +481,10 @@ void bnDivIntF(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 			bnSubInt(tmp, tmp, v);
 		}
 		bnSubInt(&uPrima, &uPrima, tmp);
+		#else
+		if(mulsub(uPrima.d, v->d, qs, uPrima.size) > U(j))
+			printf("paila\n");
+		#endif
 		ans->d[m - j] = qs;
 		uPrima.d--;
 		uPrima.size = n + 1;
@@ -524,6 +534,90 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod) {
 		bnDivIntF(tmp1, tmp1, mod, base);		
 	}
 	bnDelBigInt(exponent); bnDelBigInt(base); bnDelBigInt(tmp1);
+}
+
+void bnIntToStrA(char* ans, BigInt* x) {
+	bn_word currentWord = 0;
+	bn_word currentBit = 0;
+	bn_word i = 0;
+	while(currentWord != x->size)
+	{
+		bn_word * pos = x->d + currentWord;
+		bn_word val = ((*pos) >> currentBit) & 15;
+		if(val == 10)
+			ans[i++] = 'a';
+		else if(val == 11)
+			ans[i++] = 'b';
+		else if(val == 12)
+			ans[i++] = 'c';
+		else if(val == 13)
+			ans[i++] = 'd';
+		else if(val == 14)
+			ans[i++] = 'e';
+		else if(val == 15)
+			ans[i++] = 'f'; 
+		else
+			ans[i++] = '0' + val;
+		currentBit += 4;
+		if(currentBit == WBITS)
+		{
+			currentWord++;
+			currentBit = 0;
+		}
+	}
+	while(i > 0 && ans[i - 1] == '0') i--;
+	ans[i] = '\0';
+    invStr(ans, i);
+}
+
+void bnStrToIntA(BigInt *ans, const char *input)
+{
+	bn_word currentWord = 0;
+	ans->d[0] = 0;
+	bn_word currentBit = 0;
+	bn_word i = 0;
+	while(input[i++] != '\0');
+	i--;
+	while(i-- != 0)
+	{
+		bn_word * pos = ans->d + currentWord;
+		switch(input[i])
+		{
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9': *pos = *pos | ((input[i] - '0') << currentBit); break;
+			case 'A':
+			case 'B':
+			case 'C':
+			case 'D':
+			case 'E':
+			case 'F': *pos = *pos | ((10 + input[i] - 'A') << currentBit); break;
+			case 'a':
+			case 'b':
+			case 'c':
+			case 'd':
+			case 'e':
+			case 'f': *pos = *pos | ((10 + input[i] - 'a') << currentBit); break;
+		}
+		currentBit += 4;
+		if(currentBit == WBITS)
+		{
+			currentWord++;
+			currentBit = 0;
+			ans->d[currentWord] = 0;
+		}
+	}
+	if(currentBit != 0)
+		currentWord++;
+	ans->size = currentWord;
+	ans->sign = BN_POS;
 }
 
 void bnStrToInt(BigInt *ans, const char *input) {

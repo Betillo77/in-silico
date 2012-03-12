@@ -20,9 +20,9 @@ public class TestGenerator
 	public static void main(String[] args) throws FileNotFoundException
 	{
 		System.setOut(new PrintStream("testBig.in"));
-		for(int i = 0; i < 100; i++)
+		for(int i = 0; i < 100000; i++)
 		{
-			BigInteger a = generarBigInteger(128);
+			BigInteger a = generarBigInteger(256);
 			BigInteger b = generarBigInteger(128);
 			int numero = r.nextInt(6);
 			char signo = ' ';
@@ -35,12 +35,12 @@ public class TestGenerator
 				case 4: signo = '%'; break;
 				case 5: signo = '^'; break;
 			}
-			signo = '^';
+			signo = '/';
 			BigInteger menor = a.min(b);
 			BigInteger mayor = a.max(b);
 			if(signo == '^')
 			{
-				BigInteger c = generarBigInteger(128);
+				BigInteger c = generarBigInteger(64);
 				BigInteger[] tres = new BigInteger[] {a, b, c};
 				Arrays.sort(tres);
 				if(tres[2].equals(BigInteger.ZERO) || tres[2].equals(BigInteger.ONE) || tres[1].equals(tres[2]))
@@ -54,7 +54,7 @@ public class TestGenerator
 					tres[0] = tres[1];
 					tres[1] = temp;
 				}
-				System.out.println(signo + " " + tres[0] + " " + tres[1] + " " + tres[2]);
+				System.out.println(signo + " " + tres[0].toString(16) + " " + tres[1].toString(16) + " " + tres[2].toString(16));
 				continue;
 			}
 			else if((signo == '/' || signo == '%') && (menor.equals(BigInteger.ZERO) || menor.equals(BigInteger.ONE)))
@@ -62,7 +62,7 @@ public class TestGenerator
 				i--;
 				continue;
 			}
-			System.out.println(signo + " " + mayor + " " + menor);
+			System.out.println(signo + " " + mayor.toString() + " " + menor.toString());
 		}
 	}
 }

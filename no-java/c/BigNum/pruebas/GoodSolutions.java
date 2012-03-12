@@ -21,25 +21,25 @@ public class GoodSolutions
 			switch(a.charAt(0))
 			{
 				case '/':
-					bw.append(new BigInteger(st.nextToken()).divide(new BigInteger(st.nextToken())).toString());
+					bw.append(new BigInteger(st.nextToken(), 16).divide(new BigInteger(st.nextToken(), 16)).toString(16));
 					break;
 				case '%':
-					bw.append(new BigInteger(st.nextToken()).mod(new BigInteger(st.nextToken())).toString());
+					bw.append(new BigInteger(st.nextToken(), 16).mod(new BigInteger(st.nextToken(), 16)).toString(16));
 					break;
 				case '*':
-					bw.append(new BigInteger(st.nextToken()).multiply(new BigInteger(st.nextToken())).toString());
+					bw.append(new BigInteger(st.nextToken(), 16).multiply(new BigInteger(st.nextToken(), 16)).toString(16));
 					break;
 				case '+':
-					bw.append(new BigInteger(st.nextToken()).add(new BigInteger(st.nextToken())).toString());
+					bw.append(new BigInteger(st.nextToken(), 16).add(new BigInteger(st.nextToken(), 16)).toString(16));
 					break;
 				case '-':
-					bw.append(new BigInteger(st.nextToken()).subtract(new BigInteger(st.nextToken())).toString());
+					bw.append(new BigInteger(st.nextToken(), 16).subtract(new BigInteger(st.nextToken(), 16)).toString(16));
 					break;
 				case 't':
-					bw.append(new BigInteger(st.nextToken()).shiftRight(Integer.parseInt(st.nextToken())).toString());
+					bw.append(new BigInteger(st.nextToken(), 16).shiftRight(Integer.parseInt(st.nextToken(), 16)).toString(16));
 					break;
 				default:
-					bw.append(new BigInteger(st.nextToken()).modPow(new BigInteger(st.nextToken()), new BigInteger(st.nextToken())).toString());
+					bw.append(new BigInteger(st.nextToken(), 16).modPow(new BigInteger(st.nextToken(), 16), new BigInteger(st.nextToken(), 16)).toString(16));
 					
 			}
 			bw.append('\n');
