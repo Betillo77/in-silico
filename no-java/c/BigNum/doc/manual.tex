@@ -147,7 +147,7 @@ None.
 \begin{verbatim}
 	char ans[100];
 	BigInt *a=bnNewBigInt(50, 0);
-	char *input=”-123456789000”;
+	char *input="-123456789000";
 	bnStrToInt(a, input);
 	bnIntToStr(ans,a);
 \end{verbatim}
@@ -190,7 +190,7 @@ None.
 \begin{verbatim}
 	char ans[100];
 	BigInt *a=bnNewBigInt(50, 0);
-	char *input=”-123456789000”;
+	char *input="-123456789000";
 	bnStrToInt(a, input);
 	bnIntToStr(ans,a);
 \end{verbatim}
@@ -346,6 +346,50 @@ None.
 \end{itemize}
 
 After this code is executed the value of the big integer \verb+ans+ will be the result of multiplying two big integers (\verb+a+ and \verb+b+), and the value of the array pointed by \verb+array+ will be \verb+"121932631112635269"+.
+
+\subsection{Division}
+
+For computing the integer division of two big integers you can use the following function:\\
+
+\verb+void bnDivInt(BigInt *ans, BigInt *a, BigInt *b, BigInt *res);+\\
+
+\paragraph{Purpose:} 
+
+To make an integer division of two big integers, $ans$ =  $\lfloor\frac{a}{b}\rfloor$ , $res$=$ a - ans * b$ .
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf ans:}
+
+Pointer to the big integer where the quotient of dividing \verb+ a + by \verb+ b + will be saved.
+
+\item {\bf a:}
+
+Pointer to the big integer which represents the dividend. 
+
+\item {\bf b:}
+
+Pointer to the big integer which represents th divisor.
+
+\item {\bf res:}
+
+Pointer to the big integer where the remainder of \verb+a+ divided by \verb+b+ will be saved. 
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+    ejemplo
+\end{itemize}
+
+falta
 
 
 \chapter{Intern Structure}
