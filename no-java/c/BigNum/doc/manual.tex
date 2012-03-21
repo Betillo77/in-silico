@@ -503,7 +503,110 @@ None.
 \end{verbatim}
 \end{itemize}
 
-The value of the string pointed by array will be \verb+"506178"+  which is $45646464^{123123131312312331312131456}\;mod\;1000003$.
+The value of the string pointed by \verb+array+ will be \verb+"506178"+  which is $45646464^{123123131312312331312131456}\;mod\;1000003$.
+
+\section{Other Operations}
+
+\subsection{Logical Left Shift}
+
+For shifting all bits of a big integer number to the left you can use the following function:\\
+
+\verb+void bnShiftLBits(BigInt* res, BigInt* a, unsigned int bits)+\\
+
+Notice that this shift is made over binary digits instead of $2^B$ digits, where $B$ is the bitlength of an \verb+int+ data type. Remember that this operation has the effect of multiplying  by $2^{bits}$ the number which is being shifted, as a technical detail this shift is not circular, so the bit positions which get empty are filled with zeros.
+
+\paragraph{Purpose:} 
+
+To shift to the left all bits of a big integer \verb+bits+ positions, $res = a << bits$.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf res:}
+
+Pointer to the big integer where the result of shifting \verb+a+ to the left a number of positions given by \verb+bits+ will be saved.
+
+\item {\bf a:}
+
+Pointer to the big integer which will be shifted to the left. 
+
+\item {\bf bits:}
+
+Is the number of bit positions the big integer \verb+a+ will be shifted to the left.
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+    char array[100];
+    BigInt *res=bnNewBigInt(50, 0);
+    BigInt *a=bnNewBigInt(50, 1000000000);
+    bnShiftLBits(res,a,100);
+    bnIntToStr(array,res);
+\end{verbatim}
+\end{itemize}
+
+The value of the string pointed by \verb+array+ will be \verb+"1267650600228229401496703205376000000000"+  which is $1000000000 * 2^{100}$.
+
+\subsection{Logical Right Shift}
+
+For shifting all bits of a big integer number to the right you can use the following function:\\
+
+\verb+void bnShiftRBits(BigInt *res, BigInt *a, unsigned int bits);+\\
+
+Notice that this shift is made over binary digits instead of $2^B$ digits, where $B$ is the bitlength of an \verb+int+ data type. Remember that this operation has the effect of making an integer division of the number which is being shifted by $2^{bits}$ , as a technical detail this shift is not circular, so the bit positions which get empty are filled with zeros.
+
+\paragraph{Purpose:} 
+
+To shift to the right all bits of a big integer \verb+bits+ positions, $res = a >> bits$.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf res:}
+
+Pointer to the big integer where the result of shifting \verb+a+ to the right a number of positions given by \verb+bits+ will be saved.
+
+\item {\bf a:}
+
+Pointer to the big integer which will be shifted to the right. 
+
+\item {\bf bits:}
+
+Is the number of bit positions the big integer \verb+a+ will be shifted to the right.
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+    char ans[100];
+    char *number="21313123646797979461456794632132459";
+    BigInt *res=bnNewBigInt(50, 0);
+    BigInt *a=bnNewBigInt(50, 0);
+    bnStrToInt(a, number);
+    bnShiftRBits(res,a,100);
+    bnIntToStr(ans,res);
+\end{verbatim}
+\end{itemize}
+
+The value of the character array pointed by ans will be \verb+"16813"+  which is $\lfloor21313123646797979461456794632132459 / 2^{100}\rfloor$.
+
+
+
 
 \chapter{Putting all together}
 
