@@ -386,10 +386,129 @@ None.
 
 \begin{itemize}
 \item
-    ejemplo
+\begin{verbatim}
+    char quotient[100];
+    char remainder[100];
+    BigInt *ans=bnNewBigInt(50, 0);
+    BigInt *a=bnNewBigInt(50, 0);
+    BigInt *b=bnNewBigInt(50, 0);
+    BigInt *rem=bnNewBigInt(50, 0);
+    char *dividend="13213131231314644665467879";
+    char *divisor="9987999784543";
+    bnStrToInt(a,dividend);
+    bnStrToInt(b,divisor);
+    bnDivInt(ans, a, b, rem);
+    bnIntToStr(quotient,ans);
+    bnIntToStr(remainder,rem);
+    printf("Quotient:%s Remainder:%s\n",quotient,remainder);
+\end{verbatim}
 \end{itemize}
 
-falta
+The following line will be printed to standard output when this code is executed:\\
+
+\verb+Quotient:1322900632393 Remainder:1562218966480+
+
+\subsection{Exponentiation}
+
+For computing exponentiation of integer numbers you can use the following function:\\
+
+\verb+void bnPowInt(BigInt *ans, BigInt *a, int b);+\\
+
+\paragraph{Purpose:} 
+
+To compute the result of raising an integer number to another integer number, $ans$ =  $a^b$.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf ans:}
+
+Pointer to the big integer where the result of raising \verb+ a + to the power of \verb+ b + will be saved. Make sure that this big integer has enough size for holding the exponentiation result.
+
+\item {\bf a:}
+
+Pointer to the big integer which represents the exponentiation base. 
+
+\item {\bf b:}
+
+Pointer to the integer which represents the exponent. Notice that the type of this argument is \verb+int+ instead of \verb+BigInt+, because it does not make sense to compute the exponentiation with very large powers since this kind of operation exceeds the computer capabilities.
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+    char array[100];
+    BigInt *ans=bnNewBigInt(50, 0);
+    BigInt *a=bnNewBigInt(50, 2);
+    bnPowInt(ans, a, 256);
+    bnIntToStr(array,ans);
+\end{verbatim}
+\end{itemize}
+
+The value of the string pointed by \verb+array+ after this code is executed will be:\\ 
+\verb+"115792089237316195423570985008687907853269984665640564039457584007913129639936"+ which is $2^{256}$.
+
+\subsection{Modular exponentiation}
+
+For computing modular exponentiation you can use the following function:\\
+
+\verb+void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod);+\\
+
+\paragraph{Purpose:} 
+
+To compute the result of an exponentiation modulo an integer number, $ans \equiv a^b \; modulo \; mod$.
+
+\paragraph{Arguments:}
+
+\begin{itemize}
+\item{\bf ans:}
+
+Pointer to the big integer where the result of raising \verb+a+ to the power of \verb+b+ module \verb+mod+ will be saved.
+
+\item {\bf a:}
+
+Pointer to the big integer which represents the exponentiation base. 
+
+\item {\bf b:}
+
+Pointer to the big integer which represents the exponent. Notice that in contrast with the function \verb+bnPowInt+ this exponent can be a large number because this is modular exponentiation.
+
+\end{itemize}
+
+\paragraph{Return Value}:\\
+
+None.
+
+\paragraph{Example:}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+    char array[100];
+    char *exp="123123131312312331312131456";
+    BigInt *ans=bnNewBigInt(50, 0);
+    BigInt *a=bnNewBigInt(50, 45646464);
+    BigInt *b=bnNewBigInt(50, 0);
+    bnStrToInt(b,exp);
+    BigInt *mod=bnNewBigInt(50, 1000003);
+    bnPowModInt(ans, a, b, mod);
+    bnIntToStr(array,ans);
+\end{verbatim}
+\end{itemize}
+
+The value of the string pointed by array will be \verb+"506178"+  which is $45646464^{123123131312312331312131456}\;mod\;1000003$.
+
+\chapter{Putting all together}
+
+The aim of this chapter is to give a few examples about how to use all the BigNum primitives for implementing an specific algorithm, so the BigNum user gets closer to the way of working with BigNum library and he can take advantage of all the features of this library.  
+
 
 
 \chapter{Intern Structure}
