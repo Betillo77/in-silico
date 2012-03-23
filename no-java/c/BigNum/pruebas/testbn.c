@@ -19,9 +19,10 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
     x1.d = &(a->d[mid]); x1.size = n-mid; x1.sign = BN_POS;
     y0.d = b->d; y0.size = mid; y0.sign = BN_POS;
     y1.d = &(b->d[mid]); y1.size = n-mid; y1.sign = BN_POS;
-    BigInt *p0 = bnNewBigInt(n,0);
-    BigInt *p1 = bnNewBigInt(2*n,0);
-    BigInt *p2 = bnNewBigInt(n,0);
+    bnRemCeros(&x0); bnRemCeros(&x1); bnRemCeros(&y0); bnRemCeros(&y1);
+    BigInt *p0 = bnNewBigInt(2*n,0);
+    BigInt *p1 = bnNewBigInt(4*n,0);
+    BigInt *p2 = bnNewBigInt(2*n,0);
     bnAddInt(p0,&x0,&x1);
     bnAddInt(p2,&y0,&y1);
     bnPrivKaratsuba(p1,p0,p2);  //p1 = (x0+x1)(y0+y1)
@@ -30,10 +31,13 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
     bnAddInt(res,p0,p2);
     bnSubInt(p1,p1,res); //p1 = p1 - p0 - p2
     bnShiftLBits(p1,p1,mid*WBITS); //p1 = p1*BASE^(n/2)
-    bnShiftLBits(res,p2,n*WBITS); //ans += p2*BASE^n
+    bnShiftLBits(res,p2,2*mid*WBITS); //ans += p2*BASE^n
     bnAddInt(res,res,p1); //ans += p1
     bnAddInt(res,res,p0); //ans += p0
-    bnDelBigInt(p0);bnDelBigInt(p1);bnDelBigInt(p2);
+    x0.d=0; x1.d=0; y0.d=0; y1.d=0;
+    bnDelBigInt(p0);
+    bnDelBigInt(p1);
+    bnDelBigInt(p2);
 }
 
 void bnMultIntK(BigInt *res, BigInt *a, BigInt *b) {
