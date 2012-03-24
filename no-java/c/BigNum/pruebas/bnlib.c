@@ -272,66 +272,69 @@ void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
     bnCopyInt(res, sum);
     res->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
 }
-/*
+
 //Private method to multiply with karatsuba algorithm, this method supposes that
 //both a and b have a maxSize greater or equal than max(a.size,b.size) and that putting
 //values in res is NOT going to alter a or b. Don't call with a=res or b=res.
 void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
     int n = MAX(a->size,b->size);
-    if (n==1) {
-        res->size=2;
-        bn_dword x = ((bn_dword)a->d[0])*b->d[0];
-        res->d[0] = (bn_word)(x & WMASK);
-        res->d[1] = (bn_word)(x >> WBITS);
+    if (n<=4) {
+        bnMulInt(res,a,b);
         return;
     }
     int mid = (n>>1) + (n&1); //(n/2) + (n%2)
+    bn_word zero=0;
     BigInt x0,x1,y0,y1;
-    x0.d = a->d; x0.size = mid; x0.sign = BN_POS;
-    x1.d = &(a->d[mid]); x1.size = n-mid; x1.sign = BN_POS;
-    y0.d = b->d; y0.size = mid; y0.sign = BN_POS;
-    y1.d = &(b->d[mid]); y1.size = n-mid; y1.sign = BN_POS;
-    BigInt *p0 = bnNewBigInt(n,0);
-    BigInt *p1 = bnNewBigInt(2*n,0);
-    BigInt *p2 = bnNewBigInt(n,0);
+    if (a->size > mid) {
+        x0.d = a->d; x0.size = mid; x0.sign = BN_POS;
+        x1.d = &(a->d[mid]); x1.size = a->size-mid; x1.sign = BN_POS;
+    } else {
+        x0.d = a->d; x0.size = a->size; x0.sign = BN_POS;
+        x1.d = &(zero); x1.size = 1; x1.sign = BN_POS;
+    }
+    if (b->size > mid) {
+        y0.d = b->d; y0.size = mid; y0.sign = BN_POS;
+        y1.d = &(b->d[mid]); y1.size = b->size-mid; y1.sign = BN_POS;
+    } else {
+        y0.d = b->d; y0.size = b->size; y0.sign = BN_POS;
+        y1.d = &(zero); y1.size = 1; y1.sign = BN_POS;
+    }
+    BigInt *p0 = bnNewBigInt(2*n,0);
+    BigInt *p1 = bnNewBigInt(4*n,0);
+    BigInt *p2 = bnNewBigInt(2*n,0);
     bnAddInt(p0,&x0,&x1);
     bnAddInt(p2,&y0,&y1);
     bnPrivKaratsuba(p1,p0,p2);  //p1 = (x0+x1)(y0+y1)
     bnPrivKaratsuba(p0,&x0,&y0); //p0 = x0*y0;
-    bnPrivKaratsuba(p2,&x1,&y1); //p2 = x1*y1;
+    if ((x1.size==1 && x1.d[0]==0) || (y1.size==1 && y1.d[0]==0)) {
+        p2->d[0]=0; p2->size=1;        
+    } else {
+        bnPrivKaratsuba(p2,&x1,&y1); //p2 = x1*y1;
+    }    
     bnAddInt(res,p0,p2);
     bnSubInt(p1,p1,res); //p1 = p1 - p0 - p2
     bnShiftLBits(p1,p1,mid*WBITS); //p1 = p1*BASE^(n/2)
-    bnShiftLBits(res,p2,n*WBITS); //ans += p2*BASE^n
+    bnShiftLBits(res,p2,2*mid*WBITS); //ans += p2*BASE^n
     bnAddInt(res,res,p1); //ans += p1
     bnAddInt(res,res,p0); //ans += p0
-    bnDelBigInt(p0);bnDelBigInt(p1);bnDelBigInt(p2);
+    x0.d=0; x1.d=0; y0.d=0; y1.d=0;
+    bnDelBigInt(p0);
+    bnDelBigInt(p1);
+    bnDelBigInt(p2);
 }
 
 void bnMultIntK(BigInt *res, BigInt *a, BigInt *b) {
-    BigInt *ans;
+    BigInt *ans; bn_word i;
     if (a==res || b==res) ans = bnNewBigInt(res->maxSize,0);
     else ans = res;
     
-    if (a->size == b->size) {
-        bnPrivKaratsuba(ans,a,b);
-    } else if (a->size > b->size) {
-        BigInt *tmp = bnNewBigInt(a->size,0);
-        bnCopyInt(tmp,b);
-        bnPrivKaratsuba(ans,a,tmp);
-        bnDelBigInt(tmp);
-    } else {
-        BigInt *tmp = bnNewBigInt(b->size,0);
-        bnCopyInt(tmp,a);
-        bnPrivKaratsuba(ans,tmp,b);
-        bnDelBigInt(tmp);
-    }
+    bnPrivKaratsuba(ans,a,b);   
     
     if (a==res || b==res) {
         bnCopyInt(res,ans);
         bnDelBigInt(ans);
     }
-}*/
+}
 
 /*ans = a / b ; res = a % b #División sin signo*/
 void bnDivIntWord(BigInt* ans, BigInt* a, bn_word b, bn_word *res) {

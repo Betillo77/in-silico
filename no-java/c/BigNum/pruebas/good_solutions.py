@@ -21,6 +21,10 @@ for i in sys.stdin:
 	elif(lista[0] == "*"):
 		#print hex(base * exponent)[2:-1]
 		print base * exponent
+	elif(lista[0] == "+"):
+	    print base + exponent
+	elif(lista[0] == "-"):
+	    print base - exponent    
 	elif(lista[0] == "^"):
 		mod = int(lista[3], 16)
 		ans = 1
