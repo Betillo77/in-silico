@@ -47,5 +47,6 @@ void bnPowModInt(BigInt *ans, BigInt *a, BigInt* b, BigInt *mod);
 void bnIntToStr(char *ans, BigInt *a);
 void bnCopyInt(BigInt *res, BigInt *a);
 void bnStrToInt(BigInt *ans, const char *input);
+void bnMultIntK(BigInt *res, BigInt *a, BigInt *b);
 
 #endif
