@@ -1,5 +1,6 @@
 VERSION=1
 RELEASE=0.1
+DIR=/usr/local/lib
 
 all: libutpbn.so
 
@@ -17,9 +18,9 @@ clean:
 	rm *.so.*
 
 install: libutpbn.so bnlib.h
-	cp libutpbn.so.$(VERSION).$(RELEASE) /usr/local/lib/libutpbn.so.$(VERSION)
-	ln -s libutpbn.so.$(VERSION) libutpbn.so
-	ln -s libutpbn.so.$(VERSION) libutpbn.so.$(VERSION).$(RELEASE)
+	cp libutpbn.so.$(VERSION).$(RELEASE) $(DIR)/libutpbn.so.$(VERSION)
+	ln -s $(DIR)/libutpbn.so.$(VERSION) $(DIR)/libutpbn.so
+	ln -s $(DIR)/libutpbn.so.$(VERSION) $(DIR)/libutpbn.so.$(VERSION).$(RELEASE)
 	cp bnlib.h /usr/local/include
 
 uninstall:
