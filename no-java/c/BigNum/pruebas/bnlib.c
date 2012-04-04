@@ -299,9 +299,9 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
         y0.d = b->d; y0.size = b->size; y0.sign = BN_POS;
         y1.d = &(zero); y1.size = 1; y1.sign = BN_POS;
     }
-    BigInt *p0 = bnNewBigInt(2*n,0);
-    BigInt *p1 = bnNewBigInt(4*n,0);
-    BigInt *p2 = bnNewBigInt(2*n,0);
+    BigInt *p0 = bnNewBigInt(2*mid,0);
+    BigInt *p1 = bnNewBigInt(4*mid,0);
+    BigInt *p2 = bnNewBigInt(2*mid,0);
     bnAddInt(p0,&x0,&x1);
     bnAddInt(p2,&y0,&y1);
     bnPrivKaratsuba(p1,p0,p2);  //p1 = (x0+x1)(y0+y1)

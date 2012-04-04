@@ -1,6 +1,7 @@
 
 #include "bnlib.c"
 #include <stdio.h>
+#include <time.h>
 
 char a[1000];
 char b[1000];
@@ -47,10 +48,16 @@ int main()
                 scanf("%s %s",a,b);
                 bnStrToInt(aa, a);
                 bnStrToInt(bb, b);
+                time_t seconds,seconds2;
+                double elapsed;
+  				seconds = time (0);	
                 bnMultIntK(ans, aa, bb);
+                seconds2 = time (0);
+                elapsed=difftime(seconds, seconds2);	
                 //bnMulInt(ans, aa, bb);
                 bnIntToStr(a,ans);
                 printf("%s\n",a);
+                //printf("%lf\n",elapsed);
                 break;
             case '/':
                 scanf("%s %s",a,b);
