@@ -1,11 +1,12 @@
 VERSION=1
 RELEASE=0.1
 DIR=/usr/local/lib
+FLAGS=-O2
 
 all: libutpbn.so
 
 bnlib.o: bnlib.c
-	gcc -fpic -g -c -Wall bnlib.c
+	gcc -fpic $(FLAGS) -c -Wall bnlib.c
 	
 libutpbn.so: bnlib.o
 	gcc -shared -Wl,-soname,libutpbn.so.$(VERSION) -o libutpbn.so.$(VERSION).$(RELEASE) bnlib.o -lc

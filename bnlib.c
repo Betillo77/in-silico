@@ -123,7 +123,7 @@ void bnShiftLBits(BigInt* res, BigInt* a, bn_word bits) {
 
 void bnShiftRBits(BigInt* res, BigInt* a, bn_word bits) {
     bn_word rdig[res->maxSize];
-    bn_word carry, shdig, shbits, otbits, i, temp;
+    bn_word carry, shdig, shbits, otbits, i;
     bn_dword rshift;
     carry = 0;
     shdig = bits/WBITS; shbits = bits%WBITS; otbits = (WBITS-shbits);
@@ -219,8 +219,7 @@ void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
 	BigInt tmp2; tmp2.size=1; tmp2.maxSize=res->maxSize; tmp2.sign=BN_POS; tmp2.d=d2;
 	
 	BigInt *tmp= &tmp1, *sum = &tmp2;
-    bn_word i, j, carry;
-    bn_dword m;
+    bn_word i;
     //tmp = bnNewBigInt(res->maxSize,0); sum = bnNewBigInt(res->maxSize,0);
 
     REP(i, b->size) {
@@ -286,7 +285,7 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
 }
 
 void bnMultIntK(BigInt *res, BigInt *a, BigInt *b) {
-    BigInt *ans; bn_word i;
+    BigInt *ans;
     if (a==res || b==res) ans = bnNewBigInt(res->maxSize,0);
     else ans = res;
     
@@ -314,12 +313,10 @@ void bnDivIntWord(BigInt* ans, BigInt* a, bn_word b, bn_word *res) {
 }
 
 void bnIntToStr(char* ans, BigInt* x) {
-	char strres[15];
 	int j;
     bn_word i=0, res;
     BigInt *a = bnNewBigInt(x->size, 0);
     bnRemCeros(x);
-    int k;
     bnCopyInt(a,x);
     while (a->size > 1 || a->d[0] >= 1000000000) {
         bnDivIntWord(a,a,1000000000,&res);
