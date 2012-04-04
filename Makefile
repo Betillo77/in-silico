@@ -8,7 +8,7 @@ bnlib.o: bnlib.c
 	gcc -fpic -g -c -Wall bnlib.c
 	
 libutpbn.so: bnlib.o
-	gcc -shared -Wl,-soname,libutpbn.so.1 -o libutpbn.so.$(VERSION).$(RELEASE) bnlib.o -lc
+	gcc -shared -Wl,-soname,libutpbn.so.$(VERSION) -o libutpbn.so.$(VERSION).$(RELEASE) bnlib.o -lc
 	
 factorial: factorial.c libutpbn.so
 	gcc -o factorial factorial.c -lutpbn
