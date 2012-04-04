@@ -26,7 +26,7 @@ for i in sys.stdin:
 	elif(lista[0] == "-"):
 	    print base - exponent    
 	elif(lista[0] == "^"):
-		mod = int(lista[3], 16)
+		mod = int(lista[3])
 		ans = 1
 		while(exponent != 0):
 			if((exponent & 1) == 1):
