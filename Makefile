@@ -27,3 +27,4 @@ install: libutpbn.so bnlib.h
 uninstall:
 	rm $(DIR)/libutpbn.so*
 	rm /usr/local/include/bnlib.h
+	ldconfig
