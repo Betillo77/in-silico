@@ -1,0 +1,15 @@
+To install the library you should do the following steps:
+
+> make
+> sudo make install
+
+To test the library with a factorial program, run:
+
+> make factorial
+> ./factorial
+
+And try to compute the factorial of some big number. For additional help on how to use the library download the user manual from our webpage in google code:
+
+http://code.google.com/p/in-silico/
+
+This library is distributed with Apache 2 Licence. The creators of the library are from InSilico group of Universidad Tecnologica de Pereira (Colombia)
