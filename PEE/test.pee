@@ -1,7 +1,0 @@
-
-vacio cuadrado(entero lado)
-    entero i;
-inicio
-    i=4;
-    i = i-1;
-fin
