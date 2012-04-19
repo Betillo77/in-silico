@@ -195,7 +195,7 @@ void bnShiftRBits(BigInt* res, BigInt* a, bn_word bits) {
  */
 void bnAddInt(BigInt* res, BigInt* sum1, BigInt* sum2) {
     BigInt *a, *b;
-    if (bnUCompareInt(sum1, sum2) > 0) {
+    if (bnUCompareInt(sum1, sum2) >= 0) {
         a=sum1; b=sum2;
     } else {
         a=sum2; b=sum1;
@@ -215,7 +215,8 @@ void bnAddInt(BigInt* res, BigInt* sum1, BigInt* sum2) {
 void bnSubInt(BigInt* res, BigInt* a, BigInt* b) {
     bnNegInt(b);
     bnAddInt(res,a,b);
-    bnNegInt(b);
+    if (b != res)
+        bnNegInt(b);
 }
 
 BigInt* bnNewBigInt(bn_word maxSize, bn_word initVal) {
@@ -477,6 +478,7 @@ bn_word mulsub(bn_word *q, bn_word *a, bn_word qs, bn_word size)
 
 void bnDivInt(BigInt *ans, BigInt *a, BigInt *b, BigInt *res) {
 	ans->sign = (a->sign == b->sign) ? BN_POS : BN_NEG;
+	res->sign = BN_POS;
 	if(b->size == 1)
 	{
 		bnDivIntWord(ans, a, b->d[0], res == 0 ? 0 : &res->d[0]);

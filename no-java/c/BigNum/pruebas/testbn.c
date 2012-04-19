@@ -8,15 +8,8 @@ char b[1000];
 char c[1000];
 char op;
 
-void printBN(BigInt *x) {
-    char tmp[x->size*10];
-    bnIntToStr(tmp,x);
-    printf("%s\n",tmp);
-}
-
-int main()
-{
-	int t;
+void testbn() {
+    int t;
     BigInt *aa=bnNewBigInt(100,0);
     BigInt *bb=bnNewBigInt(100,0);
     BigInt *cc=bnNewBigInt(100,0);
@@ -99,5 +92,60 @@ int main()
     bnDelBigInt(bb);
     bnDelBigInt(ans);
     bnDelBigInt(ans1);
+}
+
+void printBN(BigInt *x) {
+    char tmp[x->size*10];
+    bnIntToStr(tmp,x);
+    printf("%s\n",tmp);
+}
+
+void extEuclidAlg(BigInt *a_in, BigInt *b_in, BigInt *x, BigInt *y) {
+    x->size=1; x->d[0]=0;
+    y->size=1; y->d[0]=1;
+    BigInt *lastx = bnNewBigInt(x->maxSize,1);
+    BigInt *lasty = bnNewBigInt(y->maxSize,0);
+    BigInt *tmp1 = bnNewBigInt(a_in->maxSize,0);
+    BigInt *quotient = bnNewBigInt(a_in->maxSize,0);
+    BigInt *a = bnNewBigInt(a_in->maxSize,0); bnCopyInt(a,a_in);
+    BigInt *b = bnNewBigInt(b_in->maxSize,0); bnCopyInt(b,b_in);
+    while (b->size > 1 || b->d[0] != 0) {
+        bnDivInt(quotient,a,b,tmp1); //quotient = a div b
+        bnCopyInt(a,b); 
+        bnCopyInt(b,tmp1); //(a, b) = (b, a mod b)
+        
+        bnMulInt(tmp1,quotient,x);
+        bnSubInt(tmp1, lastx, tmp1); //tmp1 = lastx - quotient*x
+        bnCopyInt(lastx, x); 
+        bnCopyInt(x, tmp1); //(x,lastx)=(tmp1,x)
+        
+        bnMulInt(tmp1, quotient, y); 
+        bnSubInt(tmp1, lasty, tmp1); //tmp1 = lasty - quotient*y
+        bnCopyInt(lasty, y);
+        bnCopyInt(y, tmp1); //(y,lasty)=(tmp1,y)
+    }
+    bnCopyInt(x,lastx); bnCopyInt(y, lasty);
+    bnDelBigInt(a); bnDelBigInt(b); 
+    bnDelBigInt(tmp1); bnDelBigInt(quotient);
+    bnDelBigInt(lastx); bnDelBigInt(lasty);
+}
+
+void testModInv() {
+    BigInt *aa = bnNewBigInt(200,0);
+    BigInt *bb = bnNewBigInt(200,0);
+    BigInt *x = bnNewBigInt(200,0);
+    BigInt *y = bnNewBigInt(200,0);
+    scanf("%s %s", a, b);
+    bnStrToInt(aa,a);
+    bnStrToInt(bb,b);
+    extEuclidAlg(aa,bb,x,y);
+    bnIntToStr(c,x);
+    printf("%s\n",c);
+    bnDelBigInt(aa); bnDelBigInt(bb);
+    bnDelBigInt(x); bnDelBigInt(y);
+}
+
+int main() {
+	testModInv();
     return 0;
 }
