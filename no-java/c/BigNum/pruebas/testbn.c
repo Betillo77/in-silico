@@ -100,7 +100,8 @@ void printBN(BigInt *x) {
     printf("%s\n",tmp);
 }
 
-void extEuclidAlg(BigInt *a_in, BigInt *b_in, BigInt *x, BigInt *y) {
+//Return 1 (true) if a_in and b_in are coprime, 0 (false) otherwise
+char extEuclidAlg(BigInt *a_in, BigInt *b_in, BigInt *x, BigInt *y) {
     x->size=1; x->d[0]=0;
     y->size=1; y->d[0]=1;
     BigInt *lastx = bnNewBigInt(x->maxSize,1);
@@ -124,10 +125,12 @@ void extEuclidAlg(BigInt *a_in, BigInt *b_in, BigInt *x, BigInt *y) {
         bnCopyInt(lasty, y);
         bnCopyInt(y, tmp1); //(y,lasty)=(tmp1,y)
     }
+    char ans = (a->size==1 && a->d[0]=1);
     bnCopyInt(x,lastx); bnCopyInt(y, lasty);
     bnDelBigInt(a); bnDelBigInt(b); 
     bnDelBigInt(tmp1); bnDelBigInt(quotient);
     bnDelBigInt(lastx); bnDelBigInt(lasty);
+    return ans;
 }
 
 void testModInv() {
