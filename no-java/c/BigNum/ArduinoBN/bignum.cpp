@@ -232,7 +232,7 @@ void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
 //values in res is NOT going to alter a or b. Don't call with a=res or b=res.
 void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
     int n = MAX(a->size,b->size);
-    if (n<=4) {
+    if (n<=10) {
         bnMulInt(res,a,b);
         return;
     }
