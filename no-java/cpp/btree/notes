@@ -1,0 +1,1 @@
+The B-tree requieres for some operations to have certain pages loaded in main memory, for that reason one must ensure that the pages whose addresses have been passed as parameter to diskRead recently are loaded in main memory.
