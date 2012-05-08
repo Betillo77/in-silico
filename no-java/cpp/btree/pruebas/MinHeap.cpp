@@ -16,22 +16,29 @@ using namespace std;
 
 
 class Dato{
+    public:
     long dir;
     long date;
     int memdir;
     
-    public:
+
     Dato(long dir, long date, int memdir);
     Dato();
-    long getDate();
-    long getDir();
+    long& getDate();
+    long& getDir();
+    int& getMem();
+    void print();
     Dato& operator = (const Dato &a);
     bool operator < (const Dato &a);
     bool operator > (const Dato &a);
     bool operator == (const Dato &a);
 };
 
-Dato::Dato(){}
+Dato::Dato(){
+    this->dir = 0;
+    this->date = 0;
+    this->memdir = 0;
+}
 
 Dato::Dato(long dir, long date, int memdir){
     this->dir = dir;
@@ -39,20 +46,28 @@ Dato::Dato(long dir, long date, int memdir){
     this->memdir = memdir;
 }
 
-long Dato::getDate(){
+long& Dato::getDate(){
     return this->date;
 }
 
-long Dato::getDir(){
+long& Dato::getDir(){
     return this->dir;
 }
 
+int& Dato::getMem(){
+    return this->memdir;
+}
+
+void Dato::print(){
+    printf("%ld\t%ld\t%d\n",this->dir,this->date,this->memdir);
+}
+
 Dato& Dato::operator = (const Dato &a){
-    if(this!=&a){ //Comprueba que no se esté intentanod igualar un objeto a sí mismo
+    //if(this!=&a){ //Comprueba que no se esté intentando igualar un objeto a sí mismo
         this->dir = a.dir;
         this->date = a.date;
         this->memdir = a.memdir;
-    }
+    //}
     return *this;
 }
 
@@ -74,7 +89,7 @@ class MyHeap {
     char flags;
     Dato *A;
     int maxSize;
-    int size;
+    int size;    int getMem();
     
     bool isGreatest(int i, int j);
     void swapDir(long a,long b);
@@ -82,9 +97,16 @@ class MyHeap {
 public:
     MyHeap(int maxSize,char flags=0);
     ~MyHeap();
-    Dato top();
-    Dato pop();
+    void top(Dato &ans);
+    void pop(Dato &ans);
+    void minDate(Dato &ans);
+    void remMinDate(Dato &ans);
+    bool contains(long dir);
     void insert(Dato key);
+    void insert(long dir, long date, int memdir);
+    int getMemDir(long dir);
+    void deleteDir(long dir);
+    void updateDate(long dir,long date);
     int getSize();
     void heapify(int i);
     //the new key must be greater or equal for max_heap, and smaller or equal for min_heap
@@ -126,13 +148,64 @@ void MyHeap::swap(int i, int j) {
     A[j-1] = tmp;
 }
 
-Dato MyHeap::top() {
-    return A[0];
+void MyHeap::top(Dato &ans) {
+    ans = A[0];
+}
+
+void MyHeap::pop(Dato &ans) {
+    if (size == 0) throw "Heap datastructure underflow";
+    ans = A[0];
+    swap(1,size);
+    size--;
+    this->mapa.erase(ans.getDir());
+    heapify(1);    
 }
 
 int MyHeap::getSize() {
     return size;
 }
+
+void MyHeap::minDate(Dato &ans){
+    top(ans);
+}
+
+void MyHeap::remMinDate(Dato &ans){
+    pop(ans);
+}
+
+bool MyHeap::contains(long dir){
+    map<long, int>::iterator  it = mapa.find(dir);
+    return (it!=mapa.end())?true:false;
+}
+
+int MyHeap::getMemDir(long dir){
+    //si no está en el mapa retorna -1;
+    map<long, int>::iterator it = mapa.find(dir);
+    return (it!=mapa.end())?A[mapa[dir]].getMem():-1;
+}
+
+void MyHeap::deleteDir(long dir){
+    int pos = mapa[dir];
+    if(A[pos] < A[size-1]){
+        A[pos] = A[size-1];
+        size--;
+        heapify(pos+1);
+    }else if(A[pos] > A[size-1]){
+        updateKey(pos+1,A[size-1]);
+        size--;
+    }
+    mapa.erase(dir);
+}
+
+
+void MyHeap::updateDate(long dir,long date){
+    int mem = this->getMemDir(dir);
+    printf("\t%d\n", mem);
+    if(mem == -1) throw "La direccion no existe";
+    deleteDir(dir);
+    insert(dir,date,mem);
+}
+
 
 void MyHeap::heapify(int i) {
     int l = LEFT(i);
@@ -151,15 +224,7 @@ void MyHeap::heapify(int i) {
 }
 
 
-Dato MyHeap::pop() {
-    if (size == 0) throw "Heap datastructure underflow";
-    Dato max1 = A[0];
-    A[0] = A[size-1];
-    size--;
-    this->mapa.erase(max1.getDir());
-    heapify(1);
-    return max1;
-}
+
 
 void MyHeap::updateKey(int i, Dato key) {
     if (flags & MAX_HEAP) {
@@ -186,6 +251,11 @@ void MyHeap::insert(Dato key) {
     updateKey(size,key);
 }
 
+void MyHeap::insert(long dir, long date, int memdir){
+    Dato tmp(dir,date,memdir);
+    this->insert(tmp);
+}
+
 MyHeap& MyHeap::operator = (const MyHeap &a){
     if(this!=&a){ 
         this->maxSize = a.maxSize;
@@ -200,7 +270,7 @@ map<long, int> MyHeap::getMap(){
     return this->mapa;
 }
 
-
+/*
 int main(){
     MyHeap mh(100,MIN_HEAP);
     srand(0);
@@ -214,4 +284,4 @@ int main(){
         printf("%d\n",mh.getMap()[i]);
     }
     return 0;
-}
+}*/
