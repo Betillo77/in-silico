@@ -9,35 +9,35 @@ int main(){
     mh.insert(27,15,2);
     mh.insert(28,28,5);
     mh.insert(29,2,20);
-    mh.minDate(tmp);
-    tmp.print();
-    
-    /*map<long, int> mp = mh.getMap();
+	/*
+	This part of test is correct
+	mh.minDate(tmp);
+    tmp.print();    
+    map<long, int> mp = mh.getMap();
     map<long, int>::iterator it;
-    for(it = mp.begin();it!=mp.end(); it++){
+    for(it = mp.begin();it!=mp.end(); it++)
         printf("%ld %d\n", it->first, it->second);
-    }*/
-    
     printf("%d\n", mh.contains(15));
-    
     printf("%d\n", mh.getMemDir(25)); // 28 -> 5 , 25->15
-    
-    mh.updateDate(25,13);
-    mh.minDate(tmp);
+    */
 
     mh.remMinDate(tmp);
+	tmp.print();
+    mh.minDate(tmp);
+    tmp.print();
     mh.deleteDir(29);
     mh.minDate(tmp);
     tmp.print();
-    
+	/*printf("mapa\n");
+	map<long, int> mp = mh.getMap();
+    map<long, int>::iterator it;
+    for(it = mp.begin();it!=mp.end(); it++)
+        printf("%ld %d\n", it->first, it->second);
+	*/
+    mh.updateDate(25,13);
+    mh.minDate(tmp);
     tmp.print();
 
-    /*mp = mh.getMap();
-    
-    for(it = mp.begin();it!=mp.end(); it++){
-        printf("%ld %d\n", it->first, it->second);
-    }*/
-    
     return 0;
 }
 

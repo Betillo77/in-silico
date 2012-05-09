@@ -16,17 +16,19 @@ using namespace std;
 
 
 class Dato{
-    public:
     long dir;
     long date;
     int memdir;
-    
 
+    public:
     Dato(long dir, long date, int memdir);
     Dato();
     long& getDate();
     long& getDir();
     int& getMem();
+	void setDate(long date);
+	void setDir(long dir);
+	void setMem(int memdir);
     void print();
     Dato& operator = (const Dato &a);
     bool operator < (const Dato &a);
@@ -58,16 +60,27 @@ int& Dato::getMem(){
     return this->memdir;
 }
 
+void Dato::setDate(long date){
+	this->date = date;
+}
+
+void Dato::setDir(long dir){
+	this->dir = dir;
+}
+void Dato::setMem(int memdir){
+	this->memdir = memdir;
+}
+
 void Dato::print(){
     printf("%ld\t%ld\t%d\n",this->dir,this->date,this->memdir);
 }
 
 Dato& Dato::operator = (const Dato &a){
-    //if(this!=&a){ //Comprueba que no se esté intentando igualar un objeto a sí mismo
+    if(this!=&a){ 
         this->dir = a.dir;
         this->date = a.date;
         this->memdir = a.memdir;
-    //}
+    }
     return *this;
 }
 
@@ -185,7 +198,10 @@ int MyHeap::getMemDir(long dir){
 }
 
 void MyHeap::deleteDir(long dir){
+	map<long, int>::iterator it = mapa.find(dir);
+	if(it == mapa.end()) throw "the direction is not in memory";
     int pos = mapa[dir];
+	mapa[A[size-1].getDir()] = pos;
     if(A[pos] < A[size-1]){
         A[pos] = A[size-1];
         size--;
@@ -200,10 +216,14 @@ void MyHeap::deleteDir(long dir){
 
 void MyHeap::updateDate(long dir,long date){
     int mem = this->getMemDir(dir);
-    printf("\t%d\n", mem);
-    if(mem == -1) throw "La direccion no existe";
-    deleteDir(dir);
-    insert(dir,date,mem);
+    if(mem == -1) throw "the dirtection no exists";
+	int pos = mapa[dir];
+    A[pos].setDate(date);
+	if(A[pos].getDate() < date){
+        heapify(pos+1);
+    }else if(A[pos].getDate() > date){
+        updateKey(pos+1,A[pos]);
+    }
 }
 
 
