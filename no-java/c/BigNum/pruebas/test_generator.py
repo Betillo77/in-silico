@@ -6,7 +6,8 @@ test_cases=1000
 lower_bound=2**32
 upper_bound=2**1024
 
-opcodes=['+','-','/','%','^']
+#opcodes=['+','-','/','%','^']
+opcodes=['*']
 
 
 for i in range(0,test_cases):

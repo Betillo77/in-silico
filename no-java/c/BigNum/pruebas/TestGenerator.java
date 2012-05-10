@@ -20,7 +20,7 @@ public class TestGenerator
 	public static void main(String[] args) throws FileNotFoundException
 	{
 		System.setOut(new PrintStream("testBig.in"));
-		for(int i = 0; i < 100000; i++)
+		for(int i = 0; i < 1000; i++)
 		{
 			BigInteger a = generarBigInteger(256);
 			BigInteger b = generarBigInteger(128);
@@ -35,7 +35,7 @@ public class TestGenerator
 				case 4: signo = '%'; break;
 				case 5: signo = '^'; break;
 			}
-			signo = '/';
+			//signo = '/';
 			BigInteger menor = a.min(b);
 			BigInteger mayor = a.max(b);
 			if(signo == '^')

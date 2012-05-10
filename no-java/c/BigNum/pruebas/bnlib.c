@@ -6,8 +6,8 @@
 #define MAX(x,y) ( ((x)>(y)) ? (x) : (y) )
 #define MIN(x,y) ( ((x)<(y)) ? (x) : (y) )
 
-#define REP(i,N) for((i)=0; (i)<(N); (i)++)
-#define REPB(i,N) for((i)=(N)-1; (i)>=0; (i)--)
+#define REP(i,N) for(i=0; i<(N); i++)
+#define REPB(i,N) for(i=(N)-1; i>=0; i--)
 
 typedef unsigned int bn_word;
 typedef unsigned long long bn_dword;
@@ -251,6 +251,15 @@ void bnMulIntWord(BigInt* res, BigInt *a, bn_word b) {
     bnRemCeros(res);
 }
 
+void bnShiftLWords(BigInt *ans, BigInt *a, bn_word w) {
+    int i;
+    REPB(i,a->size) {
+        ans->d[i+w] = a->d[i];
+    }
+    REP(i,w) ans->d[i]=0;
+    ans->size = a->size + w;
+}
+
 void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
 	bn_word d1[res->maxSize]; d1[0]=0;
 	BigInt tmp1; tmp1.size=1; tmp1.maxSize=res->maxSize; tmp1.sign=BN_POS; tmp1.d=d1;
@@ -264,7 +273,8 @@ void bnMulInt(BigInt* res, BigInt* a, BigInt* b) {
 
     REP(i, b->size) {
         bnMulIntWord(tmp,a,b->d[i]);
-        bnShiftLBits(tmp,tmp,WBITS*i);
+        //bnShiftLBits(tmp,tmp,WBITS*i);
+        bnShiftLWords(tmp,tmp,i);
         bnAddInt(sum,sum,tmp);
     }
     //bn_word *swap=res->d; res->d=sum->d; sum->d=swap;
@@ -305,10 +315,10 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
     BigInt p0v; BigInt p1v; BigInt p2v; 
     p0v.size=1; p0v.d=tmp0; p0v.sign=BN_POS; p0v.maxSize=2*mid;
     p1v.size=1; p1v.d=tmp1; p1v.sign=BN_POS; p1v.maxSize=4*mid;
-    p2v.size=1; p2v.d=tmp0; p2v.sign=BN_POS; p2v.maxSize=2*mid;
-    //BigInt *p0 = bnNewBigInt(2*mid,0);
-    //BigInt *p1 = bnNewBigInt(4*mid,0);
-    //BigInt *p2 = bnNewBigInt(2*mid,0);
+    p2v.size=1; p2v.d=tmp2; p2v.sign=BN_POS; p2v.maxSize=2*mid;
+    /*BigInt *p0 = bnNewBigInt(2*mid,0);
+    BigInt *p1 = bnNewBigInt(4*mid,0);
+    BigInt *p2 = bnNewBigInt(2*mid,0);*/
     BigInt *p0 = &p0v, *p1 = &p1v, *p2 = &p2v;
     bnAddInt(p0,&x0,&x1);
     bnAddInt(p2,&y0,&y1);
@@ -321,8 +331,10 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
     }    
     bnAddInt(res,p0,p2);
     bnSubInt(p1,p1,res); //p1 = p1 - p0 - p2
-    bnShiftLBits(p1,p1,mid*WBITS); //p1 = p1*BASE^(n/2)
-    bnShiftLBits(res,p2,2*mid*WBITS); //ans += p2*BASE^n
+    //bnShiftLBits(p1,p1,mid*WBITS); //p1 = p1*BASE^(n/2)
+    bnShiftLWords(p1,p1,mid);
+    //bnShiftLBits(res,p2,2*mid*WBITS); //ans += p2*BASE^n
+    bnShiftLWords(res,p2,2*mid);
     bnAddInt(res,res,p1); //ans += p1
     bnAddInt(res,res,p0); //ans += p0
     x0.d=0; x1.d=0; y0.d=0; y1.d=0;
@@ -333,14 +345,17 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
 
 void bnMultIntK(BigInt *res, BigInt *a, BigInt *b) {
     BigInt *ans; bn_word i;
-    if (a==res || b==res) ans = bnNewBigInt(res->maxSize,0);
+    
+    BigInt tmp; bn_word tmp0[res->maxSize];
+    tmp.size=1; tmp.d = tmp0; tmp.maxSize=res->maxSize; tmp.d[0]=0;
+    
+    if (a==res || b==res) ans = &tmp;
     else ans = res;
     
     bnPrivKaratsuba(ans,a,b);   
     
     if (a==res || b==res) {
-        bnCopyInt(res,ans);
-        bnDelBigInt(ans);
+        bnCopyInt(res,ans);        
     }
 }
 

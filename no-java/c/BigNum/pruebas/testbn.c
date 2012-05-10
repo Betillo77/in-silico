@@ -44,7 +44,8 @@ void testbn() {
                 time_t seconds,seconds2;
                 double elapsed;
   				seconds = time (0);	
-                bnMultIntK(ans, aa, bb);
+                //bnMultIntK(ans, aa, bb);
+                bnMulInt(ans, aa, bb);
                 seconds2 = time (0);
                 elapsed=difftime(seconds, seconds2);	
                 //bnMulInt(ans, aa, bb);
@@ -125,7 +126,7 @@ char extEuclidAlg(BigInt *a_in, BigInt *b_in, BigInt *x, BigInt *y) {
         bnCopyInt(lasty, y);
         bnCopyInt(y, tmp1); //(y,lasty)=(tmp1,y)
     }
-    char ans = (a->size==1 && a->d[0]=1);
+    char ans = (a->size==1 && a->d[0]==1);
     bnCopyInt(x,lastx); bnCopyInt(y, lasty);
     bnDelBigInt(a); bnDelBigInt(b); 
     bnDelBigInt(tmp1); bnDelBigInt(quotient);
@@ -149,6 +150,7 @@ void testModInv() {
 }
 
 int main() {
-	testModInv();
+	//testModInv();
+	testbn();
     return 0;
 }
