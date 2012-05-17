@@ -1,12 +1,15 @@
 
 #include "btree.h"
 
+
 template<class T>
 PageSwap<T>::PageSwap(int cacheSize, char *fname, char flags) {
     this->cacheSize = cacheSize;
     this->cacheUsed = 0;
     this->cache = new Page<T>[cacheSize];
-    this->tlbinv = new dir[cacheSize];
+    //this->tlbinv = new dir[cacheSize];
+	this->tlb = new MyHeap(cacheSize,MIN_HEAP);
+	this->c_date  = 0;
     this->lastPage = 0;
     this->mroot = -1; //no page is root unless otherwise stated
     if (flags & REP_TREE)
@@ -20,30 +23,34 @@ PageSwap<T>::PageSwap(int cacheSize, char *fname, char flags) {
 template<class T>
 PageSwap<T>::~PageSwap() {
     delete cache;
-    delete tlbinv;
+    delete tlb;
     fclose(f);
 }
 
+
 template<class T>
 Page<T>* PageSwap<T>::diskRead(dir x) {
-    map<dir,int>::iterator it = mytlb.find(x);
-    if (it != mytlb.end())
-        return &cache[it->second];
+    if (tlb.contains(x))
+        return &cache[tlb.getMemDir(x)];
     Page<T> *p;
     if (cacheUsed < cacheSize) {
         //Load a page in a new memory position
         p = &(cache[cacheUsed]);
-        mytlb[x] = cacheUsed;
-        tlbinv[cacheUsed] = x;
-        cacheUsed++;
+        //mytlb[x] = cacheUsed;
+		tlb.insert(x, c_date++, cacheUsed++);
+        //tlbinv[cacheUsed] = x;
+        //cacheUsed++;
     } else {
         //Load a page in a used memory position
-        pos = ?; // use priority queue to choose position to put down of memory
+		Dato tmp;
+		tlb.remMinDate(tmp);
+		//pos = tmp.memdir; // use priority queue to choose position to put down of memory
         //diskWrite(tlbinv[pos]); //Not necessary because is updated all time
-        p = &(cache[pos]);
-        mytlb.erase(tlbinv[pos]);
-        mytlb[x] = pos;
-        tlbinv[pos] = x;
+        p = &(cache[tmp.getMem()]);
+        //mytlb.erase(tlbinv[pos]);
+        //mytlb[x] = pos;
+        //tlbinv[pos] = x;
+		tlb.insert(x, c_date++ , tmp.getMem());
         
     }
     fseek(f,x,SEEK_SET);
@@ -61,7 +68,7 @@ dir PageSwap<T>::allocateNode() {
 
 template<class T>
 void PageSwap<T>::diskWrite(dir x) {
-    int pos = mytlb[x];
+    int pos = tlb.getMemDir(x);
     fseek(f,x,SEEK_SET);
     fwrite(&cache[pos],sizeof(Page<T>),1,f);
 }
@@ -69,7 +76,7 @@ void PageSwap<T>::diskWrite(dir x) {
 template<class T>
 void PageSwap<T>::setRoot(dir x) {
     diskRead(x);
-    mroot = mytlb[x];
+    mroot = tlb.getMemDir(x);
 }
 
 //Erase this later

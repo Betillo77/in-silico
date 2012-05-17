@@ -2,11 +2,7 @@
 #ifndef BTREE_H
 #define BTREE_H
 
-#include <cstdio>
-#include <cstdlib>
-#include <map>
-
-using namespace std;
+#include "MinHeap.cpp"
 
 #ifndef BTDEG
 #define BTDEG 2
@@ -15,7 +11,6 @@ using namespace std;
 #define REP_TREE 1
 #define APP_TREE 0
 
-typedef unsigned long long int dir; //Tipo de dato de direcciones en el disco
 
 template<class T>
 class Page {
@@ -41,9 +36,12 @@ class PageSwap {
     Page<T> blank; //blank page
     
     //Diccionario que indica que páginas hay en memoria y en que posicion del arreglo cache
-    map<dir,int> mytlb;
+	MyHeap tlb;
+	
+    //map<dir,int> mytlb;
     //TBL inverse
-    dir *tlbinv;
+    //dir *tlbinv;
+	
     
     FILE *f;
 public:
@@ -54,6 +52,8 @@ public:
     dir allocateNode();
     void debug1(dir x);
     void setRoot(dir x);
+
+	int c_date;
 };
 
 template<class T>
