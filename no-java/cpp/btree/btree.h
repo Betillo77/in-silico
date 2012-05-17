@@ -2,7 +2,9 @@
 #ifndef BTREE_H
 #define BTREE_H
 
-#include "MinHeap.cpp"
+#include "MinHeap.h"
+#include <cstdio>
+#include <cstdlib>
 
 #ifndef BTDEG
 #define BTDEG 2
@@ -10,7 +12,6 @@
 
 #define REP_TREE 1
 #define APP_TREE 0
-
 
 template<class T>
 class Page {
@@ -36,7 +37,7 @@ class PageSwap {
     Page<T> blank; //blank page
     
     //Diccionario que indica que páginas hay en memoria y en que posicion del arreglo cache
-	MyHeap tlb;
+	MyHeap *tlb;
 	
     //map<dir,int> mytlb;
     //TBL inverse

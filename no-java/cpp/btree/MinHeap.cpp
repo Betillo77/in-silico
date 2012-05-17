@@ -1,41 +1,7 @@
 
+#include "MinHeap.h"
 #include <cstdio>
 #include <cstdlib>
-#include <map>
-
-using namespace std;
-
-//heap flags
-#define MIN_HEAP 0
-#define MAX_HEAP 1
-
-//heap macros
-#define PARENT(i) ((i)/2)
-#define LEFT(i) (2*(i))
-#define RIGHT(i) (2*(i) + 1)
-
-typedef unsigned long long int dir; //Tipo de dato de direcciones en el disco
-
-class Dato{
-    dir dire;
-    long date;
-    int memdir;
-
-    public:
-    Dato(dir dire, long date, int memdir);
-    Dato();
-    long& getDate();
-    dir& getDir();
-    int& getMem();
-	void setDate(long date);
-	void setDir(dir dire);
-	void setMem(int memdir);
-    void print();
-    Dato& operator = (const Dato &a);
-    bool operator < (const Dato &a);
-    bool operator > (const Dato &a);
-    bool operator == (const Dato &a);
-};
 
 Dato::Dato(){
     this->dire = 0;
@@ -97,42 +63,11 @@ bool Dato::operator == (const Dato &a){
     return this->date == a.date;
 }
 
-
-class MyHeap {
-    map<dir, int> mapa;
-    char flags;
-    Dato *A;
-    int maxSize;
-    int size;    int getMem();
-    bool isGreatest(int i, int j);
-    void swapDir(long a,long b);
-    void swap(int i, int j);
-public:
-	MyHeap();
-    MyHeap(int maxSize,char flags=0);
-    ~MyHeap();
-    void top(Dato &ans);
-    void pop(Dato &ans);
-    void minDate(Dato &ans);
-    void remMinDate(Dato &ans);
-    bool contains(dir dire);
-    void insert(Dato key);
-    void insert(dir dire, long date, int memdir);
-    int getMemDir(dir dire);
-    void deleteDir(dir dire);
-    void updateDate(dir dire,long date);
-    int getSize();
-    void heapify(int i);
-    //the new key must be greater or equal for max_heap, and smaller or equal for min_heap
-    void updateKey(int i, Dato k); 
-    map<dir, int> getMap();
-    MyHeap& operator = (const MyHeap &a);
-};
+// Start of MinHeap class implementation
 
 MyHeap::MyHeap() {
 
 }
-
 
 MyHeap::MyHeap(int maxSize, char flags) {
     this->maxSize = maxSize;
@@ -140,7 +75,6 @@ MyHeap::MyHeap(int maxSize, char flags) {
     this->A = new Dato[maxSize];
     this->size = 0;
 }
-
 
 MyHeap::~MyHeap() {
     delete A;
@@ -153,12 +87,11 @@ bool MyHeap::isGreatest(int i, int j) {
         return A[j-1] > A[i-1];
 }
 
-void MyHeap::swapDir(long a,long b){
+void MyHeap::swapDir(dir a,dir b){
     int tmp = mapa[a];
     mapa[a] = mapa[b];
     mapa[b] = tmp;
 }
-
 
 void MyHeap::swap(int i, int j) {
     swapDir(A[i-1].getDir(),A[j-1].getDir());
@@ -219,7 +152,6 @@ void MyHeap::deleteDir(dir dire){
     mapa.erase(dire);
 }
 
-
 void MyHeap::updateDate(dir dire,long date){
     int mem = this->getMemDir(dire);
     if(mem == -1) throw "the dirtection no exists";
@@ -231,7 +163,6 @@ void MyHeap::updateDate(dir dire,long date){
         updateKey(pos+1,A[pos]);
     }
 }
-
 
 void MyHeap::heapify(int i) {
     int l = LEFT(i);
@@ -248,9 +179,6 @@ void MyHeap::heapify(int i) {
         heapify(largest);
     }
 }
-
-
-
 
 void MyHeap::updateKey(int i, Dato key) {
     if (flags & MAX_HEAP) {

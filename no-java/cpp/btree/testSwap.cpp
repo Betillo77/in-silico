@@ -51,8 +51,7 @@ void testSwap() {
 }
 
 int main() {
-    
-    BTree<int> tree(3,"hola.bt",REP_TREE);
-    printf("%d %d\n",tree.getRoot()->n,tree.getRoot()->leaf);
-    
+    testSwap();
+    //BTree<int> tree(3,"hola.bt",REP_TREE);
+    //printf("%d %d\n",tree.getRoot()->n,tree.getRoot()->leaf);    
 }

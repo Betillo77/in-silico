@@ -1,4 +1,7 @@
-#include "MinHeap.cpp"
+
+#include "MinHeap.h"
+#include <cstdio>
+#include <cstdlib>
 
 int main(){
     MyHeap mh(100,MIN_HEAP);
