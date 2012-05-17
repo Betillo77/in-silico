@@ -29,7 +29,7 @@ class PageSwap {
     
     //Para decidir que pagina bajar de la memoria
     int mroot; //index of the root page
-    int lastPage; //index of last loaded page
+    long long mydate;
     
     //Cache compuesta por las paginas cargadas en memoria
     Page<T> *cache; //cache of min size 10 pages for btree

@@ -10,7 +10,6 @@ PageSwap<T>::PageSwap(int cacheSize, char *fname, char flags) {
     //this->tlbinv = new dir[cacheSize];
 	this->tlb = new MyHeap(cacheSize,MIN_HEAP);
 	this->c_date  = 0;
-    this->lastPage = 0;
     this->mroot = -1; //no page is root unless otherwise stated
     if (flags & REP_TREE)
         f = fopen(fname, "wb+");
