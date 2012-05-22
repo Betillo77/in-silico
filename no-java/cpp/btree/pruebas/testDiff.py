@@ -1,6 +1,6 @@
 from random import *
 
-n=200000
+n=2000000
 i=0
 
 print n

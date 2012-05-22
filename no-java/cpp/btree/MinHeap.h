@@ -19,16 +19,16 @@ typedef unsigned long long int dir; //Tipo de dato de direcciones en el disco
 
 class Dato{
     dir dire;
-    long date;
+    dir date;
     int memdir;
 
     public:
-    Dato(dir dire, long date, int memdir);
+    Dato(dir dire, dir date, int memdir);
     Dato();
-    long& getDate();
+    dir& getDate();
     dir& getDir();
     int& getMem();
-	void setDate(long date);
+	void setDate(dir date);
 	void setDir(dir dire);
 	void setMem(int memdir);
     void print();

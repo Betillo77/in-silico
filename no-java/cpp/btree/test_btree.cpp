@@ -3,7 +3,7 @@
 
 int main(){
     int num, tmp;
-    BTree<int> tree(10,"hola.bt",REP_TREE);
+    BTree<int> tree(100,"hola.bt",REP_TREE);
     scanf("%d",&num);
     dir tmpdir;
     int ans=0;

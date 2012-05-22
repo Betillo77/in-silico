@@ -9,13 +9,13 @@ Dato::Dato(){
     this->memdir = 0;
 }
 
-Dato::Dato(dir dire, long date, int memdir){
+Dato::Dato(dir dire, dir date, int memdir){
     this->dire = dire;
     this->date = date;
     this->memdir = memdir;
 }
 
-long& Dato::getDate(){
+dir& Dato::getDate(){
     return this->date;
 }
 
@@ -27,7 +27,7 @@ int& Dato::getMem(){
     return this->memdir;
 }
 
-void Dato::setDate(long date){
+void Dato::setDate(dir date){
 	this->date = date;
 }
 
@@ -156,8 +156,9 @@ void MyHeap::updateDate(dir dire,long date){
     int mem = this->getMemDir(dire);
     if(mem == -1) throw "the dirtection no exists";
 	int pos = mapa[dire];
+	dir prevdate = A[pos].getDate();
     A[pos].setDate(date);
-	if(A[pos].getDate() < date){
+	if(prevdate < date){
         heapify(pos+1);
     }else if(A[pos].getDate() > date){
         updateKey(pos+1,A[pos]);
