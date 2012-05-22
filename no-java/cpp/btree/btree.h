@@ -7,7 +7,7 @@
 #include <cstdlib>
 
 #ifndef BTDEG
-#define BTDEG 2
+#define BTDEG 50
 #endif
 
 #define REP_TREE 1
@@ -18,7 +18,7 @@ class Page {
 public:
     int n;
     char leaf;
-    T keys[2*BTDEG - 1];
+    T key[2*BTDEG - 1];
     dir c[2*BTDEG];
 };
 
@@ -63,15 +63,16 @@ class BTree {
     Page<T> *root;
     PageSwap<T> *ps;
     FILE *f;
-    int pSearch(dir x, T k, Page<T> **p);
+    int pSearch(dir x, T k, dir *p);
 public:
     BTree(int cacheSize, char *fname, char flags=0);
     ~BTree();
     Page<T> *getRoot();
+    //void setRoot(Page<T> *root);
     void splitChild(dir x, int i);
     void insert(T k);
     void insertNonFull(dir x, T k);
-    int search(T k, Page<T>** p);
+    int search(T k, dir *p);
 };
 
 

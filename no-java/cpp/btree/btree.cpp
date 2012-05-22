@@ -29,8 +29,10 @@ PageSwap<T>::~PageSwap() {
 
 template<class T>
 Page<T>* PageSwap<T>::diskRead(dir x) {
-    if (tlb->contains(x))
+    if (tlb->contains(x)) {
+        tlb->updateDate(x,c_date++);
         return &cache[tlb->getMemDir(x)];
+    }
     Page<T> *p;
     if (cacheUsed < cacheSize) {
         //Load a page in a new memory position
@@ -97,6 +99,7 @@ BTree<T>::BTree(int cacheSize, char *fname, char flags){
     x->n = 0;
     ps->diskWrite(xdir);
     root = x;
+    droot = xdir;
 }
 
 template<class T>
@@ -108,15 +111,20 @@ template<class T>
 Page<T> *BTree<T>::getRoot(){
     return root;
 }
+/*
+template<class T>
+void BTree<T>::setRoot(Page<T> *root){
+    this->root = root;
+}*/
 
 template<class T>
 void BTree<T>::splitChild(dir xdir, int i){
     int t = BTDEG;
-    Page<T> *x = ps.diskRead(xdir);
-    dir zdir = ps.allocateNode();
-    dir ydir = x->c[i];
-    Page<T> *z = ps.diskRead(xdir);
-    Page<T> *y = ps.diskRead(ydir);
+    Page<T> *x = ps->diskRead(xdir);
+    dir zdir = ps->allocateNode();
+    dir ydir = x->c[i-1];
+    Page<T> *z = ps->diskRead(zdir);
+    Page<T> *y = ps->diskRead(ydir);
     z->leaf = y->leaf;
     z->n = t - 1; 
     for(int j = 1; j < t; j++){
@@ -129,22 +137,85 @@ void BTree<T>::splitChild(dir xdir, int i){
     }
     y->n = t-1;
     for (int j=x->n + 1; j>=(i+1); j--)
+        x->c[j] = x->c[j-1];
+    x->c[i] = zdir;
+    for(int j = x->n ; j>=i ; j--)
         x->key[j] = x->key[j-1];
     x->key[i-1] = y->key[t-1];
     x->n = x->n + 1;
-    ps.diskWrite(ydir);
-    ps.diskWrite(zdir);
-    ps.diskWrite(xdir);
+    ps->diskWrite(ydir);
+    ps->diskWrite(zdir);
+    ps->diskWrite(xdir);
 }
 
 template<class T>
 void BTree<T>::insert(T k) {
-    /*int t = BTDEG;
-    if (root->n = (2*t-1)) {
-        dir ds = ps.allocateNode();
-        root = ps.readDisk(ds);
-        root->leaf = 0;
-        root->n=0;
-        root->c[0] = 
-    }*/
+    int t = BTDEG;
+    dir dr = this->droot;
+    Page<T> *r = ps->diskRead(dr);    
+    if (r->n == (2*t-1)) {
+        dir ds = ps->allocateNode();
+        Page<T> *s = ps->diskRead(ds);
+        this->root = s;
+        this->droot = ds;
+        s->leaf = 0;
+        s->n = 0;
+        s->c[0] = dr;
+        splitChild(ds, 1);
+        insertNonFull(ds,k);
+    }else{
+        insertNonFull(dr,k);
+    }
 }
+
+template<class T>
+void BTree<T>::insertNonFull(dir xdir,T k){
+    int t = BTDEG;
+    Page<T> *x = ps->diskRead(xdir);
+    int i = x->n;
+    if(x->leaf){
+        while(i >= 1 and k < x->key[i-1]){
+            x->key[i] = x->key[i-1];
+            i = i-1;
+        }
+        x->key[i] = k;
+        x->n = x->n + 1;
+        ps->diskWrite(xdir);
+    }else{
+        while(i >= 1 and k < x->key[i-1])
+            i = i-1;
+        i = i + 1;
+        Page<T> *xci = ps->diskRead(x->c[i-1]);
+        if(xci->n == 2*t -1){
+            splitChild(xdir, i);
+            if( k > x->key[i-1])
+                i = i +1;
+        }
+        insertNonFull(x->c[i-1],k);
+    }
+}
+
+template<class T>
+int BTree<T>::pSearch(dir xdir, T k, dir *p){
+    int i = 1;
+    Page<T> *x = ps->diskRead(xdir);
+    while( i <= x->n and k > x->key[i-1])
+        i = i + 1;
+    if( i <= x->n and k == x->key[i-1]) {
+        *p = xdir;
+        return i;
+    }else if(x->leaf){
+        *p = 0;
+        return -1;// NIL
+    }else{
+        Page<T> * xci = ps->diskRead(x->c[i-1]);
+        *p = x->c[i-1];
+        return pSearch(x->c[i-1], k , p);
+    }
+}
+
+template<class T>
+int BTree<T>::search(T k, dir *p){
+    return pSearch(this->droot,k,p);
+}
+
