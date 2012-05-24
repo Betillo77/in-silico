@@ -91,7 +91,7 @@ public:
     dir c[2*btdeg];
 };
 
-template<class T>
+template<class T, int btdeg=BTDEG>
 class PageSwap {
     //Numero maximo de paginas a guardar en memoria
     int cacheSize;
@@ -101,8 +101,8 @@ class PageSwap {
     long long mydate;
     
     //Cache compuesta por las paginas cargadas en memoria
-    Page<T> *cache; //cache of min size 10 pages for btree
-    Page<T> blank; //blank page
+    Page<T, btdeg> *cache; //cache of min size 10 pages for btree
+    Page<T, btdeg> blank; //blank page
     
     //Diccionario que indica que páginas hay en memoria y en que posicion del arreglo cache
 	MyHeap *tlb;
@@ -114,7 +114,7 @@ class PageSwap {
 public:
     PageSwap(int cacheSize, const char *fname, char flags=0);
     ~PageSwap();
-    Page<T> *diskRead(dir x);
+    Page<T, btdeg> *diskRead(dir x);
     void diskWrite(dir x);
     dir allocateNode();
     void debug1(dir x);
