@@ -21,8 +21,9 @@ class Dato{
     dir dire;
     dir date;
     int memdir;
-
-    public:
+public:
+    char changed; //used only when flag MEM_TREE is used
+    
     Dato(dir dire, dir date, int memdir);
     Dato();
     dir& getDate();
@@ -67,6 +68,7 @@ public:
     void updateKey(int i, Dato k); 
     map<dir, int> getMap();
     MyHeap& operator = (const MyHeap &a);
+    char& changed(dir dire);
 };
 
 #endif

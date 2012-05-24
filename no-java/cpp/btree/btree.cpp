@@ -3,14 +3,14 @@
 
 
 template<class T>
-PageSwap<T>::PageSwap(int cacheSize, char *fname, char flags) {
+PageSwap<T>::PageSwap(int cacheSize, const char *fname, char flags) {
     this->cacheSize = cacheSize;
     this->cacheUsed = 0;
     this->cache = new Page<T>[cacheSize];
     //this->tlbinv = new dir[cacheSize];
 	this->tlb = new MyHeap(cacheSize,MIN_HEAP);
 	this->c_date  = 0;
-    this->mroot = -1; //no page is root unless otherwise stated
+	this->flags = flags;
     if (flags & REP_TREE)
         f = fopen(fname, "wb+");
     else
@@ -37,22 +37,16 @@ Page<T>* PageSwap<T>::diskRead(dir x) {
     if (cacheUsed < cacheSize) {
         //Load a page in a new memory position
         p = &(cache[cacheUsed]);
-        //mytlb[x] = cacheUsed;
-		tlb->insert(x, c_date++, cacheUsed++);
-        //tlbinv[cacheUsed] = x;
-        //cacheUsed++;
+        tlb->insert(x, c_date++, cacheUsed++);        
     } else {
         //Load a page in a used memory position
 		Dato tmp;
 		tlb->remMinDate(tmp);
-		//pos = tmp.memdir; // use priority queue to choose position to put down of memory
-        //diskWrite(tlbinv[pos]); //Not necessary because is updated all time
+		if ( ((flags & MEM_TREE)!=0) && tmp.changed) {
+        	realDiskWrite(tmp.getDir(), tmp.getMem());        	
+        }
         p = &(cache[tmp.getMem()]);
-        //mytlb.erase(tlbinv[pos]);
-        //mytlb[x] = pos;
-        //tlbinv[pos] = x;
-		tlb->insert(x, c_date++ , tmp.getMem());
-        
+		tlb->insert(x, c_date++ , tmp.getMem());		
     }
     fseek(f,x,SEEK_SET);
     fread(p,sizeof(Page<T>),1,f);
@@ -68,29 +62,25 @@ dir PageSwap<T>::allocateNode() {
 }
 
 template<class T>
-void PageSwap<T>::diskWrite(dir x) {
-    int pos = tlb->getMemDir(x);
+void PageSwap<T>::realDiskWrite(dir x, int pos) {
     fseek(f,x,SEEK_SET);
     fwrite(&cache[pos],sizeof(Page<T>),1,f);
 }
 
 template<class T>
-void PageSwap<T>::setRoot(dir x) {
-    diskRead(x);
-    mroot = tlb->getMemDir(x);
-}
-
-//Erase this later
-template<class T>
-void PageSwap<T>::debug1(dir x) {
-    Page<T> p;
-    fseek(f,x,SEEK_SET);
-    fread(&p,sizeof(Page<T>),1,f);
-    printf("%d %c\n",p.n,p.leaf);
+void PageSwap<T>::diskWrite(dir x) {
+    if (flags & MEM_TREE) {
+    	//If the tree is meant to be on RAM, then we will write it later
+    	tlb->changed(x) = 1;
+    } else {
+    	//If the tree is not to be on RAM write now to disk
+    	int pos = tlb->getMemDir(x);
+    	realDiskWrite(x,pos);
+    }
 }
 
 template<class T>
-BTree<T>::BTree(int cacheSize, char *fname, char flags){
+BTree<T>::BTree(int cacheSize, const char *fname, char flags){
     cacheSize += 10; //Min recomended for BTree
     ps = new PageSwap<T>(cacheSize,fname,flags);
     dir xdir = ps->allocateNode();

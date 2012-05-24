@@ -7,11 +7,18 @@
 #include <cstdlib>
 
 #ifndef BTDEG
-#define BTDEG 50
+#define BTDEG 60
 #endif
 
+/*********** BTree flags section ***********/
+//Replace BTree
 #define REP_TREE 1
+//Append to BTree
 #define APP_TREE 0
+
+//True to save only in pageswap
+#define MEM_TREE 2
+/********* End BTree flags section *********/
 
 template<class T>
 class Page {
@@ -29,7 +36,6 @@ class PageSwap {
     int cacheUsed;
     
     //Para decidir que pagina bajar de la memoria
-    int mroot; //index of the root page
     long long mydate;
     
     //Cache compuesta por las paginas cargadas en memoria
@@ -39,14 +45,12 @@ class PageSwap {
     //Diccionario que indica que páginas hay en memoria y en que posicion del arreglo cache
 	MyHeap *tlb;
 	
-    //map<dir,int> mytlb;
-    //TBL inverse
-    //dir *tlbinv;
-	
+    char flags;	
     
     FILE *f;
+    void realDiskWrite(dir x, int pos);
 public:
-    PageSwap(int cacheSize, char *fname, char flags=0);
+    PageSwap(int cacheSize, const char *fname, char flags=0);
     ~PageSwap();
     Page<T> *diskRead(dir x);
     void diskWrite(dir x);
@@ -61,11 +65,11 @@ template<class T>
 class BTree {
     dir droot;
     Page<T> *root;
-    PageSwap<T> *ps;
     FILE *f;
     int pSearch(dir x, T k, dir *p);
 public:
-    BTree(int cacheSize, char *fname, char flags=0);
+	PageSwap<T> *ps;
+    BTree(int cacheSize, const char *fname, char flags=0);
     ~BTree();
     Page<T> *getRoot();
     //void setRoot(Page<T> *root);

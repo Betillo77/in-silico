@@ -39,7 +39,7 @@ void Dato::setMem(int memdir){
 }
 
 void Dato::print(){
-    printf("%ld\t%ld\t%d\n",this->dire,this->date,this->memdir);
+    printf("%lld\t%lld\t%d\n",this->dire,this->date,this->memdir);
 }
 
 Dato& Dato::operator = (const Dato &a){
@@ -47,6 +47,7 @@ Dato& Dato::operator = (const Dato &a){
         this->dire = a.dire;
         this->date = a.date;
         this->memdir = a.memdir;
+        this->changed = a.changed;
     }
     return *this;
 }
@@ -136,6 +137,12 @@ int MyHeap::getMemDir(dir dire){
     return (it!=mapa.end())?A[mapa[dire]].getMem():-1;
 }
 
+char& MyHeap::changed(dir dire){
+    map<dir, int>::iterator it = mapa.find(dire);
+    if (it==mapa.end()) throw "Disk address not found exception";
+    return A[it->second].changed;
+}
+
 void MyHeap::deleteDir(dir dire){
 	map<dir, int>::iterator it = mapa.find(dire);
 	if(it == mapa.end()) throw "the direction is not in memory";
@@ -208,6 +215,7 @@ void MyHeap::insert(Dato key) {
 
 void MyHeap::insert(dir dire, long date, int memdir){
     Dato tmp(dire,date,memdir);
+    tmp.changed=0;
     this->insert(tmp);
 }
 

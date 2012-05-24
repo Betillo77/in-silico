@@ -5,6 +5,7 @@ int main(){
     int num, tmp;
     BTree<int> tree(100,"hola.bt",REP_TREE);
     scanf("%d",&num);
+    //num=100000;
     dir tmpdir;
     int ans=0;
     while(num--){
