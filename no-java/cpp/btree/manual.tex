@@ -1,0 +1,203 @@
+\documentclass{book}
+
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+
+\begin{document}
+
+\chapter{Manual Árbol B, implementación en disco}
+\label{chap:api}
+introducción.
+
+\section{Aspectos básicos}
+
+\subsection{Cómo crear un árbol}
+
+Para crear un árbol B, se utiliza  la siguiente estructura.\\
+
+\begin{verbatim}
+BTree< T, BTDG > name( cacheSize, "filename", FLAGS);
+\end{verbatim}
+
+\noindent Donde:\\
+\begin{itemize}
+\item {\bf T:} Es el tipo de dato que contendrá nuestro árbol, tenga en cuenta que si es un tipo de dato compuesto, éste deberá tener sobregarcados los operadores de comparación (más adelante se mostrará un ejemplo de esto). Cada árbol tiene un único tipo de dato, por lo cual siempre se deberán insertar o buscar datos de tipo T.\\
+
+\item {\bf BTDEG:} Es el grado de el árbol, con él se determina el números de elementos por cada página, dicho cálculo está dado por.
+
+\[numEle = 2*BTDEG -1 \]
+
+\item {\bf name:} Es el nombre de el árbol en el programa, puede ser cualquier valor válido por el lenguaje.\\
+
+\item {\bf cacheSize:} Determina la cantidad de memoria RAM deseada para el uso de el árbol. El valor de cacheSize es la cantidad de páginas de el árbol que serán cargadas en memoria, por lo tanto para calcularlo se debe tener en cuenta el tamaño de el dato tipo T y el grado del árbol (BTDEG). Por ejemplo si se desean asignar 200Mb de RAM a un árbol de grado 5 y el tamaño del dato es 4 bytes el cache size será.
+
+\[cacheSize = \frac {200Mb}{(2*5 -1) * 4b} \]
+
+En general,
+
+\[cacheSize = \frac {usedRAM}{numEle * sizeof(T)} \]
+
+Nota: El valor calculado de cacheSize para el uso de la RAM sólo garantiza el espacio para el almacenamiento de las páginas, en la práctica el consumo de RAM se verá afectado por el labores de gestión del árbol B y sus estructuras auxiliares tales como los apuntadores a cada página, y el priority queue usado para referenciar el volcado de páginas.
+
+\item {\bf filename:} Es el nombre del archivo donde se almacenará el árbol, debe escribirse entre comillas (`` '').\\
+
+\item {\bf FLAGS:} Son banderas, para controlar nuestro árbol, se deben separar por un ``or'' y son escritas en mayúscula.
+las diferentes banderas son.\\
+\begin{itemize}
+\item \verb+APP_TREE+: Es utilizado para trabajar sobre un árbol existente en el disco, de no existir crea el archivo con nombre ``filename''.\\
+\item \verb+REP_TREE+: Es utilizado para reemplazar el árbol guardado en disco con nombre ``filename'', de no existir el archivo es creado con dicho nombre.
+\item \verb+MEM_TREE+: Al añadir ésta bandera el árbol guarda las páginas en el disco sólo cuando éstas sean removidas de la RAM o cuando se llame al método ``save();'', de lo contrario el archivo se estará actualizando tras cada operación.
+
+\end{itemize}
+
+\end{itemize}
+
+\paragraph{Ejemplo}:\\
+
+\begin{verbatim}
+    BTree<int,30> coolName(15,"tree1.bt",APP_TREE | MEM_TREE);
+\end{verbatim}
+
+\subsection{Insertar datos}
+
+En esta sección se mostrará cómo insertar tanto datos primitivos como compuestos en el árbol.\\
+El árbol captura una excepción en caso de existir problemas con los archivos, por lo tanto se recomienda el uso de try/catch.
+\begin{itemize}
+\item {\bf Datos primitivos.}
+Los datos primitivos ya tienen predefinidos los operadores de comparación, por lo tanto no es necesario sobrecargarlos ni realizarles algún tipo de tratamiento.\\
+
+\paragraph{Ejemplo:} 
+\begin{verbatim}
+#include "btree.h"
+
+int main(){
+    try {
+        BTree<int,30> coolName(15,"tree1.bt",APP_TREE | MEM_TREE);
+        coolName.insert(25);
+        coolName.insert(99);
+    }catch (const char *ex) {
+        printf("Error: %s\n",ex);
+    }
+    return 0;
+}
+\end{verbatim}
+
+\item {\bf Datos compuestos.}
+El árbol B está diseñado para trabajar con cualquier tipo de dato creado por el usuario, pero es necesario sobrecargar los operadores de comparación y de igualación para que el árbol funcione correctamente.
+\paragraph{Ejemplo:} 
+
+\begin{verbatim}
+#include "btree.h"
+
+struct Nuevo{
+    long key;
+    int dato1;
+    char dato2;
+    Nuevo(){}
+    Nuevo(long k, int d1, char d2): key(k), dato1(d1), dato2(d2){}
+    bool operator < (const Nuevo &cmp){
+        return key < cmp.key;
+    }
+    bool operator > (const Nuevo &cmp){
+        return key > cmp.key;
+    }
+    bool operator == (const Nuevo &cmp){
+        return key == cmp.key;
+    }
+    Nuevo& operator = (const Nuevo &cmp){
+        this->key = cmp.key;
+        this->dato1 = cmp.dato1;
+        this->dato2 = cmp.dato2;
+        return *this;
+    }
+};
+
+int main(){
+    try {
+        BTree<Nuevo,30> coolTree(15,"hola.bt",REP_TREE);
+        Nuevo c1(10,1, 'm');
+        Nuevo c2(15,2, 'p');
+        coolTree.insert(c1);
+        coolTree.insert(c2);
+    }catch (const char *ex) {
+        printf("Error: %s\n",ex);
+    }
+    return 0;
+}
+\end{verbatim}
+
+El tipo de dato ``Nuevo'', sólo se comparará por una atributo ``key'', el cual debe ser único para cada instancia del mismo, y así garantizar la identificación en el árbol.
+
+\end{itemize}
+
+\subsection{Buscar datos en el árbol.}
+La búsqueda en el árbol se realizará con base los operadores de comparación mencionados anteriormente, se realiza mediante el método:\\\\
+
+ \verb+search(T dato, dir *pos);+
+
+\paragraph{Argumentos:}
+
+\begin{itemize}
+\item{\bf dato:}
+Dato de tipo T a buscar.
+
+\item {\bf pos:}
+
+Apuntador donde se desea guardar la posición de disco en la cual está ubicada la página que contiene el dato que se estaba buscando, el tipo dir está definido en ``btree.h'' como un unsigned long long.
+
+\end{itemize}
+
+\paragraph{Valor de retorno}:\\
+
+Retorna un entero que indica el índice de el dato en dicha página ó -1 en caso de que el árbol no contenga dicho dato.
+
+
+\paragraph{Ejemplo:}
+En este ejemplo se determinará si un dato está o no en nuestro árbol. Se trabajará con el tipo de dato ``Nuevo'' creado en el ejemplo anterior;
+
+\begin{verbatim}
+int main(){
+    try {
+        BTree<Nuevo,30> coolTree(15,"hola.bt",REP_TREE);
+        Nuevo c1(10,1, 'u');
+        Nuevo c2(15,2, 't');
+        Nuevo c3(11,3, 'p');
+        coolTree.insert(c1);
+        coolTree.insert(c2);
+        dir tmp;
+        Nuevo c4(15, 154, 'm');
+        if(coolTree.search(c3,&tmp) != -1)
+            printf("c3 está en el árbol\n");
+        else
+            printf("c3 no está en el árbol\n");
+        if(coolTree.search(c4,&tmp) != -1)
+            printf("c4 está en el árbol\n");
+        else
+            printf("c4 no está en el árbol\n");
+    }catch (const char *ex) {
+        printf("Error: %s\n",ex);
+    }
+    return 0;
+}
+\end{verbatim}
+
+La salida de este programa será:
+
+``c3 no está en el árbol\\
+\indent c4 está en el árbol''\\
+
+Nótese que identifica a c4 como un valor ya contenido, esto es debido a que la comparación en este ejemplo se realiza mediante el atributo key, aunque los demás valores sean diferentes, el árbol identificará como iguales todos los objetos que tengan el mismo valor de key.
+
+\section{Otras operaciones.}
+
+\subsection{Método save().}
+Cuando se usa la bandera \verb+MEM_TREE+, se puede guardar en cualquier momento la instancia del árbol en disco mediante el método save(). Es recomendado usarlo siempre antes de terminar el programa para garantizar la integridad de los datos en el disco.
+
+\paragraph{Argumentos y retorno:}
+Este método no tiene ningún argumento, ni nungún valor de retorno.
+
+\end{document}
