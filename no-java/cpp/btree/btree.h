@@ -1,4 +1,3 @@
-
 #ifndef BTREE_H
 #define BTREE_H
 
@@ -30,9 +29,9 @@ public:
     dir& getDate();
     dir& getDir();
     int& getMem();
-	void setDate(dir date);
-	void setDir(dir dire);
-	void setMem(int memdir);
+        void setDate(dir date);
+        void setDir(dir dire);
+        void setMem(int memdir);
     void print();
     Dato& operator = (const Dato &a);
     bool operator < (const Dato &a);
@@ -50,8 +49,8 @@ class MyHeap {
     void swapDir(dir a,dir b);
     void swap(int i, int j);
 public:
-	Dato *A;
-	MyHeap();
+        Dato *A;
+        MyHeap();
     MyHeap(int maxSize,char flags=0);
     ~MyHeap();
     void top(Dato &ans);
@@ -107,9 +106,9 @@ class PageSwap {
     Page<T, btdeg> blank; //blank page
     
     //Diccionario que indica que páginas hay en memoria y en que posicion del arreglo cache
-	MyHeap *tlb;
-	
-    char flags;	
+        MyHeap *tlb;
+        
+    char flags; 
     
     FILE *f;
     void realDiskWrite(dir x, int pos);
@@ -121,14 +120,14 @@ public:
     dir allocateNode();
     void debug1(dir x);
     void setRoot(dir x);
-	FILE *getFile();
-	void save();
-	int c_date;
+        FILE *getFile();
+        void save();
+        int c_date;
 };
 
 struct BTreeHeader {
-	dir droot;
-	int btdeg;
+        dir droot;
+        int btdeg;
 };
 
 template<class T, int btdeg=BTDEG>
@@ -137,9 +136,9 @@ class BTree {
     Page<T, btdeg> *root;
     FILE *f;
     int pSearch(dir x, T k, dir *p);
-    char flags;
 public:
-	PageSwap<T, btdeg> *ps;
+    char flags;
+    PageSwap<T, btdeg> *ps;
     BTree(int cacheSize, const char *fname, char flags=0);
     ~BTree();
     Page<T, btdeg> *getRoot();
@@ -148,6 +147,8 @@ public:
     void insert(T k);
     void insertNonFull(dir x, T k);
     int search(T k, dir *p);
+    T& find(T k);
+    bool contains(T k);
     void save();
 };
 
@@ -184,14 +185,14 @@ int& Dato::getMem(){
 }
 
 void Dato::setDate(dir date){
-	this->date = date;
+        this->date = date;
 }
 
 void Dato::setDir(dir dire){
-	this->dire = dire;
+        this->dire = dire;
 }
 void Dato::setMem(int memdir){
-	this->memdir = memdir;
+        this->memdir = memdir;
 }
 
 void Dato::print(){
@@ -300,10 +301,10 @@ char& MyHeap::changed(dir dire){
 }
 
 void MyHeap::deleteDir(dir dire){
-	map<dir, int>::iterator it = mapa.find(dire);
-	if(it == mapa.end()) throw "the direction is not in memory";
+        map<dir, int>::iterator it = mapa.find(dire);
+        if(it == mapa.end()) throw "the direction is not in memory";
     int pos = mapa[dire];
-	mapa[A[size-1].getDir()] = pos;
+        mapa[A[size-1].getDir()] = pos;
     if(A[pos] < A[size-1]){
         A[pos] = A[size-1];
         size--;
@@ -318,10 +319,10 @@ void MyHeap::deleteDir(dir dire){
 void MyHeap::updateDate(dir dire,dir date){
     int mem = this->getMemDir(dire);
     if(mem == -1) throw "the dirtection no exists";
-	int pos = mapa[dire];
-	dir prevdate = A[pos].getDate();
+        int pos = mapa[dire];
+        dir prevdate = A[pos].getDate();
     A[pos].setDate(date);
-	if(prevdate < date){
+        if(prevdate < date){
         heapify(pos+1);
     }else if(A[pos].getDate() > date){
         updateKey(pos+1,A[pos]);
@@ -395,16 +396,16 @@ PageSwap<T,btdeg>::PageSwap(int cacheSize, const char *fname, char &flags) {
     this->cacheUsed = 0;
     this->cache = new Page<T,btdeg>[cacheSize];
     //this->tlbinv = new dir[cacheSize];
-	this->tlb = new MyHeap(cacheSize,MIN_HEAP);
-	this->c_date  = 0;	
+        this->tlb = new MyHeap(cacheSize,MIN_HEAP);
+        this->c_date  = 0;      
     if (flags & REP_TREE)
         f = fopen(fname, "wb+");
     else
         f = fopen(fname, "rb+");
         
     if (f == NULL) {
-    	flags |= REP_TREE;
-    	f = fopen(fname, "wb+");
+        flags |= REP_TREE;
+        f = fopen(fname, "wb+");
     }
     this->flags = flags;
 }
@@ -430,13 +431,13 @@ Page<T, btdeg>* PageSwap<T, btdeg>::diskRead(dir x) {
         tlb->insert(x, c_date++, cacheUsed++);        
     } else {
         //Load a page in a used memory position
-		Dato tmp;
-		tlb->remMinDate(tmp);
-		if ( ((flags & MEM_TREE)!=0) && tmp.changed) {
-        	realDiskWrite(tmp.getDir(), tmp.getMem());        	
+                Dato tmp;
+                tlb->remMinDate(tmp);
+                if ( ((flags & MEM_TREE)!=0) && tmp.changed) {
+                realDiskWrite(tmp.getDir(), tmp.getMem());              
         }
         p = &(cache[tmp.getMem()]);
-		tlb->insert(x, c_date++ , tmp.getMem());		
+                tlb->insert(x, c_date++ , tmp.getMem());                
     }
     fseek(f,x,SEEK_SET);
     fread(p,sizeof(Page<T, btdeg>),1,f);
@@ -460,29 +461,29 @@ void PageSwap<T, btdeg>::realDiskWrite(dir x, int pos) {
 template<class T, int btdeg>
 void PageSwap<T, btdeg>::diskWrite(dir x) {
     if (flags & MEM_TREE) {
-    	//If the tree is meant to be on RAM, then we will write it later
-    	tlb->changed(x) = 1;
+        //If the tree is meant to be on RAM, then we will write it later
+        tlb->changed(x) = 1;
     } else {
-    	//If the tree is not to be on RAM write now to disk
-    	int pos = tlb->getMemDir(x);
-    	realDiskWrite(x,pos);
+        //If the tree is not to be on RAM write now to disk
+        int pos = tlb->getMemDir(x);
+        realDiskWrite(x,pos);
     }
 }
 
 template<class T, int btdeg>
 FILE * PageSwap<T, btdeg>::getFile(){
-	return this->f;
+        return this->f;
 }
 
 template<class T, int btdeg>
 void PageSwap<T, btdeg>::save(){
-	for(int i = 0; i<= tlb->getSize();++i){
-		Dato &d = tlb->A[i];
-		if(d.changed == 1){
-			d.changed = 0;
-			realDiskWrite(d.getDir(),d.getMem());
-		}
-	}
+        for(int i = 0; i<= tlb->getSize();++i){
+                Dato &d = tlb->A[i];
+                if(d.changed == 1){
+                        d.changed = 0;
+                        realDiskWrite(d.getDir(),d.getMem());
+                }
+        }
 }
 
 
@@ -493,51 +494,51 @@ BTree<T, btdeg>::BTree(int cacheSize, const char *fname, char flags){
     
     BTreeHeader h;
     if (flags & REP_TREE) {
-    	FILE *f = ps->getFile();
-		fseek(f,0,SEEK_SET);		
-		fwrite(&h,sizeof(BTreeHeader),1,f);
-		
-    	dir xdir = ps->allocateNode();
-		Page<T,btdeg> *x = ps->diskRead(xdir);
-		x->leaf = 1;
-		x->n = 0;
-		ps->diskWrite(xdir);
-		root = x;
-		droot = xdir;
-		h.droot = xdir; h.btdeg=btdeg;
-		fseek(f,0,SEEK_SET);		
-		fwrite(&h,sizeof(BTreeHeader),1,f);		
+        FILE *f = ps->getFile();
+                fseek(f,0,SEEK_SET);            
+                fwrite(&h,sizeof(BTreeHeader),1,f);
+                
+        dir xdir = ps->allocateNode();
+                Page<T,btdeg> *x = ps->diskRead(xdir);
+                x->leaf = 1;
+                x->n = 0;
+                ps->diskWrite(xdir);
+                root = x;
+                droot = xdir;
+                h.droot = xdir; h.btdeg=btdeg;
+                fseek(f,0,SEEK_SET);            
+                fwrite(&h,sizeof(BTreeHeader),1,f);             
     } else {
-    	FILE *f = ps->getFile();
-		fseek(f,0,SEEK_SET);
-		fread(&h,sizeof(BTreeHeader),1,f);
-		if (btdeg != h.btdeg) throw "Page sizes don't match exception";
-		
-		dir xdir = h.droot;
-		Page<T,btdeg> *x = ps->diskRead(xdir);
-		root = x;
-		droot = xdir;
+        FILE *f = ps->getFile();
+                fseek(f,0,SEEK_SET);
+                fread(&h,sizeof(BTreeHeader),1,f);
+                if (btdeg != h.btdeg) throw "Page sizes don't match exception";
+                
+                dir xdir = h.droot;
+                Page<T,btdeg> *x = ps->diskRead(xdir);
+                root = x;
+                droot = xdir;
     }
     this->flags = flags;    
 } 
 
 template<class T, int btdeg>
 BTree<T, btdeg>::~BTree() {
-	save();
+        save();
     delete ps;
 }
 
 template<class T, int btdeg>
 void BTree<T, btdeg>::save() {
-	FILE *f = ps->getFile();
-	BTreeHeader bt;
-	bt.droot = this->droot;
-	bt.btdeg = btdeg;
-	fseek(f,0,SEEK_SET);
-	fwrite(&bt,sizeof(BTreeHeader),1,f);
-	if (flags & MEM_TREE) {
-		ps->save();
-	}
+        FILE *f = ps->getFile();
+        BTreeHeader bt;
+        bt.droot = this->droot;
+        bt.btdeg = btdeg;
+        fseek(f,0,SEEK_SET);
+        fwrite(&bt,sizeof(BTreeHeader),1,f);
+        if (flags & MEM_TREE) {
+                ps->save();
+        }
 }
 
 template<class T, int btdeg>
@@ -651,5 +652,19 @@ int BTree<T, btdeg>::pSearch(dir xdir, T k, dir *p){
 template<class T, int btdeg>
 int BTree<T, btdeg>::search(T k, dir *p){
     return pSearch(this->droot,k,p);
+}
+
+template<class T, int btdeg>
+T& BTree<T, btdeg>::find(T k) {
+    dir d;
+    int x = pSearch(this->droot,k,&d);
+    Page<T,btdeg> *p = ps->diskRead(d);
+    return p->key[x-1];
+}
+
+template<class T, int btdeg>    
+bool BTree<T, btdeg>::contains(T k) {
+    dir d;
+    return pSearch(this->droot,k,&d) != -1;
 }
 #endif
