@@ -44,8 +44,8 @@ void testbn() {
                 time_t seconds,seconds2;
                 double elapsed;
   				seconds = time (0);	
-                //bnMultIntK(ans, aa, bb);
-                bnMulInt(ans, aa, bb);
+                bnMultIntK(ans, aa, bb);
+                //bnMulInt(ans, aa, bb);
                 seconds2 = time (0);
                 elapsed=difftime(seconds, seconds2);	
                 //bnMulInt(ans, aa, bb);

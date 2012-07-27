@@ -338,6 +338,7 @@ void bnPrivKaratsuba(BigInt *res, BigInt *a, BigInt *b) {
     bnAddInt(res,res,p1); //ans += p1
     bnAddInt(res,res,p0); //ans += p0
     x0.d=0; x1.d=0; y0.d=0; y1.d=0;
+    bnRemCeros(res);
     /*bnDelBigInt(p0);
     bnDelBigInt(p1);
     bnDelBigInt(p2);*/
