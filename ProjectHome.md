@@ -1,0 +1,2 @@
+Código fuente (en distintos lenguajes de programación) de proyectos realizados, de manera colaborativa, para el aprendizaje de técnicas de Inteligencia Artificial. In-Silico, es el término utilizado para los modelos de simulación.
+También podrás encontrar código de soluciones de algunas de las maratones de programación de la ACM y de Google Code Jam.
